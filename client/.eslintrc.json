@@ -2,7 +2,13 @@
   "parser": "@typescript-eslint/parser",
   "rules": {
     //함수형 컴포넌트의 반환타입 명시 off
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
   },
   "env": {
     "browser": true,
