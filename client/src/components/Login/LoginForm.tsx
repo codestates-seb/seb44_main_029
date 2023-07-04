@@ -1,24 +1,49 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import axios from 'axios';
+interface LoginFormData {
+  email: string;
+  password: string;
+}
 
 const LoginForm = () => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [loginFormData, setLoginFormData] = useState<LoginFormData>({
+    email: '',
+    password: '',
+  });
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setEmail('');
-    setPassword('');
-  };
 
-  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
+    try {
+      const res = await axios.post('/login', loginFormData);
 
-  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+      if (res.status !== 200) throw res;
+      const accessToken = res.headers['Authorization'];
+      const refreshToken = res.headers['Refresh'];
+      // 로컬스토리지에 accessToken, memberId 저장
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      alert('login success!');
+      setLoginFormData({
+        email: '',
+        password: '',
+      });
+    } catch (error) {
+      // 로그인 실패 처리
+      alert('failed to login!');
+      console.error('Login failed:', error);
+    }
   };
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = event.target;
+    setLoginFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+  // 클라이언트 아이디
   const clientId: string | undefined =
     '845293206086-4aakl7vo191dgjkpked2lirhtrhg8kqq.apps.googleusercontent.com';
   return (
@@ -39,12 +64,20 @@ const LoginForm = () => {
 
       <Form onSubmit={handleSubmit}>
         <Label>Email</Label>
-        <Input type="email" value={email} onChange={handleEmailChange} />
+        <Input
+          type="email"
+          name="email"
+          value={loginFormData.email}
+          onChange={handleInputChange}
+          required
+        />
         <Label>Password</Label>
         <Input
           type="password"
-          value={password}
-          onChange={handlePasswordChange}
+          name="password"
+          value={loginFormData.password}
+          onChange={handleInputChange}
+          required
         />
         <LoginButton type="submit">Log In</LoginButton>
       </Form>
