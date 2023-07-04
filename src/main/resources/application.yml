@@ -1,0 +1,17 @@
+Spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/tmpdb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: a9250991518A!
+
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create
+        format_sql: true
+    show-sql: true
+
+  profiles:
+    include: jwt
