@@ -64,6 +64,7 @@ const Container = styled.div`
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
   width: 400px;
   height: 500px;
+  opacity: 0.7;
 `;
 
 const GoogleLoginDiv = styled.div`
