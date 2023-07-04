@@ -1,11 +1,13 @@
+// Header.js
 import styled from 'styled-components';
 import AudioPlayer from './AudioPlayer';
+import Nav from './Nav';
 
 const Header = () => {
   return (
     <Container>
       <AudioPlayer />
-      <NavBtn>NavBtn</NavBtn>
+      <Nav />
     </Container>
   );
 };
@@ -16,12 +18,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  width: auto;
+  padding: 5px 20px;
   height: 50px;
-`;
-
-const NavBtn = styled.button`
-  width: 10%;
-  height: 80%;
 `;
