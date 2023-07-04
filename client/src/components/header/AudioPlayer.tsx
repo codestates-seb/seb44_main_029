@@ -6,9 +6,10 @@ import iconBack from '../../assets/icon/iconBack.png';
 import iconPause from '../../assets/icon/iconPause.png';
 import styled from 'styled-components';
 
+//오디오 플레이어
 const AudioPlayer = () => {
   const soundSource =
-    'https://p.scdn.co/mp3-preview/0ba9d38f5d1ad30f0e31fc8ee80c1bebf0345a0c';
+    'https://cozystates-bucket-01.s3.ap-northeast-2.amazonaws.com/1.mp3';
   const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState<Howl | null>(null);
@@ -30,6 +31,7 @@ const AudioPlayer = () => {
 
   //재생, 일시정지 토글 핸들러 (추후 전역변수 사용)
   const handleTogglePlay = () => {
+    //유효성 검증
     if (sound) {
       if (isPlaying) {
         sound.pause();
@@ -76,35 +78,39 @@ const Container = styled.div`
   padding: 0 10px;
   height: 100%;
   border-radius: 10px;
-  box-shadow: 3px 3px 3px 0px;
 `;
 
-//오디오 버튼요소
+//오디오 조작버튼
 const AudioBtnImg = styled.img`
   width: 20px;
   height: 20px;
-  padding: 1px;
+  padding: 2px;
   margin-right: 10px;
+  border-radius: 5px;
   cursor: pointer;
-  //호버시 버튼크기 증가
+  transition: width 0.3s, height 0.3s, padding 0.5s;
+  //버튼 크기증가 & 배경색 변화
   &:hover {
-    width: 22px;
-    height: 22px;
-    padding: 0px;
+    width: 24px;
+    height: 24px;
+    padding: 10px;
+    background-color: #e3e3e3;
   }
 `;
 
-//오디오 음량요소
+//오디오 음량조절버튼
 const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
-  height: 30%;
-  width: 6px;
+  height: 35%;
+  width: 8px;
   border: none;
   margin-right: 4px;
+  border: 2px solid;
   background-color: ${(props) => (props.active ? 'black' : 'white')};
   cursor: pointer;
-  border: 2px solid;
-  //호버시 어두워짐
+  transition: filter 0.5s, height 0.3s;
+  //어두워지고 길이가 길어짐
   &:hover {
     filter: brightness(80%);
+    height: 50%;
   }
 `;
