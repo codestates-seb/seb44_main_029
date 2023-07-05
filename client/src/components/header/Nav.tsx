@@ -9,7 +9,13 @@ import iconLogIn from '../../assets/icon/icon_log.png';
 import iconSignUp from '../../assets/icon/icon_Sign.png';
 
 // Nav 컴포넌트
-const Nav = () => {
+const Nav = ({
+  setIsLogInClicked,
+  setIsSignUpClicked,
+}: {
+  setIsLogInClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   // 호버 여부 상태 관리
   const [isHovered, setIsHovered] = useState(false);
   const icons = [iconHome, iconUser, iconThemeList, iconLogIn, iconSignUp];
@@ -20,34 +26,38 @@ const Nav = () => {
     setIsHovered(!isHovered);
   };
 
-  const handleNavigate = (icon: string) => {
+  const handleNavBtn = (icon: string) => {
     if (icon === iconHome) navigate('/');
     else if (icon === iconUser) navigate('/profile');
     else if (icon === iconThemeList) navigate('/theme');
+    else if (icon === iconLogIn) setIsLogInClicked(true);
+    else if (icon === iconSignUp) setIsSignUpClicked(true);
     //로그인, 회원가입은 추후에~
   };
   return (
-    <Container>
-      <NavBtnDiv
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
-        isHovered={isHovered}
-      >
-        {isHovered ? (
-          <>
-            {icons.map((icon) => (
-              <NavBtnImg
-                src={icon}
-                isHovered={isHovered}
-                onClick={() => handleNavigate(icon)}
-              />
-            ))}
-          </>
-        ) : (
-          <NavBtnImg src={iconMenu} isHovered={isHovered}></NavBtnImg>
-        )}
-      </NavBtnDiv>
-    </Container>
+    <>
+      <Container>
+        <NavBtnDiv
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHover}
+          isHovered={isHovered}
+        >
+          {isHovered ? (
+            <>
+              {icons.map((icon) => (
+                <NavBtnImg
+                  src={icon}
+                  isHovered={isHovered}
+                  onClick={() => handleNavBtn(icon)}
+                />
+              ))}
+            </>
+          ) : (
+            <NavBtnImg src={iconMenu} isHovered={isHovered}></NavBtnImg>
+          )}
+        </NavBtnDiv>
+      </Container>
+    </>
   );
 };
 
@@ -56,7 +66,6 @@ export default Nav;
 // 스타일드 컴포넌트 정의
 const Container = styled.div`
   z-index: 99;
-  margin-right: 30px;
 `;
 
 const NavBtnDiv = styled.div<{ isHovered: boolean }>`
@@ -68,13 +77,13 @@ const NavBtnDiv = styled.div<{ isHovered: boolean }>`
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.15);
   border-radius: 10px;
-  transition: transform 0.5s, box-shadow 2s, height 0.1s;
+  transition: transform 0.5s, box-shadow 2s, height 0.5s;
   //transform관련
   height: ${({ isHovered }) => (isHovered ? '350px' : '50px')};
+  //사용 임시 중단 ---------------------------------------------
   transform: ${({ isHovered }) =>
-    isHovered ? 'translateY(130px) scale(1)' : 'none'};
-  box-shadow: ${({ isHovered }) =>
-    isHovered ? '5px 5px 10px rgba(255, 255, 255, 0.2)' : 'none'};
+    isHovered ? 'translateY(0px) scale(1)' : 'none'};
+  //--------------------------------------------------------
 `;
 
 const NavBtnImg = styled.img<{ isHovered: boolean }>`
