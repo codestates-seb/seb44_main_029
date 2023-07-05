@@ -4,7 +4,7 @@ const Title = () => {
   return (
     <Container>
       <FirstDiv>
-        <TitleDiv>Cozy States</TitleDiv>
+        <TitleDiv>CozyStates</TitleDiv>
         <Img src={mainIcon} />
       </FirstDiv>
 
@@ -19,27 +19,61 @@ const Title = () => {
 export default Title;
 
 const Container = styled.div`
-  margin: 400px 100px 100px 200px;
+  margin: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    margin: 6rem 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    margin: 10rem 0 0 8rem;
+  }
 `;
 const FirstDiv = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: end;
 `;
 const SecondDiv = styled.div`
-  font-size: 30px;
+  font-size: 2rem;
   color: white;
+  margin-top: 2rem;
   > p {
     margin: 0;
+    @media (min-width: 768px) {
+      font-size: 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      font-size: 2rem;
+    }
   }
 `;
 
 const TitleDiv = styled.div`
-  font-size: 65px;
   color: white;
+  margin-left: 8rem;
+  margin-bottom: 1rem;
+  font-family: 'Lalezar', cursive;
+  font-weight: bold;
+  @media (min-width: 300px) {
+    font-size: 2rem;
+  }
+  @media (min-width: 768px) {
+    font-size: 4rem;
+  }
 `;
 
 const Img = styled.img`
-  width: 300px;
-  height: 300px;
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  margin-bottom: 2rem;
+
+  @media (min-width: 1024px) {
+    margin-right: 2rem;
+  }
 `;
