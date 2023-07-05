@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import AudioPlayer from './AudioPlayer';
 import Nav from './Nav';
 import { useState } from 'react';
+import LoginForm from '../Login/LoginForm';
 
 const Header = () => {
   const [isLogInClicked, setIsLogInClicked] = useState(false);
@@ -15,7 +16,15 @@ const Header = () => {
       ) : isSignUpClicked ? (
         <ModalOverlayDiv onClick={() => setIsSignUpClicked(false)} />
       ) : null}
-      {isLogInClicked ? <TestDiv /> : isSignUpClicked ? <TestDiv2 /> : null}
+      {isLogInClicked ? (
+        <LogInShowtDiv>
+          <LoginForm />
+        </LogInShowtDiv>
+      ) : isSignUpClicked ? (
+        <SignOutShowDiv>
+          <LoginForm />
+        </SignOutShowDiv>
+      ) : null}
       <Nav
         setIsLogInClicked={setIsLogInClicked}
         setIsSignUpClicked={setIsSignUpClicked}
@@ -29,7 +38,7 @@ export default Header;
 //높이가 길어지며 끝에는 띠용띠용(?) 효과
 const reboundBox = keyframes`
   0% {
-    height: 0px;
+    height: 100px;
   }
   40%{
     height: 650px;
@@ -74,7 +83,7 @@ const ModalOverlayDiv = styled.div`
   z-index: 100;
 `;
 
-const TestDiv = styled.div`
+const LogInShowtDiv = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
@@ -82,19 +91,17 @@ const TestDiv = styled.div`
   z-index: 101;
   width: 400px;
   height: 550px;
-  background-color: red;
   //reboundBox 효과를, 0.8초 동안, 부드럽게, 마지막 모습 유지
   animation: ${reboundBox} 0.8s ease-in-out forwards;
 `;
 
-const TestDiv2 = styled.div`
+const SignOutShowDiv = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
   z-index: 101;
   width: 400px;
   height: 550px;
-  background-color: blue;
   //slideBox 효과를, 0.5초 동안, 부드럽게, 마지막 모습 유지
   animation: ${slideBox} 0.5s ease-in-out forwards;
 `;

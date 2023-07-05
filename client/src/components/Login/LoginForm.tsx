@@ -135,13 +135,17 @@ export default LoginForm;
 
 // Styled Components
 const Container = styled.div`
+  //원영 수정 ------------
+  z-index: 102; //++
+  overflow: hidden; // ++
+  width: 100%; //400px
+  height: 100%; //550px
+  background-color: rgba(255, 255, 255); //투명도 0.9
+  //---------------------
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
-  width: 400px;
-  height: 550px;
   opacity: 0.7;
   border-radius: 20px;
   > h1 {
