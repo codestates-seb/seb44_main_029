@@ -91,10 +91,15 @@ const AudioBtnImg = styled.img`
   transition: width 0.3s, height 0.3s, padding 0.5s;
   //버튼 크기증가 & 배경색 변화
   &:hover {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     padding: 10px;
     background-color: #e3e3e3;
+  }
+  transition: background-color 0.2s, padding 0.2s;
+  &:active {
+    padding: 8px;
+    background-color: #b3d8ff;
   }
 `;
 
