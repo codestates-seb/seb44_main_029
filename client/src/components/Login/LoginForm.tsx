@@ -84,9 +84,10 @@ const LoginForm = () => {
       console.error('Login failed:', error);
     }
   };
+
   // 클라이언트 아이디
-  const clientId: string | undefined =
-    '845293206086-4aakl7vo191dgjkpked2lirhtrhg8kqq.apps.googleusercontent.com';
+  const clientId: string = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
+
   return (
     <Container>
       <h1>LOGIN</h1>
