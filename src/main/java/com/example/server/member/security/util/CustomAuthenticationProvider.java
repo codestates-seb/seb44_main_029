@@ -25,6 +25,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         if(!passwordEncoder.matches(password, member.getPassword()))
             throw new BadCredentialsException(member.getUsername() + "Wrong Password");
 
+
+
         return new UsernamePasswordAuthenticationToken(member, password, member.getAuthorities());
     }
 

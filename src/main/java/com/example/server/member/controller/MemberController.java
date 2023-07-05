@@ -1,27 +1,39 @@
 package com.example.server.member.controller;
 
-import com.example.server.member.dto.MemberLoginDto;
-import com.example.server.member.dto.MemberSignUpDto;
-import com.example.server.member.dto.MemberUpdateDto;
+import com.example.server.member.dto.*;
 import com.example.server.member.entity.Member;
 import com.example.server.member.service.MemberService;
+import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final TokenService tokenService;
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto dto){
-        String token = memberService.login(dto);
+        TokenResponse token = memberService.login(dto);
 
         return new ResponseEntity(token, HttpStatus.OK);
     }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(Authentication authentication){
+        authentication.setAuthenticated(false);
+
+        return new ResponseEntity(true, HttpStatus.OK);
+    }
+
     @PostMapping("")
     ResponseEntity signUp(@RequestBody MemberSignUpDto dto){
         Long response = memberService.signUp(dto);
@@ -32,7 +44,7 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     ResponseEntity read(@PathVariable("member-id") Long memberId){
-        Member response = memberService.read(memberId);
+        MemberResponseDto response = memberService.read(memberId);
 
         return new ResponseEntity(response, HttpStatus.OK);
     }

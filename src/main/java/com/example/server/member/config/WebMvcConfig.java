@@ -1,0 +1,22 @@
+package com.example.server.member.config;
+
+import com.example.server.member.interceptor.HttpInterceptor;
+import com.example.server.member.security.token.JwtTokenProvider;
+import com.example.server.member.service.TokenService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@RequiredArgsConstructor
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+    private final JwtTokenProvider tokenProvider;
+    private final TokenService tokenService;
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new HttpInterceptor(tokenProvider, tokenService))
+                .addPathPatterns("/tokens")
+                .excludePathPatterns("/css/**", "/images/**", "/js/**");
+    }
+}
