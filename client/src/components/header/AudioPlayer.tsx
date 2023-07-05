@@ -75,9 +75,11 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 10px;
-  height: 100%;
+  padding: 0 30px;
+  height: 50px;
   border-radius: 10px;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.15);
 `;
 
 //오디오 조작버튼
@@ -85,18 +87,18 @@ const AudioBtnImg = styled.img`
   width: 20px;
   height: 20px;
   padding: 2px;
-  margin-right: 10px;
+  margin-right: 15px;
   border-radius: 5px;
   cursor: pointer;
-  transition: width 0.3s, height 0.3s, padding 0.5s;
+  transition: width 0.2s, height 0.2s, padding 0.3s;
   //버튼 크기증가 & 배경색 변화
   &:hover {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     padding: 10px;
     background-color: #e3e3e3;
   }
-  transition: background-color 0.2s, padding 0.2s;
+  transition: background-color 0.2s, padding 0.2;
   &:active {
     padding: 8px;
     background-color: #b3d8ff;
@@ -115,7 +117,7 @@ const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
   transition: filter 0.5s, height 0.3s;
   //어두워지고 길이가 길어짐
   &:hover {
-    filter: brightness(80%);
-    height: 50%;
+    filter: brightness(50%);
+    height: 70%;
   }
 `;
