@@ -23,7 +23,7 @@ export default ThemeImgList;
 const Layout = styled.div`
   max-width: 100%;
   width: 100%;
-  padding: 4rem 0;
+  padding: 6rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -48,7 +48,7 @@ const Layout = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  max-width: 1264px;
+  max-width: 1185px;
   width: 100%;
   display: flex;
   flex-direction: column;

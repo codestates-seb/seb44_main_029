@@ -15,9 +15,11 @@ const Header = () => {
 export default Header;
 
 const Container = styled.div`
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 20px;
+  padding: 20px;
   height: 50px;
+  width: 100%;
 `;

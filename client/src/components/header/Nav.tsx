@@ -42,7 +42,10 @@ const Nav = () => {
 export default Nav;
 
 // 스타일드 컴포넌트 정의
-const Container = styled.div``;
+const Container = styled.div`
+  z-index: 99;
+  margin-right: 30px;
+`;
 
 const NavBtnDiv = styled.div<{ isHovered: boolean }>`
   display: flex;
@@ -51,15 +54,15 @@ const NavBtnDiv = styled.div<{ isHovered: boolean }>`
   align-items: center;
   width: 100px;
   cursor: pointer;
-  background-color: white;
-  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
   transition: transform 0.5s, box-shadow 0.3s, height 0.5s;
   //transform관련
-  height: ${({ isHovered }) => (isHovered ? '300px' : '40px')};
+  height: ${({ isHovered }) => (isHovered ? '300px' : '50px')};
   transform: ${({ isHovered }) =>
     isHovered ? 'translateY(130px) scale(1)' : 'none'};
   box-shadow: ${({ isHovered }) =>
-    isHovered ? '5px 5px 10px rgba(0, 191, 255, 0.2)' : 'none'};
+    isHovered ? '5px 5px 10px rgba(255, 255, 255, 0.2)' : 'none'};
 `;
 
 const NavBtnImg = styled.img<{ isHovered: boolean }>`
