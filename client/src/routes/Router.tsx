@@ -3,6 +3,8 @@ import App from '../App';
 import MainPage from '../pages/MainPage';
 import NotFound from '../error/NotFound';
 import ThemeImgList from '../pages/ThemeImgList';
+import ThemeList from '../pages/ThemeList';
+import Profile from '../pages/Profile';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,14 @@ const router = createBrowserRouter([
       {
         path: '/theme/:themeId',
         element: <ThemeImgList />,
+      },
+      {
+        path: '/theme',
+        element: <ThemeList />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
       },
     ],
   },
