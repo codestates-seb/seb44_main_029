@@ -53,7 +53,7 @@ const NavBtnDiv = styled.div<{ isHovered: boolean }>`
   cursor: pointer;
   background-color: white;
   border-radius: 3px;
-  transition: transform 0.5s, box-shadow 0.7s, height 0.5s;
+  transition: transform 0.5s, box-shadow 0.3s, height 0.5s;
   //transform관련
   height: ${({ isHovered }) => (isHovered ? '300px' : '40px')};
   transform: ${({ isHovered }) =>
@@ -73,5 +73,10 @@ const NavBtnImg = styled.img<{ isHovered: boolean }>`
     border-radius: 5px;
     padding: 5px;
     background-color: #e3e3e3;
+  }
+  transition: background-color 0.2s, padding 0.2s;
+  &:active {
+    padding: 4px;
+    background-color: #b3d8ff;
   }
 `;
