@@ -105,7 +105,9 @@ const LoginForm = () => {
       </GoogleLoginDiv>
 
       <Form onSubmit={handleSubmit}>
-        <Label>Email</Label>
+        <Label htmlFor="email" isFocused={loginFormData.email !== ''}>
+          Email
+        </Label>
         <Input
           type="email"
           name="email"
@@ -113,7 +115,9 @@ const LoginForm = () => {
           onChange={handleInputChange}
         />
         {errors.email && <ErrorText>{errors.email}</ErrorText>}
-        <Label>Password</Label>
+        <Label htmlFor="password" isFocused={loginFormData.password !== ''}>
+          Password
+        </Label>
         <Input
           type="password"
           name="password"
@@ -134,12 +138,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 100px;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
   width: 400px;
-  height: 500px;
+  height: 550px;
   opacity: 0.7;
+  border-radius: 20px;
+  > h1 {
+    color: #000000;
+  }
 `;
 
 const GoogleLoginDiv = styled.div`
@@ -153,16 +160,25 @@ const Form = styled.form`
   width: 300px;
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ isFocused: boolean }>`
+  color: ${({ isFocused }) => (isFocused ? '#166cea' : '#999')};
+  font-size: ${({ isFocused }) => (isFocused ? '14px' : 'inherit')};
   margin-bottom: 5px;
+  transition: all 0.5s ease;
 `;
 
 const Input = styled.input`
-  padding: 10px;
+  padding: 20px 10px 10px;
   margin-bottom: 20px;
   border-radius: 30px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #999;
+  font-size: 18px;
+  color: #000000;
+  outline: none;
   &:focus {
-    box-shadow: 3px 3px 0px 0px #a3a3a3;
+    box-shadow: 3px 3px 3px 1px #1875ff;
   }
 `;
 
@@ -182,6 +198,6 @@ const LoginButton = styled.button`
 
 const ErrorText = styled.p`
   color: red;
-  font-size: 14px;
+  font-size: 12px;
   margin-top: 4px;
 `;
