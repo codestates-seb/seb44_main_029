@@ -5,6 +5,7 @@ import com.example.server.member.security.handler.JwtAuthenticationEntryPoint;
 import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.security.util.CustomAuthenticationProvider;
 import com.example.server.member.security.util.CustomUserDetailService;
+import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,8 +32,10 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailService userDetailService;
     private final JwtTokenProvider tokenProvider;
+    private final TokenService tokenService;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+//    private final LoginSuccessHandler loginSuccessHandler;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -94,13 +97,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
 
                 .authorizeRequests()
+                .antMatchers("/tokens").permitAll()
                 .antMatchers("/members").permitAll()
                 .antMatchers("/members/login").permitAll()
-                .antMatchers(HttpMethod.GET, "/members/get/**").hasRole("USER")
+
                 .anyRequest().authenticated()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .logout()
+                .clearAuthentication(true)
+                .logoutUrl("/members/logout")
+
+                .and()
+                .apply(new JwtSecurityConfig(tokenProvider, tokenService));
     }
 }
 

@@ -1,6 +1,10 @@
 package com.example.server.member.security.filter;
 
+import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
+import com.example.server.member.service.TokenService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -8,22 +12,28 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Map;
 
 @Slf4j
-@RequiredArgsConstructor
-@Component
 public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private JwtTokenProvider tokenProvider;
-    public JwtFilter(JwtTokenProvider tokenProvider) {
+    private TokenService tokenService;
+
+    public JwtFilter(JwtTokenProvider tokenProvider, TokenService tokenService) {
         this.tokenProvider = tokenProvider;
+        this.tokenService = tokenService;
     }
 
     @Override
@@ -34,9 +44,10 @@ public class JwtFilter extends OncePerRequestFilter {
         if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("Security Context에 '{}' 인증 정보를 저장했습니다., url: {}", authentication.getName(), requsetURI);
+
+            log.debug("Security Context에 '{}' 인증 정보를 저장했습니다., url: {}", authentication.getName(), requsetURI);
         }else{
-            log.debug("유효한 JWT 토큰이 없습니다. uri: {}", requsetURI);
+
         }
 
         filterChain.doFilter(request, response);
