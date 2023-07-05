@@ -9,7 +9,7 @@ import styled from 'styled-components';
 //오디오 플레이어
 const AudioPlayer = () => {
   const soundSource =
-    'https://cozystates-bucket-01.s3.ap-northeast-2.amazonaws.com/1.mp3';
+    'https://cozystates-bucket-01.s3.ap-northeast-2.amazonaws.com/1-1.mp3';
   const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
   const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState<Howl | null>(null);

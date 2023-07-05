@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import iconHome from '../../assets/icon/icon_home.png';
 import iconUser from '../../assets/icon/icon_user.png';
 import iconThemeList from '../../assets/icon/icon_themeList.png';
@@ -12,12 +13,19 @@ const Nav = () => {
   // 호버 여부 상태 관리
   const [isHovered, setIsHovered] = useState(false);
   const icons = [iconHome, iconUser, iconThemeList, iconLogIn, iconSignUp];
+  const navigate = useNavigate();
 
   // 호버 이벤트 핸들러
   const handleHover = () => {
     setIsHovered(!isHovered);
   };
 
+  const handleNavigate = (icon: string) => {
+    if (icon === iconHome) navigate('/');
+    else if (icon === iconUser) navigate('/profile');
+    else if (icon === iconThemeList) navigate('/theme');
+    //로그인, 회원가입은 추후에~
+  };
   return (
     <Container>
       <NavBtnDiv
@@ -28,7 +36,11 @@ const Nav = () => {
         {isHovered ? (
           <>
             {icons.map((icon) => (
-              <NavBtnImg src={icon} isHovered={isHovered} />
+              <NavBtnImg
+                src={icon}
+                isHovered={isHovered}
+                onClick={() => handleNavigate(icon)}
+              />
             ))}
           </>
         ) : (
