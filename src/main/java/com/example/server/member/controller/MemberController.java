@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,16 +21,16 @@ public class MemberController {
     private final MemberService memberService;
     private final TokenService tokenService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto dto){
         TokenResponse token = memberService.login(dto);
 
         return new ResponseEntity(token, HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
-    public ResponseEntity logout(Authentication authentication){
-        authentication.setAuthenticated(false);
+    @PostMapping("/logout")
+    public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
+        SecurityContextHolder.clearContext();
 
         return new ResponseEntity(true, HttpStatus.OK);
     }

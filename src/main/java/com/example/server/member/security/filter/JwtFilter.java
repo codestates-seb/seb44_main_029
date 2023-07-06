@@ -29,11 +29,9 @@ import java.util.Map;
 public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private JwtTokenProvider tokenProvider;
-    private TokenService tokenService;
 
-    public JwtFilter(JwtTokenProvider tokenProvider, TokenService tokenService) {
+    public JwtFilter(JwtTokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
-        this.tokenService = tokenService;
     }
 
     @Override
