@@ -7,29 +7,26 @@ import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.member.repository.RefreshTokenJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TokenService {
 
     @Value("${jwt.refresh_token_expired}")
     long tokenExpired;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final JwtTokenProvider tokenProvider;
-    private final UserDetailsService userDetailsService;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final MemberJpaRepository memberJpaRepository;
 
     public RefreshToken createRefreshToken(String username) {
@@ -44,57 +41,43 @@ public class TokenService {
                 .member(member)
                 .build();
 
-        return refreshTokenJpaRepository.save(token);
+//        return refreshTokenJpaRepository.save(token);
+        return token;
     }
 
     public boolean checkRefreshToken(String username) {
         Member member = memberJpaRepository.findByMemberUsername(username).get();
 
-        RefreshToken token = refreshTokenJpaRepository.findByMemberId(member.getId())
-                .orElseThrow( () ->new RuntimeException("Refresh Token not Exist"));
+        String token = (String) redisTemplate.opsForValue().get("RT:" + member.getEmail());
 
-        Date time = token.getExpired();
+//        RefreshToken token = refreshTokenJpaRepository.findByMemberId(member.getId())
+//                .orElseThrow( () ->new RuntimeException("Refresh Token not Exist"));
+        if(token == null) throw new RuntimeException("Refresh Token not existed");
 
-        if (time.before(new Date()))
+        if(token == null){
+            log.info("RefreshToken is not existed");
             return false;
+        }
 
-        return true;
-    }
-
-    public RefreshToken updateRefreshToken(String username){
-        refreshTokenJpaRepository.deleteByToken(username);
-
-        return createRefreshToken(username);
-    }
-
-    public boolean deleteRefreshToken(String username) {
-        refreshTokenJpaRepository.deleteByToken(username);
+//        Date time = token.getExpired();
+//
+//        if (time.before(new Date()))
+//            return false;
 
         return true;
     }
 
     public TokenResponse updateAccessToken(String username) {
-        TokenResponse tokenResponse = TokenResponse.builder()
-                .token("-1")
-                .accessToken("-1")
-                .build();
-
         Member member = memberJpaRepository.findByMemberUsername(username).get();
-
-        if (!checkRefreshToken(username)){
-            deleteRefreshToken(username);
-
-            return tokenResponse;
-        }
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
 
         String accessToken = tokenProvider.createToken(authentication);
-        String token = refreshTokenJpaRepository.findByMemberId(member.getId()).get().getToken();
+        String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + member.getEmail());
 
-        tokenResponse = TokenResponse.builder()
+        TokenResponse tokenResponse = TokenResponse.builder()
                 .accessToken(accessToken)
-                .token(token)
+                .refreshToken(refreshToken)
                 .build();
 
         return tokenResponse;

@@ -5,6 +5,7 @@ import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -17,6 +18,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new HttpInterceptor(tokenProvider, tokenService))
                 .addPathPatterns("/tokens")
+                .addPathPatterns("/members/**")
                 .excludePathPatterns("/css/**", "/images/**", "/js/**");
     }
 }

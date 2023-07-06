@@ -85,8 +85,9 @@ public class JwtTokenProvider implements InitializingBean {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
     }
 
-    public boolean checkExpired(Date expired){
-        return (expired.before(new Date()));
+    public Date getExpriation(String token)
+    {
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getExpiration();
     }
 
     public boolean validateToken(String token){

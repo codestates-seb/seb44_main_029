@@ -5,6 +5,7 @@ import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,14 +20,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     private JwtTokenProvider tokenProvider;
+    private RedisTemplate<String, Object> redisTemplate;
 
-    public JwtSecurityConfig(JwtTokenProvider tokenProvider) {
+    public JwtSecurityConfig(JwtTokenProvider tokenProvider, RedisTemplate<String, Object> redisTemplate) {
         this.tokenProvider = tokenProvider;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
     public void configure(HttpSecurity http) throws Exception{
-        JwtFilter customFilter = new JwtFilter(tokenProvider);
+        JwtFilter customFilter = new JwtFilter(tokenProvider, redisTemplate);
         http
                 .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
     }

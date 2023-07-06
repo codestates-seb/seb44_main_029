@@ -8,6 +8,7 @@ import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -27,6 +29,7 @@ public class MemberService {
     private final TokenService tokenService;
     private final MemberJpaRepository memberJpaRepository;
     private final MemberMapper memberMapper;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     public TokenResponse login(MemberLoginDto dto){
         UsernamePasswordAuthenticationToken AuthenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
@@ -34,16 +37,31 @@ public class MemberService {
 
         String username = authentication.getName();
 
-        String token = tokenService.createRefreshToken(username).getToken();
+        RefreshToken token = tokenService.createRefreshToken(username);
+        String refreshToken = token.getToken();
         String accessToken = tokenProvider.createToken(authentication);
 
+        redisTemplate.opsForValue().set("RT:" + dto.getEmail(), refreshToken, token.getExpired().getTime(), TimeUnit.MILLISECONDS);
 
         TokenResponse response = TokenResponse.builder()
-                .token(token)
+                .refreshToken(refreshToken)
                 .accessToken(accessToken)
                 .build();
 
         return response;
+    }
+
+    public void logout(TokenResponse dto){
+        if(!tokenProvider.validateToken(dto.getAccessToken()))
+            throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
+
+        Authentication authentication = tokenProvider.getAuthentication(dto.getAccessToken());
+
+        if(redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null)
+            redisTemplate.delete("RT:" + authentication.getName());
+
+        Long expiration = tokenProvider.getExpriation(dto.getAccessToken()).getTime();
+        redisTemplate.opsForValue().set(dto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
     }
 
     public Long signUp(MemberSignUpDto dto){
