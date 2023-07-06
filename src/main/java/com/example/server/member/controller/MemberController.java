@@ -22,14 +22,27 @@ public class MemberController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody MemberLoginDto dto){
+    public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){
         TokenResponse token = memberService.login(dto);
+
+        response.setHeader("Refresh-Token", token.getRefreshToken());
+        response.setHeader("Access-Token", token.getAccessToken());
 
         return new ResponseEntity(token, HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
+        String accessToken = request.getHeader("accessToken");
+        String refreshToken = request.getHeader("requestToken");
+
+        TokenResponse tokenResponse = TokenResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+
+        memberService.logout(tokenResponse);
+
         SecurityContextHolder.clearContext();
 
         return new ResponseEntity(true, HttpStatus.OK);

@@ -14,4 +14,4 @@ Spring:
     show-sql: true
 
   profiles:
-    include: jwt
+    include: jwt, redis

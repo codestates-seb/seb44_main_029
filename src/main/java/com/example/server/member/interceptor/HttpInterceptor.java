@@ -23,20 +23,19 @@ public class HttpInterceptor implements HandlerInterceptor{
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-//        String token = request.getHeader("Token");
-//
-//        Map<String, Object> claim = tokenProvider.getClaimsFromToken(token);
-//        Object memberId = claim.get("memberId");
-//
-//        log.info("memberId 생성 완료");
-//        request.setAttribute("memberId", memberId);
+        String accessToken = request.getHeader("Access-Token");
+        String refreshToken = request.getHeader("Refresh-Token");
+
+        response.setHeader("Refresh-Token", refreshToken);
+        response.setHeader("Access-Token", accessToken);
+
+        log.info("Header에 Refresh-Token, Access-Token 삽입");
+
         return true;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        String token = request.getHeader("Token");
-        response.setHeader("Token", token);
     }
 
     @Override
