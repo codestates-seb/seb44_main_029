@@ -3,7 +3,7 @@ import AudioPlayer from './AudioPlayer';
 import Nav from './Nav';
 import { useState } from 'react';
 import LoginForm from '../Login/LoginForm';
-import SignupForm from '../signup/SignupForm';
+import SignUpForm from '../signup/SignUpForm';
 
 const Header = () => {
   const [isLogInClicked, setIsLogInClicked] = useState(false);
@@ -18,12 +18,12 @@ const Header = () => {
         <ModalOverlayDiv onClick={() => setIsSignUpClicked(false)} />
       ) : null}
       {isLogInClicked ? (
-        <LogInShowtDiv>
+        <LogInShowDiv>
           <LoginForm />
-        </LogInShowtDiv>
+        </LogInShowDiv>
       ) : isSignUpClicked ? (
         <SignOutShowDiv>
-          <SignupForm />
+          <SignUpForm />
         </SignOutShowDiv>
       ) : null}
       <Nav
@@ -84,7 +84,7 @@ const ModalOverlayDiv = styled.div`
   z-index: 100;
 `;
 
-const LogInShowtDiv = styled.div`
+const LogInShowDiv = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
