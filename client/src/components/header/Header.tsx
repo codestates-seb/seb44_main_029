@@ -3,6 +3,7 @@ import AudioPlayer from './AudioPlayer';
 import Nav from './Nav';
 import { useState } from 'react';
 import LoginForm from '../Login/LoginForm';
+import SignupForm from '../signup/SignupForm';
 
 const Header = () => {
   const [isLogInClicked, setIsLogInClicked] = useState(false);
@@ -22,7 +23,7 @@ const Header = () => {
         </LogInShowtDiv>
       ) : isSignUpClicked ? (
         <SignOutShowDiv>
-          <LoginForm />
+          <SignupForm />
         </SignOutShowDiv>
       ) : null}
       <Nav
