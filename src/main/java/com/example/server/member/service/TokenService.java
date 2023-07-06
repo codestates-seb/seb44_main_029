@@ -1,5 +1,6 @@
 package com.example.server.member.service;
 
+import com.example.server.member.dto.TokenResponse;
 import com.example.server.member.entity.Member;
 import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.repository.MemberJpaRepository;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,6 +29,7 @@ public class TokenService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final JwtTokenProvider tokenProvider;
+    private final UserDetailsService userDetailsService;
     private final MemberJpaRepository memberJpaRepository;
 
     public RefreshToken createRefreshToken(String username) {
@@ -45,15 +48,17 @@ public class TokenService {
     }
 
     public boolean checkRefreshToken(String username) {
-        RefreshToken token = refreshTokenJpaRepository.findByToken(username)
+        Member member = memberJpaRepository.findByMemberUsername(username).get();
+
+        RefreshToken token = refreshTokenJpaRepository.findByMemberId(member.getId())
                 .orElseThrow( () ->new RuntimeException("Refresh Token not Exist"));
 
         Date time = token.getExpired();
 
-        if (new Date().before(time))
-            return true;
+        if (time.before(new Date()))
+            return false;
 
-        return false;
+        return true;
     }
 
     public RefreshToken updateRefreshToken(String username){
@@ -68,23 +73,30 @@ public class TokenService {
         return true;
     }
 
-    public String updateAccessToken(String username) {
+    public TokenResponse updateAccessToken(String username) {
+        TokenResponse tokenResponse = TokenResponse.builder()
+                .token("-1")
+                .accessToken("-1")
+                .build();
+
         Member member = memberJpaRepository.findByMemberUsername(username).get();
-        String email = member.getEmail();
-        String password = member.getPassword();
 
         if (!checkRefreshToken(username)){
             deleteRefreshToken(username);
 
-            return "redirect:/members/logout";
+            return tokenResponse;
         }
 
-        UsernamePasswordAuthenticationToken AuthenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(AuthenticationToken);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
 
-        String AccessToken = tokenProvider.createToken(authentication);
+        String accessToken = tokenProvider.createToken(authentication);
         String token = refreshTokenJpaRepository.findByMemberId(member.getId()).get().getToken();
 
-        return token;
+        tokenResponse = TokenResponse.builder()
+                .accessToken(accessToken)
+                .token(token)
+                .build();
+
+        return tokenResponse;
     }
 }

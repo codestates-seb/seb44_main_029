@@ -81,16 +81,20 @@ public class JwtTokenProvider implements InitializingBean {
         return (Map<String, Object>) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get(AUTHORITIES_KEY);
     }
 
-    public String getSubFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+    public Claims getBodyFromToken(String token){
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+    }
+
+    public boolean checkExpired(Date expired){
+        return (expired.before(new Date()));
     }
 
     public boolean validateToken(String token){
         try{
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
             return true;
-        }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e){
+        }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
         }catch (ExpiredJwtException e){
             log.info("만료된 JWT 토큰입니다.");

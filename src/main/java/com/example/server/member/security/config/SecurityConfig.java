@@ -19,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -97,19 +98,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
 
                 .authorizeRequests()
-                .antMatchers("/tokens").permitAll()
-                .antMatchers("/members").permitAll()
+                .antMatchers("/tokens/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/members/**").permitAll()
                 .antMatchers("/members/login").permitAll()
 
                 .anyRequest().authenticated()
 
                 .and()
-                .logout()
-                .clearAuthentication(true)
-                .logoutUrl("/members/logout")
-
-                .and()
-                .apply(new JwtSecurityConfig(tokenProvider, tokenService));
+                .apply(new JwtSecurityConfig(tokenProvider));
     }
 }
 
