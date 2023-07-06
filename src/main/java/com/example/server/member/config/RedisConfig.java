@@ -1,4 +1,4 @@
-package com.example.server.member.security.config;
+package com.example.server.member.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
