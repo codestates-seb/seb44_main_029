@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import MainPage from '../pages/MainPage';
 import NotFound from '../error/NotFound';
-import ThemeImgList from '../pages/ThemeImgList';
+import ThemeItemList from '../pages/ThemeItemList';
 
 const router = createBrowserRouter([
   {
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
       { index: true, element: <MainPage /> },
       {
         path: '/theme/:themeId',
-        element: <ThemeImgList />,
+        element: <ThemeItemList />,
       },
     ],
   },
