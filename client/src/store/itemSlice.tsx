@@ -4,9 +4,12 @@ import { fetchThemeItem } from '../api/getThemeItem';
 interface Item {
   themeId: number;
   themeTitle: string;
-  imageId: number;
-  imageTitle: string;
-  likeCount: number;
+  itemList: {
+    itemId: number;
+    itemImage: string;
+    imageTitle: string;
+    likeCount: number;
+  };
 }
 
 interface ItemState {
