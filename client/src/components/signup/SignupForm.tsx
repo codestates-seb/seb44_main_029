@@ -76,7 +76,11 @@ const SignUpForm = () => {
     }
 
     try {
-      const res = await axios.post('/signup', signUpFormData);
+      const res = await axios.post('/signup', {
+        username: signUpFormData.username,
+        email: signUpFormData.email,
+        password: signUpFormData.password,
+      });
 
       if (res.status === 200) {
         alert('SignUp success!');
@@ -167,7 +171,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
-  opacity: 0.7;
+  opacity: 0.95;
   border-radius: 20px;
   > h1 {
     color: #000000;
