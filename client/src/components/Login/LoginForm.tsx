@@ -67,7 +67,7 @@ const LoginForm = () => {
       if (res.status === 200) {
         const accessToken = res.headers['Authorization'];
         const refreshToken = res.headers['Refresh'];
-        // Save accessToken, memberId to local storage
+        // localStorage에 액세스토큰, 리프레쉬토큰 저장
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
         alert('login success!');
@@ -114,7 +114,7 @@ const LoginForm = () => {
           value={loginFormData.email}
           onChange={handleInputChange}
         />
-        {errors.email && <ErrorText>{errors.email}</ErrorText>}
+        <ErrorText>{errors.email && errors.email}</ErrorText>
         <Label htmlFor="password" isFocused={loginFormData.password !== ''}>
           Password
         </Label>
@@ -124,7 +124,7 @@ const LoginForm = () => {
           value={loginFormData.password}
           onChange={handleInputChange}
         />
-        {errors.password && <ErrorText>{errors.password}</ErrorText>}
+        <ErrorText>{errors.password && errors.password}</ErrorText>
         <LoginButton type="submit">Log In</LoginButton>
       </Form>
     </Container>
