@@ -102,7 +102,8 @@ const SignOutShowDiv = styled.div`
   left: 50%;
   z-index: 101;
   width: 400px;
-  height: 550px;
+  // 희창 수정
+  height: 600px; // 550px
   //slideBox 효과를, 0.5초 동안, 부드럽게, 마지막 모습 유지
   animation: ${slideBox} 0.5s ease-in-out forwards;
 `;
