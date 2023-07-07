@@ -109,7 +109,8 @@ const SignUpForm = () => {
           value={signUpFormData.username}
           onChange={handleInputChange}
         />
-        {errors.username && <ErrorText>{errors.username}</ErrorText>}
+        <ErrorText>{errors.username && errors.username}</ErrorText>
+
         <Label htmlFor="email" isFocused={signUpFormData.email !== ''}>
           Email
         </Label>
@@ -119,7 +120,8 @@ const SignUpForm = () => {
           value={signUpFormData.email}
           onChange={handleInputChange}
         />
-        {errors.email && <ErrorText>{errors.email}</ErrorText>}
+        <ErrorText>{errors.email && errors.email}</ErrorText>
+
         <Label htmlFor="password" isFocused={signUpFormData.password !== ''}>
           Password
         </Label>
@@ -129,7 +131,8 @@ const SignUpForm = () => {
           value={signUpFormData.password}
           onChange={handleInputChange}
         />
-        {errors.password && <ErrorText>{errors.password}</ErrorText>}
+        <ErrorText>{errors.password && errors.password}</ErrorText>
+
         <Label
           htmlFor="password"
           isFocused={signUpFormData.passwordCheck !== ''}
@@ -142,7 +145,7 @@ const SignUpForm = () => {
           value={signUpFormData.passwordCheck}
           onChange={handleInputChange}
         />
-        {errors.passwordCheck && <ErrorText>{errors.passwordCheck}</ErrorText>}
+        <ErrorText>{errors.passwordCheck && errors.passwordCheck}</ErrorText>
         <SignUpButton type="submit">Sign Up</SignUpButton>
       </Form>
     </Container>
@@ -213,8 +216,9 @@ const SignUpButton = styled.button`
   }
 `;
 
-const ErrorText = styled.p`
+const ErrorText = styled.div`
   color: red;
-  font-size: 12px;
-  margin-top: 4px;
+  font-size: 11px;
+  margin-bottom: 10px;
+  height: 12px;
 `;
