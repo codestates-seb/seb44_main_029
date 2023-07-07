@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
-interface ButtonProps {
+interface LikeButtonProps {
   isActive: boolean;
 }
 
@@ -49,7 +49,7 @@ const ListFilterDiv = styled.div`
   }
 `;
 
-const LikeFilterButton = styled.button<ButtonProps>`
+const LikeFilterButton = styled.button<LikeButtonProps>`
   width: 3rem;
   height: 1.5rem;
   margin-right: 3rem;
