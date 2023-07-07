@@ -3,6 +3,7 @@ import AudioPlayer from './AudioPlayer';
 import Nav from './Nav';
 import { useState } from 'react';
 import LoginForm from '../Login/LoginForm';
+import SignUpForm from '../signup/SignUpForm';
 
 const Header = () => {
   const [isLogInClicked, setIsLogInClicked] = useState(false);
@@ -17,12 +18,12 @@ const Header = () => {
         <ModalOverlayDiv onClick={() => setIsSignUpClicked(false)} />
       ) : null}
       {isLogInClicked ? (
-        <LogInShowtDiv>
+        <LogInShowDiv>
           <LoginForm />
-        </LogInShowtDiv>
+        </LogInShowDiv>
       ) : isSignUpClicked ? (
         <SignOutShowDiv>
-          <LoginForm />
+          <SignUpForm />
         </SignOutShowDiv>
       ) : null}
       <Nav
@@ -83,7 +84,7 @@ const ModalOverlayDiv = styled.div`
   z-index: 100;
 `;
 
-const LogInShowtDiv = styled.div`
+const LogInShowDiv = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
@@ -101,7 +102,8 @@ const SignOutShowDiv = styled.div`
   left: 50%;
   z-index: 101;
   width: 400px;
-  height: 550px;
+  // 희창 수정
+  height: 600px; // 550px
   //slideBox 효과를, 0.5초 동안, 부드럽게, 마지막 모습 유지
   animation: ${slideBox} 0.5s ease-in-out forwards;
 `;
