@@ -18,12 +18,18 @@ const Container = styled.div`
   border-radius: 0.33rem 0.33rem 0 0;
 
   .theme-title {
-    margin: 2rem 3rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0 1rem;
     color: rgba(255, 255, 255, 1);
   }
 
   .theme-description {
-    margin: 1rem 3rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0 2rem;
     color: rgba(255, 255, 255, 0.7);
   }
 `;
