@@ -21,7 +21,7 @@ const ItemListHeader = () => {
           isActive={showLikedOnly}
           onClick={handleLikeButtonClick}
         >
-          좋아요 <br />
+          Like <br />
           {showLikedOnly ? '❤️' : '🤍'}
         </LikeFilterButton>
       </ListFilterDiv>
@@ -56,12 +56,10 @@ const LikeFilterButton = styled.button<ButtonProps>`
   transition: 0.3s;
   border-radius: 0.4rem;
   background-color: transparent;
-  color: rgba(255, 255, 255, 1);
   font-size: 0.6rem;
   letter-spacing: 1px;
   line-height: 14.5px;
-  /* border: 2px solid rgba(255, 255, 255, 1);
-  box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 1); */
+  font-weight: bold;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);
@@ -72,9 +70,11 @@ const LikeFilterButton = styled.button<ButtonProps>`
       ? css`
           border: 2px solid rgba(255, 0, 0, 1);
           box-shadow: 0 0 0.2rem 0.1rem rgba(255, 0, 0, 1);
+          color: rgba(255, 0, 0, 1);
         `
       : css`
           border: 2px solid rgba(255, 255, 255, 1);
           box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 1);
+          color: rgba(255, 255, 255, 1);
         `}
 `;
