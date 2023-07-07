@@ -1,8 +1,8 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
-
+import SignUpForm from '../signup/SignUpForm';
 interface LoginFormData {
   email: string;
   password: string;
@@ -15,6 +15,7 @@ const LoginForm = () => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isSignUpClicked, setIsSignUpClicked] = useState(false);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
@@ -85,52 +86,63 @@ const LoginForm = () => {
     }
   };
 
+  const handleSignUpClick = () => {
+    setIsSignUpClicked(true);
+  };
   // 클라이언트 아이디
   const clientId: string = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
 
   return (
-    <Container>
-      <h1>LOGIN</h1>
-      <GoogleLoginDiv>
-        <GoogleOAuthProvider clientId={clientId}>
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
-            }}
-            onError={() => {
-              console.log('Login Failed');
-            }}
-          />
-        </GoogleOAuthProvider>
-      </GoogleLoginDiv>
+    <>
+      {!isSignUpClicked ? (
+        <Container>
+          <h1>LOGIN</h1>
+          <GoogleLoginDiv>
+            <GoogleOAuthProvider clientId={clientId}>
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  console.log(credentialResponse);
+                }}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />
+            </GoogleOAuthProvider>
+          </GoogleLoginDiv>
 
-      <Form onSubmit={handleSubmit}>
-        <Label htmlFor="email" isFocused={loginFormData.email !== ''}>
-          Email
-        </Label>
-        <Input
-          type="email"
-          name="email"
-          value={loginFormData.email}
-          onChange={handleInputChange}
-        />
-        <ErrorText>{errors.email && errors.email}</ErrorText>
-        <Label htmlFor="password" isFocused={loginFormData.password !== ''}>
-          Password
-        </Label>
-        <Input
-          type="password"
-          name="password"
-          value={loginFormData.password}
-          onChange={handleInputChange}
-        />
-        <ErrorText>{errors.password && errors.password}</ErrorText>
-        <LoginButton type="submit">Log In</LoginButton>
-      </Form>
-    </Container>
+          <Form onSubmit={handleSubmit}>
+            <Label htmlFor="email" isFocused={loginFormData.email !== ''}>
+              Email
+            </Label>
+            <Input
+              type="email"
+              name="email"
+              value={loginFormData.email}
+              onChange={handleInputChange}
+            />
+            <ErrorText>{errors.email && errors.email}</ErrorText>
+            <Label htmlFor="password" isFocused={loginFormData.password !== ''}>
+              Password
+            </Label>
+            <Input
+              type="password"
+              name="password"
+              value={loginFormData.password}
+              onChange={handleInputChange}
+            />
+            <ErrorText>{errors.password && errors.password}</ErrorText>
+            <LoginButton type="submit">Log In</LoginButton>
+          </Form>
+          <SignUpButton onClick={handleSignUpClick}>Sign Up</SignUpButton>
+        </Container>
+      ) : (
+        <SignOutShowDiv>
+          <SignUpForm />
+        </SignOutShowDiv>
+      )}
+    </>
   );
 };
-
 export default LoginForm;
 
 // Styled Components
@@ -200,9 +212,46 @@ const LoginButton = styled.button`
   }
 `;
 
+const SignUpButton = styled.button`
+  width: 300px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #1875ff;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #045bdf;
+  }
+`;
+
 const ErrorText = styled.p`
   color: red;
   font-size: 11px;
   margin-bottom: 10px;
   height: 12px;
+`;
+
+const slideBox = keyframes`
+  0% {
+    opacity: 0;
+    margin-top: -300px;
+  }
+  100% {
+    opacity: 1;
+    margin-top: 350px;
+  }
+`;
+const SignOutShowDiv = styled.div`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  z-index: 101;
+  width: 400px;
+  // 희창 수정
+  height: 600px; // 550px
+  //slideBox 효과를, 0.5초 동안, 부드럽게, 마지막 모습 유지
+  animation: ${slideBox} 0.5s ease-in-out forwards;
 `;
