@@ -7,6 +7,7 @@ import com.example.server.music.controller.MusicController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.exception.SdkException;
@@ -17,6 +18,7 @@ import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
 import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,4 +82,8 @@ public class AwsS3Service {
         }
     }
 
+//    // 음원 다운로드
+//    public ResponseEntity<byte[]> downloadMusic(String s3Filename) throws IOException{
+//
+//    }
 }

@@ -70,19 +70,7 @@ public class MusicController {
      * 1. s3에 저장된 url을 rds에 저장한 경우
      * 2. s3에서 url을 바로 전달하는 경우
      * */
-//    @GetMapping("/{music-id}")
-//    public ResponseEntity getMusic(@Positive @PathVariable("music-id") long musicId){ // t
-////        // jwt에 포함된 memberId로 판단
-////
-////        Music music = musicService.findMusicById(musicId);
-////        MusicDto.ResponseDto response = mapper.musicToResponseDto(music);
-////
-////        // s3에 저장된 themeId에 해당하는 음원의 url 클라이언트에게 전달
-////        return new ResponseEntity<>(
-////                new SingleResponseDto<>(response), HttpStatus.OK
-////        );
-//        return null;
-//    }
+
 
     // s3에 저장된 mp3 파일의 url 가져오기
     @GetMapping("/{music-id}")
@@ -103,9 +91,7 @@ public class MusicController {
     @GetMapping("/list")
     public ResponseEntity getMusicUrlList(@Positive @PathVariable("theme-id") long themeId){
         try{
-            logger.info("getMusicUrlList 호출됨");
             List<String> mp3List = awsS3Service.getMp3FileListUrl(themeId);
-            logger.info("getMusicUrlList 호출됨2");
             return ResponseEntity.ok(mp3List);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -114,11 +100,13 @@ public class MusicController {
     }
 
 
-    //이전 음원 조회
-
-
-    //다음 음원 조회
-
+//    // 음원 다운로드
+//    @GetMapping("{music-id}/download")
+//    public ResponseEntity<byte[]> downloadMusic(@PathVariable("theme-id") long themeId,
+//                                                @PathVariable("music-id") long musicId) {
+//        String mp3FileName = themeId + "-" + musicId + ".mp3";
+//        return awsS3Service.downloadMusic(mp3FileName);
+//    }
 
 
 }
