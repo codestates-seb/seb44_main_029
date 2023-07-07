@@ -21,6 +21,11 @@ public class MemberController {
     private final MemberService memberService;
     private final TokenService tokenService;
 
+    @PostMapping("/success")
+    public ResponseEntity success(){
+        return new ResponseEntity("ok", HttpStatus.OK);
+    }
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){
         TokenResponse token = memberService.login(dto);
