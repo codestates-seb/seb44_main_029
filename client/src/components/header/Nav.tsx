@@ -58,8 +58,16 @@ const Nav = ({
               {/* jwtToken 토큰 유무 분기 */}
               {jwtToken ? (
                 <>
-                  <NavBtnImg src={iconLogIn} isHovered={isHovered}></NavBtnImg>
-                  <NavBtnImg src={iconSignUp} isHovered={isHovered}></NavBtnImg>
+                  <NavBtnImg
+                    src={iconLogIn}
+                    isHovered={isHovered}
+                    onClick={() => handleNavBtn(iconLogIn)}
+                  ></NavBtnImg>
+                  <NavBtnImg
+                    src={iconSignUp}
+                    isHovered={isHovered}
+                    onClick={() => handleNavBtn(iconSignUp)}
+                  ></NavBtnImg>
                 </>
               ) : (
                 <NavBtnImg src={iconOut} isHovered={isHovered}></NavBtnImg>

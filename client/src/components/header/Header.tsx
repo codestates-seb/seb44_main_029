@@ -3,7 +3,7 @@ import AudioPlayer from './AudioPlayer';
 import Nav from './Nav';
 import { useState } from 'react';
 import LoginForm from '../Login/LoginForm';
-import SignUpForm from '../signup/SignUpForm';
+import SignUpForm from '../signup/SignupForm';
 
 const Header = () => {
   const [isLogInClicked, setIsLogInClicked] = useState(false);
