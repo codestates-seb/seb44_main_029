@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 interface SignUpFormData {
-  name: string;
+  username: string;
   email: string;
   password: string;
   passwordCheck: string;
@@ -11,7 +11,7 @@ interface SignUpFormData {
 
 const SignUpForm = () => {
   const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>({
-    name: '',
+    username: '',
     email: '',
     password: '',
     passwordCheck: '',
@@ -35,8 +35,8 @@ const SignUpForm = () => {
     // 검증 과정에서 발생한 오류를 저장하기 위해 빈 errors 객체를 초기화
     const errors: { [key: string]: string } = {};
 
-    if (!signUpFormData.name) {
-      errors.name = '이름을 입력해주세요.';
+    if (!signUpFormData.username) {
+      errors.username = '이름을 입력해주세요.';
     }
 
     // 이메일 검증
@@ -81,7 +81,7 @@ const SignUpForm = () => {
       if (res.status === 200) {
         alert('SignUp success!');
         setSignUpFormData({
-          name: '',
+          username: '',
           email: '',
           password: '',
           passwordCheck: '',
@@ -100,16 +100,16 @@ const SignUpForm = () => {
     <Container>
       <h1>SIGNUP</h1>
       <Form onSubmit={handleSubmit}>
-        <Label htmlFor="name" isFocused={signUpFormData.name !== ''}>
-          Name
+        <Label htmlFor="username" isFocused={signUpFormData.username !== ''}>
+          Username
         </Label>
         <Input
-          type="name"
-          name="name"
-          value={signUpFormData.name}
+          type="username"
+          name="username"
+          value={signUpFormData.username}
           onChange={handleInputChange}
         />
-        {errors.name && <ErrorText>{errors.name}</ErrorText>}
+        {errors.username && <ErrorText>{errors.username}</ErrorText>}
         <Label htmlFor="email" isFocused={signUpFormData.email !== ''}>
           Email
         </Label>
@@ -134,7 +134,7 @@ const SignUpForm = () => {
           htmlFor="password"
           isFocused={signUpFormData.passwordCheck !== ''}
         >
-          PasswordCheck
+          Passwordcheck
         </Label>
         <Input
           type="password"
