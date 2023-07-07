@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
-import SignUpForm from '../signup/SignUpForm';
+import SignUpForm from '../signup/SignupForm';
 interface LoginFormData {
   email: string;
   password: string;
