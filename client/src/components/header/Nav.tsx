@@ -7,6 +7,7 @@ import iconThemeList from '../../assets/icon/icon_themeList.png';
 import iconMenu from '../../assets/icon/icon_menu.png';
 import iconLogIn from '../../assets/icon/icon_log.png';
 import iconSignUp from '../../assets/icon/icon_Sign.png';
+import iconOut from '../../assets/icon/icon_out.png';
 
 // Nav 컴포넌트
 const Nav = ({
@@ -18,8 +19,11 @@ const Nav = ({
 }) => {
   // 호버 여부 상태 관리
   const [isHovered, setIsHovered] = useState(false);
-  const icons = [iconHome, iconUser, iconThemeList, iconLogIn, iconSignUp];
+  const icons = [iconHome, iconUser, iconThemeList];
   const navigate = useNavigate();
+
+  //임시 jwt토큰 유무 판단용
+  const jwtToken = true;
 
   // 호버 이벤트 핸들러
   const handleHover = () => {
@@ -32,7 +36,6 @@ const Nav = ({
     else if (icon === iconThemeList) navigate('/theme');
     else if (icon === iconLogIn) setIsLogInClicked(true);
     else if (icon === iconSignUp) setIsSignUpClicked(true);
-    //로그인, 회원가입은 추후에~
   };
   return (
     <>
@@ -42,6 +45,7 @@ const Nav = ({
           onMouseLeave={handleHover}
           isHovered={isHovered}
         >
+          {/* 마우스 호버시 나타나는 메뉴바 */}
           {isHovered ? (
             <>
               {icons.map((icon) => (
@@ -51,6 +55,15 @@ const Nav = ({
                   onClick={() => handleNavBtn(icon)}
                 />
               ))}
+              {/* jwtToken 토큰 유무 분기 */}
+              {jwtToken ? (
+                <>
+                  <NavBtnImg src={iconLogIn} isHovered={isHovered}></NavBtnImg>
+                  <NavBtnImg src={iconSignUp} isHovered={isHovered}></NavBtnImg>
+                </>
+              ) : (
+                <NavBtnImg src={iconOut} isHovered={isHovered}></NavBtnImg>
+              )}
             </>
           ) : (
             <NavBtnImg src={iconMenu} isHovered={isHovered}></NavBtnImg>
@@ -80,10 +93,6 @@ const NavBtnDiv = styled.div<{ isHovered: boolean }>`
   transition: transform 0.5s, box-shadow 2s, height 0.5s;
   //transform관련
   height: ${({ isHovered }) => (isHovered ? '350px' : '50px')};
-  //사용 임시 중단 ---------------------------------------------
-  transform: ${({ isHovered }) =>
-    isHovered ? 'translateY(0px) scale(1)' : 'none'};
-  //--------------------------------------------------------
 `;
 
 const NavBtnImg = styled.img<{ isHovered: boolean }>`
