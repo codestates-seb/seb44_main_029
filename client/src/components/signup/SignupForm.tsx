@@ -54,6 +54,13 @@ const SignUpForm = () => {
       errors.password =
         '비밀번호는 8-20자 이내이어야 하며, 최소한 하나의 문자, 하나의 숫자, 하나의 특수문자를 포함해야 합니다.';
     }
+
+    if (!signUpFormData.passwordCheck) {
+      errors.passwordCheck = '비밀번호를 한번 더 입력해주세요.';
+    } else if (signUpFormData.password !== signUpFormData.passwordCheck) {
+      errors.passwordCheck = '비밀번호가 일치하지 않습니다.';
+    }
+
     setErrors(errors);
 
     // 검증 오류가 없을 경우 true 반환
@@ -123,6 +130,19 @@ const SignUpForm = () => {
           onChange={handleInputChange}
         />
         {errors.password && <ErrorText>{errors.password}</ErrorText>}
+        <Label
+          htmlFor="password"
+          isFocused={signUpFormData.passwordCheck !== ''}
+        >
+          PasswordCheck
+        </Label>
+        <Input
+          type="password"
+          name="passwordCheck"
+          value={signUpFormData.passwordCheck}
+          onChange={handleInputChange}
+        />
+        {errors.passwordCheck && <ErrorText>{errors.passwordCheck}</ErrorText>}
         <SignUpButton type="submit">Sign Up</SignUpButton>
       </Form>
     </Container>
