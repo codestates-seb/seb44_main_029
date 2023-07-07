@@ -3,16 +3,14 @@ import AudioPlayer from './AudioPlayer';
 import Nav from './Nav';
 import { useState } from 'react';
 import LoginForm from '../Login/LoginForm';
-import { useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [isLogInClicked, setIsLogInClicked] = useState(false);
   const [isSignUpClicked, setIsSignUpClicked] = useState(false);
-  const location = useLocation();
-  const currentPath = location.pathname;
+
   return (
     <Container>
-      {currentPath.includes('/theme/') && <AudioPlayer />}
+      <AudioPlayer />
       {isLogInClicked ? (
         <ModalOverlayDiv onClick={() => setIsLogInClicked(false)} />
       ) : isSignUpClicked ? (

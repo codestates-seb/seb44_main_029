@@ -1,11 +1,13 @@
 import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import iconPlay from '../../assets/icon/iconPlay.png';
 import iconPrev from '../../assets/icon/iconPrev.png';
 import iconNext from '../../assets/icon/iconNext.png';
 import iconPause from '../../assets/icon/iconPause.png';
 import styled from 'styled-components';
 import fetchMusicList from '../../api/fetchMusicList';
+import iconMusic from '../../assets/icon/icon_music.png';
 
 //오디오 플레이어
 const AudioPlayer = () => {
@@ -21,6 +23,9 @@ const AudioPlayer = () => {
   const [ThemeMusics, setThemeMusics] = useState(soundSource);
   const [nowThemeId, setNowThemeId] = useState(0);
   const [autoPlay, setAutoPlay] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   //나중에 전역변수로 현재 테마ID를 받아서 실행하는 API
   useEffect(() => {
@@ -92,19 +97,34 @@ const AudioPlayer = () => {
 
   return (
     <Container>
-      <AudioBtnImg
-        onClick={handleTogglePlay}
-        src={isPlaying ? iconPause : iconPlay}
-      />
-      <AudioBtnImg src={iconPrev} onClick={() => handleChangeMusic(iconPrev)} />
-      <AudioBtnImg src={iconNext} onClick={() => handleChangeMusic(iconNext)} />
-      {volumes.map((volume) => (
-        <VolumeChangeBtnDiv
-          key={volume}
-          onClick={() => handleChangeVolume(volume)}
-          active={volume <= currentVolume}
-        />
-      ))}
+      {currentPath.includes('theme/') ? (
+        <>
+          <AudioBtnImg
+            onClick={handleTogglePlay}
+            src={isPlaying ? iconPause : iconPlay}
+          />
+          <AudioBtnImg
+            src={iconPrev}
+            onClick={() => handleChangeMusic(iconPrev)}
+          />
+          <AudioBtnImg
+            src={iconNext}
+            onClick={() => handleChangeMusic(iconNext)}
+          />
+          {volumes.map((volume) => (
+            <VolumeChangeBtnDiv
+              key={volume}
+              onClick={() => handleChangeVolume(volume)}
+              active={volume <= currentVolume}
+            />
+          ))}
+        </>
+      ) : (
+        <AudioBtnImg
+          src={iconMusic}
+          onClick={() => navigate('/theme')}
+        ></AudioBtnImg>
+      )}
     </Container>
   );
 };
