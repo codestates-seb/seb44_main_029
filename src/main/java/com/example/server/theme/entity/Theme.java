@@ -20,6 +20,7 @@ public class Theme {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long themeId;
 
+    @Column
     private String title;
 
     @OneToMany(mappedBy = "theme")
