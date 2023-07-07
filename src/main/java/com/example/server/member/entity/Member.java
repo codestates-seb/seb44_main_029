@@ -47,6 +47,12 @@ public class Member implements UserDetails {
         }
     }
 
+    public Member update(String name){
+        this.username = name;
+
+        return this;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authList = new ArrayList<>();

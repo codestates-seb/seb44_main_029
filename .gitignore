@@ -167,5 +167,6 @@ $RECYCLE.BIN/
 *.lnk
 
 src/main/resources/application-jwt.yml
+src/main/resources/application-oauth.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,intellij,java

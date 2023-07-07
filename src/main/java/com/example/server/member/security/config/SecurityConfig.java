@@ -1,7 +1,9 @@
 package com.example.server.member.security.config;
 
+import com.example.server.member.security.handler.CustomOAuth2SuccessHandler;
 import com.example.server.member.security.handler.JwtAccessDeniedHandler;
 import com.example.server.member.security.handler.JwtAuthenticationEntryPoint;
+import com.example.server.member.security.oauth.CustomOauth2UserService;
 import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.security.util.CustomAuthenticationProvider;
 import com.example.server.member.security.util.CustomUserDetailService;
@@ -37,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final RedisTemplate<String, Object> redisTemplate;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final CustomOauth2UserService customOauth2UserService;
+    private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -92,6 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionFixation().none()
 
                 .and()
                 .formLogin().disable()
@@ -102,10 +107,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/members/**").permitAll()
                 .antMatchers("/members/login").permitAll()
 
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider, redisTemplate));
+                .apply(new JwtSecurityConfig(tokenProvider, redisTemplate))
+
+                .and()
+                .oauth2Login()
+//                .defaultSuccessUrl("/members/success")
+                .successHandler(customOAuth2SuccessHandler)
+                .userInfoEndpoint()
+                .userService(customOauth2UserService);
     }
 }
 
