@@ -1,10 +1,21 @@
 import styled from 'styled-components';
-
+import Card from './Card';
 const LikeList = () => {
   return (
     <Container>
       <Title>🍔 Like List</Title>
-      <List></List>
+      <List>
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+      </List>
     </Container>
   );
 };
@@ -36,4 +47,9 @@ const List = styled.div`
   height: 400px;
   background-color: rgba(0, 0, 0, 0.3);
   margin-top: 9px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 `;
