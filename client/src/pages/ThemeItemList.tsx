@@ -97,7 +97,7 @@ const ItemGridDiv = styled.div`
 
   // 모바일 디바이스
   @media screen and (min-width: 576px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   // PC 및 큰 디바이스
