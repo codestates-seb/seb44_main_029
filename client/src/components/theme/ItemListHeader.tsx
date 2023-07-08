@@ -1,18 +1,35 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 
-const ThemeContent = () => {
+interface LikeButtonProps {
+  isActive: boolean;
+}
+
+const ItemListHeader = () => {
+  const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false);
+
+  const handleLikeButtonClick = (): void => {
+    setShowLikedOnly(!showLikedOnly);
+  };
+
   return (
     <Container>
       <ListFilterDiv>
         <h3 className="item-list-title">Item List</h3>
-        <button type="button">좋아요 ❤️</button>
+        <LikeFilterButton
+          type="button"
+          isActive={showLikedOnly}
+          onClick={handleLikeButtonClick}
+        >
+          Like <br />
+          {showLikedOnly ? '❤️' : '🤍'}
+        </LikeFilterButton>
       </ListFilterDiv>
     </Container>
   );
 };
 
-export default ThemeContent;
+export default ItemListHeader;
 
 const Container = styled.div`
   width: 100%;
@@ -30,20 +47,34 @@ const ListFilterDiv = styled.div`
     margin: 1rem 3rem;
     color: rgba(255, 255, 255, 1);
   }
+`;
 
-  > button {
-    width: 3.7rem;
-    height: 1.5rem;
-    margin-right: 3rem;
-    transition: 0.3s;
-    border: 2px solid rgba(255, 255, 255, 1);
-    border-radius: 0.4rem;
-    background-color: transparent;
-    color: rgba(255, 255, 255, 1);
-    font-size: 0.6rem;
+const LikeFilterButton = styled.button<LikeButtonProps>`
+  width: 3rem;
+  height: 1.5rem;
+  margin-right: 3rem;
+  transition: 0.3s;
+  border-radius: 0.4rem;
+  background-color: transparent;
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  line-height: 14.5px;
+  font-weight: bold;
 
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
   }
+
+  ${(props) =>
+    props.isActive
+      ? css`
+          border: 2px solid rgba(255, 0, 0, 1);
+          box-shadow: 0 0 0.2rem 0.1rem rgba(255, 0, 0, 1);
+          color: rgba(255, 0, 0, 1);
+        `
+      : css`
+          border: 2px solid rgba(255, 255, 255, 1);
+          box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 1);
+          color: rgba(255, 255, 255, 1);
+        `}
 `;
