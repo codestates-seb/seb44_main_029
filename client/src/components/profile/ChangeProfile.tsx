@@ -23,6 +23,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3);
+  margin-bottom: 15px;
 `;
 const IconImg = styled.img`
   width: 120px;
