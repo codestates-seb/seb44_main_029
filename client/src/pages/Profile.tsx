@@ -5,9 +5,9 @@ import ChangeProfile from '../components/profile/ChangeProfile';
 const Profile = () => {
   return (
     <Layout>
-      <Container>
+      <ContentContainer>
         <ChangeProfile />
-      </Container>
+      </ContentContainer>
     </Layout>
   );
 };
@@ -38,12 +38,19 @@ const Layout = styled.div`
     background-size: cover;
     filter: blur(5px);
     z-index: -1;
-    transform: scale(1.02);
   }
 `;
 
-const Container = styled.div`
-  width: 924px;
-  height: 800px;
+const ContentContainer = styled.div`
+  max-width: 924px;
+  width: 100%;
+  max-height: 800px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 0.7);
+  border-radius: 0.5rem;
   background-color: rgba(0, 0, 0, 0.3);
 `;
