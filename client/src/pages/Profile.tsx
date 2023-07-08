@@ -1,12 +1,14 @@
 import styled from 'styled-components';
 import backgroundImg from '../assets/images/profile_background.png';
 import ChangeProfile from '../components/profile/ChangeProfile';
+import LikeList from '../components/profile/LikeList';
 
 const Profile = () => {
   return (
     <Layout>
       <ContentContainer>
         <ChangeProfile />
+        <LikeList />
       </ContentContainer>
     </Layout>
   );
