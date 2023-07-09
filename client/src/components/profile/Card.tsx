@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-
+import { Link } from 'react-router-dom';
 interface CardProps {
   image: string;
   themeName: string;
@@ -14,7 +14,9 @@ const Card: React.FC<CardProps> = ({ image, themeName, videoName }) => {
   };
   return (
     <Container>
-      <Img src={image} />
+      <ImgLink to={`/theme/:themeId/:imageId`}>
+        <img src={image} />
+      </ImgLink>
       <ThemeTitle>{themeName}</ThemeTitle>
       <VideoIconDiv>
         <VideoTitle>{videoName}</VideoTitle>
@@ -35,11 +37,14 @@ const Container = styled.div`
   margin: 10px;
 `;
 
-const Img = styled.img`
-  border-radius: 30px;
-  width: 100%;
-  max-height: 100px;
-  height: 100%;
+const ImgLink = styled(Link)`
+  cursor: pointer;
+  > img {
+    border-radius: 30px;
+    width: 100%;
+    max-height: 100px;
+    height: 100%;
+  }
 `;
 
 const ThemeTitle = styled.div`
