@@ -76,13 +76,16 @@ const SignUpForm = () => {
     }
 
     try {
-      const res = await axios.post('/signup', {
-        username: signUpFormData.username,
-        email: signUpFormData.email,
-        password: signUpFormData.password,
-      });
+      const res = await axios.post(
+        'https://36db-175-208-216-56.ngrok-free.app/members',
+        {
+          username: signUpFormData.username,
+          email: signUpFormData.email,
+          password: signUpFormData.password,
+        }
+      );
 
-      if (res.status === 200) {
+      if (res.status === 202) {
         alert('SignUp success!');
         setSignUpFormData({
           username: '',
