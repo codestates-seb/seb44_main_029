@@ -63,11 +63,17 @@ const LoginForm = () => {
     }
 
     try {
-      const res = await axios.post('/login', loginFormData);
+      const res = await axios.post(
+        'https://36db-175-208-216-56.ngrok-free.app/members/login',
+        {
+          email: loginFormData.email,
+          password: loginFormData.password,
+        }
+      );
 
       if (res.status === 200) {
-        const accessToken = res.headers['Authorization'];
-        const refreshToken = res.headers['Refresh'];
+        const accessToken = res.headers['accessToken'];
+        const refreshToken = res.headers['refreshToken'];
         // localStorage에 액세스토큰, 리프레쉬토큰 저장
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
