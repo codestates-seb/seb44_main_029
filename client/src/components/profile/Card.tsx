@@ -1,18 +1,23 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import Image from '../../assets/images/mainPage_background.jpg';
 
-const Card = () => {
+interface CardProps {
+  image: string;
+  themeName: string;
+  videoName: string;
+}
+
+const Card: React.FC<CardProps> = ({ image, themeName, videoName }) => {
   const [isLiked, setIsLiked] = useState(false);
   const handleHeartIconClick = () => {
     setIsLiked(!isLiked);
   };
   return (
     <Container>
-      <Img src={Image} />
-      <ThemeTitle>테마이름</ThemeTitle>
+      <Img src={image} />
+      <ThemeTitle>{themeName}</ThemeTitle>
       <VideoIconDiv>
-        <VideoTitle>영상이름</VideoTitle>
+        <VideoTitle>{videoName}</VideoTitle>
         <HeartIcon onClick={handleHeartIconClick}>
           <HeartEmoji>{isLiked ? '❤️' : '🤍'}</HeartEmoji>
         </HeartIcon>
