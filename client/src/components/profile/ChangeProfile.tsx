@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import IconUser from '../../assets/icon/icon_carbon_user-avatar.png';
-
+import { useNavigate } from 'react-router-dom';
 const ChangeProfile = () => {
+  const navigate = useNavigate();
+  const handleButton = () => {
+    navigate('/profile/edit');
+  };
   return (
     <Container>
       <IconImg src={IconUser} />
@@ -9,7 +13,7 @@ const ChangeProfile = () => {
         <UsernameDiv>User Name</UsernameDiv>
         <EmailDiv>Email</EmailDiv>
       </div>
-      <Button>회원 정보 변경</Button>
+      <Button onClick={handleButton}>회원 정보 변경</Button>
     </Container>
   );
 };

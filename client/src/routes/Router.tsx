@@ -5,6 +5,7 @@ import NotFound from '../error/NotFound';
 import ThemeImgList from '../pages/ThemeImgList';
 import ThemeList from '../pages/ThemeList';
 import Profile from '../pages/Profile';
+import ProfileEdit from '../pages/ProfileEdit';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Profile />,
+      },
+      {
+        path: '/profile/edit',
+        element: <ProfileEdit />,
       },
     ],
   },
