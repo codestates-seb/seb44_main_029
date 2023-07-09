@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 interface ThemeCarouselProps {
   imgList: string[];
@@ -26,37 +26,38 @@ const ThemeCarousel = ({
 
   return (
     <Container>
-      <CenteredContainer>
-        <PreviousThemeImg
-          onClick={handlePreviousTheme}
-          src={themes[(currentThemeIndex - 1 + themes.length) % themes.length]}
-        />
-        <CurrentThemeImg src={themes[currentThemeIndex]} />
-        <NextThemeImg
-          onClick={handleNextTheme}
-          src={themes[(currentThemeIndex + 1) % themes.length]}
-        />
-      </CenteredContainer>
+      <PreviousThemeImg
+        onClick={handlePreviousTheme}
+        src={themes[(currentThemeIndex - 1 + themes.length) % themes.length]}
+      />
+      <CurrentThemeImg src={themes[currentThemeIndex]} />
+      <NextThemeImg
+        onClick={handleNextTheme}
+        src={themes[(currentThemeIndex + 1) % themes.length]}
+      />
     </Container>
   );
 };
 
 export default ThemeCarousel;
 
-const Container = styled.section`
-  height: 40vh;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
+const zoomAnimation = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1);
+  }
 `;
-
-const CenteredContainer = styled.div`
-  width: 70vw;
-  height: 100%;
+const Container = styled.section`
+  width: 100vw;
+  height: 40vh;
   display: flex;
-  justify-content: center;
-  border-radius: 20px;
-  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+  justify-content: space-between;
+  cursor: pointer;
 `;
 
 const PreviousThemeImg = styled.img`
@@ -65,20 +66,34 @@ const PreviousThemeImg = styled.img`
   object-fit: cover;
   border-radius: 0 20px 20px 0;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const CurrentThemeImg = styled.img`
-  width: 100%;
+  width: 70vw;
   height: auto;
   object-fit: cover;
-  margin: 0 10vw;
+  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
+  animation: ${zoomAnimation} 4s ease-in-out infinite;
 `;
-
 const NextThemeImg = styled.img`
   width: 10vw;
   height: auto;
   object-fit: cover;
   border-radius: 20px 0 0 20px;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
+  opacity: 0.7;
+  transition: opacity 0.3s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
