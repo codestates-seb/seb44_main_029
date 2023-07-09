@@ -33,13 +33,13 @@ public class MemberController {
         response.setHeader("Refresh-Token", token.getRefreshToken());
         response.setHeader("Access-Token", token.getAccessToken());
 
-        return new ResponseEntity(token, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
-        String accessToken = request.getHeader("accessToken");
-        String refreshToken = request.getHeader("requestToken");
+        String accessToken = request.getHeader("Access-Token");
+        String refreshToken = request.getHeader("Refresh-Token");
 
         TokenResponse tokenResponse = TokenResponse.builder()
                 .accessToken(accessToken)
@@ -50,7 +50,7 @@ public class MemberController {
 
         SecurityContextHolder.clearContext();
 
-        return new ResponseEntity(true, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("")

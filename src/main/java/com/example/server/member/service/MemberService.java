@@ -72,7 +72,7 @@ public class MemberService {
             return memberId;
         }else if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
             log.info("Username 중복");
-            return memberId;
+            return memberId - 1;
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
