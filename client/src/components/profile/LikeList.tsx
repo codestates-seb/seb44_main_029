@@ -10,7 +10,7 @@ interface LikeListProps {
   }[]; // Replace 'any' with the actual type of your card data
 }
 
-const LikeList: React.FC<LikeListProps> = ({ cards }) => {
+const LikeList = ({ cards }: LikeListProps) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 

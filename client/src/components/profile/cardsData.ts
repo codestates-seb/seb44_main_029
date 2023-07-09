@@ -1,5 +1,5 @@
 import Image from '../../assets/images/mainPage_background.jpg';
-import Image2 from '../../assets/icon/icon_themeList.png';
+
 export const cardsData = [
   {
     image: Image,
@@ -118,102 +118,120 @@ export const cardsData = [
     videoName: 'Video 20',
   },
   {
-    image: Image,
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQQ2xF3zLM6RljPxnAKw8LzU4HclqG1nFuag&usqp=CAU',
     themeName: 'Theme 21',
     videoName: 'Video 21',
   },
   {
-    image: Image,
+    image:
+      'https://www.digitalbizon.com/news/photo/202208/2330684_7946_828.jpg',
     themeName: 'Theme 22',
     videoName: 'Video 22',
   },
   {
-    image: Image,
+    image:
+      'https://www.busan.go.kr/comm/getImage?srvcId=MEDIA&upperNo=413&fileTy=MEDIA&fileNo=1',
     themeName: 'Theme 23',
     videoName: 'Video 23',
   },
   {
-    image: Image,
+    image:
+      'https://png.pngtree.com/background/20230525/original/pngtree-futuristic-futuristic-corridor-picture-image_2728110.jpg',
     themeName: 'Theme 24',
     videoName: 'Video 24',
   },
   {
-    image: Image,
+    image: 'https://www.cvinfo.com/news/photo/201607/4948_7648_566.jpg',
     themeName: 'Theme 25',
     videoName: 'Video 25',
   },
   {
-    image: Image,
+    image:
+      'https://fahrenheitmagazine.b-cdn.net/sites/default/files/styles/xl/public/field/image/b-compressed_0.jpg',
     themeName: 'Theme 26',
     videoName: 'Video 26',
   },
   {
-    image: Image,
+    image:
+      'https://static3.depositphotos.com/1003362/257/i/600/depositphotos_2571973-stock-photo-futuristic-modern-interior-3d-rendering.jpg',
     themeName: 'Theme 27',
     videoName: 'Video 27',
   },
   {
-    image: Image2,
+    image:
+      'https://st4.depositphotos.com/2024565/19672/i/600/depositphotos_196726312-stock-photo-3d-render-modern-interior-scifi.jpg',
     themeName: 'Theme 28',
     videoName: 'Video 28',
   },
   {
-    image: Image2,
+    image:
+      'https://png.pngtree.com/background/20230520/original/pngtree-futuristic-and-futuristic-inside-corridor-picture-image_2670993.jpg',
     themeName: 'Theme 29',
     videoName: 'Video 29',
   },
   {
-    image: Image2,
+    image:
+      'https://s3.ap-northeast-2.amazonaws.com/img.kormedi.com/news/culture/it/__icsFiles/artimage/2015/04/15/c_km60701/650888_540.jpg',
     themeName: 'Theme 30',
     videoName: 'Video 30',
   },
   {
-    image: Image,
+    image: 'https://www.sputnik.kr/article_img/202209/article_1663389795.jpg',
     themeName: 'Theme 31',
     videoName: 'Video 31',
   },
   {
-    image: Image,
+    image:
+      'https://image.kmib.co.kr/online_image/2022/1126/2022112517450317532_1669365903_0924274374.jpg',
     themeName: 'Theme 32',
     videoName: 'Video 32',
   },
   {
-    image: Image,
+    image:
+      'https://cdn.crowdpic.net/detail-thumb/thumb_d_2F583E5543F7E19139C6FCFFBF9607A6.jpg',
     themeName: 'Theme 33',
     videoName: 'Video 33',
   },
   {
-    image: Image,
+    image:
+      'https://cdn.crowdpic.net/detail-thumb/thumb_d_4421D7C33DA65D26FE9C6072C11CC288.jpg',
     themeName: 'Theme 34',
     videoName: 'Video 34',
   },
   {
-    image: Image,
+    image:
+      'https://cdn.pixabay.com/photo/2017/12/26/07/36/nature-3039901_1280.jpg',
     themeName: 'Theme 35',
     videoName: 'Video 35',
   },
   {
-    image: Image,
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4qc1JeX79FmJlghUsdevgcULUPh1MeaXEqzQNQtppw6bLhu9sxWVi8is8JH_tC3XVvJ8&usqp=CAU',
     themeName: 'Theme 36',
     videoName: 'Video 36',
   },
   {
-    image: Image,
+    image:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy23EVzGd3KW6e5a7PHABfTZHUlvs0oKvziOFfIQxEcVm8s1dARoBZUG4m6h2A2WBbE3o&usqp=CAU',
     themeName: 'Theme 37',
     videoName: 'Video 37',
   },
   {
-    image: Image2,
+    image:
+      'https://media.istockphoto.com/id/517188688/ko/%EC%82%AC%EC%A7%84/%EC%82%B0-%ED%92%8D%EA%B2%BD.jpg?s=612x612&w=0&k=20&c=8o6qYjT0DMmAjvqWcWhwUmTEmsOZq5I0l2zGJ5jTMjA=',
     themeName: 'Theme 38',
     videoName: 'Video 38',
   },
   {
-    image: Image2,
+    image:
+      'https://www.jeongseon.go.kr/upload/contentsmanage/AT_20210309_35.jpg',
     themeName: 'Theme 39',
     videoName: 'Video 39',
   },
   {
-    image: Image2,
+    image:
+      'https://www.idaegu.co.kr/news/photo/202102/2021020801000223700014051.jpg',
     themeName: 'Theme 40',
     videoName: 'Video 40',
   },
