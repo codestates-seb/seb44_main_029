@@ -50,4 +50,5 @@ const Button = styled.button`
   margin-right: 20px;
   font-weight: bold;
   font-size: 16px;
+  cursor: pointer;
 `;

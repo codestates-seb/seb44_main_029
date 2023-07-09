@@ -2,13 +2,14 @@ import styled from 'styled-components';
 import backgroundImg from '../assets/images/profile_background.png';
 import ChangeProfile from '../components/profile/ChangeProfile';
 import LikeList from '../components/profile/LikeList';
+import { cardsData } from '../components/profile/cardsData';
 
 const Profile = () => {
   return (
     <Layout>
       <ContentContainer>
         <ChangeProfile />
-        <LikeList />
+        <LikeList cards={cardsData} />
       </ContentContainer>
     </Layout>
   );
