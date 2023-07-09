@@ -7,8 +7,8 @@ interface CardProps {
   videoName: string;
 }
 
-const Card: React.FC<CardProps> = ({ image, themeName, videoName }) => {
-  const [isLiked, setIsLiked] = useState(false);
+const Card = ({ image, themeName, videoName }: CardProps) => {
+  const [isLiked, setIsLiked] = useState(true);
   const handleHeartIconClick = () => {
     setIsLiked(!isLiked);
   };
