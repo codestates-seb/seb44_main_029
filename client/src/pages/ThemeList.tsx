@@ -20,7 +20,13 @@ const ThemeList = () => {
         currentThemeIndex={currentThemeIndex}
         setCurrentThemeIndex={setCurrentThemeIndex}
       />
-      <TextContainer />
+      <TextContainer>
+        <h1>테마 제목 입니다.</h1>
+        <p>
+          심신의 안정을 가져다 주는 코지스테이츠의 테마가 머시지 저시기 궁시렁
+          궁시렁....
+        </p>
+      </TextContainer>
     </Layout>
   );
 };
@@ -51,7 +57,13 @@ const BlurredBackground = styled.div<{ imageUrl: string }>`
 `;
 
 const TextContainer = styled.section`
-  width: 60vw;
+  width: 70vw;
   height: 20vh;
-  border: 1px solid;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > h1 {
+    font-size: 200%;
+  }
 `;
