@@ -35,7 +35,7 @@ const ThemeCarousel = ({
       <CurrentThemeImg
         src={imgList[currentThemeIndex]}
         onClick={() => {
-          navigate(`/theme/${currentThemeIndex}`);
+          navigate(`/theme/${currentThemeIndex + 1}`);
         }}
       />
       <NextThemeImg

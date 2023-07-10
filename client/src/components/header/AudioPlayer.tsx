@@ -1,6 +1,6 @@
 import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import iconPlay from '../../assets/icon/iconPlay.png';
 import iconPrev from '../../assets/icon/iconPrev.png';
 import iconNext from '../../assets/icon/iconNext.png';
@@ -12,64 +12,67 @@ import axios from 'axios';
 
 //오디오 플레이어
 const AudioPlayer = () => {
-  const soundSource = [
-    'https://cozystates-bucket-01.s3.ap-northeast-2.amazonaws.com/1-1.mp3',
-    'https://cozystates-bucket-01.s3.ap-northeast-2.amazonaws.com/1-2.mp3',
-    'https://cozystates-bucket-01.s3.ap-northeast-2.amazonaws.com/1-3.mp3',
-  ];
-  const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
-  const [isPlaying, setIsPlaying] = useState(false);
   const [sound, setSound] = useState<Howl | null>(null);
+  const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
-  const [ThemeMusics, setThemeMusics] = useState(soundSource);
-  const [nowMusicId, setNowMusicId] = useState(0);
-  const [autoPlay, setAutoPlay] = useState(false);
+  const [ThemeMusics, setThemeMusics] = useState([]);
+  const [nowMusicId, setNowMusicId] = useState<number>(-1);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const { themeId } = useParams();
   const navigate = useNavigate();
   const currentPath = useLocation().pathname;
 
+  // path가 변경될 떄마다.
   useEffect(() => {
-    // const fetchData = async (): Promise<void> => {
-    //   try {
-    //     const response = await API.GET('theme/1/music/list', {
-    // headers: {
-    //   'Content-Type': 'application/json',
-    //   'ngrok-skip-browser-warning': '69420',
-    // },
-    //     });
-    //     // 응답 데이터 처리
-    //     console.log(response?.data);
-    //   } catch (error) {
-    //     console.error('API 호출 에러:', error);
-    //   }
-    // };
-    // fetchData();
-
-    axios
-      .get('https://076f-175-208-216-56.ngrok-free.app/theme/2/music/list', {
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
-        },
-      })
-      .then((res) => {
-        setThemeMusics(res.data);
-        console.log(ThemeMusics);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  //play() 메소드 실행마다 인스턴스 생성을 방지 하기위한 useEffect 로직
-  useEffect(() => {
-    if (isPlaying) {
-      setAutoPlay(true);
-    } else {
-      setAutoPlay(false);
+    // path가 theme이후에 themeId가 1~5 라면?
+    if (/\/theme\/[1-5]$/.test(currentPath)) {
+      // const fetchData = async (): Promise<void> => {
+      //   try {
+      //     const response = await API.GET('theme/1/music/list', {
+      // headers: {
+      //   'Content-Type': 'application/json',
+      //   'ngrok-skip-browser-warning': '69420',
+      // },
+      //     });
+      //     // 응답 데이터 처리
+      //     console.log(response?.data);
+      //   } catch (error) {
+      //     console.error('API 호출 에러:', error);
+      //   }
+      // };
+      // fetchData();
+      axios
+        .get(
+          `https://076f-175-208-216-56.ngrok-free.app/theme/${themeId}/music/list`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
+            },
+          }
+        )
+        // 응답 성공시 노래설정 & 현재 노래ID 0번대로 초기화
+        .then((res) => {
+          setThemeMusics(res.data);
+          setNowMusicId(0);
+        })
+        .catch((error) => console.log(error));
+      // path에 /theme가 포함 안되어 있으면 MusicId -1로 셋팅 (받아들일 자세)
+    } else if (!currentPath.includes('/theme/')) {
+      setNowMusicId(-1);
+      // path에 /theme가 포함 안되어 있는데 노래가 나오는 경우
+      if (isPlaying) handleTogglePlay();
     }
+    console.log(currentPath);
+  }, [currentPath]);
+
+  //현재 노래ID 변경시 새로운 인스턴스 생성 & 중복생성을 방지 하기위한 useEffect 로직
+  useEffect(() => {
     const soundInstance = new Howl({
       src: [ThemeMusics[nowMusicId]],
       loop: true,
       format: ['mp3'],
-      autoplay: autoPlay,
+      autoplay: isPlaying,
     });
     setSound(soundInstance);
     return () => {
@@ -84,11 +87,9 @@ const AudioPlayer = () => {
       if (isPlaying) {
         sound.pause();
         setIsPlaying(false);
-        setAutoPlay(false);
       } else {
         sound.play();
         setIsPlaying(true);
-        setAutoPlay(true);
       }
     }
   };
@@ -158,7 +159,6 @@ const Container = styled.div`
   z-index: 99;
   background-color: rgba(0, 0, 0, 0.15);
 `;
-
 //오디오 조작버튼
 const AudioBtnImg = styled.img`
   width: 20px;
@@ -180,7 +180,6 @@ const AudioBtnImg = styled.img`
     background-color: #bbddff;
   }
 `;
-
 //오디오 음량조절버튼
 const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
   height: 30%;
