@@ -6,7 +6,6 @@ import iconPrev from '../../assets/icon/iconPrev.png';
 import iconNext from '../../assets/icon/iconNext.png';
 import iconPause from '../../assets/icon/iconPause.png';
 import styled from 'styled-components';
-import fetchMusicList from '../../api/fetchMusicList';
 import iconMusic from '../../assets/icon/icon_music.png';
 
 //오디오 플레이어
@@ -26,21 +25,6 @@ const AudioPlayer = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
-
-  //나중에 전역변수로 현재 테마ID를 받아서 실행하는 API
-  useEffect(() => {
-    const numberParam = 1; // 파라미터로 전달할 숫자 값
-    fetchMusicList(numberParam)
-      .then((data) => {
-        console.log('데이터를 성공적으로 받아왔습니다:', data);
-        // 받아온 데이터를 처리하는 코드 작성
-        //setThemeMusics() 추후 처리
-      })
-      .catch((error) => {
-        console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
-        // 오류 처리 코드 작성
-      });
-  });
 
   //play() 메소드 실행마다 인스턴스 생성을 방지 하기위한 useEffect 로직
   useEffect(() => {

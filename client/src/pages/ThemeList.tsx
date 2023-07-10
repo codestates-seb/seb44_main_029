@@ -62,6 +62,7 @@ const Layout = styled.div`
   justify-content: center;
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
 `;
 
 const BlurredBackground = styled.div<{ imageUrl: string }>`
@@ -75,6 +76,7 @@ const BlurredBackground = styled.div<{ imageUrl: string }>`
   background-repeat: no-repeat;
   filter: blur(5px);
   z-index: -1;
+  transform: scale(1.02);
 `;
 
 const TextContainer = styled.section`
