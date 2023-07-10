@@ -1,27 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import ThemeHeader from '../components/theme/ThemeHeader';
-import ItemListHeader from '../components/theme/ItemListHeader';
-import ItemList from '../components/theme/ItemList';
+import ThemeHeader from '../components/theme/themeItemList/ThemeHeader';
+import ItemListHeader from '../components/theme/themeItemList/ItemListHeader';
+import ItemList from '../components/theme/themeItemList/ItemList';
 import { dummy } from '../data/dummy';
 
-export interface DummyData {
-  themeId: number;
+export interface FetchItemType {
+  contentId: number;
   themeTitle: string;
-  itemList: {
-    itemId: number;
-    itemImage: string;
-    imageTitle: string;
-    likeCount: number;
-  };
+  howManyLiked: number;
+  contentTitle: string;
+  contentUri: string;
 }
 
-const ThemeImgList = () => {
-  const [items, setItems] = useState<DummyData[]>([]);
+const ThemeItemList = () => {
+  const [items, setItems] = useState<FetchItemType[]>([]);
+  const [maxHeight, setMaxHeight] = useState(0);
 
   useEffect(() => {
     setItems(dummy);
-    console.log(items);
+  }, []);
+
+  useEffect(() => {
+    function updateMaxHeight() {
+      const screenHeight = window.screen.height;
+      setMaxHeight(screenHeight * 0.5);
+    }
+
+    window.addEventListener('resize', updateMaxHeight);
+    updateMaxHeight();
+
+    return () => {
+      window.removeEventListener('resize', updateMaxHeight);
+    };
   }, []);
 
   return (
@@ -29,10 +40,10 @@ const ThemeImgList = () => {
       <ContentContainer>
         <ThemeHeader />
         <ItemListHeader />
-        <ItemListContainerDiv>
+        <ItemListContainerDiv style={{ maxHeight: `${maxHeight}px` }}>
           <ItemGridDiv>
             {items.map((item) => (
-              <ItemList key={item.itemList.itemId} {...item} />
+              <ItemList key={item.contentId} {...item} />
             ))}
           </ItemGridDiv>
         </ItemListContainerDiv>
@@ -41,13 +52,13 @@ const ThemeImgList = () => {
   );
 };
 
-export default ThemeImgList;
+export default ThemeItemList;
 
 const Layout = styled.div`
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
-  padding: 6rem 0;
+  padding: 5rem 2rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,7 +84,7 @@ const Layout = styled.div`
 
 const ContentContainer = styled.div`
   box-sizing: border-box;
-  max-width: 1279px;
+  max-width: 1076px;
   width: 100%;
   flex-direction: column;
   box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 0.7);
@@ -85,8 +96,10 @@ const ItemListContainerDiv = styled.div`
   width: 100%;
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
-  padding: 1rem;
+  padding: 1.5rem;
   box-sizing: border-box;
+  overflow: auto;
+  /* max-height: 600px; */
 `;
 
 const ItemGridDiv = styled.div`
