@@ -12,15 +12,14 @@ const ThemeCarousel = ({
   currentThemeIndex,
   setCurrentThemeIndex,
 }: ThemeCarouselProps) => {
-  const themes: string[] = imgList;
-
+  //현재 테마 인덱스 + 1
   const handleNextTheme = () => {
-    setCurrentThemeIndex((prevIndex) => (prevIndex + 1) % themes.length);
+    setCurrentThemeIndex((prevIndex) => (prevIndex + 1) % imgList.length);
   };
-
+  //현재 테마 인덱스 - 1
   const handlePreviousTheme = () => {
     setCurrentThemeIndex(
-      (prevIndex) => (prevIndex - 1 + themes.length) % themes.length
+      (prevIndex) => (prevIndex - 1 + imgList.length) % imgList.length
     );
   };
 
@@ -28,19 +27,19 @@ const ThemeCarousel = ({
     <Container>
       <PreviousThemeImg
         onClick={handlePreviousTheme}
-        src={themes[(currentThemeIndex - 1 + themes.length) % themes.length]}
+        src={imgList[(currentThemeIndex - 1 + imgList.length) % imgList.length]}
       />
-      <CurrentThemeImg src={themes[currentThemeIndex]} />
+      <CurrentThemeImg src={imgList[currentThemeIndex]} />
       <NextThemeImg
         onClick={handleNextTheme}
-        src={themes[(currentThemeIndex + 1) % themes.length]}
+        src={imgList[(currentThemeIndex + 1) % imgList.length]}
       />
     </Container>
   );
 };
-
 export default ThemeCarousel;
 
+//일렁이는 애니메이션
 const zoomAnimation = keyframes`
   0% {
     transform: scale(1);
@@ -52,6 +51,16 @@ const zoomAnimation = keyframes`
     transform: scale(1);
   }
 `;
+//페이드 아웃 애니메이션
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const Container = styled.section`
   width: 100vw;
   height: 40vh;
@@ -69,7 +78,7 @@ const PreviousThemeImg = styled.img`
   opacity: 0.7;
   transition: opacity 0.3s ease-in-out;
   cursor: pointer;
-
+  //호버 시 투명도 사라짐
   &:hover {
     opacity: 1;
   }
@@ -81,8 +90,13 @@ const CurrentThemeImg = styled.img`
   object-fit: cover;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
-  animation: ${zoomAnimation} 4s ease-in-out infinite;
+  cursor: pointer;
+  //일렁이는 효과 5초 무한 반복
+  animation: ${zoomAnimation} 5s ease-in-out infinite;
+  //페이드 아웃 1초
+  animation: ${fadeInAnimation} 1s ease-in-out;
 `;
+
 const NextThemeImg = styled.img`
   width: 10vw;
   height: auto;
@@ -92,7 +106,7 @@ const NextThemeImg = styled.img`
   opacity: 0.7;
   transition: opacity 0.3s ease-in-out;
   cursor: pointer;
-
+  //호버 시 투명도 사라짐
   &:hover {
     opacity: 1;
   }
