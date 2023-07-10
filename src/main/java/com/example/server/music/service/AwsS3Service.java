@@ -52,7 +52,6 @@ public class AwsS3Service {
         }
     }
 
-    // 음원 url list 가져오는 경우 > 해시맵 사용으로 변경 가능
     public List<String> getMp3FileListUrl(long themeId){
         try{
             List<String> musicList = new ArrayList<>(); // url
@@ -74,11 +73,13 @@ public class AwsS3Service {
                 String url = s3Client.utilities().getUrl(getUrlRequest).toExternalForm();
                 musicList.add(url);
             }
+
             return musicList;
         } catch (SdkException e){
             throw new RuntimeException("list 반환 실패: " + e.getMessage(), e);
         }
     }
+
 
 //    // 음원 다운로드
 //    public ResponseEntity<byte[]> downloadMusic(String s3Filename) throws IOException{
