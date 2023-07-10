@@ -29,6 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/theme/{theme-id}/music")
 @Slf4j
+//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MusicController {
     private final MusicRepository musicRepository;
     private final AmazonS3Client amazonS3Client;
