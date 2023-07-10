@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import backgroundImg from '../assets/images/profile_background.png';
-import ChangeProfile from '../components/profile/ChangeProfile';
-import LikeList from '../components/profile/LikeList';
-import { cardsData } from '../components/profile/cardsData';
+import ChangeProfile from '../components/profile/user/ChangeProfile';
+import LikeList from '../components/profile/like/LikeList';
+import { cardsData } from '../components/profile/like/cardsData';
 
 const Profile = () => {
   return (
