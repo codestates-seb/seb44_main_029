@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import IconUser from '../../assets/icon/icon_carbon_user-avatar.png';
+import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useNavigate } from 'react-router-dom';
 const ChangeProfile = () => {
   const navigate = useNavigate();
