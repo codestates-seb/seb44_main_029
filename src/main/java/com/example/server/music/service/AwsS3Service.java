@@ -1,8 +1,6 @@
 package com.example.server.music.service;
 
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.server.music.controller.MusicController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,17 +48,17 @@ public class AwsS3Service {
             return s3Client.utilities().getUrl(getUrlRequest).toExternalForm();
         } catch (SdkException e) {
             // S3 오류 처리
-            throw new RuntimeException("Failed to retrieve MP3 file URL from S3: " + e.getMessage(), e);
+            throw new RuntimeException("파일 검색 실패: " + e.getMessage(), e);
         }
     }
 
-    // 음원 url list 가져오는 경우
+    // 음원 url list 가져오는 경우 > 해시맵 사용으로 변경 가능
     public List<String> getMp3FileListUrl(long themeId){
         try{
             List<String> musicList = new ArrayList<>(); // url
             // 테마별 mp3 prefix 생성
             String themePrefix = themeId + "-";
-            //s3에서 prefix로 시작하는 파일 가져온다.
+            //s3에서 prefix로 시작하는 파일을 가져오는 객체 생성.
             ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
                     .bucket(bucketName)
                     .prefix(themePrefix)
@@ -78,7 +76,7 @@ public class AwsS3Service {
             }
             return musicList;
         } catch (SdkException e){
-            throw new RuntimeException("list 반환에 실패: " + e.getMessage(), e);
+            throw new RuntimeException("list 반환 실패: " + e.getMessage(), e);
         }
     }
 
