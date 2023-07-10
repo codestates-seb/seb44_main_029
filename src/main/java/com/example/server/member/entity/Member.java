@@ -1,5 +1,6 @@
 package com.example.server.member.entity;
 
+import com.example.server.likes.entity.Likes;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,8 +34,20 @@ public class Member implements UserDetails {
     @Enumerated(EnumType.STRING)
     Role role;
 
-//    @OneToMany(mappedBy = "likeId")
-//    List<Like> likes;
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<Likes> likes;
+
+    //
+    public void addLike(Likes likes){
+        this.likes.add(likes);
+        if(likes.getMember() != this){
+            likes.addMember(this);
+        }
+    }
+
+    public void deleteLike(Likes likes){
+        this.likes.remove(likes);
+    }
 
     @Getter
     public enum Role{

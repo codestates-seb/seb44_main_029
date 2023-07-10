@@ -1,9 +1,11 @@
 package com.example.server.member.controller;
 
 import com.example.server.member.dto.MemberLoginDto;
+import com.example.server.member.dto.MemberResponseDto;
 import com.example.server.member.dto.MemberSignUpDto;
 import com.example.server.member.dto.MemberUpdateDto;
 import com.example.server.member.entity.Member;
+import com.example.server.member.mapper.MemberMapper;
 import com.example.server.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final MemberMapper memberMapper;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto dto){
@@ -33,8 +36,10 @@ public class MemberController {
     @GetMapping("/{member-id}")
     ResponseEntity read(@PathVariable("member-id") Long memberId){
         Member response = memberService.read(memberId);
+        MemberResponseDto responseDto = memberMapper.MemberToMemberResponseDto(response);
+        responseDto.setHowManyLiked(response.getLikes().size());
 
-        return new ResponseEntity(response, HttpStatus.OK);
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
     @PatchMapping("/{member-id}")
@@ -51,4 +56,10 @@ public class MemberController {
 
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
+    /*
+    @PatchMapping("/{member-id}/{likes}")
+    ResponseEntity updateLike(@PathVariable("member-id") Long memberId, @PathVariable("likes") String likes ){
+
+    }
+     */
 }
