@@ -31,6 +31,10 @@ public class MemberService {
     private final MemberMapper memberMapper;
     private final RedisTemplate<String, Object> redisTemplate;
 
+    public boolean isRequesterSameOwner(Long requestId, Long ownerId){
+        return requestId == ownerId;
+    }
+
     public TokenResponse login(MemberLoginDto dto){
         UsernamePasswordAuthenticationToken AuthenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(AuthenticationToken);
@@ -79,6 +83,7 @@ public class MemberService {
         String password = passwordEncoder.encode(dto.getPassword());
 
         Member member = Member.builder()
+                .disable(false)
                 .email(dto.getEmail())
                 .username(dto.getUsername())
                 .password(password)
@@ -116,8 +121,30 @@ public class MemberService {
         return memberId;
     }
 
-    public void delete(Long memberId){
-        memberJpaRepository.deleteById(memberId);
+    public Long updatePassword(Long memberId, MemberPasswordUpdateDto dto){
+        Member member = memberJpaRepository.findById(memberId).
+                orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        String password = member.getPassword();
+        String oldPassword = passwordEncoder.encode(dto.getOldPassword());
+
+        if(!password.equals(oldPassword)){
+            return Long.valueOf(-1);
+        }
+
+        member.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+
+        return memberJpaRepository.save(member).getId();
+    }
+
+    public void delete(Long memberId) {
+        Member member = memberJpaRepository.findById(memberId).get();
+
+        member.setDisable(true);
+
+        memberJpaRepository.save(member);
     }
 
     public Long getMemberId(Authentication authentication){
