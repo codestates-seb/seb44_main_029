@@ -1,4 +1,4 @@
-import Image from '../../assets/images/mainPage_background.jpg';
+import Image from '../../../assets/images/mainPage_background.jpg';
 
 export const cardsData = [
   {
