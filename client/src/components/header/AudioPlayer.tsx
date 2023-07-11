@@ -7,8 +7,8 @@ import iconNext from '../../assets/icon/iconNext.png';
 import iconPause from '../../assets/icon/iconPause.png';
 import styled from 'styled-components';
 import iconMusic from '../../assets/icon/icon_music.png';
-import API from '../../api/index';
-import axios from 'axios';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import { GetMusic } from '../../api/api';
 
 //오디오 플레이어
 const AudioPlayer = () => {
@@ -21,6 +21,14 @@ const AudioPlayer = () => {
   const { themeId } = useParams();
   const navigate = useNavigate();
   const currentPath = useLocation().pathname;
+
+  const queryClient = useQueryClient();
+  const music = useQuery(['music'], GetMusic);
+  console.log(music);
+
+  const PatchMutation = useMutation(GetMusic, {
+    onSuccess: () => queryClient.invalidateQueries(['music']),
+  });
 
   // path가 변경될 떄마다.
   useEffect(() => {
@@ -41,22 +49,12 @@ const AudioPlayer = () => {
       //   }
       // };
       // fetchData();
-      axios
-        .get(
-          `https://076f-175-208-216-56.ngrok-free.app/theme/${themeId}/music/list`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': '69420',
-            },
-          }
-        )
-        // 응답 성공시 노래설정 & 현재 노래ID 0번대로 초기화
-        .then((res) => {
-          setThemeMusics(res.data);
-          setNowMusicId(0);
-        })
-        .catch((error) => console.log(error));
+      // GetMusic()
+      //   // 응답 성공시 노래설정 & 현재 노래ID 0번대로 초기화
+      //   .then((data) => {
+      //     console.log(data);
+      //   })
+      //   .catch((error) => console.log(error));
       // path에 /theme가 포함 안되어 있으면 MusicId -1로 셋팅 (받아들일 자세)
     } else if (!currentPath.includes('/theme/')) {
       setNowMusicId(-1);
