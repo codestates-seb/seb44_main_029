@@ -1,6 +1,6 @@
 import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import iconPlay from '../../assets/icon/iconPlay.png';
 import iconPrev from '../../assets/icon/iconPrev.png';
 import iconNext from '../../assets/icon/iconNext.png';
@@ -15,68 +15,60 @@ const AudioPlayer = () => {
   const [sound, setSound] = useState<Howl | null>(null);
   const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
-  const [ThemeMusics, setThemeMusics] = useState([]);
   const [nowMusicId, setNowMusicId] = useState<number>(-1);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { themeId } = useParams();
   const navigate = useNavigate();
-  const currentPath = useLocation().pathname;
 
-  const queryClient = useQueryClient();
-  const music = useQuery(['music'], GetMusic);
-  console.log(music);
-
-  const PatchMutation = useMutation(GetMusic, {
-    onSuccess: () => queryClient.invalidateQueries(['music']),
+  // themeId가 변경될시 실행되는 쿼리
+  const {
+    data: musicList,
+    isFetching,
+    isError,
+    isSuccess,
+  } = useQuery([themeId], () => GetMusic(themeId), {
+    enabled: Boolean(themeId), // themeId가 존재할 때만 useQuery를 활성화
+    onSuccess: () => {
+      setNowMusicId(0); // 쿼리 성공시 현재음악 0번대로 설정
+    },
   });
 
-  // path가 변경될 떄마다.
+  // musicList 변경시
   useEffect(() => {
-    // path가 theme이후에 themeId가 1~5 라면?
-    if (/\/theme\/[1-5]$/.test(currentPath)) {
-      // const fetchData = async (): Promise<void> => {
-      //   try {
-      //     const response = await API.GET('theme/1/music/list', {
-      // headers: {
-      //   'Content-Type': 'application/json',
-      //   'ngrok-skip-browser-warning': '69420',
-      // },
-      //     });
-      //     // 응답 데이터 처리
-      //     console.log(response?.data);
-      //   } catch (error) {
-      //     console.error('API 호출 에러:', error);
-      //   }
-      // };
-      // fetchData();
-      // GetMusic()
-      //   // 응답 성공시 노래설정 & 현재 노래ID 0번대로 초기화
-      //   .then((data) => {
-      //     console.log(data);
-      //   })
-      //   .catch((error) => console.log(error));
-      // path에 /theme가 포함 안되어 있으면 MusicId -1로 셋팅 (받아들일 자세)
-    } else if (!currentPath.includes('/theme/')) {
-      setNowMusicId(-1);
-      // path에 /theme가 포함 안되어 있는데 노래가 나오는 경우
-      if (isPlaying) handleTogglePlay();
-    }
-    console.log(currentPath);
-  }, [currentPath]);
+    if (!musicList) setNowMusicId(-1); // musicList가 없다면
+    if (isPlaying) handleTogglePlay(); // musicList 변경시 재생중인 경우
+  }, [musicList]);
 
-  //현재 노래ID 변경시 새로운 인스턴스 생성 & 중복생성을 방지 하기위한 useEffect 로직
+  //음원 변경시 새로운 인스턴스 생성 & 중복생성을 방지 하기위한 useEffect 로직
   useEffect(() => {
-    const soundInstance = new Howl({
-      src: [ThemeMusics[nowMusicId]],
-      loop: true,
-      format: ['mp3'],
-      autoplay: isPlaying,
-    });
-    setSound(soundInstance);
-    return () => {
-      soundInstance.unload();
-    };
+    //API호출 성공시에만.
+    if (isSuccess) {
+      const soundInstance = new Howl({
+        src: [musicList[nowMusicId]],
+        loop: true,
+        format: ['mp3'],
+        autoplay: isPlaying,
+      });
+      setSound(soundInstance);
+      return () => {
+        soundInstance.unload();
+      };
+    }
   }, [nowMusicId]);
+
+  //음원 변경 핸들러
+  const handleChangeMusic = (move: string) => {
+    //API호출 성공시에만.
+    if (isSuccess) {
+      if (move === iconPrev) {
+        const backId = nowMusicId === 0 ? musicList.length - 1 : nowMusicId - 1;
+        setNowMusicId(backId);
+      } else if (move === iconNext) {
+        const forwardId = (nowMusicId + 1) % musicList.length;
+        setNowMusicId(forwardId);
+      }
+    }
+  };
 
   //재생, 일시정지 토글 핸들러
   const handleTogglePlay = () => {
@@ -91,28 +83,19 @@ const AudioPlayer = () => {
       }
     }
   };
+
   //볼륨 조절 핸들러
   const handleChangeVolume = (volume: number) => {
+    //유효성 검증
     if (sound) {
       sound.volume(volume);
       setCurrentVolume(volume);
     }
   };
 
-  //음악 변경 핸들러
-  const handleChangeMusic = (move: string) => {
-    if (move === iconPrev) {
-      const backId = nowMusicId === 0 ? ThemeMusics.length - 1 : nowMusicId - 1;
-      setNowMusicId(backId);
-    } else if (move === iconNext) {
-      const forwardId = (nowMusicId + 1) % ThemeMusics.length;
-      setNowMusicId(forwardId);
-    }
-  };
-
   return (
     <Container>
-      {currentPath.includes('theme/') ? (
+      {isSuccess ? (
         <>
           <AudioBtnImg
             onClick={handleTogglePlay}
@@ -134,6 +117,10 @@ const AudioPlayer = () => {
             />
           ))}
         </>
+      ) : isFetching ? (
+        <>패칭됨..</>
+      ) : isError ? (
+        <>API 실패</>
       ) : (
         <AudioBtnImg
           src={iconMusic}
