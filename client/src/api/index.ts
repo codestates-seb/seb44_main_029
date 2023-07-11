@@ -3,8 +3,8 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 export const axiosClient = axios.create({
   baseURL:
     process.env.NODE_ENV === 'development'
-      ? ''
-      : 'https://66a6-175-208-216-56.ngrok-free.app/',
+      ? 'https://076f-175-208-216-56.ngrok-free.app/'
+      : 'https://076f-175-208-216-56.ngrok-free.app/',
 });
 
 axiosClient.defaults.withCredentials = true;
@@ -38,10 +38,11 @@ class API {
     }
   }
 
-  GET(url: string): Promise<AxiosResponse | undefined> {
+  GET(url: string, headers?: any): Promise<AxiosResponse | undefined> {
     return this.CALL({
       method: 'GET',
       url,
+      ...(headers && { headers }), // headers가 존재할 경우에만 전달
     });
   }
 
@@ -81,3 +82,5 @@ class API {
     });
   }
 }
+
+export default new API();
