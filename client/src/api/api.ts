@@ -17,3 +17,8 @@ export const GetMusic = (): Promise<Musics> =>
       },
     })
     .then((res) => res.data);
+
+export const SignUp = (data: SignUpInfo) =>
+  axios
+    .post('https://f490-175-208-216-56.ngrok-free.app/members', data)
+    .then((res) => res.data);
