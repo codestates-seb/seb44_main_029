@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { SignUp } from '../../api/api';
 
 interface SignUpFormData {
   username: string;
@@ -10,6 +11,8 @@ interface SignUpFormData {
 }
 
 const SignUpForm = () => {
+  const queryClient = useQueryClient();
+
   const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>({
     username: '',
     email: '',
@@ -67,6 +70,10 @@ const SignUpForm = () => {
     return Object.keys(errors).length === 0;
   };
 
+  const signUpMutation = useMutation((formData: SignUpFormData) =>
+    SignUp(formData)
+  );
+
   // 폼 제출하는 함수
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -76,30 +83,18 @@ const SignUpForm = () => {
     }
 
     try {
-      const res = await axios.post(
-        'https://36db-175-208-216-56.ngrok-free.app/members',
-        {
-          username: signUpFormData.username,
-          email: signUpFormData.email,
-          password: signUpFormData.password,
-        }
-      );
-
-      if (res.status === 202) {
-        alert('SignUp success!');
-        setSignUpFormData({
-          username: '',
-          email: '',
-          password: '',
-          passwordCheck: '',
-        });
-      } else {
-        throw new Error('SignUp failed');
-      }
+      await signUpMutation.mutateAsync(signUpFormData);
+      alert('Sign Up success!');
+      setSignUpFormData({
+        username: '',
+        email: '',
+        password: '',
+        passwordCheck: '',
+      });
+      queryClient.invalidateQueries(['signup']);
     } catch (error) {
-      // handle login failure
-      alert('failed to SignUp!');
-      console.error('SignUp failed:', error);
+      alert('Failed to Sign Up!');
+      console.error('Sign Up failed:', error);
     }
   };
 
