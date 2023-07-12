@@ -8,6 +8,8 @@ import iconMenu from '../../assets/icon/icon_menu.png';
 import iconLogIn from '../../assets/icon/icon_log.png';
 import iconSignUp from '../../assets/icon/icon_Sign.png';
 import iconOut from '../../assets/icon/icon_out.png';
+import { Logout } from '../../api/api';
+import { useMutation } from '@tanstack/react-query';
 
 // Nav 컴포넌트
 const Nav = ({
@@ -23,7 +25,7 @@ const Nav = ({
   const navigate = useNavigate();
 
   //임시 jwt토큰 유무 판단용
-  const jwtToken = true;
+  const accessToken = localStorage.getItem('accessToken');
 
   // 호버 이벤트 핸들러
   const handleHover = () => {
@@ -36,6 +38,26 @@ const Nav = ({
     else if (icon === iconThemeList) navigate('/theme');
     else if (icon === iconLogIn) setIsLogInClicked(true);
     else if (icon === iconSignUp) setIsSignUpClicked(true);
+  };
+
+  const handleLogoutMutation = useMutation(Logout, {
+    onSuccess: () => {
+      // 토큰 삭제
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      navigate('/');
+    },
+    onError: (error) => {
+      console.error('Logout failed:', error);
+    },
+  });
+
+  const handleLogOut = () => {
+    const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
+    if (confirmLogout) {
+      handleLogoutMutation.mutate();
+    }
   };
   return (
     <>
@@ -56,7 +78,7 @@ const Nav = ({
                 />
               ))}
               {/* jwtToken 토큰 유무 분기 */}
-              {jwtToken ? (
+              {!accessToken ? (
                 <>
                   <NavBtnImg
                     src={iconLogIn}
@@ -70,7 +92,11 @@ const Nav = ({
                   ></NavBtnImg>
                 </>
               ) : (
-                <NavBtnImg src={iconOut} isHovered={isHovered}></NavBtnImg>
+                <NavBtnImg
+                  src={iconOut}
+                  isHovered={isHovered}
+                  onClick={handleLogOut}
+                ></NavBtnImg>
               )}
             </>
           ) : (
