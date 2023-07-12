@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const EditName = () => {
   return (
     <Container>
-      <NameInput />
+      <NameInput placeholder="이름을 변경 하세요!" />
       <EmailDiv>Email</EmailDiv>
     </Container>
   );
@@ -11,7 +11,9 @@ const EditName = () => {
 
 export default EditName;
 
-const Container = styled.div``;
+const Container = styled.div`
+  flex-grow: 1;
+`;
 
 const NameInput = styled.input`
   font-size: 32px;

@@ -1,0 +1,3 @@
+const ImggList = () => {
+  return <>asd</>;
+};
