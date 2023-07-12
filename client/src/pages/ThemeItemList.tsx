@@ -3,29 +3,12 @@ import styled from 'styled-components';
 import ThemeHeader from '../components/theme/themeItemList/ThemeHeader';
 import ItemListHeader from '../components/theme/themeItemList/ItemListHeader';
 import ItemList from '../components/theme/themeItemList/ItemList';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { FetchThemeItemProps } from '../types/types';
-
-const getThemeItems = async (
-  themeId: number,
-  pageParam = 1,
-  sizeParam = 20
-): Promise<FetchThemeItemProps> => {
-  const response = await axios.get(
-    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    }
-  );
-  console.log(response.data);
-  return response.data;
-};
+import { GetThemeItems } from '../api/api';
 
 const ThemeItemList = () => {
   const { themeId } = useParams<{ themeId: string }>();
@@ -42,7 +25,7 @@ const ThemeItemList = () => {
   } = useInfiniteQuery<FetchThemeItemProps, AxiosError>(
     ['items'],
     ({ pageParam = 1 }) =>
-      getThemeItems(parseInt(themeId || ''), pageParam, 20),
+      GetThemeItems(parseInt(themeId || ''), pageParam, 20),
     {
       keepPreviousData: true,
       getNextPageParam: (lastPage, allPages) => {
