@@ -4,7 +4,6 @@ import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import SignUpForm from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
-import { LoginInfo } from '../../types/types';
 interface LoginFormData {
   email: string;
   password: string;
@@ -60,7 +59,6 @@ const LoginForm = () => {
 
   const loginMutation = useMutation(Login, {
     onSuccess: (data) => {
-      console.log('data: ', data);
       queryClient.invalidateQueries(['login']);
       const accessToken = data.headers['authorization'];
       const refreshToken = data.headers['refresh-token'];
