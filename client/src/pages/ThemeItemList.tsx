@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ThemeHeader from '../components/theme/themeItemList/ThemeHeader';
 import ItemListHeader from '../components/theme/themeItemList/ItemListHeader';
 import ItemList from '../components/theme/themeItemList/ItemList';
-import { dummy } from '../data/dummy';
+import axios, { AxiosError } from 'axios';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import useIntersectionObserver from '../hooks/useIntersectionObserver';
 
-export interface FetchItemType {
+export interface ItemType {
   contentId: number;
   themeTitle: string;
   howManyLiked: number;
@@ -13,39 +16,111 @@ export interface FetchItemType {
   contentUri: string;
 }
 
-const ThemeItemList = () => {
-  const [items, setItems] = useState<FetchItemType[]>([]);
-  const [maxHeight, setMaxHeight] = useState(0);
+export interface PageInfoType {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
 
-  useEffect(() => {
-    setItems(dummy);
-  }, []);
+export interface FetchDataProps {
+  data: ItemType[];
+  pageInfo: PageInfoType;
+}
 
-  useEffect(() => {
-    function updateMaxHeight() {
-      const screenHeight = window.screen.height;
-      setMaxHeight(screenHeight * 0.5);
+const getThemeItems = async (
+  themeId: number,
+  pageParam = 1,
+  sizeParam = 20
+): Promise<FetchDataProps> => {
+  const response = await axios.get(
+    `https://d45e-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
     }
+  );
+  console.log(response.data);
+  return response.data;
+};
 
-    window.addEventListener('resize', updateMaxHeight);
-    updateMaxHeight();
+const ThemeItemList = () => {
+  const { themeId } = useParams<{ themeId: string }>();
+  const numericThemeId = parseInt(themeId || '');
 
-    return () => {
-      window.removeEventListener('resize', updateMaxHeight);
-    };
-  }, []);
+  const {
+    data: items,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery<FetchDataProps, AxiosError>(
+    ['items'],
+    ({ pageParam = 1 }) =>
+      getThemeItems(parseInt(themeId || ''), pageParam, 20),
+    {
+      keepPreviousData: true,
+      getNextPageParam: (lastPage, allPages) => {
+        const { pageInfo } = lastPage;
+        if (pageInfo.page < pageInfo.totalPages) {
+          return pageInfo.page + 1;
+        }
+        return false;
+      },
+    }
+  );
+
+  const handleIntersect = async (entry: IntersectionObserverEntry) => {
+    // 단순히 isIntersecting을 확인하는 대신
+    // 더 많은 데이터를 로드하고 있는지 여부를 확인해야 합니다.
+    if (
+      entry.isIntersecting &&
+      hasNextPage &&
+      !(isFetching || isFetchingNextPage)
+    ) {
+      await fetchNextPage(); // 다음 페이지를 가져옵니다.
+    }
+  };
+
+  const targetRef = useRef<HTMLDivElement | null>(null);
+
+  useIntersectionObserver({
+    target: targetRef,
+    onIntersect: handleIntersect,
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.3,
+    enabled: !!hasNextPage,
+  });
+
+  console.log(items?.pages);
 
   return (
     <Layout>
       <ContentContainer>
         <ThemeHeader />
         <ItemListHeader />
-        <ItemListContainerDiv style={{ maxHeight: `${maxHeight}px` }}>
+        <ItemListContainerDiv>
           <ItemGridDiv>
-            {items.map((item) => (
-              <ItemList key={item.contentId} {...item} />
-            ))}
+            {items?.pages.flatMap((page) =>
+              page.data.map((item) => (
+                <ItemList
+                  key={item.contentId}
+                  contentId={item.contentId}
+                  themeTitle={item.themeTitle}
+                  howManyLiked={item.howManyLiked}
+                  contentTitle={item.contentTitle}
+                  contentUri={item.contentUri}
+                  themeId={numericThemeId}
+                />
+              ))
+            )}
           </ItemGridDiv>
+          <div ref={targetRef} /> {/* 무한 스크롤 로딩 중 일시 중지 */}
         </ItemListContainerDiv>
       </ContentContainer>
     </Layout>
@@ -62,12 +137,11 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   overflow: hidden;
 
   &::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -99,7 +173,6 @@ const ItemListContainerDiv = styled.div`
   padding: 1.5rem;
   box-sizing: border-box;
   overflow: auto;
-  /* max-height: 600px; */
 `;
 
 const ItemGridDiv = styled.div`
