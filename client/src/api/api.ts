@@ -10,13 +10,34 @@ import {
 /* 유저 정보 가져오기 */
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
   axios
-    .get(
-      `https://f490-175-208-216-56.ngrok-free.app/theme/${ThemeId}/music/list`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
-        },
-      }
-    )
+    .get('https://aace-175-208-216-56.ngrok-free.app/theme/1/music/list', {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    })
+
     .then((res) => res.data);
+
+export const SignUp = (data: SignUpInfo) =>
+  axios
+    .post('https://aace-175-208-216-56.ngrok-free.app/members', data)
+    .then((res) => res.data);
+
+export const Login = async (data: LoginInfo) => {
+  const response = await axios.post(
+    'https://aace-175-208-216-56.ngrok-free.app/members/login',
+    {
+      email: data.email,
+      password: data.password,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    }
+  );
+
+  return response;
+};
