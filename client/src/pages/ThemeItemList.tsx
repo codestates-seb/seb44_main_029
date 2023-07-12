@@ -7,34 +7,15 @@ import axios, { AxiosError } from 'axios';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
-
-export interface ItemType {
-  contentId: number;
-  themeTitle: string;
-  howManyLiked: number;
-  contentTitle: string;
-  contentUri: string;
-}
-
-export interface PageInfoType {
-  page: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-}
-
-export interface FetchDataProps {
-  data: ItemType[];
-  pageInfo: PageInfoType;
-}
+import { FetchThemeItemProps } from '../types/types';
 
 const getThemeItems = async (
   themeId: number,
   pageParam = 1,
   sizeParam = 20
-): Promise<FetchDataProps> => {
+): Promise<FetchThemeItemProps> => {
   const response = await axios.get(
-    `https://d45e-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +39,7 @@ const ThemeItemList = () => {
     isFetching,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery<FetchDataProps, AxiosError>(
+  } = useInfiniteQuery<FetchThemeItemProps, AxiosError>(
     ['items'],
     ({ pageParam = 1 }) =>
       getThemeItems(parseInt(themeId || ''), pageParam, 20),
