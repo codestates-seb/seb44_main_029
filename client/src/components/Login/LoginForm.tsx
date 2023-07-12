@@ -1,14 +1,17 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
-import axios from 'axios';
 import SignUpForm from '../signup/SignupForm';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { Login } from '../../api/api';
 interface LoginFormData {
   email: string;
   password: string;
 }
 
 const LoginForm = () => {
+  const queryClient = useQueryClient();
+
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
     email: '',
     password: '',
@@ -54,6 +57,16 @@ const LoginForm = () => {
     return Object.keys(errors).length === 0;
   };
 
+  const loginMutation = useMutation(Login, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['login']);
+      const accessToken = data.headers['authorization'];
+      const refreshToken = data.headers['refresh-token'];
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+    },
+  });
+
   // 폼 제출하는 함수
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,32 +76,16 @@ const LoginForm = () => {
     }
 
     try {
-      const res = await axios.post(
-        'https://36db-175-208-216-56.ngrok-free.app/members/login',
-        {
-          email: loginFormData.email,
-          password: loginFormData.password,
-        }
-      );
-
-      if (res.status === 200) {
-        const accessToken = res.headers['accessToken'];
-        const refreshToken = res.headers['refreshToken'];
-        // localStorage에 액세스토큰, 리프레쉬토큰 저장
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        alert('login success!');
-        setLoginFormData({
-          email: '',
-          password: '',
-        });
-      } else {
-        throw new Error('Login failed');
-      }
+      await loginMutation.mutateAsync(loginFormData);
+      alert('Log In success!');
+      setLoginFormData({
+        email: '',
+        password: '',
+      });
+      queryClient.invalidateQueries(['login']);
     } catch (error) {
-      // handle login failure
-      alert('failed to login!');
-      console.error('Login failed:', error);
+      alert('Failed to Log In!');
+      console.error('Log In failed:', error);
     }
   };
 
