@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { FetchItemType } from '../../../pages/ThemeItemList';
+import { ItemType } from '../../../pages/ThemeItemList';
 
-type ItemListProps = FetchItemType;
+interface ItemListProps extends ItemType {
+  themeId: number;
+}
 
 interface LikeButtonProps {
   isActive: boolean;
@@ -15,6 +17,7 @@ const ItemList = ({
   howManyLiked,
   contentTitle,
   contentUri,
+  themeId,
 }: ItemListProps) => {
   const [plusLikeButton, setPlusLikeButton] = useState<boolean>(false);
 
@@ -27,7 +30,7 @@ const ItemList = ({
 
   return (
     <Container>
-      <ItemLink to={`/theme/${themeTitle}/${contentId}`}>
+      <ItemLink to={`/theme/${themeId}/${contentId}`}>
         <img src={contentUri} alt="item-image"></img>
       </ItemLink>
       <OverlayControlDiv>
