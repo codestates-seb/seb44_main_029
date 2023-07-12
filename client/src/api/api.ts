@@ -8,7 +8,7 @@ import {
 } from '../types/types';
 
 /* 유저 정보 가져오기 */
-export const GetMusic = (): Promise<Musics> =>
+export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
   axios
     .get('https://aace-175-208-216-56.ngrok-free.app/theme/1/music/list', {
       headers: {
@@ -16,6 +16,7 @@ export const GetMusic = (): Promise<Musics> =>
         'ngrok-skip-browser-warning': '69420',
       },
     })
+
     .then((res) => res.data);
 
 export const SignUp = (data: SignUpInfo) =>
