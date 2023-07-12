@@ -44,21 +44,20 @@ const ListFilterDiv = styled.div`
   background-color: rgba(255, 255, 255, 0.05);
 
   .item-list-title {
-    margin: 1rem 3rem;
+    margin: 0.6rem 3rem;
     color: rgba(255, 255, 255, 1);
   }
 `;
 
 const LikeFilterButton = styled.button<LikeButtonProps>`
-  width: 3rem;
-  height: 1.5rem;
+  width: 2.7rem;
+  height: 1.4rem;
   margin-right: 3rem;
   transition: 0.3s;
   border-radius: 0.4rem;
   background-color: transparent;
   font-size: 0.6rem;
-  letter-spacing: 1px;
-  line-height: 14.5px;
+  line-height: 13px;
   font-weight: bold;
 
   &:hover {
