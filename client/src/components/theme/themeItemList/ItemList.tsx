@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-import { ItemType } from '../../../pages/ThemeItemList';
+import { ItemInfo } from '../../../types/types';
 
-interface ItemListProps extends ItemType {
+interface ItemProps extends ItemInfo {
   themeId: number;
 }
 
@@ -18,7 +18,7 @@ const ItemList = ({
   contentTitle,
   contentUri,
   themeId,
-}: ItemListProps) => {
+}: ItemProps) => {
   const [plusLikeButton, setPlusLikeButton] = useState<boolean>(false);
 
   const handleLikeButtonClick = (
