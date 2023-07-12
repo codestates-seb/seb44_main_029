@@ -1,11 +1,11 @@
 import { Layout, ContentContainer } from './Profile';
-import EditImg from '../components/profile/edit/EditImg';
+import EditProfile from '../components/profile/edit/EditProfile';
 
 const ProfileEdit = () => {
   return (
     <Layout>
       <ContentContainer>
-        <EditImg />
+        <EditProfile />
       </ContentContainer>
     </Layout>
   );
