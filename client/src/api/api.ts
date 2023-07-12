@@ -3,8 +3,7 @@ import {
   Musics,
   LoginInfo,
   SignUpInfo,
-  ItemType,
-  PageInfo,
+  FetchThemeItemProps,
 } from '../types/types';
 
 /* 유저 정보 가져오기 */
@@ -60,4 +59,21 @@ export const Logout = async () => {
   );
 
   return response;
+};
+
+export const GetThemeItems = async (
+  themeId: number,
+  pageParam = 1,
+  sizeParam = 20
+): Promise<FetchThemeItemProps> => {
+  const response = await axios.get(
+    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    }
+  );
+  return response.data;
 };
