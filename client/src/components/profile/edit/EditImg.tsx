@@ -25,13 +25,7 @@ const fadeIn = keyframes`
   }
 `;
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 15px;
-  border-radius: 10px;
-`;
+const Container = styled.div``;
 const IconImg = styled.img`
   width: 120px;
   height: 120px;
