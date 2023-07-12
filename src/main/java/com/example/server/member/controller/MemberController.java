@@ -35,7 +35,7 @@ public class MemberController {
         TokenResponse token = memberService.login(dto);
 
         response.setHeader("Refresh-Token", token.getRefreshToken());
-        response.setHeader("Access-Token", token.getAccessToken());
+        response.setHeader("Authorization", token.getAccessToken()); // Access-Token > Authorization으로 변경
 
         return new ResponseEntity(token, HttpStatus.OK);
     }
