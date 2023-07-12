@@ -1,13 +1,21 @@
 import styled, { keyframes } from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useState } from 'react';
+import ImgList from './ImgList';
+
 const EditImg = () => {
   const [isImgClicked, setImgClicked] = useState(false);
 
   return (
     <Container>
-      {isImgClicked && <ModalOverlayDiv onClick={() => setImgClicked(false)} />}
-      {isImgClicked && <ImgSelectShowDiv />}
+      {isImgClicked && (
+        <>
+          <ModalOverlayDiv onClick={() => setImgClicked(false)} />
+          <ImgSelectShowDiv>
+            <ImgList />
+          </ImgSelectShowDiv>
+        </>
+      )}
       <IconImg src={IconUser} onClick={() => setImgClicked(true)} />
     </Container>
   );
@@ -47,14 +55,12 @@ const ModalOverlayDiv = styled.div`
 `;
 
 const ImgSelectShowDiv = styled.div`
-  background-color: black;
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
-  margin-top: 350px;
+  top: 50%;
   z-index: 101;
-  width: 60vw;
-  height: 70vh;
+  width: 50vw;
   border-radius: 10px;
   //fadeIn 효과를, 0.5초 동안, 부드럽게, 마지막 모습 유지
   animation: ${fadeIn} 0.5s ease-in-out forwards;
