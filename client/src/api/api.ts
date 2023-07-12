@@ -48,13 +48,13 @@ export const Logout = async () => {
 
   const response = await axios.post(
     'https://aace-175-208-216-56.ngrok-free.app/members/logout',
-    {},
+    null,
     {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
-        'Access-Token': accessToken,
-        'Refresh-Token': refreshToken,
+        accessToken: `Bearer ${accessToken}`,
+        refreshToken: refreshToken,
       },
     }
   );
