@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useState } from 'react';
 const EditImg = () => {
-  const [isImgClicked, setImgClicked] = useState(true);
+  const [isImgClicked, setImgClicked] = useState(false);
 
   return (
     <Container>
@@ -26,12 +26,9 @@ const fadeIn = keyframes`
 `;
 
 const Container = styled.div`
-  width: 824px;
-  height: 180px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
   margin-bottom: 15px;
   border-radius: 10px;
 `;
