@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 interface ThemeCarouselProps {
   imgList: string[];
@@ -12,6 +13,8 @@ const ThemeCarousel = ({
   currentThemeIndex,
   setCurrentThemeIndex,
 }: ThemeCarouselProps) => {
+  const navigate = useNavigate();
+
   //현재 테마 인덱스 + 1
   const handleNextTheme = () => {
     setCurrentThemeIndex((prevIndex) => (prevIndex + 1) % imgList.length);
@@ -29,7 +32,12 @@ const ThemeCarousel = ({
         onClick={handlePreviousTheme}
         src={imgList[(currentThemeIndex - 1 + imgList.length) % imgList.length]}
       />
-      <CurrentThemeImg src={imgList[currentThemeIndex]} />
+      <CurrentThemeImg
+        src={imgList[currentThemeIndex]}
+        onClick={() => {
+          navigate(`/theme/${currentThemeIndex + 1}`);
+        }}
+      />
       <NextThemeImg
         onClick={handleNextTheme}
         src={imgList[(currentThemeIndex + 1) % imgList.length]}
@@ -91,10 +99,8 @@ const CurrentThemeImg = styled.img`
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
   cursor: pointer;
-  //일렁이는 효과 5초 무한 반복
-  animation: ${zoomAnimation} 5s ease-in-out infinite;
-  //페이드 아웃 1초
-  animation: ${fadeInAnimation} 1s ease-in-out;
+  animation: ${zoomAnimation} 5s ease-in-out infinite,
+    ${fadeInAnimation} 1s ease-in-out;
 `;
 
 const NextThemeImg = styled.img`
