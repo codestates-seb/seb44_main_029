@@ -21,7 +21,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2rem 0 1rem;
+    margin: 1rem 0 0.5rem;
     color: rgba(255, 255, 255, 1);
   }
 
@@ -29,7 +29,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 1rem 0 2rem;
+    margin: 0 0 1rem;
     color: rgba(255, 255, 255, 0.7);
   }
 `;
