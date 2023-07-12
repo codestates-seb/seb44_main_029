@@ -2,12 +2,19 @@ import styled from 'styled-components';
 import EditImg from './EditImg';
 import EditName from './EditName';
 
-const EditProfile = () => {
+const EditProfile = ({
+  setIsEdit,
+}: {
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const handleButton = () => {
+    setIsEdit(false);
+  };
   return (
     <Container>
       <EditImg />
       <EditName />
-      <Button />
+      <Button onClick={handleButton} />
     </Container>
   );
 };
