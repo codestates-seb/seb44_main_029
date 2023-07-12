@@ -34,7 +34,7 @@ const getThemeItems = async (
   sizeParam = 20
 ): Promise<FetchDataProps> => {
   const response = await axios.get(
-    `https://d45e-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
     {
       headers: {
         'Content-Type': 'application/json',
