@@ -1,21 +1,22 @@
 package com.example.server.content.controller;
 
+import com.example.server.content.dto.ContentPageDto;
 import com.example.server.content.entity.Content;
 import com.example.server.content.mapper.ContentMapper;
-import com.example.server.content.repository.ContentRepository;
-import com.example.server.likes.entity.Likes;
-import com.example.server.member.entity.Member;
-import com.example.server.member.repository.MemberJpaRepository;
-import com.example.server.theme.entity.Theme;
-import com.example.server.theme.repository.ThemeRepository;
+import com.example.server.content.service.ContentServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,59 +26,53 @@ import java.util.stream.Collectors;
 @Validated
 @Slf4j
 public class ContentController {
-
-    public final ContentRepository contentRepository;
-    public final MemberJpaRepository memberJpaRepository;
-    public final ThemeRepository themeRepository;
     public final ContentMapper contentMapper;
+    public final ContentServiceImpl contentService;
 
-    /*
-    public ResponseEntity getContents(){
-        return new
-    }
-    */
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
-    // theme로 content 찾기
-    // Response에 포함되어야 하는 것 = 유저 정보 기반으로, like 표시가 되어 있는지 여부
-    @GetMapping("/{theme_id}")
-    public ResponseEntity getContentByTheme(@PathVariable("theme_id") Long themeId){
-        // 없으면 에러 추가
-        Theme theme = themeRepository.findById(themeId).orElseThrow(); //serv
-        List<Content> contents = contentRepository.findByTheme(theme); //serv
-
-
-        return new ResponseEntity<>(contents.stream()
-                .map(contentMapper::ContentToContentResponseDto)
-                .collect(Collectors.toList()), HttpStatus.CREATED);
-    }
-
-    // member, like한 content list 찾기
     @JsonIgnore
     @GetMapping("/{member-id}/likes")
-    public ResponseEntity getLikes(@PathVariable("member-id") Long memberId){
-
+    public ResponseEntity getLikes(
+            @PathVariable("member-id") Long memberId,
+            @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
+            @Positive @RequestParam(required = false, defaultValue = "20", value = "size") int size,
+            @RequestParam(required = false, defaultValue = "contentId", value = "criteria") String criteria,
+            @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
         //Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //UserDetails userDetails = (UserDetails) principal;
         //String userName = userDetails.getUsername();
 
-        Member member = memberJpaRepository.findById(memberId).orElseThrow();
+        List<Content> contents = contentService.getLikes(memberId);
+        //Page<Content> contentsPage = new PageImpl<>(contents);
+        Page<Content> contentsPage = contentService.contentPagination(contents, page-1, size, criteria, sort);
 
-        List<Content> contents = member.getLikes().stream()
-                .map(Likes::getContent)
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<>(contents.stream()
+        return new ResponseEntity<>(new ContentPageDto<>(contentsPage.getContent().stream()
                 .map(contentMapper::ContentToContentResponseDto)
-                .collect(Collectors.toList()), HttpStatus.CREATED);
+                .collect(Collectors.toList()), contentsPage), HttpStatus.OK);
     }
 
+    @GetMapping("/{member-id}/likes/{theme-id}")
+    public ResponseEntity getLikesTheme(
+            @PathVariable("theme-id") Long themeId,
+            @PathVariable("member-id") Long memberId,
+            @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
+            @Positive @RequestParam(required = false, defaultValue = "20", value = "size") int size,
+            @RequestParam(required = false, defaultValue = "contentId", value = "criteria") String criteria,
+            @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
 
-    // member, theme로 like한 content 찾기
-    // likes 기반으로 contents를 찾은 다음에, theme 속성 기준으로 분류해서 내놓는다.
-    // likes 테스트 이후 구현할 것.
-    @GetMapping("/{member_id}/likes/{theme_id}")
-    public ResponseEntity getLikesTheme(@PathVariable("theme_id") String themeId,
-                                        @PathVariable("member_id") String memberId){
-        return new ResponseEntity<>(null, HttpStatus.CREATED);
+        List<Content> contents = contentService.getLikes(memberId)
+                .stream().filter(content -> (content.getTheme().getThemeId()) == themeId)
+                .collect(Collectors.toList());
+        Page<Content> contentsPage = contentService.contentPagination(contents, page-1, size, criteria, sort);
+        //Page<Content> contentPage = contentService.contentPagination(contents, page, size, criteria, sort);
+
+        return new ResponseEntity<>(new ContentPageDto<>(contentsPage.getContent().stream()
+                .map(contentMapper::ContentToContentResponseDto)
+                .collect(Collectors.toList()), contentsPage), HttpStatus.OK);
     }
+
 }
+
+

@@ -1,4 +1,4 @@
 package com.example.server.likes.mapper;
 
-public interface LikeRepository {
+public interface LikeMapper {
 }

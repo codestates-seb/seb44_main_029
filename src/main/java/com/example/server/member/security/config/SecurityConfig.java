@@ -99,8 +99,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/contents").permitAll() //
                 .antMatchers("/contents/{theme_title}").permitAll() //
                 .antMatchers("/contents/{member-id}/likes").permitAll() //
-                .antMatchers("/themes").permitAll() //
+                .antMatchers("/contents/{member-id}/likes/{theme-id}").permitAll() //
+                .antMatchers("/theme").permitAll() //
+                .antMatchers("/theme/{theme-id}").permitAll() //
                 .antMatchers("/likes/{content-id}/{member-id}").permitAll() //
+                .antMatchers("/").permitAll() //
+                .antMatchers("/favicon.ico").permitAll() //
                 .antMatchers(HttpMethod.GET, "/members/get/**").hasRole("USER")
                 .anyRequest().authenticated()
 
