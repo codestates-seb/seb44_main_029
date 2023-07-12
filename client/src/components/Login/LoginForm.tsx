@@ -9,7 +9,15 @@ interface LoginFormData {
   password: string;
 }
 
-const LoginForm = () => {
+interface LoginFormProps {
+  setIsLogInClicked: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface SignUpFormProps {
+  setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
   const queryClient = useQueryClient();
 
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
@@ -83,6 +91,7 @@ const LoginForm = () => {
         password: '',
       });
       queryClient.invalidateQueries(['login']);
+      setIsLogInClicked(false);
     } catch (error) {
       alert('Failed to Log In!');
       console.error('Log In failed:', error);
@@ -140,7 +149,7 @@ const LoginForm = () => {
         </Container>
       ) : (
         <SignOutShowDiv>
-          <SignUpForm />
+          <SignUpForm setIsSignUpClicked={setIsSignUpClicked} />
         </SignOutShowDiv>
       )}
     </>
