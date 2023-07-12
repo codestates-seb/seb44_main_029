@@ -17,7 +17,7 @@ const Profile = () => {
 
 export default Profile;
 
-const Layout = styled.div`
+export const Layout = styled.div`
   max-width: 100%;
   width: 100vw;
   height: 100vh;
@@ -44,7 +44,7 @@ const Layout = styled.div`
   }
 `;
 
-const ContentContainer = styled.div`
+export const ContentContainer = styled.div`
   max-width: 924px;
   width: 100%;
   max-height: 800px;
