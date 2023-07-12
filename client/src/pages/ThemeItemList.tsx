@@ -31,10 +31,10 @@ export interface FetchDataProps {
 const getThemeItems = async (
   themeId: number,
   pageParam = 1,
-  sizeParam = 10
+  sizeParam = 20
 ): Promise<FetchDataProps> => {
   const response = await axios.get(
-    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=1`,
+    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
     {
       headers: {
         'Content-Type': 'application/json',

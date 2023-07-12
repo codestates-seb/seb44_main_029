@@ -13,10 +13,6 @@ interface LoginFormProps {
   setIsLogInClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface SignUpFormProps {
-  setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
   const queryClient = useQueryClient();
 
