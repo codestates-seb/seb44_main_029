@@ -1,4 +1,4 @@
-import axios, { AxiosResponseHeaders } from 'axios';
+import axios from 'axios';
 import {
   Musics,
   LoginInfo,
