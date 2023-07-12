@@ -60,8 +60,12 @@ const LoginForm = () => {
 
   const loginMutation = useMutation(Login, {
     onSuccess: (data) => {
-      console.log('data', data);
+      console.log('data: ', data);
       queryClient.invalidateQueries(['login']);
+      const accessToken = data.headers['authorization'];
+      const refreshToken = data.headers['refresh-token'];
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
     },
   });
 
