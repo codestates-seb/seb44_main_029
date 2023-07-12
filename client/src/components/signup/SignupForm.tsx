@@ -10,7 +10,11 @@ interface SignUpFormData {
   passwordCheck: string;
 }
 
-const SignUpForm = () => {
+interface SignUpFormProps {
+  setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
   const queryClient = useQueryClient();
 
   const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>({
@@ -92,6 +96,7 @@ const SignUpForm = () => {
         passwordCheck: '',
       });
       queryClient.invalidateQueries(['signup']);
+      setIsSignUpClicked(false);
     } catch (error) {
       alert('Failed to Sign Up!');
       console.error('Sign Up failed:', error);
