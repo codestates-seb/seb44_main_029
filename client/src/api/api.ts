@@ -4,6 +4,7 @@ import {
   LoginInfo,
   SignUpInfo,
   FetchThemeItemProps,
+  ItemInfo,
 } from '../types/types';
 
 /* 유저 정보 가져오기 */
@@ -74,6 +75,25 @@ export const GetThemeItems = async (
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
+      },
+    }
+  );
+  return response.data;
+};
+
+// 이미지 좋아요 업데이트
+export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
+  // const accessToken = localStorage.getItem('accessToken');
+  // const refreshToken = localStorage.getItem('refreshToken');
+
+  const response = await axios.patch(
+    `https://ba58-221-141-172-40.ngrok-free.app/likes/${contentId}/1`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        // accessToken: `Bearer ${accessToken}`,
+        // refreshToken: refreshToken,
       },
     }
   );
