@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import EditImg from './EditImg';
 import EditName from './EditName';
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { FetchEditProfile } from '../../../api/api';
 
 const EditProfile = ({
   setIsEdit,
@@ -15,13 +17,18 @@ const EditProfile = ({
     setIsEdit(false);
   };
 
-  const handleSaveButton = () => {
+  const handleSaveButton = async () => {
     const confirmed = window.confirm('정말 저장하시겠습니까?');
     if (confirmed) {
       console.log(imgUrl, userName);
+      await editMutation.mutateAsync(); // 변경된 부분: editMutation을 비동기로 실행
       setIsEdit(false);
     }
   };
+
+  const editMutation = useMutation(() =>
+    FetchEditProfile({ imageUrl: imgUrl, username: userName })
+  );
 
   return (
     <Container>
