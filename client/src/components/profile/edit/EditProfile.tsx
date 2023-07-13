@@ -12,16 +12,15 @@ const EditProfile = ({
 }) => {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
-
-  const handleButton = () => {
+  //취소버튼
+  const handleCancleButton = () => {
     setIsEdit(false);
   };
-
+  //저장버튼
   const handleSaveButton = async () => {
     const confirmed = window.confirm('정말 저장하시겠습니까?');
     if (confirmed) {
-      console.log(imgUrl, userName);
-      await editMutation.mutateAsync(); // 변경된 부분: editMutation을 비동기로 실행
+      await editMutation.mutateAsync(); //  editMutation을 비동기로 실행
       setIsEdit(false);
     }
   };
@@ -38,7 +37,7 @@ const EditProfile = ({
         <Button bgColor="#007bff" onClick={handleSaveButton}>
           저장
         </Button>
-        <Button bgColor="#ff0000" onClick={handleButton}>
+        <Button bgColor="#ff0000" onClick={handleCancleButton}>
           취소
         </Button>
       </BtnGroupDiv>
