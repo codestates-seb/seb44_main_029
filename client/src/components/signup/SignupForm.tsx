@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { SignUp } from '../../api/api';
-
+import { SignUpInfo } from '../../types/types';
 interface SignUpFormData {
   username: string;
   email: string;
@@ -74,7 +74,7 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
     return Object.keys(errors).length === 0;
   };
 
-  const signUpMutation = useMutation((formData: SignUpFormData) =>
+  const signUpMutation = useMutation((formData: SignUpInfo) =>
     SignUp(formData)
   );
 
