@@ -64,7 +64,7 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
   const loginMutation = useMutation(Login, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['login']);
-      const accessToken = data.headers['authorization'];
+      const accessToken = data.headers['access-token'];
       const refreshToken = data.headers['refresh-token'];
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
