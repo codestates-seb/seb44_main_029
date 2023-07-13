@@ -19,7 +19,7 @@ Spring:
         show-sql: true
 
   profiles:
-    include: jwt
+    include: jwt, redis, oauth
 
 cloud:
   aws:
@@ -30,4 +30,3 @@ cloud:
     credentials:
       accessKey: AKIA3IRIRP3GETTSJTN4
       secretKey: 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
-
