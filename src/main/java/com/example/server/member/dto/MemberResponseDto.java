@@ -11,6 +11,5 @@ import lombok.*;
 public class MemberResponseDto {
     String username;
     String email;
-    String password;
     String imageUrl;
 }

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -20,9 +23,11 @@ public class TokenController {
     private final TokenService tokenService;
 
     @GetMapping("/{username}")
-    public ResponseEntity updateToken(@PathVariable("username") String username){
+    public ResponseEntity updateToken(@PathVariable("username") String username, HttpServletResponse response){
         TokenResponse token = tokenService.updateAccessToken(username);
+        response.setHeader("Refresh-Token", token.getRefreshToken());
+        response.setHeader("Access-Token", token.getAccessToken());
 
-        return new ResponseEntity(token, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
