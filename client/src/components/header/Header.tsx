@@ -19,11 +19,11 @@ const Header = () => {
       ) : null}
       {isLogInClicked ? (
         <LogInShowDiv>
-          <LoginForm />
+          <LoginForm setIsLogInClicked={setIsLogInClicked} />
         </LogInShowDiv>
       ) : isSignUpClicked ? (
         <SignOutShowDiv>
-          <SignUpForm />
+          <SignUpForm setIsSignUpClicked={setIsSignUpClicked} />
         </SignOutShowDiv>
       ) : null}
       <Nav
