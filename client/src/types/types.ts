@@ -25,3 +25,8 @@ export type PageInfo = {
   totalElements: number;
   totalPages: number;
 };
+
+export type EditType = {
+  imageUrl: string | null;
+  username: string | null;
+};

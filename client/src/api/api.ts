@@ -5,6 +5,7 @@ import {
   SignUpInfo,
   ItemType,
   PageInfo,
+  EditType,
 } from '../types/types';
 
 const BASE_URL = 'https://3a11-175-208-216-56.ngrok-free.app/';
@@ -54,4 +55,25 @@ export const Logout = async () => {
   });
 
   return response;
+};
+
+export const FetchEditProfile = async (data: EditType) => {
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  const respone = await axios.patch(
+    `${BASE_URL}members`,
+    {
+      imageUrl: data.imageUrl,
+      username: data.username,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        accessToken: `Bearer ${accessToken}`,
+        refreshToken: refreshToken,
+      },
+    }
+  );
+  return respone;
 };
