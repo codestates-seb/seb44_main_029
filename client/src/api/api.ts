@@ -3,9 +3,8 @@ import {
   Musics,
   LoginInfo,
   SignUpInfo,
-  ItemType,
-  PageInfo,
   EditType,
+  FetchThemeItemProps,
 } from '../types/types';
 
 const BASE_URL = 'https://3a11-175-208-216-56.ngrok-free.app/';
@@ -70,10 +69,27 @@ export const FetchEditProfile = async (data: EditType) => {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
-        accessToken: `Bearer ${accessToken}`,
-        refreshToken: refreshToken,
+        'access-token': `Bearer ${accessToken}`,
+        'refresh-token': refreshToken,
       },
     }
   );
   return respone;
+};
+
+export const GetThemeItems = async (
+  themeId: number,
+  pageParam = 1,
+  sizeParam = 20
+): Promise<FetchThemeItemProps> => {
+  const response = await axios.get(
+    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    }
+  );
+  return response.data;
 };

@@ -11,22 +11,30 @@ export type SignUpInfo = {
   password: string;
 };
 
-export type ItemType = {
+export interface ItemInfo {
   contentId: number;
   themeTitle: string;
   howManyLiked: number;
   contentTitle: string;
   contentUri: string;
-};
+}
 
-export type PageInfo = {
+export interface PageInfo {
   page: number;
   size: number;
   totalElements: number;
   totalPages: number;
+
 };
 
 export type EditType = {
   imageUrl: string | null;
   username: string | null;
 };
+
+}
+
+export interface FetchThemeItemProps {
+  data: ItemInfo[];
+  pageInfo: PageInfo;
+}
