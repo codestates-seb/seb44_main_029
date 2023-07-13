@@ -68,9 +68,7 @@ const ThemeItemList = () => {
                   <ItemList
                     key={item.contentId}
                     contentId={item.contentId}
-                    themeTitle={item.themeTitle}
-                    howManyLiked={item.howManyLiked}
-                    contentTitle={item.contentTitle}
+                    liked={item.liked}
                     contentUri={item.contentUri}
                     themeId={numericThemeId}
                   />
