@@ -4,6 +4,7 @@ import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import SignUpForm from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
+import GoogleLoginButton from './GoogleLoginButton';
 interface LoginFormData {
   email: string;
   password: string;
@@ -105,7 +106,7 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
       {!isSignUpClicked ? (
         <Container>
           <h1>LOGIN</h1>
-          <GoogleLoginDiv>
+          {/* <GoogleLoginDiv>
             <GoogleOAuthProvider clientId={clientId}>
               <GoogleLogin
                 onSuccess={(credentialResponse) => {
@@ -116,7 +117,8 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
                 }}
               />
             </GoogleOAuthProvider>
-          </GoogleLoginDiv>
+          </GoogleLoginDiv> */}
+          <GoogleLoginButton />
 
           <Form onSubmit={handleSubmit}>
             <Label htmlFor="email" isFocused={loginFormData.email !== ''}>
@@ -145,7 +147,10 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
         </Container>
       ) : (
         <SignOutShowDiv>
-          <SignUpForm setIsSignUpClicked={setIsSignUpClicked} />
+          <SignUpForm
+            setIsSignUpClicked={setIsSignUpClicked}
+            setIsLogInClicked={setIsLogInClicked}
+          />
         </SignOutShowDiv>
       )}
     </>
