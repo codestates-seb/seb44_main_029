@@ -6,44 +6,44 @@ interface useIntersectionObserverProps {
   threshold?: number;
   target: React.RefObject<HTMLElement>;
   onIntersect: (entry: IntersectionObserverEntry) => void;
-  enabled: boolean;
 }
 
 const useIntersectionObserver = ({
   root,
   target,
   onIntersect,
-  threshold = 0.3,
-  rootMargin = '0px',
-  enabled = true,
+  threshold,
+  rootMargin,
 }: useIntersectionObserverProps) => {
   useEffect(() => {
-    if (!enabled || !target.current) {
+    if (!target.current) {
       return;
     }
 
-    const handleObserver = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(onIntersect);
+    const handleObserver: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.3) {
+          onIntersect(entry);
+        }
+      });
     };
 
-    const observer = new IntersectionObserver(handleObserver, {
-      root: root || null,
+    const options = {
+      root,
       rootMargin,
       threshold,
-    });
+    };
 
-    const el = target && target.current;
+    const observer = new IntersectionObserver(handleObserver, options);
 
-    if (!el) {
-      return;
-    }
+    const targetElement = target?.current;
 
-    observer.observe(el);
+    observer.observe(targetElement);
 
     return () => {
-      observer.unobserve(el);
+      observer.unobserve(targetElement);
     };
-  }, [target, enabled, root, threshold, rootMargin, onIntersect]);
+  }, [target, root, threshold, rootMargin, onIntersect]);
 };
 
 export default useIntersectionObserver;
