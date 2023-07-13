@@ -1,6 +1,6 @@
 package com.example.server.member.service;
 
-import com.example.server.member.dto.TokenResponse;
+import com.example.server.member.dto.MemberIdAndTokenDto;
 import com.example.server.member.entity.Member;
 import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.repository.MemberJpaRepository;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -67,7 +66,7 @@ public class TokenService {
         return true;
     }
 
-    public TokenResponse updateAccessToken(String username) {
+    public MemberIdAndTokenDto updateAccessToken(String username) {
         Member member = memberJpaRepository.findByMemberUsername(username).get();
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
@@ -75,11 +74,11 @@ public class TokenService {
         String accessToken = tokenProvider.createToken(authentication);
         String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + member.getEmail());
 
-        TokenResponse tokenResponse = TokenResponse.builder()
+        MemberIdAndTokenDto memberIdAndTokenDto = MemberIdAndTokenDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
 
-        return tokenResponse;
+        return memberIdAndTokenDto;
     }
 }

@@ -1,12 +1,18 @@
 package com.example.server.member.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Getter
@@ -15,12 +21,13 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Member")
 public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    Boolean disable;
+
     @Email
     String email;
 
@@ -35,6 +42,13 @@ public class Member implements UserDetails {
 
 //    @OneToMany(mappedBy = "likeId")
 //    List<Like> likes;
+
+    @CreatedDate
+    LocalDateTime createAt;
+    @LastModifiedDate
+    LocalDateTime modifiedAt;
+    @LastModifiedBy
+    Long modifiedBy;
 
     @Getter
     public enum Role{
