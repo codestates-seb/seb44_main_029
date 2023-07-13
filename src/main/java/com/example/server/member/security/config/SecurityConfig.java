@@ -1,13 +1,17 @@
 package com.example.server.member.security.config;
 
+import com.example.server.member.security.handler.CustomOAuth2SuccessHandler;
 import com.example.server.member.security.handler.JwtAccessDeniedHandler;
 import com.example.server.member.security.handler.JwtAuthenticationEntryPoint;
+import com.example.server.member.security.oauth.CustomOauth2UserService;
 import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.security.util.CustomAuthenticationProvider;
 import com.example.server.member.security.util.CustomUserDetailService;
+import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,6 +21,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,8 +36,11 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailService userDetailService;
     private final JwtTokenProvider tokenProvider;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final CustomOauth2UserService customOauth2UserService;
+    private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -87,29 +96,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionFixation().none()
 
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
 
                 .authorizeRequests()
-                .antMatchers("/members").permitAll()
+                .antMatchers("/tokens/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/members/**").permitAll()
                 .antMatchers("/members/login").permitAll()
-                .antMatchers("/members/{member-id}").permitAll() //
-                .antMatchers("/contents").permitAll() //
-                .antMatchers("/contents/{theme_title}").permitAll() //
-                .antMatchers("/contents/{member-id}/likes").permitAll() //
-                .antMatchers("/contents/{member-id}/likes/{theme-id}").permitAll() //
-                .antMatchers("/theme").permitAll() //
-                .antMatchers("/theme/{theme-id}").permitAll() //
-                .antMatchers("/likes/{content-id}/{member-id}").permitAll() //
-                .antMatchers("/").permitAll() //
-                .antMatchers("/favicon.ico").permitAll() //
-                .antMatchers(HttpMethod.GET, "/members/get/**").hasRole("USER")
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .apply(new JwtSecurityConfig(tokenProvider, redisTemplate))
+
+                .and()
+                .oauth2Login()
+//                .defaultSuccessUrl("/members/success")
+                .successHandler(customOAuth2SuccessHandler)
+                .userInfoEndpoint()
+                .userService(customOauth2UserService);
     }
 }
 

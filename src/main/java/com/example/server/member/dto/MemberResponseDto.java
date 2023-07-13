@@ -1,5 +1,6 @@
 package com.example.server.member.dto;
 
+import com.example.server.member.entity.Member;
 import lombok.*;
 
 @Getter
@@ -8,7 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberResponseDto {
-    Long id;
     String username;
-    Integer HowManyLiked;
+    String email;
+    String imageUrl;
 }

@@ -21,7 +21,7 @@ public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
+    Boolean disable;
     @Email
     String email;
 
@@ -58,6 +58,12 @@ public class Member implements UserDetails {
         Role(String key) {
             this.key = key;
         }
+    }
+
+    public Member update(String name){
+        this.username = name;
+
+        return this;
     }
 
     @Override
