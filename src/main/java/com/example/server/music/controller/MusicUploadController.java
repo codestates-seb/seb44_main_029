@@ -33,12 +33,13 @@ public class MusicUploadController {
 
 
     @PostMapping
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
+                                             @RequestParam("themeId") long themeId) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body("No file uploaded");
         }
         try {
-            awsS3Service.upload(file);
+            awsS3Service.upload(file, themeId);
             return ResponseEntity.ok("File uploaded successfully");
         } catch (Exception e) {
             e.printStackTrace();
