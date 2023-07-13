@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import ThemeHeader from '../components/theme/themeItemList/ThemeHeader';
 import ItemListHeader from '../components/theme/themeItemList/ItemListHeader';
@@ -19,7 +19,6 @@ const ThemeItemList = () => {
     error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
     status,
   } = useInfiniteQuery<FetchThemeItemProps, AxiosError>(
@@ -28,7 +27,7 @@ const ThemeItemList = () => {
       GetThemeItems(parseInt(themeId || ''), pageParam, 20),
     {
       keepPreviousData: true,
-      getNextPageParam: (lastPage, allPages) => {
+      getNextPageParam: (lastPage) => {
         const { pageInfo } = lastPage;
         if (pageInfo.page < pageInfo.totalPages) {
           return pageInfo.page + 1;
@@ -39,29 +38,20 @@ const ThemeItemList = () => {
   );
 
   const handleIntersect = async (entry: IntersectionObserverEntry) => {
-    // 단순히 isIntersecting을 확인하는 대신
-    // 더 많은 데이터를 로드하고 있는지 여부를 확인해야 합니다.
-    if (
-      entry.isIntersecting &&
-      hasNextPage &&
-      !(isFetching || isFetchingNextPage)
-    ) {
-      await fetchNextPage(); // 다음 페이지를 가져옵니다.
+    if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+      await fetchNextPage();
     }
   };
 
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   useIntersectionObserver({
-    target: targetRef,
-    onIntersect: handleIntersect,
     root: null,
     rootMargin: '0px',
     threshold: 0.3,
-    enabled: !!hasNextPage,
+    target: targetRef,
+    onIntersect: handleIntersect,
   });
-
-  console.log(items?.pages);
 
   return (
     <Layout>
@@ -70,19 +60,22 @@ const ThemeItemList = () => {
         <ItemListHeader />
         <ItemListContainerDiv>
           <ItemGridDiv>
-            {items?.pages.flatMap((page) =>
-              page.data.map((item) => (
-                <ItemList
-                  key={item.contentId}
-                  contentId={item.contentId}
-                  themeTitle={item.themeTitle}
-                  howManyLiked={item.howManyLiked}
-                  contentTitle={item.contentTitle}
-                  contentUri={item.contentUri}
-                  themeId={numericThemeId}
-                />
-              ))
-            )}
+            {status === 'loading' && <div>loading...</div>}
+            {status === 'error' && <div>{error.toString()}</div>}
+            {status === 'success' &&
+              items?.pages.flatMap((page) =>
+                page.data.map((item) => (
+                  <ItemList
+                    key={item.contentId}
+                    contentId={item.contentId}
+                    themeTitle={item.themeTitle}
+                    howManyLiked={item.howManyLiked}
+                    contentTitle={item.contentTitle}
+                    contentUri={item.contentUri}
+                    themeId={numericThemeId}
+                  />
+                ))
+              )}
           </ItemGridDiv>
           <div ref={targetRef} /> {/* 무한 스크롤 로딩 중 일시 중지 */}
         </ItemListContainerDiv>
