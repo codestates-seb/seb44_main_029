@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -30,6 +31,13 @@ public class HttpInterceptor implements HandlerInterceptor{
         response.setHeader("Access-Token", accessToken);
 
         log.info("Header에 Refresh-Token, Access-Token 삽입");
+
+        if(accessToken != null){
+            Map<String, Object> map = tokenProvider.getClaimsFromToken(accessToken);
+
+            Object memberId = map.get("memberId");
+            request.setAttribute("memberId", memberId);
+        }
 
         return true;
     }

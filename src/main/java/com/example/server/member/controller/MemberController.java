@@ -35,14 +35,14 @@ public class MemberController {
         TokenResponse token = memberService.login(dto);
 
         response.setHeader("Refresh-Token", token.getRefreshToken());
-        response.setHeader("Authorization", token.getAccessToken()); // Access-Token > Authorization으로 변경
+        response.setHeader("Access-Token", token.getAccessToken());
 
-        return new ResponseEntity(token, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
-        String accessToken = request.getHeader("Authorization");
+    public ResponseEntity logout(HttpServletRequest request){
+        String accessToken = request.getHeader("Access-Token");
         String refreshToken = request.getHeader("Refresh-Token");
 
         TokenResponse tokenResponse = TokenResponse.builder()
@@ -54,7 +54,7 @@ public class MemberController {
 
         SecurityContextHolder.clearContext();
 
-        return new ResponseEntity(true, HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -66,22 +66,47 @@ public class MemberController {
     }
 
     @GetMapping("/{member-id}")
-    ResponseEntity read(@PathVariable("member-id") Long memberId){
+    ResponseEntity read(@PathVariable("member-id") Long memberId, HttpServletRequest request){
+        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        if(!memberService.isRequesterSameOwner(requestId, memberId))
+            return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
+
         MemberResponseDto response = memberService.read(memberId);
 
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @PatchMapping("/{member-id}")
-    ResponseEntity update(@RequestBody MemberUpdateDto dto, @PathVariable("member-id") Long memberId){
+    ResponseEntity update(@RequestBody MemberUpdateDto dto, @PathVariable("member-id") Long memberId,
+                          HttpServletRequest request){
+        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        if(!memberService.isRequesterSameOwner(requestId, memberId))
+            return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
+
         Long response = memberService.update(dto, memberId);
 
         if(response == -1) return new ResponseEntity(response, HttpStatus.ACCEPTED);
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
+    @PatchMapping("/password/{member-id}")
+    ResponseEntity updatePassword(@PathVariable("member-id") Long memberId, @RequestBody MemberPasswordUpdateDto dto,
+                                  HttpServletRequest request){
+        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        if(!memberService.isRequesterSameOwner(requestId, memberId))
+            return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
+
+        Long response = memberService.updatePassword(memberId, dto);
+
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
     @DeleteMapping("/{member-id}")
-    ResponseEntity delete(@PathVariable("member-id") Long memberId){
+    ResponseEntity delete(@PathVariable("member-id") Long memberId, HttpServletRequest request){
+        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        if(!memberService.isRequesterSameOwner(requestId, memberId))
+            return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
+
         memberService.delete(memberId);
 
         return new ResponseEntity<>(true, HttpStatus.OK);

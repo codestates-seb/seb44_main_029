@@ -20,7 +20,7 @@ public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
+    Boolean disable;
     @Email
     String email;
 
