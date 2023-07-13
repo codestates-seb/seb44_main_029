@@ -24,6 +24,14 @@ export interface PageInfo {
   size: number;
   totalElements: number;
   totalPages: number;
+
+};
+
+export type EditType = {
+  imageUrl: string | null;
+  username: string | null;
+};
+
 }
 
 export interface FetchThemeItemProps {
