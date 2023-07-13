@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
-import { useNavigate } from 'react-router-dom';
-const ChangeProfile = () => {
-  const navigate = useNavigate();
+const ChangeProfile = ({
+  setIsEdit,
+}: {
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const handleButton = () => {
-    navigate('/profile/edit');
+    setIsEdit(true);
   };
   return (
     <Container>
