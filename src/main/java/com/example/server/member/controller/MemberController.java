@@ -42,8 +42,8 @@ public class MemberController {
 
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request, HttpServletResponse response){
-        String accessToken = request.getHeader("accessToken");
-        String refreshToken = request.getHeader("requestToken");
+        String accessToken = request.getHeader("Authorization");
+        String refreshToken = request.getHeader("Refresh-Token");
 
         TokenResponse tokenResponse = TokenResponse.builder()
                 .accessToken(accessToken)
