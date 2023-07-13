@@ -1,13 +1,11 @@
 package com.example.server.member.controller;
 
 import com.example.server.member.dto.*;
-import com.example.server.member.entity.Member;
 import com.example.server.member.service.MemberService;
-import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,29 +25,33 @@ public class MemberController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){
-        TokenResponse token = memberService.login(dto);
+        MemberIdAndTokenDto tokenAndId = memberService.login(dto);
 
-        response.setHeader("Refresh-Token", token.getRefreshToken());
-        response.setHeader("Access-Token", token.getAccessToken());
+        response.setHeader(HttpHeaders.AUTHORIZATION, tokenAndId.getAccessToken());
 
-        return new ResponseEntity(HttpStatus.OK);
+        ResponseDto responseDto = ResponseDto.builder()
+                .memberId(tokenAndId.getMemberId())
+                .refreshToken(tokenAndId.getRefreshToken())
+                .build();
+
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request){
-        String accessToken = request.getHeader("Access-Token");
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
         String refreshToken = request.getHeader("Refresh-Token");
 
-        TokenResponse tokenResponse = TokenResponse.builder()
+        MemberIdAndTokenDto memberIdAndTokenDto = MemberIdAndTokenDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
 
-        memberService.logout(tokenResponse);
+        memberService.logout(memberIdAndTokenDto);
 
         SecurityContextHolder.clearContext();
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(true, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -62,7 +64,7 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     ResponseEntity read(@PathVariable("member-id") Long memberId, HttpServletRequest request){
-        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        Long requestId = (Long) request.getAttribute("memberId");
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 
@@ -74,7 +76,7 @@ public class MemberController {
     @PatchMapping("/{member-id}")
     ResponseEntity update(@RequestBody MemberUpdateDto dto, @PathVariable("member-id") Long memberId,
                           HttpServletRequest request){
-        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        Long requestId = (Long) request.getAttribute("memberId");
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 
@@ -87,7 +89,7 @@ public class MemberController {
     @PatchMapping("/password/{member-id}")
     ResponseEntity updatePassword(@PathVariable("member-id") Long memberId, @RequestBody MemberPasswordUpdateDto dto,
                                   HttpServletRequest request){
-        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        Long requestId = (Long) request.getAttribute("memberId");
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 
@@ -98,7 +100,7 @@ public class MemberController {
 
     @DeleteMapping("/{member-id}")
     ResponseEntity delete(@PathVariable("member-id") Long memberId, HttpServletRequest request){
-        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        Long requestId = (Long) request.getAttribute("memberId");
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 

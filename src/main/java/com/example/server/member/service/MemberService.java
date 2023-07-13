@@ -3,8 +3,10 @@ package com.example.server.member.service;
 import com.example.server.member.Mapper.MemberMapper;
 import com.example.server.member.dto.*;
 import com.example.server.member.entity.Member;
+import com.example.server.member.entity.MemberRecord;
 import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.repository.MemberJpaRepository;
+import com.example.server.member.repository.MemberRecordJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,18 +18,20 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService{
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider tokenProvider;
     private final TokenService tokenService;
     private final MemberJpaRepository memberJpaRepository;
+    private final MemberRecordJpaRepository memberRecordJpaRepository;
     private final MemberMapper memberMapper;
     private final RedisTemplate<String, Object> redisTemplate;
 
@@ -35,9 +39,9 @@ public class MemberService {
         return requestId == ownerId;
     }
 
-    public TokenResponse login(MemberLoginDto dto){
-        UsernamePasswordAuthenticationToken AuthenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(AuthenticationToken);
+    public MemberIdAndTokenDto login(MemberLoginDto dto){
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         String username = authentication.getName();
 
@@ -47,15 +51,16 @@ public class MemberService {
 
         redisTemplate.opsForValue().set("RT:" + dto.getEmail(), refreshToken, token.getExpired().getTime(), TimeUnit.MILLISECONDS);
 
-        TokenResponse response = TokenResponse.builder()
+        MemberIdAndTokenDto response = MemberIdAndTokenDto.builder()
                 .refreshToken(refreshToken)
                 .accessToken(accessToken)
+                .memberId(((Member) authentication.getPrincipal()).getId())
                 .build();
 
         return response;
     }
 
-    public void logout(TokenResponse dto){
+    public void logout(MemberIdAndTokenDto dto){
         if(!tokenProvider.validateToken(dto.getAccessToken()))
             throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
 
@@ -83,7 +88,6 @@ public class MemberService {
         String password = passwordEncoder.encode(dto.getPassword());
 
         Member member = Member.builder()
-                .disable(false)
                 .email(dto.getEmail())
                 .username(dto.getUsername())
                 .password(password)
@@ -113,9 +117,14 @@ public class MemberService {
         Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow( () -> new UsernameNotFoundException("존재하지 않은 유저입니다."));
 
-        member.setUsername(dto.getUsername());
-        member.setImageUrl(dto.getImageUrl());
+        MemberRecord record = recordMember(member);
 
+        if(dto.getUsername() != null)
+            member.setUsername(dto.getUsername());
+        if(dto.getImageUrl() != null)
+            member.setImageUrl(dto.getImageUrl());
+
+        memberRecordJpaRepository.save(record);
         memberJpaRepository.save(member);
 
         return memberId;
@@ -134,7 +143,10 @@ public class MemberService {
             return Long.valueOf(-1);
         }
 
+        MemberRecord record = recordMember(member);
         member.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+
+        memberRecordJpaRepository.save(record);
 
         return memberJpaRepository.save(member).getId();
     }
@@ -142,9 +154,19 @@ public class MemberService {
     public void delete(Long memberId) {
         Member member = memberJpaRepository.findById(memberId).get();
 
-        member.setDisable(true);
-
         memberJpaRepository.save(member);
+    }
+
+    public MemberRecord recordMember(Member member){
+        return MemberRecord.builder()
+                .username(member.getUsername())
+                .email(member.getEmail())
+                .password(member.getPassword())
+                .imageUrl(member.getImageUrl())
+                .role(member.getRole())
+                .createAt(member.getModifiedAt())
+                .member(member)
+                .build();
     }
 
     public Long getMemberId(Authentication authentication){
