@@ -14,6 +14,7 @@ export type SignUpInfo = {
 export interface ItemInfo {
   contentId: number;
   themeTitle: string;
+  liked: boolean;
   howManyLiked: number;
   contentTitle: string;
   contentUri: string;
