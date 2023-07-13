@@ -3,31 +3,28 @@ import {
   Musics,
   LoginInfo,
   SignUpInfo,
+  EditType,
   FetchThemeItemProps,
 } from '../types/types';
 
+const BASE_URL = 'https://3a11-175-208-216-56.ngrok-free.app/';
 /* 유저 정보 가져오기 */
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
   axios
-    .get(
-      `https://3a11-175-208-216-56.ngrok-free.app/theme/${ThemeId}/music/list`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
-        },
-      }
-    )
+    .get(`${BASE_URL}theme/${ThemeId}/music/list`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    })
     .then((res) => res.data);
 
 export const SignUp = (data: SignUpInfo) =>
-  axios
-    .post('https://3a11-175-208-216-56.ngrok-free.app/members', data)
-    .then((res) => res.data);
+  axios.post(`${BASE_URL}members`, data).then((res) => res.data);
 
 export const Login = async (data: LoginInfo) => {
   const response = await axios.post(
-    'https://3a11-175-208-216-56.ngrok-free.app/members/login',
+    `${BASE_URL}members/login`,
     {
       email: data.email,
       password: data.password,
@@ -47,9 +44,27 @@ export const Logout = async () => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
 
-  const response = await axios.post(
-    'https://3a11-175-208-216-56.ngrok-free.app/members/logout',
-    null,
+  const response = await axios.post(`${BASE_URL}members/logout`, null, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+      accessToken: `Bearer ${accessToken}`,
+      refreshToken: refreshToken,
+    },
+  });
+
+  return response;
+};
+
+export const FetchEditProfile = async (data: EditType) => {
+  const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
+  const respone = await axios.patch(
+    `${BASE_URL}members`,
+    {
+      imageUrl: data.imageUrl,
+      username: data.username,
+    },
     {
       headers: {
         'Content-Type': 'application/json',
@@ -59,8 +74,7 @@ export const Logout = async () => {
       },
     }
   );
-
-  return response;
+  return respone;
 };
 
 export const GetThemeItems = async (
