@@ -1,9 +1,25 @@
 import styled from 'styled-components';
+import { useRef } from 'react';
 
-const EditName = () => {
+const EditName = ({
+  setUserName,
+}: {
+  setUserName: React.Dispatch<React.SetStateAction<string | null>>;
+}) => {
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
+  const handleNameInputChange = () => {
+    const newName = nameInputRef.current?.value;
+    if (newName) {
+      setUserName(newName);
+    }
+  };
   return (
     <Container>
-      <NameInput placeholder="New Name!" />
+      <NameInput
+        ref={nameInputRef}
+        placeholder="New Name!"
+        onChange={handleNameInputChange}
+      />
       <EmailDiv>Email</EmailDiv>
     </Container>
   );
