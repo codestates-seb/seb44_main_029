@@ -3,7 +3,7 @@ import {
   Musics,
   LoginInfo,
   SignUpInfo,
-  FetchThemeItemProps,
+  IThemeItemProps,
   ItemInfo,
 } from '../types/types';
 
@@ -64,13 +64,14 @@ export const Logout = async () => {
   return response;
 };
 
+// 테마 이미지 리스트 가져오기
 export const GetThemeItems = async (
   themeId: number,
   pageParam = 1,
   sizeParam = 20
-): Promise<FetchThemeItemProps> => {
+): Promise<IThemeItemProps> => {
   const response = await axios.get(
-    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+    `https://55a4-221-141-172-40.ngrok-free.app/theme/${themeId}/1?page=${pageParam}&size=${sizeParam}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -87,7 +88,28 @@ export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
   // const refreshToken = localStorage.getItem('refreshToken');
 
   const response = await axios.patch(
-    `https://ba58-221-141-172-40.ngrok-free.app/likes/${contentId}/1`,
+    `https://55a4-221-141-172-40.ngrok-free.app/likes/${contentId}/1`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        // accessToken: `Bearer ${accessToken}`,
+        // refreshToken: refreshToken,
+      },
+    }
+  );
+  return response.data;
+};
+
+// 좋아요한 테마 이미지 리스트 가져오기
+export const GetThemeLikes = async (
+  themeId: number
+): Promise<IThemeItemProps> => {
+  // const accessToken = localStorage.getItem('accessToken');
+  // const refreshToken = localStorage.getItem('refreshToken');
+
+  const response = await axios.get(
+    `https://55a4-221-141-172-40.ngrok-free.app/contents/1/likes/${themeId}`,
     {
       headers: {
         'Content-Type': 'application/json',
