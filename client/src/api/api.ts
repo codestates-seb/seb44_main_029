@@ -7,7 +7,9 @@ import {
   FetchThemeItemProps,
 } from '../types/types';
 
-const BASE_URL = 'https://8d81-175-123-6-225.ngrok-free.app/';
+
+const BASE_URL = 'https://a74a-175-208-216-56.ngrok-free.app/';
+
 /* 유저 정보 가져오기 */
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
   axios
