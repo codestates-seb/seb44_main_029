@@ -1,7 +1,20 @@
-import { Layout, ContentContainer } from './Profile';
-import EditProfile from '../components/profile/edit/EditProfile';
+import { styled } from 'styled-components';
+import Upload from '../components/upload/Upload';
 
 const ProfileEdit = () => {
-  return <Layout></Layout>;
+  return (
+    <Div>
+      <Upload />
+    </Div>
+  );
 };
 export default ProfileEdit;
+
+const Div = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
