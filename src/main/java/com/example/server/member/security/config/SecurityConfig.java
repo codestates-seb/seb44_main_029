@@ -106,7 +106,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/tokens/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/members/**").permitAll()
                 .antMatchers("/members/login").permitAll()
-
                 .anyRequest().permitAll()
 
                 .and()
