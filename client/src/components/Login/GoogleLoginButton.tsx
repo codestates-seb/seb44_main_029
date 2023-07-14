@@ -5,14 +5,14 @@ import Google from '../../assets/icon/icon_google.png';
 const GoogleLoginButton: React.FC = () => {
   const handleOAuthClick = async () => {
     try {
-      const response = await axios.get(
-        'https://3a11-175-208-216-56.ngrok-free.app/oauth2/authorization/google'
+      const response = await axios.post(
+        'https://8d81-175-123-6-225.ngrok-free.app/oauth2/authorization/google'
       );
+      //   window.location.href = response.headers['location'];
       const accessToken = response.headers['access-token'];
       const refreshToken = response.headers['refresh-token'];
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
-      window.location.href = response.data.redirectUrl;
     } catch (error) {
       console.error(error);
     }
