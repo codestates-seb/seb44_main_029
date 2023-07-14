@@ -1,6 +1,5 @@
 package com.example.server.member.dto;
 
-import com.example.server.member.entity.Member;
 import lombok.*;
 
 @Getter
@@ -8,8 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberResponseDto {
-    String username;
-    String email;
+public class MemberImageUpdateDto {
     String imageUrl;
+//    String username;
 }

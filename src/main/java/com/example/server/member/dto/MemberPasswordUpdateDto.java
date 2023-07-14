@@ -7,8 +7,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberUpdateDto {
-    String imageUrl;
-    String username;
-//    String password;
+public class MemberPasswordUpdateDto {
+    String oldPassword;
+    String newPassword;
 }
