@@ -6,6 +6,7 @@ import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -21,15 +22,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/members/**")
                 .excludePathPatterns("/css/**", "/images/**", "/js/**");
     }
-/*
+
     @Override
     public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/*")
+        registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000")
-                .allowedOrigins("http://localhost:3030")
-                .allowedMethods("")
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .exposedHeaders("Access-Control-Allow-Origin");
     }
- */
 }

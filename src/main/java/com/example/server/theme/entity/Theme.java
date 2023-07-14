@@ -1,6 +1,7 @@
 package com.example.server.theme.entity;
 
 import com.example.server.content.entity.Content;
+import com.example.server.music.entity.Music;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +22,9 @@ public class Theme {
 
     @OneToMany(mappedBy = "theme")
     private List<Content> content;
+
+    @OneToMany(mappedBy = "theme")
+    private List<Music> music;
 
 //    @OneToMany(mappedBy = "theme")
 //    private Music music;

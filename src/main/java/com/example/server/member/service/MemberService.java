@@ -1,13 +1,16 @@
 package com.example.server.member.service;
 
+
 import com.example.server.member.Mapper.MemberMapper;
 import com.example.server.member.dto.*;
 import com.example.server.member.entity.Member;
 import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
+import com.example.server.music.service.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,8 +18,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.exception.SdkException;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -30,6 +38,12 @@ public class MemberService {
     private final MemberJpaRepository memberJpaRepository;
     private final MemberMapper memberMapper;
     private final RedisTemplate<String, Object> redisTemplate;
+    private final S3Client s3Client;
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
+
+
 
     public boolean isRequesterSameOwner(Long requestId, Long ownerId){
         return requestId == ownerId;
@@ -114,6 +128,7 @@ public class MemberService {
                 .orElseThrow( () -> new UsernameNotFoundException("존재하지 않은 유저입니다."));
 
         member.setUsername(dto.getUsername());
+        //member.setPassword(dto.getPassword());
         member.setImageUrl(dto.getImageUrl());
 
         memberJpaRepository.save(member);
@@ -151,5 +166,70 @@ public class MemberService {
         String username = authentication.getName();
 
         return memberJpaRepository.findByMemberUsername(username).get().getId();
+    }
+
+    // 회원 프로필 이미지 객체 리스트 가져오는 메소드
+//    public List<byte[]> profileImageList(){
+//        try{
+//            List<byte[]> imageList = new ArrayList<>();
+//            String pre = "memberProfile";
+//            // 이미지에 해당하는 파일 가져오기
+//            ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
+//                    .bucket(bucketName)
+//                    .prefix(pre)
+//                    .build();
+//
+//            ListObjectsResponse response = s3Client.listObjects(listObjectsRequest);
+//            for(S3Object s3Object : response.contents()){
+//                GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+//                        .bucket(bucketName)
+//                        .key(s3Object.key())
+//                        .build();
+//                ResponseBytes<GetObjectResponse> responseBytes = s3Client.getObjectAsBytes(getObjectRequest);
+//                byte[] image = responseBytes.asByteArray();
+//                imageList.add(image);
+//            }
+//            return imageList;
+//        }catch (SdkException e){
+//            throw new RuntimeException("이미지 list 반환 실패: " + e.getMessage(), e);
+//        }
+
+    // 객체 형태가 아닌 url로 이미지 리스트 전달
+    public List<String> profileImageList(){
+        try{
+            List<String> imageList = new ArrayList<>();
+            String pre = "memberProfile";
+            // 이미지에 해당하는 파일 가져오기
+            ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
+                    .bucket(bucketName)
+                    .prefix(pre)
+                    .build();
+
+            ListObjectsResponse response = s3Client.listObjects(listObjectsRequest);
+            for(S3Object s3Object : response.contents()){
+                GetUrlRequest getUrlRequest = GetUrlRequest.builder()
+                        .bucket(bucketName)
+                        .key(s3Object.key())
+                        .build();
+
+                String url = s3Client.utilities().getUrl(getUrlRequest).toExternalForm();
+                imageList.add(url);
+            }
+            return imageList;
+        }catch (SdkException e){
+            throw new RuntimeException("이미지 list 반환 실패: " + e.getMessage(), e);
+        }
+    }
+
+    // 회원 이미지 업데이트
+    public Long ImageUpdate(MemberImageUpdateDto dto, Long memberId){
+        //이미지가 null이라면 회원 rds에(db) s3의 url 저장
+        // 이미지가 이미 있다면 기존 url 삭제 후 새로운 url 저장
+        // rds 변경사항 저장
+        Member member = memberJpaRepository.findById(memberId)
+                .orElseThrow( () -> new UsernameNotFoundException("존재하지 않은 유저입니다."));
+        member.setImageUrl(dto.getImageUrl());
+        memberJpaRepository.save(member);
+        return memberId;
     }
 }
