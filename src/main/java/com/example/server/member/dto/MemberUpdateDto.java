@@ -10,4 +10,5 @@ import lombok.*;
 public class MemberUpdateDto {
     String imageUrl;
     String username;
+//    String password;
 }

@@ -1,16 +1,20 @@
 package com.example.server.member.controller;
 
+import com.example.server.MusicResources.S3Config;
 import com.example.server.member.dto.*;
 import com.example.server.member.service.MemberService;
+import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/members")
