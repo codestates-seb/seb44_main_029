@@ -10,6 +10,7 @@ import com.example.server.member.repository.MemberRecordJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 @RequiredArgsConstructor
 public class MemberService{
+    @Value("${jwt.refresh_token_expired}")
+    long refreshTokenExpired;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider tokenProvider;
     private final TokenService tokenService;
@@ -44,12 +47,12 @@ public class MemberService{
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         String username = authentication.getName();
+        Member member = memberJpaRepository.findByMemberUsername(username).get();
 
-        RefreshToken token = tokenService.createRefreshToken(username);
-        String refreshToken = token.getToken();
+        String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authentication);
 
-        redisTemplate.opsForValue().set("RT:" + dto.getEmail(), refreshToken, token.getExpired().getTime(), TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set("RT:" + member.getId(), refreshToken, refreshTokenExpired, TimeUnit.MILLISECONDS);
 
         MemberIdAndTokenDto response = MemberIdAndTokenDto.builder()
                 .refreshToken(refreshToken)
@@ -66,11 +69,14 @@ public class MemberService{
 
         Authentication authentication = tokenProvider.getAuthentication(dto.getAccessToken());
 
-        if(redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null)
+        if(redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
             redisTemplate.delete("RT:" + authentication.getName());
 
-        Long expiration = tokenProvider.getExpriation(dto.getAccessToken()).getTime();
-        redisTemplate.opsForValue().set(dto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+            Long expiration = tokenProvider.getExpriation(dto.getAccessToken()).getTime();
+            redisTemplate.opsForValue().set(dto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+        }else{
+            throw new RuntimeException("Refresh Token is not exist");
+        }
     }
 
     public Long signUp(MemberSignUpDto dto){
