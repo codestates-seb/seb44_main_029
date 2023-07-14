@@ -2,13 +2,12 @@ package com.example.server.member.controller;
 
 import com.example.server.MusicResources.S3Config;
 import com.example.server.member.dto.*;
-import com.example.server.member.entity.Member;
 import com.example.server.member.service.MemberService;
 import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.s3.model.S3Object;
@@ -22,39 +21,42 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final TokenService tokenService;
-    private final S3Config s3Config;
 
-    @PostMapping("/success")
-    public ResponseEntity success(){
+    @GetMapping("/success")
+    public ResponseEntity success(HttpServletRequest request, HttpServletResponse response){
+        String refreshToken = response.getHeader("Refresh-Token");
         return new ResponseEntity("ok", HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){
-        TokenResponse token = memberService.login(dto);
+        MemberIdAndTokenDto tokenAndId = memberService.login(dto);
 
-        response.setHeader("Refresh-Token", token.getRefreshToken());
-        response.setHeader("Access-Token", token.getAccessToken());
+        response.setHeader(HttpHeaders.AUTHORIZATION, tokenAndId.getAccessToken());
 
-        return new ResponseEntity(HttpStatus.OK);
+        ResponseDto responseDto = ResponseDto.builder()
+                .memberId(tokenAndId.getMemberId())
+                .refreshToken(tokenAndId.getRefreshToken())
+                .build();
+
+        return new ResponseEntity(responseDto, HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request){
-        String accessToken = request.getHeader("Access-Token");
-        String refreshToken = request.getHeader("Refresh-Token");
+        String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
+//        String refreshToken = request.getHeader("Refresh-Token");
 
-        TokenResponse tokenResponse = TokenResponse.builder()
+        MemberIdAndTokenDto memberIdAndTokenDto = MemberIdAndTokenDto.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+//                .refreshToken(refreshToken)
                 .build();
 
-        memberService.logout(tokenResponse);
+        memberService.logout(memberIdAndTokenDto);
 
         SecurityContextHolder.clearContext();
 
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(true, HttpStatus.OK);
     }
 
     @PostMapping("")
@@ -67,7 +69,7 @@ public class MemberController {
 
     @GetMapping("/{member-id}")
     ResponseEntity read(@PathVariable("member-id") Long memberId, HttpServletRequest request){
-        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        Long requestId = (Long) request.getAttribute("memberId");
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 
@@ -79,7 +81,7 @@ public class MemberController {
     @PatchMapping("/{member-id}")
     ResponseEntity update(@RequestBody MemberUpdateDto dto, @PathVariable("member-id") Long memberId,
                           HttpServletRequest request){
-        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        Long requestId = (Long) request.getAttribute("memberId");
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 
@@ -92,7 +94,7 @@ public class MemberController {
     @PatchMapping("/password/{member-id}")
     ResponseEntity updatePassword(@PathVariable("member-id") Long memberId, @RequestBody MemberPasswordUpdateDto dto,
                                   HttpServletRequest request){
-        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        Long requestId = (Long) request.getAttribute("memberId");
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 
@@ -103,40 +105,12 @@ public class MemberController {
 
     @DeleteMapping("/{member-id}")
     ResponseEntity delete(@PathVariable("member-id") Long memberId, HttpServletRequest request){
-        Long requestId = Long.valueOf((Integer) request.getAttribute("memberId"));
+        Long requestId = (Long) request.getAttribute("memberId");
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 
         memberService.delete(memberId);
 
         return new ResponseEntity<>(true, HttpStatus.OK);
-    }
-
-    /**
-     * 회원 프로필 이미지 갱신 > 위에 update 부분에 dto로 전달받음
-     * rds에 저장할지
-     * */
-    @PatchMapping("/{member-id}/imageChange")
-    public ResponseEntity updateProfileImage(@RequestBody MemberImageUpdateDto dto, @PathVariable("member-id")Long memberId){
-        // 헤더에서 전달받은 jwt의 memberId 가져옴. > 인터셉터 사용해도 될 듯
-        // 회원인지 확인 후 이미지 선택.
-        Long response = memberService.ImageUpdate(dto, memberId);
-        if(response == -1) return new ResponseEntity(response, HttpStatus.ACCEPTED);
-        return new ResponseEntity(response, HttpStatus.OK);
-
-    }
-
-    //회원 프로필 이미지 리스트 조회
-    @GetMapping("/profileImageList")
-    public ResponseEntity profileImageList(){
-        // 헤더의 액세스 토큰을 통해 회원인지 판단하고
-        // s3에서 해당 기본 이미지 객체 리스트 전달
-        try{
-            List<String> objects = memberService.profileImageList();
-            return ResponseEntity.ok(objects);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("이미지객체 list 반환에 실패했습니다: " + e.getMessage());
-        }
     }
 }

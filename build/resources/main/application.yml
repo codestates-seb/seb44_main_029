@@ -11,9 +11,9 @@ cloud:
       auto: 'false'
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/cozystates?useSSL=false&allowPublicKeyRetrieval=true&useLegacyAuth=false
-    username: Dong
-    password: 1234
+    url: jdbc:mysql://localhost:3306/tmpdb
+    username: root
+    password: a9250991518A!
     driver-class-name: com.mysql.cj.jdbc.Driver
   profiles:
     active: local
