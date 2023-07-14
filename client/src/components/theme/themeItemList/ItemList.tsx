@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ItemInfo } from '../../../types/types';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { UpdateLike } from '../../../api/api';
 
-interface ItemProps extends ItemInfo {
+interface ItemProps
+  extends Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'> {
   themeId: number;
 }
 
@@ -11,21 +14,31 @@ interface LikeButtonProps {
   isActive: boolean;
 }
 
-const ItemList = ({
-  contentId,
-  themeTitle,
-  howManyLiked,
-  contentTitle,
-  contentUri,
-  themeId,
-}: ItemProps) => {
-  const [plusLikeButton, setPlusLikeButton] = useState<boolean>(false);
+const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
+  const [likedItem, setLikedItem] = useState<boolean>(liked);
+  const queryClient = useQueryClient();
 
-  const handleLikeButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.stopPropagation();
-    setPlusLikeButton(!plusLikeButton);
+  // UpdateLike mutation을 정의하고 useMutation 훅을 사용하여 할당
+  const handleUpdateLikeMutation = useMutation(UpdateLike, {
+    onSuccess: () => {
+      // 'items' 쿼리를 무효화하여 데이터 갱신
+      queryClient.invalidateQueries(['items']);
+    },
+    onError: (error) => {
+      console.log(`onError: ${error}`);
+    },
+  });
+
+  // 좋아요 버튼이 클릭되었을 때 처리하는 함수
+  const handleLikeButtonClick = async () => {
+    try {
+      // UpdateLike API를 호출하고 결과를 반환
+      await handleUpdateLikeMutation.mutateAsync(contentId);
+      // 좋아요 상태를 업데이트
+      setLikedItem((likedItem) => !likedItem);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -36,7 +49,7 @@ const ItemList = ({
       <OverlayControlDiv>
         <LikeButton
           type="button"
-          isActive={plusLikeButton}
+          isActive={likedItem}
           onClick={handleLikeButtonClick}
         >
           🤍
@@ -101,6 +114,7 @@ const LikeButton = styled.button<LikeButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.15s;
 
   &:hover {
     border: 2px solid rgba(255, 255, 255, 1);
