@@ -27,7 +27,7 @@ export interface PageInfo {
   totalPages: number;
 }
 
-export interface FetchThemeItemProps {
+export interface IThemeItemProps {
   data: ItemInfo[];
   pageInfo: PageInfo;
 }
