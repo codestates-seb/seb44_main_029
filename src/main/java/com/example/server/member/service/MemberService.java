@@ -7,9 +7,12 @@ import com.example.server.member.entity.Member;
 import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
+import com.example.server.music.controller.MusicController;
 import com.example.server.music.service.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,6 +42,8 @@ public class MemberService {
     private final MemberMapper memberMapper;
     private final RedisTemplate<String, Object> redisTemplate;
     private final S3Client s3Client;
+    private static final Logger logger = LoggerFactory.getLogger(MusicController.class);
+
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
@@ -72,14 +77,16 @@ public class MemberService {
     public void logout(TokenResponse dto){
         if(!tokenProvider.validateToken(dto.getAccessToken()))
             throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
-
+        logger.info("로그아웃 유효성 검사 완료 ");
         Authentication authentication = tokenProvider.getAuthentication(dto.getAccessToken());
-
+        logger.info("tokenProvider에서 인증 정보 추출");
         if(redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null)
             redisTemplate.delete("RT:" + authentication.getName());
-
+        logger.info("레디스 관련 작업 완료");
         Long expiration = tokenProvider.getExpriation(dto.getAccessToken()).getTime();
+        logger.info("토큰 유효시간 만료시킴");
         redisTemplate.opsForValue().set(dto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+        logger.info("로그인 비즈니스 로직 완료");
     }
 
     public Long signUp(MemberSignUpDto dto){
