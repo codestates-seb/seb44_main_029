@@ -16,9 +16,9 @@ const Upload = () => {
     setThemeId(event.target.value);
   };
 
-  //저장 버튼
+  //저장 버튼 API실행
   const handleSaveButton = () => {
-    if (file) {
+    if (file && window.confirm('정말 저장하시겠습니까?')) {
       const formdata = new FormData();
       formdata.append('file', file);
       formdata.append('themeId', themeId);
