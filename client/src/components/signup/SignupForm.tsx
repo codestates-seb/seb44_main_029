@@ -12,9 +12,13 @@ interface SignUpFormData {
 
 interface SignUpFormProps {
   setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLogInClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
+const SignUpForm = ({
+  setIsSignUpClicked,
+  setIsLogInClicked,
+}: SignUpFormProps) => {
   const queryClient = useQueryClient();
 
   const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>({
@@ -97,6 +101,7 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
       });
       queryClient.invalidateQueries(['signup']);
       setIsSignUpClicked(false);
+      setIsLogInClicked(true);
     } catch (error) {
       alert('Failed to Sign Up!');
       console.error('Sign Up failed:', error);
