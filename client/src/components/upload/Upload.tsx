@@ -27,8 +27,24 @@ const Upload = () => {
     }
   };
 
+  const handleCancelButton = () => {
+    setFile(null);
+  };
+
   return (
-    <>
+    <Container>
+      <SelectDiv>
+        {' '}
+        <p>{file ? file.name : '파일을 업로드 하세요!'}</p>
+        <ThemeSelect value={themeId} onChange={handleThemeIdChange}>
+          {Array.from({ length: 5 }, (_, index) => (
+            <option key={index + 1} value={index + 1}>
+              테마 {index + 1}
+            </option>
+          ))}
+        </ThemeSelect>
+      </SelectDiv>
+
       <Label>
         <Input
           type="file"
@@ -49,27 +65,32 @@ const Upload = () => {
           <p>Click me!</p>
         )}
       </Label>
-      <p>{file ? file.name : '파일을 업로드 하세요!'}</p>
-      <ThemeSelect value={themeId} onChange={handleThemeIdChange}>
-        <option value="1">테마 1</option>
-        <option value="2">테마 2</option>
-        <option value="3">테마 3</option>
-        <option value="4">테마 4</option>
-        <option value="5">테마 5</option>
-      </ThemeSelect>
-      <Button onClick={handleSaveButton}>저장</Button>
-    </>
+      <SelectDiv>
+        <Button color="#007bff" onClick={handleSaveButton}>
+          저장
+        </Button>
+        <Button color="#ff0000" onClick={handleCancelButton}>
+          취소
+        </Button>
+      </SelectDiv>
+    </Container>
   );
 };
 
 export default Upload;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 const Input = styled.input`
   display: none;
 `;
 
 const Label = styled.label`
-  height: 200px;
+  height: 250px;
   width: 300px;
   border: 2px dashed black;
   display: flex;
@@ -89,12 +110,24 @@ const Label = styled.label`
     border-radius: 10px;
   }
 `;
+const SelectDiv = styled.div`
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const ThemeSelect = styled.select`
-  margin-top: 10px;
+  height: 30px;
+  font-size: 15px;
 `;
 
 const Button = styled.button`
-  width: 100px;
+  width: 130px;
   height: 40px;
+  font-size: 17px;
+  border-radius: 10px;
+  color: white;
+  background-color: ${(props) => props.color};
 `;
