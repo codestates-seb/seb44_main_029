@@ -48,9 +48,7 @@ public class ContentController {
         //Page<Content> contentsPage = new PageImpl<>(contents);
         Page<Content> contentsPage = contentService.contentPagination(contents, page-1, size, criteria, sort);
 
-        return new ResponseEntity<>(new ContentPageDto<>(contentsPage.getContent().stream()
-                .map(contentMapper::ContentToContentResponseDto)
-                .collect(Collectors.toList()), contentsPage), HttpStatus.OK);
+        return new ResponseEntity<>(new ContentPageDto<>(contentService.contentsResponse(contents,memberId), contentsPage), HttpStatus.OK);
     }
 
     @GetMapping("/{member-id}/likes/{theme-id}")

@@ -2,10 +2,12 @@ package com.example.server.content.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 public class ContentResponseDto {
 
@@ -18,4 +20,6 @@ public class ContentResponseDto {
     String themeTitle;
 
     Integer howManyLiked;
+
+    Boolean liked;
 }
