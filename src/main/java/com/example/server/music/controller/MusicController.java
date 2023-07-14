@@ -25,7 +25,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/theme/{theme-id}/music")
 @Slf4j
-//@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MusicController {
     private final MusicRepository musicRepository;
     private final AwsS3Service awsS3Service;
@@ -71,6 +70,9 @@ public class MusicController {
                     .body("url list 반환에 실패했습니다: " + e.getMessage());
         }
     }
+
+    // 음원 다운로드
+
 
 
 

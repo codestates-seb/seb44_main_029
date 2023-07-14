@@ -5,7 +5,10 @@ import com.example.server.member.dto.*;
 import com.example.server.member.entity.Member;
 import com.example.server.member.service.MemberService;
 import com.example.server.member.service.TokenService;
+import com.example.server.music.controller.MusicController;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,6 +27,8 @@ public class MemberController {
     private final MemberService memberService;
     private final TokenService tokenService;
     private final S3Config s3Config;
+    private static final Logger logger = LoggerFactory.getLogger(MusicController.class);
+
 
     @PostMapping("/success")
     public ResponseEntity success(){
@@ -42,16 +47,17 @@ public class MemberController {
 
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request){
+        logger.info("로그아웃 진입");
         String accessToken = request.getHeader("Access-Token");
         String refreshToken = request.getHeader("Refresh-Token");
-
+        logger.info("토큰 헤더에서 추출완료");
         TokenResponse tokenResponse = TokenResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
-
+        logger.info("토큰 빌더 생성 완료");
         memberService.logout(tokenResponse);
-
+        logger.info("로그아웃 서비스계층 전달 완료");
         SecurityContextHolder.clearContext();
 
         return new ResponseEntity(HttpStatus.OK);

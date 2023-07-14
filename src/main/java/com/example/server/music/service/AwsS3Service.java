@@ -108,12 +108,14 @@ public class AwsS3Service {
                 HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
                 Map<String, String> metadata = headObjectResponse.metadata();
                 String themeIdMetadata = metadata.get("themeid");
+
                 // 메타데이터가 일치하는 값 들만 url 값들을 리스트에 추가
                 if (themeIdMetadata != null && themeIdMetadata.equals(String.valueOf(themeId))) {
                     GetUrlRequest getUrlRequest = GetUrlRequest.builder()
                             .bucket(bucketName)
                             .key(s3Object.key())
                             .build();
+
                     String url = s3Client.utilities().getUrl(getUrlRequest).toExternalForm();
                     musicList.add(url);
                 }
@@ -136,7 +138,7 @@ public class AwsS3Service {
                     .contentLength(file.getSize())
                     .metadata(Collections.singletonMap("themeId", String.valueOf(themeId)))
                     .build();
-            logger.info("putObjectRequest: {}", putObjectRequest);
+
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
         } catch (IOException e) {
             e.printStackTrace();
