@@ -65,10 +65,13 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
   const loginMutation = useMutation(Login, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['login']);
-      const accessToken = data.headers['access-token'];
-      const refreshToken = data.headers['refresh-token'];
+      console.log('data', data);
+      const accessToken = data.headers['authorization'];
+      const refreshToken = data.data.refreshToken;
+      const memberId = data.data.memberId;
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('memberId', memberId);
     },
   });
 
