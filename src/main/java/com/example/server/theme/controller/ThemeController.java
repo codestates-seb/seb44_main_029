@@ -31,9 +31,10 @@ public class ThemeController {
     public final ContentMapper contentMapper;
 
 
-    @GetMapping("/{theme_id}")
+    @GetMapping("/{theme_id}/{member_id}")
     public ResponseEntity getContentByTheme(
             @Valid @PathVariable("theme_id") Long themeId,
+            @Valid @PathVariable("member_id") Long memberId,
             @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
             @Positive @RequestParam(required = false, defaultValue = "20", value = "size") int size,
             @RequestParam(required = false, defaultValue = "contentId", value = "criteria") String criteria,
