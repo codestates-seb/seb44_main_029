@@ -24,7 +24,10 @@ public class LikesServiceImpl implements LikesService{
         Content content = contentRepository.findById(contentId).orElseThrow();
         Member member = memberJpaRepository.findById(memberId).orElseThrow();
 
-
+        Likes likes = new Likes();
+        likes.addMember(member);
+        likes.addContent(content);
+        likeRepository.save(likes);
     }
 
     @Override
@@ -32,7 +35,7 @@ public class LikesServiceImpl implements LikesService{
         Content content = contentRepository.findById(contentId).orElseThrow();
         Member member = memberJpaRepository.findById(memberId).orElseThrow();
 
-        Likes likes = likeRepository.findByMemberAndContent(member, content).orElseThrow();
+        Likes likes = likeRepository.findByMemberAndContent(member, content).orElseThrow(() -> new NullPointerException(""));
 
         content.deleteLike(likes);
         member.deleteLike(likes);
@@ -52,7 +55,7 @@ public class LikesServiceImpl implements LikesService{
             Likes likes = new Likes();
             likes.addMember(member);
             likes.addContent(content);
-            likeRepository.save(likes);
+            //likeRepository.save(likes);
         }
     }
 }
