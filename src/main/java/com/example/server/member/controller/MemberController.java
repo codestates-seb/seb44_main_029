@@ -18,8 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 public class MemberController {
     private final MemberService memberService;
 
-    @PostMapping("/success")
-    public ResponseEntity success(){
+    @GetMapping("/success")
+    public ResponseEntity success(HttpServletRequest request, HttpServletResponse response){
+        String refreshToken = response.getHeader("Refresh-Token");
         return new ResponseEntity("ok", HttpStatus.OK);
     }
 
@@ -40,11 +41,11 @@ public class MemberController {
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request){
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
-        String refreshToken = request.getHeader("Refresh-Token");
+//        String refreshToken = request.getHeader("Refresh-Token");
 
         MemberIdAndTokenDto memberIdAndTokenDto = MemberIdAndTokenDto.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+//                .refreshToken(refreshToken)
                 .build();
 
         memberService.logout(memberIdAndTokenDto);

@@ -26,9 +26,9 @@ public class HttpInterceptor implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        String refreshToken = request.getHeader("Refresh-Token");
+//        String refreshToken = request.getHeader("Refresh-Token");
 
-        response.setHeader("Refresh-Token", refreshToken);
+//        response.setHeader("Refresh-Token", refreshToken);
         response.setHeader(HttpHeaders.AUTHORIZATION, accessToken);
 
         log.info("Header에 Refresh-Token, Access-Token 삽입");
