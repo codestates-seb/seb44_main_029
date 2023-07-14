@@ -5,15 +5,18 @@ const Upload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [themeId, setThemeId] = useState<string>('1');
 
+  //파일 등록 감지 핸들러
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     setFile(selectedFile || null);
   };
 
+  //테마 아이디 변경 핸들러
   const handleThemeIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setThemeId(event.target.value);
   };
 
+  //저장 버튼
   const handleSaveButton = () => {
     if (file) {
       const formdata = new FormData();
@@ -26,7 +29,7 @@ const Upload = () => {
       }
     }
   };
-
+  //취소 버튼
   const handleCancelButton = () => {
     setFile(null);
   };
