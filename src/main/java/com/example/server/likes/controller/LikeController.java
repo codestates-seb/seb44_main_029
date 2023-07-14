@@ -28,9 +28,9 @@ public class LikeController {
         likesService.unlikeContent(contentId, memberId);
     }
 
-    @PatchMapping("/{content-id}/{member-id}")
-    synchronized public void patchlike(@PathVariable("content-id") Long contentId,
-                          @PathVariable("member-id") Long memberId){
+    @PatchMapping("/{content_id}/{member_id}")
+    synchronized public void patchlike(@PathVariable("content_id") Long contentId,
+                          @PathVariable("member_id") Long memberId){
 
         likesService.patchLike(contentId, memberId);
     }

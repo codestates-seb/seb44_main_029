@@ -2,14 +2,13 @@ package com.example.server.theme.mapper;
 
 import com.example.server.theme.dto.ThemePostDto;
 import com.example.server.theme.entity.Theme;
-import com.example.server.theme.entity.Theme.ThemeBuilder;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-07-14T12:22:58+0900",
-    comments = "version: 1.4.2.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.1.1.jar, environment: Java 11.0.18 (Azul Systems, Inc.)"
+    date = "2023-07-14T15:13:32+0900",
+    comments = "version: 1.5.1.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.1.1.jar, environment: Java 11.0.18 (Azul Systems, Inc.)"
 )
 @Component
 public class ThemeMapperImpl implements ThemeMapper {
@@ -20,7 +19,7 @@ public class ThemeMapperImpl implements ThemeMapper {
             return null;
         }
 
-        ThemeBuilder theme = Theme.builder();
+        Theme.ThemeBuilder theme = Theme.builder();
 
         theme.title( themePostDto.getTitle() );
 
