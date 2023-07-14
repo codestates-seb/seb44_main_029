@@ -1,9 +1,12 @@
 package com.example.server.content.service;
 
 import com.example.server.content.controller.ContentController;
+import com.example.server.content.dto.ContentResponseDto;
 import com.example.server.content.entity.Content;
+import com.example.server.content.mapper.ContentMapper;
 import com.example.server.content.repository.ContentRepository;
 import com.example.server.likes.entity.Likes;
+import com.example.server.likes.repository.LikeRepository;
 import com.example.server.member.entity.Member;
 import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.theme.entity.Theme;
@@ -33,6 +36,8 @@ public class ContentServiceImpl implements ContentService {
     private final ThemeRepository themeRepository;
     private final ContentRepository contentRepository;
     private final MemberJpaRepository memberJpaRepository;
+    private final LikeRepository likeRepository;
+    private final ContentMapper contentMapper;
     private final S3Client s3Client;
     private static final Logger logger = (Logger) LoggerFactory.getLogger(ContentController.class);
 
@@ -112,5 +117,18 @@ public class ContentServiceImpl implements ContentService {
 
         List<Content> pageContent = contents.subList(start, end);
         return new PageImpl<>(pageContent, pageRequest, contents.size());
+    }
+
+    @Override
+    public List<ContentResponseDto> contentsResponse(List<Content> contents, Long memberId){
+
+        return contents.stream()
+                .map(Content -> {
+                    ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(Content);
+                    if (likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), Content).isPresent()){
+                        contentResponseDto.setLiked(true);
+                    };
+                    return contentResponseDto;
+                }).collect(Collectors.toList());
     }
 }
