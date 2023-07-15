@@ -15,27 +15,24 @@ interface LikeButtonProps {
 }
 
 const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
-  const [likedItem, setLikedItem] = useState<boolean>(liked);
+  const [likedItem, setLikedItem] = useState<boolean>(liked); // 현재 아이템의 좋아요 상태를 저장하는 상태
   const queryClient = useQueryClient();
 
-  // UpdateLike mutation을 정의하고 useMutation 훅을 사용하여 할당
+  // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
     onSuccess: () => {
-      // 'items' 쿼리를 무효화하여 데이터 갱신
-      queryClient.invalidateQueries(['items']);
+      queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 데이터를 갱신
     },
     onError: (error) => {
       console.log(`onError: ${error}`);
     },
   });
 
-  // 좋아요 버튼이 클릭되었을 때 처리하는 함수
+  // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
   const handleLikeButtonClick = async () => {
     try {
-      // UpdateLike API를 호출하고 결과를 반환
       await handleUpdateLikeMutation.mutateAsync(contentId);
-      // 좋아요 상태를 업데이트
-      setLikedItem((likedItem) => !likedItem);
+      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
     } catch (error) {
       console.log(error);
     }
