@@ -82,19 +82,14 @@ export const GetThemeItems = async (
   return response.data;
 };
 
-// 이미지 좋아요 업데이트
+// 이미지 좋아요 상태 업데이트
 export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
-  // const accessToken = localStorage.getItem('accessToken');
-  // const refreshToken = localStorage.getItem('refreshToken');
-
   const response = await axios.patch(
     `https://55a4-221-141-172-40.ngrok-free.app/likes/${contentId}/1`,
     {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
-        // accessToken: `Bearer ${accessToken}`,
-        // refreshToken: refreshToken,
       },
     }
   );
@@ -105,17 +100,12 @@ export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
 export const GetThemeLikes = async (
   themeId: number
 ): Promise<IThemeItemProps> => {
-  // const accessToken = localStorage.getItem('accessToken');
-  // const refreshToken = localStorage.getItem('refreshToken');
-
   const response = await axios.get(
     `https://55a4-221-141-172-40.ngrok-free.app/contents/1/likes/${themeId}`,
     {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
-        // accessToken: `Bearer ${accessToken}`,
-        // refreshToken: refreshToken,
       },
     }
   );
