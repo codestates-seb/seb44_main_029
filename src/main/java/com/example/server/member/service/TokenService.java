@@ -1,6 +1,7 @@
 package com.example.server.member.service;
 
-import com.example.server.member.dto.TokenResponse;
+import com.example.server.member.dto.MemberIdAndTokenDto;
+import com.example.server.member.dto.RefreshTokenDto;
 import com.example.server.member.entity.Member;
 import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.repository.MemberJpaRepository;
@@ -11,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -29,57 +29,26 @@ public class TokenService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final MemberJpaRepository memberJpaRepository;
 
-    public RefreshToken createRefreshToken(String username) {
+    public String createRefreshToken(String username) {
         Member member = memberJpaRepository.findByMemberUsername(username).get();
 
-        if(refreshTokenJpaRepository.findByMemberId(member.getId()).isPresent())
-            return refreshTokenJpaRepository.findByMemberId(member.getId()).get();
+        String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + member.getId());
+        if(refreshToken != null)
+            return refreshToken;
 
-        RefreshToken token = RefreshToken.builder()
-                .token(UUID.randomUUID().toString())
-                .expired(new Date(new Date().getTime() + tokenExpired))
-                .member(member)
-                .build();
-
-//        return refreshTokenJpaRepository.save(token);
-        return token;
+        refreshToken = UUID.randomUUID().toString();
+        return refreshToken;
     }
 
-    public boolean checkRefreshToken(String username) {
-        Member member = memberJpaRepository.findByMemberUsername(username).get();
-
-        String token = (String) redisTemplate.opsForValue().get("RT:" + member.getEmail());
-
-//        RefreshToken token = refreshTokenJpaRepository.findByMemberId(member.getId())
-//                .orElseThrow( () ->new RuntimeException("Refresh Token not Exist"));
-        if(token == null) throw new RuntimeException("Refresh Token not existed");
-
-        if(token == null){
-            log.info("RefreshToken is not existed");
-            return false;
-        }
-
-//        Date time = token.getExpired();
-//
-//        if (time.before(new Date()))
-//            return false;
-
-        return true;
-    }
-
-    public TokenResponse updateAccessToken(String username) {
-        Member member = memberJpaRepository.findByMemberUsername(username).get();
+    public String updateAccessToken(Long memberId, RefreshTokenDto refreshToken) {
+        Member member = memberJpaRepository.findById(memberId).get();
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
 
-        String accessToken = tokenProvider.createToken(authentication);
-        String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + member.getEmail());
+        String value = (String) redisTemplate.opsForValue().get("RT:" + memberId);
+        if(value == null || !value.equals(refreshToken.getRefreshToken()))
+            return null;
 
-        TokenResponse tokenResponse = TokenResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build();
-
-        return tokenResponse;
+        return tokenProvider.createToken(authentication);
     }
 }

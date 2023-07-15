@@ -19,9 +19,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new HttpInterceptor(tokenProvider, tokenService))
+                .addPathPatterns("/tokens/**")
                 .addPathPatterns("/members/**")
                 .excludePathPatterns("/css/**", "/images/**", "/js/**");
     }
+
     @Override
     public void addCorsMappings(CorsRegistry registry){
         registry.addMapping("/**")
@@ -30,5 +32,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .exposedHeaders("Access-Control-Allow-Origin");
     }
-
 }

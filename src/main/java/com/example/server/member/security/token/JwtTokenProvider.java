@@ -1,5 +1,6 @@
 package com.example.server.member.security.token;
 
+import com.example.server.member.entity.Member;
 import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.member.service.MemberService;
 import io.jsonwebtoken.*;
@@ -41,19 +42,15 @@ public class JwtTokenProvider implements InitializingBean {
     }
 
     public String createToken(Authentication authentication){
-        HashMap<String, Object> map = new HashMap<>();
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        Long memberId = memberJpaRepository.findByMemberUsername(authentication.getName()).get().getId();
-
-        map.put("memberId", memberId);
-        map.put("auth", authorities);
+        Member member = memberJpaRepository.findByMemberUsername(authentication.getName()).get();
 
         return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, map)
+                .setSubject(member.getId().toString())
+                .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setExpiration(new Date(new Date().getTime() + tokenExpired))
                 .compact();
@@ -67,10 +64,14 @@ public class JwtTokenProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(claims.get(AUTHORITIES_KEY).toString()));
+//                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+//                        .map(SimpleGrantedAuthority::new)
+//                        .collect(Collectors.toList());
+
+
 
         User principal = new User(claims.getSubject(), "", authorities);
 
@@ -81,8 +82,8 @@ public class JwtTokenProvider implements InitializingBean {
         return (Map<String, Object>) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get(AUTHORITIES_KEY);
     }
 
-    public Claims getBodyFromToken(String token){
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
+    public String getSubjectFromToken(String token){
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
     public Date getExpriation(String token)

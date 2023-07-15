@@ -9,9 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.S3Client;
-
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/musicUpload")
@@ -22,13 +19,10 @@ public class MusicUploadController {
     private String bucket;
 
     private final AwsS3Service awsS3Service;
-    private final S3Client s3Client;
     private static final Logger logger = LoggerFactory.getLogger(MusicController.class);
 
-    public MusicUploadController(AwsS3Service awsS3Service,
-                           S3Client s3Client){
+    public MusicUploadController(AwsS3Service awsS3Service){
         this.awsS3Service = awsS3Service;
-        this.s3Client = s3Client;
     }
 
 
@@ -36,14 +30,13 @@ public class MusicUploadController {
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("themeId") long themeId) {
         if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("No file uploaded");
+            return ResponseEntity.badRequest().body("파일이 존재하지 않습니다!");
         }
         try {
             awsS3Service.upload(file, themeId);
-            return ResponseEntity.ok("File uploaded successfully");
+            return ResponseEntity.ok("음원이 성공적으로 업로드 되었습니다");
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload file");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("음원 업로드 실패: {}" + e.getMessage());
         }
 
     }
