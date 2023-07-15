@@ -46,7 +46,7 @@ const ListFilterDiv = styled.div`
   background-color: rgba(255, 255, 255, 0.05);
 
   .item-list-title {
-    margin: 0.6rem 3rem;
+    margin: 0.8rem 3rem;
     color: rgba(255, 255, 255, 1);
   }
 `;

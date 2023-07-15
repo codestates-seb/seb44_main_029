@@ -16,6 +16,7 @@ const ThemeItemList = () => {
   const targetRef = useRef<HTMLDivElement | null>(null); // 무한 스크롤을 위한 참조
   const { themeId } = useParams<{ themeId: string }>(); // 현재 선택된 테마 아이디를 가져온다.
   const numericThemeId = parseInt(themeId || ''); // string 타입으로 들어온 데이터를 number 타입으로 변환한다.
+  const [currentThemeTitle, setCurrentThemeTitle] = useState<string>(''); // 현재 테마 타이틀을 표시하기 위해 사용되는 상태
 
   // 테마 이미지 리스트를 가져와서 무하스크롤을 구현하는 함수
   const {
@@ -36,6 +37,10 @@ const ThemeItemList = () => {
           return pageInfo.page + 1;
         }
         return false;
+      },
+      onSuccess: (data) => {
+        const currentThemeTitle = data.pages[0].data[0].themeTitle;
+        setCurrentThemeTitle(currentThemeTitle);
       },
     }
   );
@@ -79,7 +84,7 @@ const ThemeItemList = () => {
   return (
     <Layout>
       <ContentContainer>
-        <ThemeHeader />
+        <ThemeHeader currentThemeTitle={currentThemeTitle} />
         <ItemListHeader
           handleFilterlikeButton={handleFilterlikeButton}
           showLikedOnly={showLikedOnly}
