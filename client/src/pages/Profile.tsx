@@ -27,8 +27,8 @@ export default Profile;
 export const Layout = styled.div`
   max-width: 100%;
   width: 100vw;
+  max-height: 100%;
   height: 100vh;
-  padding: 6rem 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,6 +41,7 @@ export const Layout = styled.div`
     top: 0;
     left: 0;
     width: 100%;
+    max-height: 100%;
     height: 100%;
     background-image: url(${backgroundImg});
     background-repeat: no-repeat;
@@ -48,6 +49,7 @@ export const Layout = styled.div`
     background-size: cover;
     filter: blur(5px);
     z-index: -1;
+    transform: scale(1.02);
   }
 `;
 
@@ -63,4 +65,5 @@ export const ContentContainer = styled.div`
   box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 0.7);
   border-radius: 0.5rem;
   background-color: rgba(0, 0, 0, 0.3);
+  margin: 5rem;
 `;
