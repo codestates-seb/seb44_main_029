@@ -6,7 +6,6 @@ import {
   IThemeItemProps,
   ItemInfo,
   EditType,
-
 } from '../types/types';
 
 const BASE_URL = 'https://a74a-175-208-216-56.ngrok-free.app/';
