@@ -5,10 +5,10 @@ import {
   SignUpInfo,
   EditType,
   FetchThemeItemProps,
-  FormData,
 } from '../types/types';
 
-const BASE_URL = 'https://a74a-175-208-216-56.ngrok-free.app/';
+const BASE_URL =
+  'https://1d3c-2001-e60-914a-3a2e-35d9-8182-91fb-3942.ngrok-free.app/';
 
 /* 유저 정보 가져오기 */
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -96,8 +96,8 @@ export const GetThemeItems = async (
   return response.data;
 };
 
-export const UploadFile = async (formdata: FormData) => {
-  const response = await axios.post(`${BASE_URL}musicUpload`, formdata, {
+export const UploadFile = async (data: FormData) => {
+  const response = await axios.post(`${BASE_URL}musicUpload`, data, {
     headers: {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': '69420',

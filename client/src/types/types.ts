@@ -35,8 +35,3 @@ export interface FetchThemeItemProps {
   data: ItemInfo[];
   pageInfo: PageInfo;
 }
-
-export type FormData = {
-  file: any;
-  themeId: string;
-};
