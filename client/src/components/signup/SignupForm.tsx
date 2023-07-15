@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import styled from 'styled-components';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { SignUp } from '../../api/api';
-
+import { SignUpInfo } from '../../types/types';
 interface SignUpFormData {
   username: string;
   email: string;
@@ -12,9 +12,13 @@ interface SignUpFormData {
 
 interface SignUpFormProps {
   setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLogInClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
+const SignUpForm = ({
+  setIsSignUpClicked,
+  setIsLogInClicked,
+}: SignUpFormProps) => {
   const queryClient = useQueryClient();
 
   const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>({
@@ -74,7 +78,7 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
     return Object.keys(errors).length === 0;
   };
 
-  const signUpMutation = useMutation((formData: SignUpFormData) =>
+  const signUpMutation = useMutation((formData: SignUpInfo) =>
     SignUp(formData)
   );
 
@@ -97,6 +101,7 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
       });
       queryClient.invalidateQueries(['signup']);
       setIsSignUpClicked(false);
+      setIsLogInClicked(true);
     } catch (error) {
       alert('Failed to Sign Up!');
       console.error('Sign Up failed:', error);

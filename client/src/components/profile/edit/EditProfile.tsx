@@ -1,24 +1,43 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import EditImg from './EditImg';
 import EditName from './EditName';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { FetchEditProfile } from '../../../api/api';
 
 const EditProfile = ({
   setIsEdit,
 }: {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const handleButton = () => {
+  const [imgUrl, setImgUrl] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  //취소버튼
+  const handleCancleButton = () => {
     setIsEdit(false);
   };
+  //저장버튼
+  const handleSaveButton = async () => {
+    const confirmed = window.confirm('정말 저장하시겠습니까?');
+    if (confirmed) {
+      await editMutation.mutateAsync(); //  editMutation을 비동기로 실행
+      setIsEdit(false);
+    }
+  };
+
+  const editMutation = useMutation(() =>
+    FetchEditProfile({ imageUrl: imgUrl, username: userName })
+  );
+
   return (
     <Container>
-      <EditImg />
-      <EditName />
+      <EditImg setImgUrl={setImgUrl} />
+      <EditName setUserName={setUserName} />
       <BtnGroupDiv>
-        <Button bgColor="#007bff" onClick={handleButton}>
+        <Button bgColor="#007bff" onClick={handleSaveButton}>
           저장
         </Button>
-        <Button bgColor="#ff0000" onClick={handleButton}>
+        <Button bgColor="#ff0000" onClick={handleCancleButton}>
           취소
         </Button>
       </BtnGroupDiv>
@@ -55,13 +74,4 @@ const Button = styled.button<{ bgColor: string }>`
   font-size: 16px;
   cursor: pointer;
   margin-right: 20px;
-`;
-const flashingAnimation = keyframes`
-  0% { opacity: 1; }
-  50% { opacity: 0.5; }
-  100% { opacity: 1; }
-`;
-
-const FlashingEditImg = styled(EditImg)`
-  animation: ${flashingAnimation} 1s infinite;
 `;
