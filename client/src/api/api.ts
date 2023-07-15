@@ -9,6 +9,7 @@ import {
 } from '../types/types';
 
 const BASE_URL = 'https://a74a-175-208-216-56.ngrok-free.app/';
+const BASE_URL2 = 'https://0f75-221-141-172-40.ngrok-free.app/';
 
 /* 유저 정보 가져오기 */
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -95,7 +96,7 @@ export const GetThemeItems = async (
   sizeParam = 20
 ): Promise<IThemeItemProps> => {
   const response = await axios.get(
-    `https://55a4-221-141-172-40.ngrok-free.app/theme/${themeId}/1?page=${pageParam}&size=${sizeParam}`,
+    `${BASE_URL2}theme/${themeId}/1?page=${pageParam}&size=${sizeParam}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -108,15 +109,12 @@ export const GetThemeItems = async (
 
 // 이미지 좋아요 상태 업데이트
 export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
-  const response = await axios.patch(
-    `https://55a4-221-141-172-40.ngrok-free.app/likes/${contentId}/1`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    }
-  );
+  const response = await axios.patch(`${BASE_URL2}likes/${contentId}/1`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+    },
+  });
   return response.data;
 };
 
@@ -124,15 +122,12 @@ export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
 export const GetThemeLikes = async (
   themeId: number
 ): Promise<IThemeItemProps> => {
-  const response = await axios.get(
-    `https://55a4-221-141-172-40.ngrok-free.app/contents/1/likes/${themeId}`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-      },
-    }
-  );
+  const response = await axios.get(`${BASE_URL2}contents/1/likes/${themeId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+    },
+  });
   return response.data;
 };
 
