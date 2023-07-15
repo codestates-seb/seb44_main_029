@@ -3,8 +3,10 @@ import {
   Musics,
   LoginInfo,
   SignUpInfo,
+  IThemeItemProps,
+  ItemInfo,
   EditType,
-  FetchThemeItemProps,
+
 } from '../types/types';
 
 const BASE_URL = 'https://a74a-175-208-216-56.ngrok-free.app/';
@@ -87,13 +89,44 @@ export const FetchEditProfile = async (data: EditType) => {
   return respone;
 };
 
+// 테마 이미지 리스트 가져오기
 export const GetThemeItems = async (
   themeId: number,
   pageParam = 1,
   sizeParam = 20
-): Promise<FetchThemeItemProps> => {
+): Promise<IThemeItemProps> => {
   const response = await axios.get(
-    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+    `https://55a4-221-141-172-40.ngrok-free.app/theme/${themeId}/1?page=${pageParam}&size=${sizeParam}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    }
+  );
+  return response.data;
+};
+
+// 이미지 좋아요 상태 업데이트
+export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
+  const response = await axios.patch(
+    `https://55a4-221-141-172-40.ngrok-free.app/likes/${contentId}/1`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+      },
+    }
+  );
+  return response.data;
+};
+
+// 좋아요한 테마 이미지 리스트 가져오기
+export const GetThemeLikes = async (
+  themeId: number
+): Promise<IThemeItemProps> => {
+  const response = await axios.get(
+    `https://55a4-221-141-172-40.ngrok-free.app/contents/1/likes/${themeId}`,
     {
       headers: {
         'Content-Type': 'application/json',
