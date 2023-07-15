@@ -5,6 +5,7 @@ import {
   SignUpInfo,
   EditType,
   FetchThemeItemProps,
+  FormData,
 } from '../types/types';
 
 const BASE_URL = 'https://a74a-175-208-216-56.ngrok-free.app/';
@@ -41,29 +42,20 @@ export const Login = async (data: LoginInfo) => {
   return response;
 };
 
-export const Logout = async (): Promise<any> => {
+export const Logout = async () => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
 
-  try {
-    const response = await axios.post(`${BASE_URL}members/logout`, null, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${accessToken}`,
-        'Refresh-Token': refreshToken,
-      },
-    });
+  const response = await axios.post(`${BASE_URL}members/logout`, null, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+      accessToken: `Bearer ${accessToken}`,
+      refreshToken: refreshToken,
+    },
+  });
 
-    return response;
-  } catch (error: any) {
-    if (error.response && error.response.status === 500) {
-      await RenewAccessToken();
-
-      return Logout();
-    }
-    throw error;
-  }
+  return response;
 };
 
 export const FetchEditProfile = async (data: EditType) => {
@@ -104,26 +96,12 @@ export const GetThemeItems = async (
   return response.data;
 };
 
-// 토큰 재발급 API
-export const RenewAccessToken = async () => {
-  const refreshToken = localStorage.getItem('refreshToken');
-
-  try {
-    const response = await axios.get(`${BASE_URL}/tokens/name`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    });
-
-    const newAccessToken = response.headers['authorization'];
-    localStorage.setItem('accessToken', newAccessToken);
-
-    return newAccessToken;
-  } catch (error) {
-    // 토큰 갱신 실패 시 처리, 예를 들어 로그인 페이지로 리디렉션하거나 오류 메시지 표시
-    console.error('액세스 토큰 갱신에 실패했습니다:', error);
-    throw error;
-  }
+export const UploadFile = async (formdata: FormData) => {
+  const response = await axios.post(`${BASE_URL}musicUpload`, formdata, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+    },
+  });
+  return response;
 };
