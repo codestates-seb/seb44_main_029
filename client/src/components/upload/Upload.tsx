@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
+import { UploadFile } from '../../api/api';
+import { useMutation } from '@tanstack/react-query';
 
 const Upload = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -22,11 +24,9 @@ const Upload = () => {
       const formdata = new FormData();
       formdata.append('file', file);
       formdata.append('themeId', themeId);
-
-      for (const entry of formdata.entries()) {
-        const [key, value] = entry;
-        console.log(key, value);
-      }
+      const uploadMutation = useMutation((formdata: FormData) =>
+        UploadFile(formdata)
+      );
     }
   };
   //취소 버튼
