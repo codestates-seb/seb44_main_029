@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "downlevelIteration": true, //formdata 콘솔 확인용
     "lib": [
       "dom",
       "dom.iterable",

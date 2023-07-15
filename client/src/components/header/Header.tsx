@@ -23,7 +23,10 @@ const Header = () => {
         </LogInShowDiv>
       ) : isSignUpClicked ? (
         <SignOutShowDiv>
-          <SignUpForm setIsSignUpClicked={setIsSignUpClicked} />
+          <SignUpForm
+            setIsSignUpClicked={setIsSignUpClicked}
+            setIsLogInClicked={setIsLogInClicked}
+          />
         </SignOutShowDiv>
       ) : null}
       <Nav

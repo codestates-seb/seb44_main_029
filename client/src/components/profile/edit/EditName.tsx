@@ -1,9 +1,26 @@
 import styled from 'styled-components';
+import { useRef } from 'react';
 
-const EditName = () => {
+const EditName = ({
+  setUserName,
+}: {
+  setUserName: React.Dispatch<React.SetStateAction<string | null>>;
+}) => {
+  //useRef로 현재 input값 받아오기
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
+  // input값에 따라 인자에 들어갈 값을 변경하는 핸들러
+  const handleNameInputChange = () => {
+    const newName = nameInputRef.current?.value;
+    if (newName) setUserName(newName);
+    else if (newName === '') setUserName(null);
+  };
   return (
     <Container>
-      <NameInput placeholder="New Name!" />
+      <NameInput
+        ref={nameInputRef}
+        placeholder="New Name!"
+        onChange={handleNameInputChange}
+      />
       <EmailDiv>Email</EmailDiv>
     </Container>
   );

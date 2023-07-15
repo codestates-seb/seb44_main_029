@@ -31,3 +31,8 @@ export interface IThemeItemProps {
   data: ItemInfo[];
   pageInfo: PageInfo;
 }
+
+export type EditType = {
+  imageUrl: string | null;
+  username: string | null;
+};
