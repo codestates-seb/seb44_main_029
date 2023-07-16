@@ -1,10 +1,29 @@
 import styled from 'styled-components';
 
-const ThemeHeader = () => {
+interface ThemeHeaderProps {
+  currentThemeTitle: string;
+}
+
+const ThemeHeader = ({ currentThemeTitle }: ThemeHeaderProps) => {
+  let description = '';
+
+  // 테마 타이틀에 따라서 설명을 설정
+  if (currentThemeTitle === 'A') {
+    description = '테마 A에 대한 설명';
+  } else if (currentThemeTitle === 'B') {
+    description = '테마 B에 대한 설명';
+  } else if (currentThemeTitle === 'C') {
+    description = '테마 C에 대한 설명';
+  } else if (currentThemeTitle === 'D') {
+    description = '테마 D에 대한 설명';
+  } else if (currentThemeTitle === 'E') {
+    description = '테마 E에 대한 설명';
+  }
+
   return (
     <Container>
-      <h1 className="theme-title">Theme Title</h1>
-      <p className="theme-description">Theme Description</p>
+      <h1 className="theme-title">{currentThemeTitle}</h1>
+      <p className="theme-description">{description}</p>
     </Container>
   );
 };
@@ -21,7 +40,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 1rem 0 0.5rem;
+    margin: 2rem 0 1rem;
     color: rgba(255, 255, 255, 1);
   }
 
@@ -29,7 +48,7 @@ const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 0 1rem;
+    margin: 0 0 2rem;
     color: rgba(255, 255, 255, 0.7);
   }
 `;

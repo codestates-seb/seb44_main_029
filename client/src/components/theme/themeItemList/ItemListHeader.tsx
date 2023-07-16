@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 
 interface LikeButtonProps {
   isActive: boolean;
 }
 
-const ItemListHeader = () => {
-  const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false);
+interface ItemListHeaderProps {
+  handleFilterlikeButton: () => void;
+  showLikedOnly: boolean;
+}
 
-  const handleLikeButtonClick = (): void => {
-    setShowLikedOnly(!showLikedOnly);
-  };
-
+const ItemListHeader = ({
+  handleFilterlikeButton,
+  showLikedOnly,
+}: ItemListHeaderProps) => {
   return (
     <Container>
       <ListFilterDiv>
@@ -19,7 +21,7 @@ const ItemListHeader = () => {
         <LikeFilterButton
           type="button"
           isActive={showLikedOnly}
-          onClick={handleLikeButtonClick}
+          onClick={handleFilterlikeButton}
         >
           Like <br />
           {showLikedOnly ? '❤️' : '🤍'}
@@ -44,7 +46,7 @@ const ListFilterDiv = styled.div`
   background-color: rgba(255, 255, 255, 0.05);
 
   .item-list-title {
-    margin: 0.6rem 3rem;
+    margin: 0.8rem 3rem;
     color: rgba(255, 255, 255, 1);
   }
 `;
