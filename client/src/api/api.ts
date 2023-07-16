@@ -54,6 +54,14 @@ export const GoogleLogin = async () => {
   return response;
 };
 
+export const GoogleLoginTokens = async (code: string) => {
+  const response = await axios.post(`${BASE_URL}oauth2/token`, {
+    code: code,
+  });
+
+  return response.data;
+};
+
 export const Logout = async () => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');

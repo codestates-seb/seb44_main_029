@@ -1,8 +1,8 @@
-import axios from 'axios';
 import styled from 'styled-components';
 import Google from '../../assets/icon/icon_google.png';
-import { GoogleLogin } from '../../api/api';
+import { GoogleLogin, GoogleLoginTokens } from '../../api/api';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
+
 const GoogleLoginButton: React.FC = () => {
   const queryClient = useQueryClient();
 
@@ -10,14 +10,27 @@ const GoogleLoginButton: React.FC = () => {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['googleLogin']);
       console.log('data', data);
+      window.location.href = data.headers.location;
+      // const accessToken = data.headers['authorization'];
+      // const refreshToken = data.data.refreshToken;
+      // const memberId = data.data.memberId;
 
-      const accessToken = data.headers['authorization'];
-      const refreshToken = data.data.refreshToken;
-      const memberId = data.data.memberId;
+      // localStorage.setItem('accessToken', accessToken);
+      // localStorage.setItem('refreshToken', refreshToken);
+      // localStorage.setItem('memberId', memberId);
+    },
+  });
 
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('memberId', memberId);
+  const googleLoginTokensMutation = useMutation(GoogleLoginTokens, {
+    onSuccess: (data) => {
+      console.log('googleLoginTokens: ', data);
+      const { access_token, refresh_token } = data;
+      localStorage.setItem('accessToken', access_token);
+      localStorage.setItem('refreshToken', refresh_token);
+    },
+
+    onError: (error) => {
+      console.error('에러메시지: ', error);
     },
   });
 
@@ -25,6 +38,7 @@ const GoogleLoginButton: React.FC = () => {
     try {
       await googleLoginMutation.mutateAsync();
       queryClient.invalidateQueries(['googleLogin']);
+      handleRedirect();
     } catch (error) {
       alert('Failed to Log In!');
       console.error('Google Log In failed:', error);
@@ -41,6 +55,14 @@ const GoogleLoginButton: React.FC = () => {
     // } catch (error) {
     //   console.error(error);
     // }
+  };
+
+  const handleRedirect = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const authorizationCode = urlParams.get('code');
+    if (authorizationCode) {
+      googleLoginTokensMutation.mutateAsync(authorizationCode);
+    }
   };
 
   return (
