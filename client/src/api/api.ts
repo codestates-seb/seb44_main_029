@@ -44,6 +44,17 @@ export const Login = async (data: LoginInfo) => {
   return response;
 };
 
+export const GoogleLogin = async () => {
+  const response = await axios.post(`${BASE_URL}oauth2/authorization/google`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+    },
+  });
+
+  return response;
+};
+
 export const Logout = async () => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
