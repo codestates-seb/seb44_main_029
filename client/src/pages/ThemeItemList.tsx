@@ -10,6 +10,7 @@ import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { IThemeItemProps } from '../types/types';
 import { GetThemeItems } from '../api/api';
 import { GetThemeLikes } from '../api/api';
+import getBackgroundImage from '../utils/getBackgroundImage';
 
 const ThemeItemList = () => {
   const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false); // 좋아요한 아이템만 표시할지 결정하는 상태
@@ -82,7 +83,7 @@ const ThemeItemList = () => {
     : items?.pages.flatMap((page) => page.data);
 
   return (
-    <Layout>
+    <Layout backgroundImageUrl={getBackgroundImage(themeId)}>
       <ContentContainer>
         <ThemeHeader currentThemeTitle={currentThemeTitle} />
         <ItemListHeader
@@ -113,7 +114,7 @@ const ThemeItemList = () => {
 
 export default ThemeItemList;
 
-const Layout = styled.div`
+const Layout = styled.div<{ backgroundImageUrl: string }>`
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
@@ -130,7 +131,7 @@ const Layout = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('https://i.pinimg.com/originals/48/37/23/483723e0f94bd43ef7b9716aa0d3ce86.gif');
+    background-image: url(${(props) => props.backgroundImageUrl});
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
