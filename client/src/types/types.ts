@@ -14,6 +14,7 @@ export type SignUpInfo = {
 export interface ItemInfo {
   contentId: number;
   themeTitle: string;
+  liked: boolean;
   howManyLiked: number;
   contentTitle: string;
   contentUri: string;
@@ -26,12 +27,12 @@ export interface PageInfo {
   totalPages: number;
 }
 
+export interface IThemeItemProps {
+  data: ItemInfo[];
+  pageInfo: PageInfo;
+}
+
 export type EditType = {
   imageUrl: string | null;
   username: string | null;
 };
-
-export interface FetchThemeItemProps {
-  data: ItemInfo[];
-  pageInfo: PageInfo;
-}

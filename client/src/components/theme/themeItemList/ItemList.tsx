@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ItemInfo } from '../../../types/types';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { UpdateLike } from '../../../api/api';
 
-interface ItemProps extends ItemInfo {
+interface ItemProps
+  extends Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'> {
   themeId: number;
 }
 
@@ -11,21 +14,28 @@ interface LikeButtonProps {
   isActive: boolean;
 }
 
-const ItemList = ({
-  contentId,
-  themeTitle,
-  howManyLiked,
-  contentTitle,
-  contentUri,
-  themeId,
-}: ItemProps) => {
-  const [plusLikeButton, setPlusLikeButton] = useState<boolean>(false);
+const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
+  const [likedItem, setLikedItem] = useState<boolean>(liked); // 현재 아이템의 좋아요 상태를 저장하는 상태
+  const queryClient = useQueryClient();
 
-  const handleLikeButtonClick = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.stopPropagation();
-    setPlusLikeButton(!plusLikeButton);
+  // 좋아요 업데이트를 위한 useMutation 정의
+  const handleUpdateLikeMutation = useMutation(UpdateLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 데이터를 갱신
+    },
+    onError: (error) => {
+      console.log(`onError: ${error}`);
+    },
+  });
+
+  // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
+  const handleLikeButtonClick = async () => {
+    try {
+      await handleUpdateLikeMutation.mutateAsync(contentId);
+      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -36,7 +46,7 @@ const ItemList = ({
       <OverlayControlDiv>
         <LikeButton
           type="button"
-          isActive={plusLikeButton}
+          isActive={likedItem}
           onClick={handleLikeButtonClick}
         >
           🤍
@@ -101,6 +111,7 @@ const LikeButton = styled.button<LikeButtonProps>`
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.15s;
 
   &:hover {
     border: 2px solid rgba(255, 255, 255, 1);

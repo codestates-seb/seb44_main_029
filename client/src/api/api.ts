@@ -3,12 +3,16 @@ import {
   Musics,
   LoginInfo,
   SignUpInfo,
+  IThemeItemProps,
+  ItemInfo,
   EditType,
-  FetchThemeItemProps,
 } from '../types/types';
+
 
 const BASE_URL =
   'https://1d3c-2001-e60-914a-3a2e-35d9-8182-91fb-3942.ngrok-free.app/';
+const BASE_URL2 = 'https://0f75-221-141-172-40.ngrok-free.app/';
+
 
 /* 음악 정보 가져오기 */
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -80,13 +84,14 @@ export const PetchEditProfile = async (data: EditType) => {
   return respone;
 };
 
+// 테마 이미지 리스트 가져오기
 export const GetThemeItems = async (
   themeId: number,
   pageParam = 1,
   sizeParam = 20
-): Promise<FetchThemeItemProps> => {
+): Promise<IThemeItemProps> => {
   const response = await axios.get(
-    `https://9985-221-141-172-40.ngrok-free.app/theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+    `${BASE_URL2}theme/${themeId}/1?page=${pageParam}&size=${sizeParam}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -106,4 +111,51 @@ export const PostUploadFile = async (data: FormData) => {
     },
   });
   return response;
+
+// 이미지 좋아요 상태 업데이트
+export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
+  const response = await axios.patch(`${BASE_URL2}likes/${contentId}/1`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+    },
+  });
+  return response.data;
+};
+
+// 좋아요한 테마 이미지 리스트 가져오기
+export const GetThemeLikes = async (
+  themeId: number
+): Promise<IThemeItemProps> => {
+  const response = await axios.get(`${BASE_URL2}contents/1/likes/${themeId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+    },
+  });
+  return response.data;
+};
+
+// 토큰 재발급 API
+export const RenewAccessToken = async () => {
+  const refreshToken = localStorage.getItem('refreshToken');
+
+  try {
+    const response = await axios.get(`${BASE_URL}/tokens/name`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${refreshToken}`,
+      },
+    });
+
+    const newAccessToken = response.headers['authorization'];
+    localStorage.setItem('accessToken', newAccessToken);
+
+    return newAccessToken;
+  } catch (error) {
+    // 토큰 갱신 실패 시 처리, 예를 들어 로그인 페이지로 리디렉션하거나 오류 메시지 표시
+    console.error('액세스 토큰 갱신에 실패했습니다:', error);
+    throw error;
+  }
 };
