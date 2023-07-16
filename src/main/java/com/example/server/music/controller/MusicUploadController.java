@@ -30,7 +30,7 @@ public class MusicUploadController {
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("themeId") long themeId) {
         if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("파일이 존재하지 않습니다!");
+            return ResponseEntity.badRequest().body("파일이 존재하지 않습니다");
         }
         try {
             awsS3Service.upload(file, themeId);
