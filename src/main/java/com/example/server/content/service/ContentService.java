@@ -20,5 +20,5 @@ public interface ContentService {
 
     String getContentFileUrl(String fileName);
 
-    List<ContentResponseDto> contentsResponse(List<Content> contents, Long memberId);
+    List<ContentResponseDto> contentsResponse(Page<Content> contents, Long memberId);
 }
