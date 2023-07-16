@@ -1,8 +1,7 @@
-import Image from '../../../assets/images/mainPage_background.jpg';
-
 export const cardsData = [
   {
-    image: Image,
+    image:
+      'https://cdn.pixabay.com/photo/2023/07/11/08/50/fireworks-8119898_1280.jpg',
     themeName: 'Theme 1',
     videoName: 'Video 1',
   },
