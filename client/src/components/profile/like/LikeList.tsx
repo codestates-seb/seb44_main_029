@@ -66,7 +66,7 @@ const Container = styled.div`
 
   // 모바일 디바이스
   @media screen and (min-width: 576px) {
-    width: 70%;
+    width: 80%;
   }
 
   // PC 및 큰 디바이스
@@ -77,48 +77,39 @@ const Container = styled.div`
 
 const Title = styled.div`
   width: 764px;
-  height: 50px;
+  height: 70px;
   color: white;
   font-size: 24px;
   background-color: rgba(0, 0, 0, 0.3);
   margin-bottom: 9px;
+  display: flex;
+  align-items: center;
 
   // 모바일 디바이스
   @media screen and (min-width: 576px) {
-    width: 70%;
+    width: 80%;
   }
 
   // PC 및 큰 디바이스
   @media screen and (min-width: 1024px) {
-    width: 90%;
+    width: 100%;
   }
 `;
+
 const List = styled.div`
-  /* width: 724px;
-  height: 400px;
-  background-color: rgba(0, 0, 0, 0.3);
-  margin-top: 9px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-evenly; */
   background-color: rgba(0, 0, 0, 0.3);
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: auto;
   grid-gap: 1rem;
+  grid-template-columns: repeat(5, 1fr);
 
-  // 모바일 디바이스
   @media screen and (min-width: 576px) {
-    grid-template-columns: repeat(4, 1fr);
-    width: 70%;
+    width: 80%;
   }
 
-  // PC 및 큰 디바이스
   @media screen and (min-width: 1024px) {
-    grid-template-columns: repeat(5, 1fr);
-    width: 90%;
+    width: 100%;
   }
 `;
 
@@ -127,6 +118,13 @@ const Pagination = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 9px;
+  @media screen and (min-width: 576px) {
+    width: 80%;
+  }
+
+  @media screen and (min-width: 1024px) {
+    width: 100%;
+  }
 `;
 
 const Button = styled.button`

@@ -70,11 +70,11 @@ export const ContentContainer = styled.div`
 
   // 모바일 디바이스
   @media screen and (min-width: 576px) {
-    width: 70%;
+    width: 90%;
   }
 
   // PC 및 큰 디바이스
   @media screen and (min-width: 1024px) {
-    width: 90%;
+    width: 100%;
   }
 `;
