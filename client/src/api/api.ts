@@ -10,7 +10,7 @@ import {
 const BASE_URL =
   'https://1d3c-2001-e60-914a-3a2e-35d9-8182-91fb-3942.ngrok-free.app/';
 
-/* 유저 정보 가져오기 */
+/* 음악 정보 가져오기 */
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
   axios
     .get(`${BASE_URL}theme/${ThemeId}/music/list`, {
@@ -58,7 +58,8 @@ export const Logout = async () => {
   return response;
 };
 
-export const FetchEditProfile = async (data: EditType) => {
+/* 음악 정보 가져오기 */
+export const PetchEditProfile = async (data: EditType) => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
   const respone = await axios.patch(
@@ -96,10 +97,11 @@ export const GetThemeItems = async (
   return response.data;
 };
 
-export const UploadFile = async (data: FormData) => {
+/* 업로드 요청 */
+export const PostUploadFile = async (data: FormData) => {
   const response = await axios.post(`${BASE_URL}musicUpload`, data, {
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'multipart/form-data',
       'ngrok-skip-browser-warning': '69420',
     },
   });

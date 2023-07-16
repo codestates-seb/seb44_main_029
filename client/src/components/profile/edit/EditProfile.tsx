@@ -3,7 +3,7 @@ import EditImg from './EditImg';
 import EditName from './EditName';
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { FetchEditProfile } from '../../../api/api';
+import { PetchEditProfile } from '../../../api/api';
 
 const EditProfile = ({
   setIsEdit,
@@ -26,7 +26,7 @@ const EditProfile = ({
   };
 
   const editMutation = useMutation(() =>
-    FetchEditProfile({ imageUrl: imgUrl, username: userName })
+    PetchEditProfile({ imageUrl: imgUrl, username: userName })
   );
 
   return (
