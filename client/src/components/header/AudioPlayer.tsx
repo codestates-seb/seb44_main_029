@@ -140,9 +140,9 @@ const Container = styled.div`
   align-items: center;
   padding: 0 30px;
   height: 50px;
-  border-radius: 10px;
+  border-radius: 0 0 10px 0;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.15);
+  background-color: rgba(251, 251, 253, 0.8);
 `;
 //오디오 조작버튼
 const AudioBtnImg = styled.img`

@@ -122,8 +122,8 @@ const NavBtnDiv = styled.div<{ isHovered: boolean }>`
   align-items: center;
   width: 7vw;
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
+  background-color: rgba(251, 251, 253, 0.8);
+  border-radius: 0 0 0 10px;
   transition: transform 0.5s, box-shadow 2s, height 0.5s;
   //transform관련
   height: ${({ isHovered }) => (isHovered ? '350px' : '50px')};
