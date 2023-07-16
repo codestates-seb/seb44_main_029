@@ -18,7 +18,7 @@ public class LikesServiceImpl implements LikesService{
     public final ContentRepository contentRepository;
     public final LikeRepository likeRepository;
     public final MemberJpaRepository memberJpaRepository;
-
+/*
     @Override
     public void likeContent(Long contentId, Long memberId) {
         Content content = contentRepository.findById(contentId).orElseThrow();
@@ -41,13 +41,13 @@ public class LikesServiceImpl implements LikesService{
         member.deleteLike(likes);
         likeRepository.delete(likes);
     }
-
+*/
     @Override
     public void patchLike(Long contentId, Long memberId) {
         Content content = contentRepository.findById(contentId).orElseThrow();
         Member member = memberJpaRepository.findById(memberId).orElseThrow();
         try{
-            Likes likes = likeRepository.findByMemberAndContent(member, content).orElseThrow(() -> new NullPointerException("d"));
+            Likes likes = likeRepository.findByMemberAndContent(member, content).orElseThrow(() -> new NullPointerException("New LIKES"));
             content.deleteLike(likes);
             member.deleteLike(likes);
             likeRepository.delete(likes);
@@ -55,7 +55,7 @@ public class LikesServiceImpl implements LikesService{
             Likes likes = new Likes();
             likes.addMember(member);
             likes.addContent(content);
-            //likeRepository.save(likes);
+            likeRepository.save(likes);
         }
     }
 }
