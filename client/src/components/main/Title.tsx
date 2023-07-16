@@ -1,41 +1,48 @@
-import styled from 'styled-components';
-import mainIcon from '../../assets/images/mainIcon.png';
+import styled, { keyframes } from 'styled-components';
+
 const Title = () => {
   return (
     <Container>
-      <FirstDiv>
-        <TitleDiv>CozyStates</TitleDiv>
-        <Img src={mainIcon} />
-      </FirstDiv>
-
-      <SecondDiv>
-        <p>시각적 안정감과 음성적 편안함을 제공하는</p>
-        <p>무료 동영상 스트리밍 서비스</p>
-      </SecondDiv>
+      <TitleDiv>
+        <p>안정감과 편안함을 제공하는</p>
+        <Column>
+          <p>미디어 서비스 </p>
+          <p className="fadeIn">Cozy State</p>
+        </Column>
+      </TitleDiv>
     </Container>
   );
 };
 
 export default Title;
 
+//페이드 아웃 애니메이션
+const fadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 const Container = styled.div`
-  margin: 4rem 2rem;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  justify-content: center;
+  margin-bottom: 30vh;
   @media (min-width: 768px) {
-    margin: 6rem 2rem;
   }
 
   @media (min-width: 1024px) {
-    margin: 10rem 0 0 8rem;
   }
 `;
 const FirstDiv = styled.div`
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: center;
 `;
 const SecondDiv = styled.div`
   font-size: 2rem;
@@ -52,13 +59,28 @@ const SecondDiv = styled.div`
     }
   }
 `;
+const Column = styled.div`
+  display: flex;
+  > p {
+    margin: 0;
+    margin-right: 30px;
+  }
+  > .fadeIn {
+    margin: 0;
+    animation: ${fadeInAnimation} 2s ease-in-out;
+  }
+`;
 
 const TitleDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   color: white;
-  margin-left: 8rem;
-  margin-bottom: 1rem;
-  font-family: 'Lalezar', cursive;
   font-weight: bold;
+  > p {
+    margin: 0;
+  }
   @media (min-width: 300px) {
     font-size: 2rem;
   }

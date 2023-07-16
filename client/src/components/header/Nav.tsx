@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
-import { IconContext } from 'react-icons';
 import { FiAlignJustify, FiHome, FiUser } from 'react-icons/fi';
 import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
 
@@ -42,28 +41,26 @@ const Nav = ({
     }
   };
   return (
-    <>
-      <Container>
-        <NavBtnDiv onMouseLeave={() => setIsClick(false)} isClicked={isClicked}>
-          {/* 마우스 호버시 나타나는 메뉴바 */}
-          {isClicked ? (
-            <>
-              <S_FiHome onClick={() => navigate('/')} />
-              <S_FiUser onClick={() => navigate('/profile')} />
-              <S_TbCarouselHorizontal onClick={() => navigate('/theme')} />
-              {/* jwtToken 토큰 유무 분기 */}
-              {!accessToken ? (
-                <S_TbLogin onClick={() => setIsLogInClicked(true)} />
-              ) : (
-                <S_TbLogout onClick={handleLogOut} />
-              )}
-            </>
-          ) : (
-            <S_FiAlignJustify onClick={() => setIsClick(true)} />
-          )}
-        </NavBtnDiv>
-      </Container>
-    </>
+    <Container>
+      <NavBtnDiv onMouseLeave={() => setIsClick(false)} isClicked={isClicked}>
+        {/* 마우스 호버시 나타나는 메뉴바 */}
+        {isClicked ? (
+          <>
+            <S_FiHome onClick={() => navigate('/')} />
+            <S_FiUser onClick={() => navigate('/profile')} />
+            <S_TbCarouselHorizontal onClick={() => navigate('/theme')} />
+            {/* jwtToken 토큰 유무 분기 */}
+            {!accessToken ? (
+              <S_TbLogin onClick={() => setIsLogInClicked(true)} />
+            ) : (
+              <S_TbLogout onClick={handleLogOut} />
+            )}
+          </>
+        ) : (
+          <S_FiAlignJustify onClick={() => setIsClick(true)} />
+        )}
+      </NavBtnDiv>
+    </Container>
   );
 };
 
