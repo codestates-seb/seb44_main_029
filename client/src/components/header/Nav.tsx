@@ -1,15 +1,11 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import iconHome from '../../assets/icon/icon_home.png';
-import iconUser from '../../assets/icon/icon_user.png';
-import iconThemeList from '../../assets/icon/icon_themeList.png';
-import iconMenu from '../../assets/icon/icon_menu.png';
-import iconLogIn from '../../assets/icon/icon_log.png';
-import iconSignUp from '../../assets/icon/icon_Sign.png';
-import iconOut from '../../assets/icon/icon_out.png';
 import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
+import { IconContext } from 'react-icons';
+import { FiAlignJustify, FiHome, FiUser } from 'react-icons/fi';
+import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
 
 // Nav 컴포넌트
 const Nav = ({
@@ -20,25 +16,11 @@ const Nav = ({
   setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   // 호버 여부 상태 관리
-  const [isHovered, setIsHovered] = useState(false);
-  const icons = [iconHome, iconUser, iconThemeList];
+  const [isClicked, setIsClick] = useState(false);
   const navigate = useNavigate();
 
   //임시 jwt토큰 유무 판단용
   const accessToken = localStorage.getItem('accessToken');
-
-  // 호버 이벤트 핸들러
-  const handleHover = () => {
-    setIsHovered(!isHovered);
-  };
-
-  const handleNavBtn = (icon: string) => {
-    if (icon === iconHome) navigate('/');
-    else if (icon === iconUser) navigate('/profile');
-    else if (icon === iconThemeList) navigate('/theme');
-    else if (icon === iconLogIn) setIsLogInClicked(true);
-    else if (icon === iconSignUp) setIsSignUpClicked(true);
-  };
 
   const handleLogoutMutation = useMutation(Logout, {
     onSuccess: () => {
@@ -62,45 +44,22 @@ const Nav = ({
   return (
     <>
       <Container>
-        <NavBtnDiv
-          onMouseEnter={handleHover}
-          onMouseLeave={handleHover}
-          isHovered={isHovered}
-        >
+        <NavBtnDiv onMouseLeave={() => setIsClick(false)} isClicked={isClicked}>
           {/* 마우스 호버시 나타나는 메뉴바 */}
-          {isHovered ? (
+          {isClicked ? (
             <>
-              {icons.map((icon) => (
-                <NavBtnImg
-                  src={icon}
-                  isHovered={isHovered}
-                  onClick={() => handleNavBtn(icon)}
-                />
-              ))}
+              <S_FiHome onClick={() => navigate('/')} />
+              <S_FiUser onClick={() => navigate('/profile')} />
+              <S_TbCarouselHorizontal onClick={() => navigate('/theme')} />
               {/* jwtToken 토큰 유무 분기 */}
               {!accessToken ? (
-                <>
-                  <NavBtnImg
-                    src={iconLogIn}
-                    isHovered={isHovered}
-                    onClick={() => handleNavBtn(iconLogIn)}
-                  ></NavBtnImg>
-                  <NavBtnImg
-                    src={iconSignUp}
-                    isHovered={isHovered}
-                    onClick={() => handleNavBtn(iconSignUp)}
-                  ></NavBtnImg>
-                </>
+                <S_TbLogin onClick={() => setIsLogInClicked(true)} />
               ) : (
-                <NavBtnImg
-                  src={iconOut}
-                  isHovered={isHovered}
-                  onClick={handleLogOut}
-                ></NavBtnImg>
+                <S_TbLogout onClick={handleLogOut} />
               )}
             </>
           ) : (
-            <NavBtnImg src={iconMenu} isHovered={isHovered}></NavBtnImg>
+            <S_FiAlignJustify onClick={() => setIsClick(true)} />
           )}
         </NavBtnDiv>
       </Container>
@@ -115,36 +74,131 @@ const Container = styled.div`
   z-index: 99;
 `;
 
-const NavBtnDiv = styled.div<{ isHovered: boolean }>`
+const NavBtnDiv = styled.div<{ isClicked: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  width: 7vw;
+  width: 70px;
   cursor: pointer;
-  background-color: rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
+  border-radius: 0 0 0 10px;
   transition: transform 0.5s, box-shadow 2s, height 0.5s;
-  //transform관련
-  height: ${({ isHovered }) => (isHovered ? '350px' : '50px')};
+  background-color: ${(props) =>
+    props.isClicked && 'rgba(255, 255, 255, 0.5);'};
+  //transform related
 `;
 
-const NavBtnImg = styled.img<{ isHovered: boolean }>`
-  width: 20px;
+const S_FiAlignJustify = styled(FiAlignJustify)`
+  width: 50px;
   height: auto;
-  border-radius: 5px;
-  padding: 7px 0px;
-  //transform관련
-  transform: ${({ isHovered }) => (isHovered ? 'scale(2)' : 'none')};
+  border-radius: 0 0 0 10px;
+  padding: 10px 0px;
+  color: white;
+  opacity: 0.8;
   //살짝 둥근 배경효과
-  transition: background-color 0.2s, padding 0.2s;
+  transition: background-color 0.2s, padding 0.2s, opacity 0.2s;
   &:hover {
-    padding: 7px;
-    background-color: #e3e3e3;
+    padding: 10px;
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.8);
   }
   //클릭 시 색상변화
   &:active {
-    padding: 7px 5px;
+    background-color: #bbddff;
+    transition: background-color 0.05s, padding 0.05s;
+  }
+`;
+
+const S_FiHome = styled(FiHome)`
+  width: 30px;
+  height: auto;
+  border-radius: 0 0 0 10px;
+  padding: 20px 0px;
+  color: white;
+  //살짝 둥근 배경효과
+  transition: background-color 0.2s, padding 0.2s;
+  &:hover {
+    padding: 20px;
+    background-color: #dbdbdb;
+  }
+  //클릭 시 색상변화
+  &:active {
+    background-color: #bbddff;
+    transition: background-color 0.05s, padding 0.05s;
+  }
+`;
+
+const S_FiUser = styled(FiUser)`
+  width: 30px;
+  height: auto;
+  border-radius: 0 0 0 10px;
+  padding: 20px 0px;
+  color: white;
+  //살짝 둥근 배경효과
+  transition: background-color 0.2s, padding 0.2s;
+  &:hover {
+    padding: 20px;
+    background-color: #dbdbdb;
+  }
+  //클릭 시 색상변화
+  &:active {
+    background-color: #bbddff;
+    transition: background-color 0.05s, padding 0.05s;
+  }
+`;
+
+const S_TbCarouselHorizontal = styled(TbCarouselHorizontal)`
+  width: 30px;
+  height: auto;
+  border-radius: 0 0 0 10px;
+  padding: 20px 0px;
+  color: white;
+  //살짝 둥근 배경효과
+  transition: background-color 0.2s, padding 0.2s;
+  &:hover {
+    padding: 20px;
+    background-color: #dbdbdb;
+  }
+  //클릭 시 색상변화
+  &:active {
+    background-color: #bbddff;
+    transition: background-color 0.05s, padding 0.05s;
+  }
+`;
+
+const S_TbLogin = styled(TbLogin)`
+  width: 30px;
+  height: auto;
+  border-radius: 0 0 0 10px;
+  padding: 20px 0px;
+  color: white;
+  //살짝 둥근 배경효과
+  transition: background-color 0.2s, padding 0.2s;
+  &:hover {
+    padding: 20px;
+    background-color: #dbdbdb;
+  }
+  //클릭 시 색상변화
+  &:active {
+    background-color: #bbddff;
+    transition: background-color 0.05s, padding 0.05s;
+  }
+`;
+
+const S_TbLogout = styled(TbLogout)`
+  width: 30px;
+  height: auto;
+  border-radius: 0 0 0 10px;
+  padding: 20px 0px;
+  color: white;
+  //살짝 둥근 배경효과
+  transition: background-color 0.2s, padding 0.2s;
+  &:hover {
+    padding: 20px;
+    background-color: #dbdbdb;
+  }
+  //클릭 시 색상변화
+  &:active {
     background-color: #bbddff;
     transition: background-color 0.05s, padding 0.05s;
   }
