@@ -110,7 +110,6 @@ const SignUpForm = ({
 
   return (
     <Container>
-      <h1>SIGNUP</h1>
       <Form onSubmit={handleSubmit}>
         <Label htmlFor="username" isFocused={signUpFormData.username !== ''}>
           Username
@@ -190,6 +189,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 300px;
+  margin: 50px 0px;
 `;
 
 const Label = styled.label<{ isFocused: boolean }>`
