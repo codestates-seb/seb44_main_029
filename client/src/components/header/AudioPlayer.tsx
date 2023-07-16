@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { GetMusic } from '../../api/api';
 import { IoPlay, IoPlayBack, IoPlayForward, IoPause } from 'react-icons/io5';
+import Spinner from '../../assets/gif/Spinner.svg';
 
 //오디오 플레이어
 const AudioPlayer = () => {
@@ -112,7 +113,7 @@ const AudioPlayer = () => {
           ))}
         </>
       ) : isFetching ? (
-        <>패칭됨..</>
+        <SpinnerImg src={Spinner} />
       ) : isError ? (
         <>API 실패</>
       ) : null}
@@ -230,4 +231,9 @@ const S_IoPause = styled(IoPause)`
     padding: 10px 12px;
     background-color: #bbddff;
   }
+`;
+
+const SpinnerImg = styled.img`
+  width: 100px;
+  color: white;
 `;
