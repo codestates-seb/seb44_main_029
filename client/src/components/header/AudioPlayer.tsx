@@ -1,14 +1,10 @@
 import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import iconPlay from '../../assets/icon/iconPlay.png';
-import iconPrev from '../../assets/icon/iconPrev.png';
-import iconNext from '../../assets/icon/iconNext.png';
-import iconPause from '../../assets/icon/iconPause.png';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import iconMusic from '../../assets/icon/icon_music.png';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { GetMusic } from '../../api/api';
+import { IoPlay, IoPlayBack, IoPlayForward, IoPause } from 'react-icons/io5';
 
 //오디오 플레이어
 const AudioPlayer = () => {
@@ -18,7 +14,6 @@ const AudioPlayer = () => {
   const [nowMusicId, setNowMusicId] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { themeId } = useParams();
-  const navigate = useNavigate();
 
   // themeId가 변경될시 실행되는 쿼리
   const {
@@ -57,13 +52,13 @@ const AudioPlayer = () => {
   }, [nowMusicId]);
 
   //음원 변경 핸들러
-  const handleChangeMusic = (move: string) => {
+  const handleChangeMusic = (next: boolean) => {
     //API호출 성공시에만.
     if (isSuccess) {
-      if (move === iconPrev) {
+      if (!next) {
         const backId = nowMusicId === 0 ? musicList.length - 1 : nowMusicId - 1;
         setNowMusicId(backId);
-      } else if (move === iconNext) {
+      } else {
         const forwardId = (nowMusicId + 1) % musicList.length;
         setNowMusicId(forwardId);
       }
@@ -95,20 +90,15 @@ const AudioPlayer = () => {
 
   return (
     <Container>
-      {isSuccess ? (
+      {musicList ? (
         <>
-          <AudioBtnImg
-            onClick={handleTogglePlay}
-            src={isPlaying ? iconPause : iconPlay}
-          />
-          <AudioBtnImg
-            src={iconPrev}
-            onClick={() => handleChangeMusic(iconPrev)}
-          />
-          <AudioBtnImg
-            src={iconNext}
-            onClick={() => handleChangeMusic(iconNext)}
-          />
+          {isPlaying ? (
+            <S_IoPause onClick={handleTogglePlay} />
+          ) : (
+            <S_IoPlay onClick={handleTogglePlay} />
+          )}
+          <S_IoPlayBack onClick={() => handleChangeMusic(false)} />
+          <S_IoPlayForward onClick={() => handleChangeMusic(true)} />
           {volumes.map((volume) => (
             <VolumeChangeBtnDiv
               key={volume}
@@ -121,12 +111,7 @@ const AudioPlayer = () => {
         <>패칭됨..</>
       ) : isError ? (
         <>API 실패</>
-      ) : (
-        <AudioBtnImg
-          src={iconMusic}
-          onClick={() => navigate('/theme')}
-        ></AudioBtnImg>
-      )}
+      ) : null}
     </Container>
   );
 };
@@ -142,29 +127,8 @@ const Container = styled.div`
   height: 50px;
   border-radius: 0 0 10px 0;
   z-index: 99;
-  background-color: rgba(251, 251, 253, 0.8);
 `;
-//오디오 조작버튼
-const AudioBtnImg = styled.img`
-  width: 20px;
-  height: 20px;
-  padding: 5px 15px;
-  margin-right: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: padding 0.3s, background-color 0.3s;
-  //버튼 크기증가 & 배경색 변화
-  &:hover {
-    padding: 15px;
-    background-color: #e3e3e3;
-  }
-  //클릭 시 버튼 길이 축소외 섹상변경
-  &:active {
-    transition: padding 0.1s, background-color 0.1s;
-    padding: 10px 15px;
-    background-color: #bbddff;
-  }
-`;
+
 //오디오 음량조절버튼
 const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
   height: 30%;
@@ -178,5 +142,88 @@ const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
   &:hover {
     filter: brightness(50%);
     height: 50%;
+  }
+`;
+
+const S_IoPlay = styled(IoPlay)`
+  height: 26px;
+  width: auto;
+  padding: 0 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  transition: padding 0.3s, background-color 0.3s;
+  //버튼 크기증가 & 배경색 변화
+  &:hover {
+    padding: 12px;
+    background-color: #e3e3e3;
+  }
+  //클릭 시 버튼 길이 축소외 섹상변경
+  &:active {
+    transition: padding 0.1s, background-color 0.1s;
+    padding: 10px 12px;
+    background-color: #bbddff;
+  }
+`;
+
+const S_IoPlayForward = styled(IoPlayForward)`
+  height: 26px;
+  width: auto;
+  padding: 0 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  transition: padding 0.3s, background-color 0.3s;
+  //버튼 크기증가 & 배경색 변화
+  &:hover {
+    padding: 12px;
+    background-color: #e3e3e3;
+  }
+  //클릭 시 버튼 길이 축소외 섹상변경
+  &:active {
+    transition: padding 0.1s, background-color 0.1s;
+    padding: 10px 12px;
+    background-color: #bbddff;
+  }
+`;
+const S_IoPlayBack = styled(IoPlayBack)`
+  height: 26px;
+  width: auto;
+  padding: 0 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  transition: padding 0.3s, background-color 0.3s;
+  //버튼 크기증가 & 배경색 변화
+  &:hover {
+    padding: 12px;
+    background-color: #e3e3e3;
+  }
+  //클릭 시 버튼 길이 축소외 섹상변경
+  &:active {
+    transition: padding 0.1s, background-color 0.1s;
+    padding: 10px 12px;
+    background-color: #bbddff;
+  }
+`;
+
+const S_IoPause = styled(IoPause)`
+  height: 26px;
+  width: auto;
+  padding: 0 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  transition: padding 0.3s, background-color 0.3s;
+  //버튼 크기증가 & 배경색 변화
+  &:hover {
+    padding: 12px;
+    background-color: #e3e3e3;
+  }
+  //클릭 시 버튼 길이 축소외 섹상변경
+  &:active {
+    transition: padding 0.1s, background-color 0.1s;
+    padding: 10px 12px;
+    background-color: #bbddff;
   }
 `;
