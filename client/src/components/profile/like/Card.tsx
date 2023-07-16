@@ -35,6 +35,16 @@ const Container = styled.div`
   height: 140px;
   background-color: rgba(0, 0, 0, 0.3);
   margin: 10px;
+
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    width: 70%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    width: 90%;
+  }
 `;
 
 const ImgLink = styled(Link)`
@@ -44,6 +54,10 @@ const ImgLink = styled(Link)`
     width: 100%;
     max-height: 100px;
     height: 100%;
+
+    &:hover {
+      border: 1px solid rgba(255, 255, 255, 0.7);
+    }
   }
 `;
 
