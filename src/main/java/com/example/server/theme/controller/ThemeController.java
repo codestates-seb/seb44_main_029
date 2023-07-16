@@ -43,7 +43,7 @@ public class ThemeController {
         List<Content> contents = contentService.getContentByTheme(themeId);
         Page<Content> contentsPage = contentService.contentPagination(contents, page-1, size, criteria, sort);
 
-        return new ResponseEntity<>(new ContentPageDto<>(contentService.contentsResponse(contents,memberId), contentsPage), HttpStatus.OK);
+        return new ResponseEntity<>(new ContentPageDto<>(contentService.contentsResponse(contentsPage,memberId), contentsPage), HttpStatus.OK);
     }
 
     @GetMapping
