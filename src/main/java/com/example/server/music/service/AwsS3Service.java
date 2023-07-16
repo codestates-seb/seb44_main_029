@@ -29,9 +29,9 @@ import java.util.*;
 
 
 /**
- * 메타데이터를 통해 파일을 업로드 하고 업로드된 파일의 uri를 생성합니다.(보류)
+ * 메타데이터를 통해 파일을 업로드 하고 업로드된 파일의 url을 생성합니다.(보류)
  *
- * s3에 저장된 mp3 파일의 uri를 클라이언트에게 전달하는 service
+ * s3에 저장된 mp3 파일의 url을 클라이언트에게 전달하는 service
  * */
 @Service
 public class AwsS3Service {
@@ -69,44 +69,8 @@ public class AwsS3Service {
     }
 
 
-//    // 음원 url 조회 - 메타데이터 기반 -
-//    public List<String> getMp3FileListUrlV1(long themeId){
-//        try{
-//            List<String> musicList = new ArrayList<>(); // url
-//            ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
-//                    .bucket(bucketName)
-//                    .build();
-//
-//            ListObjectsResponse listObjectsResponse = s3Client.listObjects(listObjectsRequest);
-//            for(S3Object s3Object : listObjectsResponse.contents()) {
-//                HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
-//                        .bucket(bucketName)
-//                        .key(s3Object.key())
-//                        .build();
-//
-//                HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
-//                Map<String, String> metadata = headObjectResponse.metadata();
-//                String themeIdMetadata = metadata.get("themeid");
-//
-//                // 메타데이터가 일치하는 값 들만 url 값들을 리스트에 추가
-//                if (themeIdMetadata != null && themeIdMetadata.equals(String.valueOf(themeId))) {
-//                    GetUrlRequest getUrlRequest = GetUrlRequest.builder()
-//                            .bucket(bucketName)
-//                            .key(s3Object.key())
-//                            .build();
-//
-//                    String url = s3Client.utilities().getUrl(getUrlRequest).toExternalForm();
-//                    musicList.add(url);
-//                }
-//            }
-//            return musicList;
-//        } catch (SdkException e){
-//            throw new RuntimeException("list 반환 실패: " + e.getMessage(), e);
-//        }
-//    }
-
-    // 음원 url 조회 - 메타데이터 기반 - Pre signed-url 적용 - 만료시간 1분
-    public List<String> getMp3FileListUrlV2(long themeId){
+    // 음원 url 조회 - 메타데이터 기반 -
+    public List<String> getMp3FileListUrlV1(long themeId){
         try{
             List<String> musicList = new ArrayList<>(); // url
             ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
@@ -124,6 +88,42 @@ public class AwsS3Service {
                 Map<String, String> metadata = headObjectResponse.metadata();
                 String themeIdMetadata = metadata.get("themeid");
 
+                // 메타데이터가 일치하는 값 들만 url 값들을 리스트에 추가
+                if (themeIdMetadata != null && themeIdMetadata.equals(String.valueOf(themeId))) {
+                    GetUrlRequest getUrlRequest = GetUrlRequest.builder()
+                            .bucket(bucketName)
+                            .key(s3Object.key())
+                            .build();
+
+                    String url = s3Client.utilities().getUrl(getUrlRequest).toExternalForm();
+                    musicList.add(url);
+                }
+            }
+            return musicList;
+        } catch (SdkException e){
+            throw new RuntimeException("list 반환 실패: " + e.getMessage(), e);
+        }
+    }
+
+    // 음원 url 조회 - 메타데이터 기반 - Pre signed-url 적용 - 만료시간 1분
+    public List<String> getMp3FileListUrlV2(long themeId){
+        try{
+            List<String> musicList = new ArrayList<>(); // url
+            ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
+                    .bucket(bucketName)
+                    .build();
+
+            ListObjectsResponse listObjectsResponse = s3Client.listObjects(listObjectsRequest);
+            for(S3Object s3Object : listObjectsResponse.contents()) {
+                HeadObjectRequest headObjectRequest = HeadObjectRequest.builder() // 메타데이터 객체 요청
+                        .bucket(bucketName)
+                        .key(s3Object.key())
+                        .build();
+
+                HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+                Map<String, String> metadata = headObjectResponse.metadata();
+                String themeIdMetadata = metadata.get("themeid");
+
                 // 메타데이터가 일치하는 값들만 url 값들을 리스트에 추가
                 if (themeIdMetadata != null && themeIdMetadata.equals(String.valueOf(themeId))) {
                     GetObjectRequest getObjectRequest = GetObjectRequest.builder()
@@ -133,7 +133,7 @@ public class AwsS3Service {
 
                     // pre-signed 객체 요청
                     GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
-                            .signatureDuration(Duration.ofMinutes(1)) // 만료시간
+                            .signatureDuration(Duration.ofMinutes(5)) // 만료시간
                             .getObjectRequest(getObjectRequest)
                             .build();
 
@@ -165,7 +165,7 @@ public class AwsS3Service {
                     .metadata(Collections.singletonMap("themeId", String.valueOf(themeId)))
                     .build();
 
-            s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
+            s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes())); // 바이트 배열로 전달
         } catch (IOException e) {
             e.printStackTrace();
         }

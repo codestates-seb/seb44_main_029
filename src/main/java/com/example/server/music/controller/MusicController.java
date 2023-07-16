@@ -51,16 +51,16 @@ public class MusicController {
 //    }
 
     // s3에 저장된 mp3 파일의 url list 가져오기
-//    @GetMapping("/list")
-//    public ResponseEntity getMusicUrlList(@Positive @PathVariable("theme-id") long themeId){
-//        try{
-//            List<String> mp3List = awsS3Service.getMp3FileListUrlV1(themeId);
-//            return ResponseEntity.ok(mp3List);
-//        }catch (Exception e){
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body("url list 반환에 실패했습니다: " + e.getMessage());
-//        }
-//    }
+    @GetMapping("/list")
+    public ResponseEntity getMusicUrlList(@Positive @PathVariable("theme-id") long themeId){
+        try{
+            List<String> mp3List = awsS3Service.getMp3FileListUrlV2(themeId);
+            return ResponseEntity.ok(mp3List);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("url list 반환에 실패했습니다: " + e.getMessage());
+        }
+    }
 
 
     /**
@@ -91,7 +91,7 @@ public class MusicController {
             if(currentMusic > 0 ){
                 currentMusic--;
             }
-            else if(currentMusic == 0){
+            else{ // currentMusic == 0
                 currentMusic = urlList.size()-1;// 리스트 마지막 인덱스 음원 출력
             }
             String previous = urlList.get(currentMusic);
@@ -110,7 +110,7 @@ public class MusicController {
             if(currentMusic >= 0 && currentMusic < urlList.size()-1){
                 currentMusic++;
             }
-            else if(currentMusic == urlList.size()-1) { // 마지막 인덱스인 경우
+            else { // currentMusic == urlList.size()-1
                 currentMusic = 0;
             }
             String next = urlList.get(currentMusic);
