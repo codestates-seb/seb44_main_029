@@ -108,7 +108,6 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
     <>
       {!isSignUpClicked ? (
         <Container>
-          <h1>LOGIN</h1>
           {/* <GoogleLoginDiv>
             <GoogleOAuthProvider clientId={clientId}>
               <GoogleLogin
