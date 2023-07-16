@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
+import { PostUploadFile } from '../../api/api';
+import { useMutation } from '@tanstack/react-query';
 
 const Upload = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -16,17 +18,24 @@ const Upload = () => {
     setThemeId(event.target.value);
   };
 
-  //저장 버튼
-  const handleSaveButton = () => {
-    if (file) {
-      const formdata = new FormData();
-      formdata.append('file', file);
-      formdata.append('themeId', themeId);
+  // post API 등록
+  const uploadMutation = useMutation((formData: FormData) =>
+    PostUploadFile(formData)
+  );
 
-      for (const entry of formdata.entries()) {
-        const [key, value] = entry;
-        console.log(key, value);
+  //저장 버튼 API실행
+  const handleSaveButton = () => {
+    if (file && window.confirm('정말 저장하시겠습니까?')) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('themeId', themeId);
+      //formdata 확인용
+      for (const [key, value] of formData) {
+        console.log(key); // 키 출력
+        console.log(value); // 값 출력
       }
+      // post API 실행
+      uploadMutation.mutate(formData);
     }
   };
   //취소 버튼
