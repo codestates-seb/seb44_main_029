@@ -16,7 +16,7 @@ const ThemeItemList = () => {
   const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false); // 좋아요한 아이템만 표시할지 결정하는 상태
   const targetRef = useRef<HTMLDivElement | null>(null); // 무한 스크롤을 위한 참조
   const { themeId } = useParams<{ themeId: string }>(); // 현재 선택된 테마 아이디를 가져온다.
-  const numericThemeId = parseInt(themeId || ''); // string 타입으로 들어온 데이터를 number 타입으로 변환한다.
+  const numThemeId = parseInt(themeId || ''); // string 타입으로 들어온 데이터를 number 타입으로 변환한다.
   const [currentThemeTitle, setCurrentThemeTitle] = useState<string>(''); // 현재 테마 타이틀을 표시하기 위해 사용되는 상태
 
   // 테마 이미지 리스트를 가져와서 무하스크롤을 구현하는 함수
@@ -28,8 +28,8 @@ const ThemeItemList = () => {
     isFetchingNextPage,
     status,
   } = useInfiniteQuery<IThemeItemProps, AxiosError>(
-    ['items'],
-    ({ pageParam = 1 }) => GetThemeItems(numericThemeId, pageParam, 20),
+    ['items', numThemeId],
+    ({ pageParam = 1 }) => GetThemeItems(numThemeId, pageParam, 20),
     {
       keepPreviousData: true,
       getNextPageParam: (lastPage) => {
@@ -66,7 +66,7 @@ const ThemeItemList = () => {
   // 좋아요한 아이템 목록을 가져온다.
   const { data: likedItems } = useQuery<IThemeItemProps, AxiosError>(
     ['likes'],
-    () => GetThemeLikes(numericThemeId),
+    () => GetThemeLikes(numThemeId),
     {
       enabled: showLikedOnly, // showLikedOnly가 true일 때만 쿼리를 실행한다.
     }
@@ -80,7 +80,7 @@ const ThemeItemList = () => {
   // 좋아요한 아이템만 표시하도록 필터링하거나 전체 아이템 목록을 가져온다.
   const filteredItems = showLikedOnly
     ? likedItems?.data
-    : items?.pages.flatMap((page) => page.data);
+    : items?.pages?.flatMap((page) => page.data) || [];
 
   return (
     <Layout backgroundImageUrl={getBackgroundImage(themeId)}>
@@ -101,7 +101,7 @@ const ThemeItemList = () => {
                   contentId={item.contentId}
                   liked={item.liked}
                   contentUri={item.contentUri}
-                  themeId={numericThemeId}
+                  themeId={numThemeId}
                 />
               ))}
           </ItemGridDiv>
