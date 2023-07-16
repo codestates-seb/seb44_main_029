@@ -8,13 +8,11 @@ import {
   EditType,
 } from '../types/types';
 
-
 const BASE_URL =
   'https://1d3c-2001-e60-914a-3a2e-35d9-8182-91fb-3942.ngrok-free.app/';
 const BASE_URL2 = 'https://0f75-221-141-172-40.ngrok-free.app/';
 
-
-/* 음악 정보 가져오기 */
+// 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
   axios
     .get(`${BASE_URL}theme/${ThemeId}/music/list`, {
@@ -62,7 +60,7 @@ export const Logout = async () => {
   return response;
 };
 
-/* 음악 정보 가져오기 */
+// 프로필 수정
 export const PetchEditProfile = async (data: EditType) => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
@@ -102,15 +100,16 @@ export const GetThemeItems = async (
   return response.data;
 };
 
-/* 업로드 요청 */
+// 업로드 요청
 export const PostUploadFile = async (data: FormData) => {
   const response = await axios.post(`${BASE_URL}musicUpload`, data, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      'Content-Type': 'multipart/form-data', // multipart/form-data
       'ngrok-skip-browser-warning': '69420',
     },
   });
   return response;
+};
 
 // 이미지 좋아요 상태 업데이트
 export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
