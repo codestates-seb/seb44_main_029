@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Card from './Card';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 interface LikeListProps {
   cards: {
@@ -29,6 +29,7 @@ const LikeList = ({ cards }: LikeListProps) => {
   return (
     <Container>
       <Title>🍔 Like List</Title>
+
       <List>
         {slicedCards.map((card, index) => (
           <Card
@@ -62,19 +63,38 @@ const Container = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3);
   margin-top: 15px;
+
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    width: 70%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    width: 90%;
+  }
 `;
 
 const Title = styled.div`
-  width: 724px;
+  width: 764px;
   height: 50px;
   color: white;
   font-size: 24px;
   background-color: rgba(0, 0, 0, 0.3);
   margin-bottom: 9px;
-`;
 
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    width: 70%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    width: 90%;
+  }
+`;
 const List = styled.div`
-  width: 724px;
+  /* width: 724px;
   height: 400px;
   background-color: rgba(0, 0, 0, 0.3);
   margin-top: 9px;
@@ -82,7 +102,24 @@ const List = styled.div`
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-evenly; */
+  background-color: rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+  grid-gap: 1rem;
+
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    grid-template-columns: repeat(4, 1fr);
+    width: 70%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: repeat(5, 1fr);
+    width: 90%;
+  }
 `;
 
 const Pagination = styled.div`

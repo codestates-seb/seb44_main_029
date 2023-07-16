@@ -11,10 +11,10 @@ const ChangeProfile = ({
   return (
     <Container>
       <IconImg src={IconUser} />
-      <div>
+      <UserInfoDiv>
         <UsernameDiv>User Name</UsernameDiv>
         <EmailDiv>Email</EmailDiv>
-      </div>
+      </UserInfoDiv>
       <Button onClick={handleButton}>회원 정보 변경</Button>
     </Container>
   );
@@ -30,6 +30,15 @@ const Container = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3);
   margin-bottom: 15px;
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    width: 70%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    width: 90%;
+  }
 `;
 const IconImg = styled.img`
   width: 120px;
@@ -37,6 +46,7 @@ const IconImg = styled.img`
   margin: 8px 40px;
 `;
 
+const UserInfoDiv = styled.div``;
 const UsernameDiv = styled.div`
   font-size: 32px;
   color: white;
@@ -57,4 +67,19 @@ const Button = styled.button`
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #2aa58e;
+  }
+
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    font-size: 60%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    font-size: 90%;
+  }
 `;

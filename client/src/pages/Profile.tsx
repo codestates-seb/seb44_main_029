@@ -54,6 +54,7 @@ export const Layout = styled.div`
 `;
 
 export const ContentContainer = styled.div`
+  box-sizing: border-box;
   max-width: 924px;
   width: 100%;
   max-height: 800px;
@@ -66,4 +67,14 @@ export const ContentContainer = styled.div`
   border-radius: 0.5rem;
   background-color: rgba(0, 0, 0, 0.3);
   margin: 5rem;
+
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    width: 70%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    width: 90%;
+  }
 `;
