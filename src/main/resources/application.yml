@@ -2,8 +2,8 @@
 cloud:
   aws:
     credentials:
-      accessKey: ${AWS_ACCESS_KEY2}
-      secretKey: ${AWS_SECRET_KEY2}
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
     s3:
       bucket: cozystates-bucket-01
     region:
