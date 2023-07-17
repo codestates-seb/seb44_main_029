@@ -13,6 +13,7 @@ interface ItemProps
   key: number;
   items: IThemeItemProps;
   currentItemIndex: number;
+  firstItemContentId: number;
   lastElementContentId: number;
 }
 
@@ -27,6 +28,7 @@ const DetailedItem = ({
   themeId,
   items,
   currentItemIndex,
+  firstItemContentId,
   lastElementContentId,
 }: ItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 좋아요 상태 관리를 위한 상태
@@ -82,7 +84,9 @@ const DetailedItem = ({
             🤍
           </LikeButton>
         </OverlayControlDiv>
-        <MoveToNextDiv to={`/theme/${themeId}/${nextContentId || 1}`}>
+        <MoveToNextDiv
+          to={`/theme/${themeId}/${nextContentId || firstItemContentId}`}
+        >
           <img src={nextArrowSvg}></img>
         </MoveToNextDiv>
       </ItemContainerDiv>
@@ -95,7 +99,6 @@ export default DetailedItem;
 const Container = styled.div`
   width: 100%;
   border-radius: 0 0 0.33rem 0.33rem;
-  padding: 1.5rem;
   box-sizing: border-box;
   overflow: auto;
 `;
@@ -105,7 +108,7 @@ const OverlayControlDiv = styled.div`
   display: flex;
   position: absolute;
   opacity: 1;
-  bottom: 0;
+  bottom: 3.5rem;
   width: 100%;
   padding: 0.5rem;
   pointer-events: none;
@@ -123,15 +126,15 @@ const ItemContainerDiv = styled.div`
 
 const ItemImgDiv = styled.div`
   box-sizing: border-box;
-  display: flex;
   width: 100%;
+  height: 100vh;
+  padding: 3.5rem 0;
+  display: flex;
+  justify-content: center;
 
   > img {
     display: flex;
-    width: 100vw;
-    height: 90vh;
     object-fit: contain;
-    border-radius: 0.5rem;
   }
 `;
 
