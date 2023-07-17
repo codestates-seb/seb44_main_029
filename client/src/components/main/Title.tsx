@@ -12,12 +12,12 @@ const Title = () => {
         </Column>
         <BtnColumnDiv>
           <button>
-            <TbLogin />
-            로그인
+            <TbLogin height="200px" />
+            <p>로그인</p>
           </button>
           <button>
             <TbCarouselHorizontal />
-            테마 둘러보기
+            <p>테마 둘러보기</p>
           </button>
         </BtnColumnDiv>
       </TitleDiv>
@@ -30,28 +30,35 @@ export default Title;
 //페이드 아웃 애니메이션
 const fadeInAnimation = keyframes`
   0% {
+    color: blue;
     opacity: 0;
   }
-  25% {
+  50% {
     opacity: 1;
+    color: blue;
+    text-shadow: 0px 0px white;
   }
-  70% {
+
+  70%{
     color: white;
+    text-shadow: 10px 10px blue;
   }
 
   80%{
-    color: #2b79ff
+    color: white;
+    text-shadow: 10px 10px blue;
   }
 
   100%{
     color: white;
+    text-shadow: none;
   }
 `;
 const fadeInAnimation2 = keyframes`
   0% {
     opacity: 0;
   }
-  50%{
+  50% {
     opacity: 0;
   }
   100% {
@@ -65,7 +72,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   @media (min-width: 768px) {
   }
 
@@ -102,6 +108,10 @@ const BtnColumnDiv = styled.div`
     align-items: center;
     font-size: 15px;
     font-weight: bold;
+    transition: background-color 0.2s ease-in-out;
+  }
+  > button:hover {
+    background-color: rgb(70, 70, 70);
   }
 `;
 
