@@ -91,38 +91,32 @@ const SignUpForm = ({
     }
 
     try {
-      await signUpMutation.mutateAsync(signUpFormData);
-      alert('Sign Up success!');
-      setSignUpFormData({
-        username: '',
-        email: '',
-        password: '',
-        passwordCheck: '',
-      });
-      queryClient.invalidateQueries(['signup']);
-      setIsSignUpClicked(false);
-      setIsLogInClicked(true);
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message === 'Username already taken'
-      ) {
-        setErrors((prevErros) => ({
-          ...prevErros,
-          username: '이미 사용중인 유저네임입니다.',
-        }));
-      } else if (
-        error instanceof Error &&
-        error.message === 'Email already exists'
-      ) {
+      const response = await signUpMutation.mutateAsync(signUpFormData);
+      if (response.status === 201) {
+        alert('Sign Up success!');
+        setSignUpFormData({
+          username: '',
+          email: '',
+          password: '',
+          passwordCheck: '',
+        });
+        queryClient.invalidateQueries(['signup']);
+        setIsSignUpClicked(false);
+        setIsLogInClicked(true);
+      } else if (response.status === 202 && response.data === -2) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           email: '이미 등록된 이메일입니다.',
         }));
-      } else {
-        alert('Failed to Sign Up!');
-        console.error('Sign Up failed:', error);
+      } else if (response.status === 202 && response.data === -1) {
+        setErrors((prevErros) => ({
+          ...prevErros,
+          username: '이미 사용중인 이름입니다.',
+        }));
       }
+    } catch (error) {
+      alert('Failed to Sign Up!');
+      console.error('Sign Up failed:', error);
     }
   };
 
