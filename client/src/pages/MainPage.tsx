@@ -24,7 +24,7 @@ const MainPage = () => {
       const scrollRatio = (scrollPosition + windowHeight) / documentHeight;
 
       // 현재 스크롤 위치와 화면 및 문서의 세로 길이를 출력
-      if (scrollRatio > 0.8) {
+      if (scrollRatio > 0.7) {
         serObserver(3);
       } else if (scrollRatio > 0.5) {
         serObserver(2);
@@ -39,7 +39,7 @@ const MainPage = () => {
   return (
     <Layout>
       <TitleOne />
-      <TitleTwo observer={observer === 2 ? true : false} />
+      <TitleTwo observer={observer >= 2 ? true : false} />
       <TitleThree observer={observer === 3 ? true : false} />
       <AnimationDiv size="50px" color="white" onClick={handleScrollDown} />
     </Layout>

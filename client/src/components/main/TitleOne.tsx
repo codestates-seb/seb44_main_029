@@ -11,7 +11,7 @@ const TitleOne = () => {
         <p>편안함을 제공하는</p>
         <Column>
           <p>미디어 서비스 </p>
-          <p className="fadeIn">Cozy State</p>
+          <p className="fadeIn">CozyState</p>
         </Column>
         <BtnColumnDiv>
           <button onClick={() => navigate('/theme')}>
@@ -73,7 +73,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   @media (min-width: 768px) {
   }
 

@@ -5,13 +5,13 @@ interface TitleTwoProps {
 }
 
 const TitleTwo = ({ observer }: TitleTwoProps) => {
-  const onAnimationEnd = () => {
-    // 애니메이션 종료 후 처리할 작업을 여기에 추가하세요
-  };
-
   return (
-    <Container observer={observer} onAnimationEnd={onAnimationEnd}>
-      <Box />
+    <Container observer={observer}>
+      <Box>
+        <p>CozyState는 광고 없이,</p>
+        <p>테마 속에서 즐거운 경험을 제공합니다.</p>
+      </Box>
+      <Box2></Box2>
     </Container>
   );
 };
@@ -20,19 +20,10 @@ export default TitleTwo;
 
 const slideInAnimation = keyframes`
   0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-`;
-
-const slideOutAnimation = keyframes`
-  0% {
-    opacity: 1;
-  }
-  100% {
     opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 `;
 
@@ -40,13 +31,12 @@ const Container = styled.div<{ observer: boolean }>`
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: ${({ observer }) =>
-      observer ? slideInAnimation : slideOutAnimation}
-    1s forwards;
-  color: ${({ observer }) => (observer ? 'red' : 'inherit')};
+  color: white;
+  opacity: 0;
+  animation: ${({ observer }) => (observer ? slideInAnimation : null)} 2s
+    forwards;
   animation-fill-mode: both;
   @media (min-width: 768px) {
   }
@@ -56,7 +46,20 @@ const Container = styled.div<{ observer: boolean }>`
 `;
 
 const Box = styled.div`
+  > p {
+    margin: 0;
+    font-weight: bold;
+  }
+  @media (min-width: 300px) {
+    font-size: 2rem;
+  }
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
+`;
+
+const Box2 = styled.div`
   width: 300px;
   height: 300px;
-  background-color: red;
+  border: 1px solid black;
 `;
