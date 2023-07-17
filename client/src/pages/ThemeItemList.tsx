@@ -40,8 +40,10 @@ const ThemeItemList = () => {
         return false;
       },
       onSuccess: (data) => {
-        const currentThemeTitle = data.pages[0].data[0].themeTitle;
-        setCurrentThemeTitle(currentThemeTitle);
+        if (data && data.pages && data.pages.length > 0) {
+          const currentThemeTitle = data.pages[0].data[0].themeTitle;
+          setCurrentThemeTitle(currentThemeTitle);
+        }
       },
     }
   );
