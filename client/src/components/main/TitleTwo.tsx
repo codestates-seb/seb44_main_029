@@ -1,18 +1,20 @@
 import styled, { keyframes } from 'styled-components';
 import SlideImg from './SlideImg';
+import { useNavigate } from 'react-router-dom';
 
 interface TitleTwoProps {
   observer: boolean;
 }
 
 const TitleTwo = ({ observer }: TitleTwoProps) => {
+  const navigete = useNavigate();
   return (
     <Container observer={observer}>
       <Box>
         <p>CozyState는 광고 없이,</p>
         <p>테마 속에서 즐거운 경험을 제공합니다.</p>
       </Box>
-      <Box2 observer={observer}>
+      <Box2 observer={observer} onClick={() => navigete('/theme')}>
         <SlideImg />
       </Box2>
     </Container>
@@ -68,4 +70,8 @@ const Box2 = styled.div<{ observer: boolean }>`
   opacity: 0;
   animation: ${({ observer }) => (observer ? slideInAnimation : null)} 2s 0.8s
     forwards;
+  transition: transform 0.3s;
+  &:hover {
+    transform: scale(1.05);
+  }
 `;

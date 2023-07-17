@@ -46,9 +46,8 @@ const Image = styled.img<{ isActive: boolean }>`
   height: 100%;
   object-fit: cover;
   opacity: ${({ isActive }) => (isActive ? 1 : 0)};
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
   border-radius: 20px;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
 `;
-
 export default SlideImg;
