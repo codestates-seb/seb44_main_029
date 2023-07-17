@@ -43,20 +43,29 @@ export const Login = async (data: LoginInfo) => {
   return response;
 };
 
-export const Logout = async () => {
+export const Logout = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
 
-  const response = await axios.post(`${BASE_URL}members/logout`, null, {
-    headers: {
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-      accessToken: `Bearer ${accessToken}`,
-      refreshToken: refreshToken,
-    },
-  });
+  try {
+    const response = await axios.post(`${BASE_URL}members/logout`, null, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${accessToken}`,
+        'Refresh-Token': refreshToken,
+      },
+    });
 
-  return response;
+    return response;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
+
+      return Logout();
+    }
+    throw error;
+  }
 };
 
 // 프로필 수정

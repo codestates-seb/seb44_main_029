@@ -61,9 +61,7 @@ const fadeInAnimation2 = keyframes`
   0% {
     opacity: 0;
   }
-  50% {
-    opacity: 0;
-  }
+
   100% {
     opacity: 1;
   }
@@ -106,7 +104,8 @@ const BtnColumnDiv = styled.div`
     color: white;
     box-shadow: 1px 1px 0px 2px #000000;
     margin: 50px 10px 0 10px;
-    animation: ${fadeInAnimation2} 2s ease-in-out;
+    opacity: 0;
+    animation: ${fadeInAnimation2} 1s ease-in-out 1.5s forwards;
     display: flex;
     justify-content: center;
     align-items: center;
