@@ -3,14 +3,27 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { UpdateLike } from '../../../api/api';
 import { ItemInfo } from '../../../types/types';
+import { Link } from 'react-router-dom';
+import previousArrowSvg from '../../../assets/icon/icon_previous_arrow.svg';
+import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
 
-type ItemProps = Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'>;
+interface ItemProps
+  extends Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'> {
+  themeId: number;
+  totalElementsNum: number;
+}
 
 interface LikeButtonProps {
   isActive: boolean;
 }
 
-const DetailedItem = ({ contentId, liked, contentUri }: ItemProps) => {
+const DetailedItem = ({
+  contentId,
+  liked,
+  contentUri,
+  themeId,
+  totalElementsNum,
+}: ItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked);
   const queryClient = useQueryClient();
 
@@ -34,9 +47,20 @@ const DetailedItem = ({ contentId, liked, contentUri }: ItemProps) => {
     }
   };
 
+  const handleMoveButtonClick = () => {
+    queryClient.invalidateQueries(['items']);
+  };
+
   return (
     <Container>
       <ItemContainerDiv>
+        <MoveToPreviousDiv
+          to={`/theme/${themeId}/${contentId - 1}`}
+          disabled={contentId === 1}
+          onClick={handleMoveButtonClick}
+        >
+          <img src={previousArrowSvg}></img>
+        </MoveToPreviousDiv>
         <ItemImgDiv>
           <img src={contentUri} alt="content"></img>
         </ItemImgDiv>
@@ -49,6 +73,13 @@ const DetailedItem = ({ contentId, liked, contentUri }: ItemProps) => {
             🤍
           </LikeButton>
         </OverlayControlDiv>
+        <MoveToNextDiv
+          to={`/theme/${themeId}/${contentId + 1}`}
+          disabled={contentId === totalElementsNum}
+          onClick={handleMoveButtonClick}
+        >
+          <img src={nextArrowSvg}></img>
+        </MoveToNextDiv>
       </ItemContainerDiv>
     </Container>
   );
@@ -80,7 +111,6 @@ const ItemContainerDiv = styled.div`
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
-  max-height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,15 +118,14 @@ const ItemContainerDiv = styled.div`
 
 const ItemImgDiv = styled.div`
   box-sizing: border-box;
-  cursor: pointer;
   display: flex;
-  width: 57%;
+  width: 100%;
 
   > img {
     display: flex;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100vw;
+    height: 77vh;
+    object-fit: contain;
     border-radius: 0.5rem;
   }
 `;
@@ -127,4 +156,46 @@ const LikeButton = styled.button<LikeButtonProps>`
           border: 2px solid rgba(255, 255, 255, 0.5);
           background-color: transparent;
         `}
+`;
+
+const MoveToPreviousDiv = styled(Link)<{ disabled: boolean }>`
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  position: absolute;
+  left: 0;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  /* contentId가 1일 때, disabled 적용 */
+  ${(props) =>
+    props.disabled &&
+    css`
+      pointer-events: none;
+      opacity: 0.6;
+      cursor: default;
+    `}
+`;
+
+const MoveToNextDiv = styled(Link)<{ disabled: boolean }>`
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  position: absolute;
+  right: 0;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  /* contentId가 totalElements와 같을 때, disabled 적용 */
+  ${(props) =>
+    props.disabled &&
+    css`
+      pointer-events: none;
+      opacity: 0.6;
+      cursor: default;
+    `}
 `;
