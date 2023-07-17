@@ -15,6 +15,10 @@ const Title = () => {
         </Column>
         <BtnColumnDiv>
           <button onClick={() => navigate('/theme')}>
+            <TbLogin />
+            <p>로그인</p>
+          </button>
+          <button onClick={() => navigate('/theme')}>
             <TbCarouselHorizontal />
             <p>테마 둘러보기</p>
           </button>
