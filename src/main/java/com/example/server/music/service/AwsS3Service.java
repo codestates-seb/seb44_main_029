@@ -133,7 +133,7 @@ public class AwsS3Service {
 
                     // pre-signed 객체 요청
                     GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
-                            .signatureDuration(Duration.ofMinutes(5)) // 만료시간
+                            .signatureDuration(Duration.ofMinutes(1)) // 만료시간
                             .getObjectRequest(getObjectRequest)
                             .build();
 
