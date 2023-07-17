@@ -1,16 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { UpdateLike } from '../../../api/api';
-import { ItemInfo } from '../../../types/types';
 import { Link } from 'react-router-dom';
+import { UpdateLike } from '../../../api/api';
+import { IThemeItemProps, ItemInfo } from '../../../types/types';
 import previousArrowSvg from '../../../assets/icon/icon_previous_arrow.svg';
 import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
 
 interface ItemProps
   extends Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'> {
   themeId: number;
-  totalElementsNum: number;
+  key: number;
+  items: IThemeItemProps;
+  currentItemIndex: number;
+  lastElementContentId: number;
 }
 
 interface LikeButtonProps {
@@ -22,14 +25,17 @@ const DetailedItem = ({
   liked,
   contentUri,
   themeId,
-  totalElementsNum,
+  items,
+  currentItemIndex,
+  lastElementContentId,
 }: ItemProps) => {
-  const [likedItem, setLikedItem] = useState<boolean>(liked);
+  const [likedItem, setLikedItem] = useState<boolean>(liked); // 좋아요 상태 관리를 위한 상태
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
     onSuccess: () => {
+      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
       queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 데이터를 갱신
     },
     onError: (error) => {
@@ -41,23 +47,26 @@ const DetailedItem = ({
   const handleLikeButtonClick = async () => {
     try {
       await handleUpdateLikeMutation.mutateAsync(contentId);
-      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleMoveButtonClick = () => {
-    queryClient.invalidateQueries(['items']);
+  // 이전 및 다음 버튼의 이동 위치를 결정하는 함수
+  const getContentId = (shift: number) => {
+    const index = currentItemIndex + shift;
+    return items.data[index]?.contentId || null;
   };
+
+  // 이전 및 다음 contentId 값 할당
+  const previousContentId = getContentId(-1);
+  const nextContentId = getContentId(+1);
 
   return (
     <Container>
       <ItemContainerDiv>
         <MoveToPreviousDiv
-          to={`/theme/${themeId}/${contentId - 1}`}
-          disabled={contentId === 1}
-          onClick={handleMoveButtonClick}
+          to={`/theme/${themeId}/${previousContentId || lastElementContentId}`}
         >
           <img src={previousArrowSvg}></img>
         </MoveToPreviousDiv>
@@ -73,11 +82,7 @@ const DetailedItem = ({
             🤍
           </LikeButton>
         </OverlayControlDiv>
-        <MoveToNextDiv
-          to={`/theme/${themeId}/${contentId + 1}`}
-          disabled={contentId === totalElementsNum}
-          onClick={handleMoveButtonClick}
-        >
+        <MoveToNextDiv to={`/theme/${themeId}/${nextContentId || 1}`}>
           <img src={nextArrowSvg}></img>
         </MoveToNextDiv>
       </ItemContainerDiv>
@@ -124,7 +129,7 @@ const ItemImgDiv = styled.div`
   > img {
     display: flex;
     width: 100vw;
-    height: 77vh;
+    height: 90vh;
     object-fit: contain;
     border-radius: 0.5rem;
   }
@@ -158,7 +163,7 @@ const LikeButton = styled.button<LikeButtonProps>`
         `}
 `;
 
-const MoveToPreviousDiv = styled(Link)<{ disabled: boolean }>`
+const MoveToPreviousDiv = styled(Link)`
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
@@ -168,18 +173,9 @@ const MoveToPreviousDiv = styled(Link)<{ disabled: boolean }>`
   &:hover {
     opacity: 0.6;
   }
-
-  /* contentId가 1일 때, disabled 적용 */
-  ${(props) =>
-    props.disabled &&
-    css`
-      pointer-events: none;
-      opacity: 0.6;
-      cursor: default;
-    `}
 `;
 
-const MoveToNextDiv = styled(Link)<{ disabled: boolean }>`
+const MoveToNextDiv = styled(Link)`
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
@@ -189,13 +185,4 @@ const MoveToNextDiv = styled(Link)<{ disabled: boolean }>`
   &:hover {
     opacity: 0.6;
   }
-
-  /* contentId가 totalElements와 같을 때, disabled 적용 */
-  ${(props) =>
-    props.disabled &&
-    css`
-      pointer-events: none;
-      opacity: 0.6;
-      cursor: default;
-    `}
 `;
