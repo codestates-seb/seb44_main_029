@@ -19,15 +19,16 @@ const Nav = ({
   const [isClicked, setIsClick] = useState(false);
   const navigate = useNavigate();
 
-  //임시 jwt토큰 유무 판단용
+  // 로컬스토리지에 있는 액세스토큰 꺼내오기
   const accessToken = localStorage.getItem('accessToken');
 
+  // 로그아웃 성공 시
   const handleLogoutMutation = useMutation(Logout, {
     onSuccess: () => {
-      // 토큰 삭제
+      // 토큰 및 멤버아이디 삭제
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-
+      localStorage.removeItem('memberId');
       navigate('/');
     },
     onError: (error) => {
@@ -35,12 +36,23 @@ const Nav = ({
     },
   });
 
+  // 로그아웃 버튼 클릭 시
   const handleLogOut = () => {
     const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
     if (confirmLogout) {
       handleLogoutMutation.mutate();
     }
   };
+
+  // 프로필페이지로 이동하는 버튼 클릭 시
+  const handleProfileClick = () => {
+    if (!accessToken) {
+      setIsLogInClicked(true);
+    } else {
+      navigate('/profile');
+    }
+  };
+
   return (
     <>
       <Container>
@@ -49,7 +61,7 @@ const Nav = ({
           {isClicked ? (
             <>
               <S_FiHome onClick={() => navigate('/')} />
-              <S_FiUser onClick={() => navigate('/profile')} />
+              <S_FiUser onClick={handleProfileClick} />
               <S_TbCarouselHorizontal onClick={() => navigate('/theme')} />
               {/* jwtToken 토큰 유무 분기 */}
               {!accessToken ? (

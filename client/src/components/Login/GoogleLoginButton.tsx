@@ -1,21 +1,11 @@
-import axios from 'axios';
 import styled from 'styled-components';
 import Google from '../../assets/icon/icon_google.png';
 
 const GoogleLoginButton: React.FC = () => {
-  const handleOAuthClick = async () => {
-    try {
-      const response = await axios.post(
-        'https://8d81-175-123-6-225.ngrok-free.app/oauth2/authorization/google'
-      );
-      //   window.location.href = response.headers['location'];
-      const accessToken = response.headers['access-token'];
-      const refreshToken = response.headers['refresh-token'];
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleOAuthClick = async (e: any) => {
+    e.preventDefault();
+    window.location.href =
+      'https://f47f-175-123-6-225.ngrok-free.app/oauth2/authorization/google';
   };
 
   return (
@@ -34,7 +24,7 @@ const OAuthButton = styled.button`
   background-color: white;
   border: 1px solid rgb(224, 224, 224);
   cursor: pointer;
-  margin: 10px;
+  margin: 50px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
