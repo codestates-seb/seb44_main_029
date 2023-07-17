@@ -91,17 +91,35 @@ const SignUpForm = ({
     }
 
     try {
-      await signUpMutation.mutateAsync(signUpFormData);
-      alert('Sign Up success!');
-      setSignUpFormData({
-        username: '',
-        email: '',
-        password: '',
-        passwordCheck: '',
-      });
-      queryClient.invalidateQueries(['signup']);
-      setIsSignUpClicked(false);
-      setIsLogInClicked(true);
+      const response = await signUpMutation.mutateAsync(signUpFormData);
+      if (response.status === 201) {
+        alert('Sign Up success!');
+        setSignUpFormData({
+          username: '',
+          email: '',
+          password: '',
+          passwordCheck: '',
+        });
+        queryClient.invalidateQueries(['signup']);
+        setIsSignUpClicked(false);
+        setIsLogInClicked(true);
+      } else if (response.status === 202 && response.data === -1) {
+        setErrors((prevErros) => ({
+          ...prevErros,
+          username: '이미 사용중인 이름입니다.',
+        }));
+      } else if (response.status === 202 && response.data === -2) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: '이미 등록된 이메일입니다.',
+        }));
+      } else if (response.status === 202 && response.data === -3) {
+        setErrors((prevErros) => ({
+          ...prevErros,
+          username: '이미 사용중인 이름입니다.',
+          email: '이미 등록된 이메일입니다.',
+        }));
+      }
     } catch (error) {
       alert('Failed to Sign Up!');
       console.error('Sign Up failed:', error);
@@ -110,7 +128,6 @@ const SignUpForm = ({
 
   return (
     <Container>
-      <h1>SIGNUP</h1>
       <Form onSubmit={handleSubmit}>
         <Label htmlFor="username" isFocused={signUpFormData.username !== ''}>
           Username
@@ -190,6 +207,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 300px;
+  margin: 50px 0px;
 `;
 
 const Label = styled.label<{ isFocused: boolean }>`

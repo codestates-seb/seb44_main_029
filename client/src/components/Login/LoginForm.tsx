@@ -1,10 +1,10 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import SignUpForm from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
+
 interface LoginFormData {
   email: string;
   password: string;
@@ -101,26 +101,11 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
   const handleSignUpClick = () => {
     setIsSignUpClicked(true);
   };
-  // 클라이언트 아이디
-  const clientId: string = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
 
   return (
     <>
       {!isSignUpClicked ? (
         <Container>
-          <h1>LOGIN</h1>
-          {/* <GoogleLoginDiv>
-            <GoogleOAuthProvider clientId={clientId}>
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  console.log(credentialResponse);
-                }}
-                onError={() => {
-                  console.log('Login Failed');
-                }}
-              />
-            </GoogleOAuthProvider>
-          </GoogleLoginDiv> */}
           <GoogleLoginButton />
 
           <Form onSubmit={handleSubmit}>
@@ -179,11 +164,6 @@ const Container = styled.div`
   > h1 {
     color: #000000;
   }
-`;
-
-const GoogleLoginDiv = styled.div`
-  padding: 10px;
-  margin-bottom: 20px;
 `;
 
 const Form = styled.form`
