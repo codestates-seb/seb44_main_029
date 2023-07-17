@@ -17,7 +17,7 @@ const ThemeDetailedItem = () => {
   const numThemeId = parseInt(themeId || '');
   const numContentId = parseInt(contentId || '');
 
-  // 전체 이미지 리스트를 가져온다.
+  // 전체 아이템 리스트를 가져온다.
   const {
     data: items,
     status,
@@ -27,7 +27,7 @@ const ThemeDetailedItem = () => {
     ({ pageParam = 1 }) => GetThemeItems(numThemeId, pageParam, 100)
   );
 
-  // 현재 선택된 이미지를 찾는다.
+  // 현재 선택된 아이템을 찾는다.
   const currentItem =
     items && items.data
       ? items.data.find((item) => item.contentId === numContentId)
@@ -38,6 +38,10 @@ const ThemeDetailedItem = () => {
     items && items.data
       ? items.data.findIndex((item) => item.contentId === numContentId)
       : -1;
+
+  // 첫 번째 아이템의 contentId를 얻는다.
+  const firstItemContentId =
+    items && items.data && items.data.length > 0 ? items.data[0].contentId : 0;
 
   // 마지막 아이템의 contentId를 얻는다.
   const lastElementContentId =
@@ -59,6 +63,7 @@ const ThemeDetailedItem = () => {
             themeId={numThemeId}
             items={items}
             currentItemIndex={currentItemIndex}
+            firstItemContentId={firstItemContentId}
             lastElementContentId={lastElementContentId}
           />
         ) : undefined}
@@ -73,11 +78,6 @@ const Layout = styled.div<{ backgroundImageUrl: string }>`
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
-  padding: 5rem 2rem 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow: hidden;
 
   &::before {
     content: '';
@@ -98,11 +98,8 @@ const Layout = styled.div<{ backgroundImageUrl: string }>`
 
 const ContentContainer = styled.div`
   box-sizing: border-box;
-  max-width: 1076px;
+  max-width: 100%;
   width: 100%;
-  flex-direction: column;
-  box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 0.7);
-  border-radius: 0.5rem;
   background-color: rgba(0, 0, 0, 0.9);
   color: white;
 `;
