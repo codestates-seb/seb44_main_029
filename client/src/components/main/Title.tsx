@@ -1,7 +1,10 @@
 import styled, { keyframes } from 'styled-components';
 import { TbCarouselHorizontal, TbLogin } from 'react-icons/tb';
+import { useNavigate } from 'react-router-dom';
 
 const Title = () => {
+  const navigate = useNavigate();
+
   return (
     <Container>
       <TitleDiv>
@@ -11,11 +14,7 @@ const Title = () => {
           <p className="fadeIn">Cozy State</p>
         </Column>
         <BtnColumnDiv>
-          <button>
-            <TbLogin height="200px" />
-            <p>로그인</p>
-          </button>
-          <button>
+          <button onClick={() => navigate('/theme')}>
             <TbCarouselHorizontal />
             <p>테마 둘러보기</p>
           </button>
