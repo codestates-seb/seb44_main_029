@@ -41,6 +41,15 @@ const Nav = ({
       handleLogoutMutation.mutate();
     }
   };
+
+  const handleProfileClick = () => {
+    if (!accessToken) {
+      setIsLogInClicked(true);
+    } else {
+      navigate('/profile');
+    }
+  };
+
   return (
     <>
       <Container>
@@ -49,7 +58,7 @@ const Nav = ({
           {isClicked ? (
             <>
               <S_FiHome onClick={() => navigate('/')} />
-              <S_FiUser onClick={() => navigate('/profile')} />
+              <S_FiUser onClick={handleProfileClick} />
               <S_TbCarouselHorizontal onClick={() => navigate('/theme')} />
               {/* jwtToken 토큰 유무 분기 */}
               {!accessToken ? (
