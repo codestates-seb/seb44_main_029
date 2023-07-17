@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-const TitleTwo = () => {
-  return <Container>two</Container>;
+const TitleThree = () => {
+  return <Container>three</Container>;
 };
 
-export default TitleTwo;
+export default TitleThree;
 
 const Container = styled.div`
   width: 100%;
