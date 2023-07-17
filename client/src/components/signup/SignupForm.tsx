@@ -103,15 +103,21 @@ const SignUpForm = ({
         queryClient.invalidateQueries(['signup']);
         setIsSignUpClicked(false);
         setIsLogInClicked(true);
+      } else if (response.status === 202 && response.data === -1) {
+        setErrors((prevErros) => ({
+          ...prevErros,
+          username: '이미 사용중인 이름입니다.',
+        }));
       } else if (response.status === 202 && response.data === -2) {
         setErrors((prevErrors) => ({
           ...prevErrors,
           email: '이미 등록된 이메일입니다.',
         }));
-      } else if (response.status === 202 && response.data === -1) {
+      } else if (response.status === 202 && response.data === -3) {
         setErrors((prevErros) => ({
           ...prevErros,
           username: '이미 사용중인 이름입니다.',
+          email: '이미 등록된 이메일입니다.',
         }));
       }
     } catch (error) {
