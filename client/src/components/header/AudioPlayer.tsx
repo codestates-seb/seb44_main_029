@@ -15,7 +15,7 @@ const AudioPlayer = () => {
   const [nowMusicId, setNowMusicId] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { themeId } = useParams();
-  const refetchInterval = 4 * 60 * 1000;
+  const refetchInterval = 1 * 55 * 1000;
   // themeId가 변경될시 실행되는 쿼리
   const {
     data: musicList,

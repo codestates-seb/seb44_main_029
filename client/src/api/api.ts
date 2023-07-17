@@ -8,7 +8,7 @@ import {
   EditType,
 } from '../types/types';
 
-const BASE_URL = ' https://f800-175-208-216-56.ngrok-free.app/';
+const BASE_URL = ' https://3330-175-208-216-56.ngrok-free.app/';
 const BASE_URL2 = 'https://0f75-221-141-172-40.ngrok-free.app/';
 
 // 음악 리스트 요청
