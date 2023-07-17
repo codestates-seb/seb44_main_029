@@ -165,26 +165,26 @@ const LikeButton = styled.button<LikeButtonProps>`
         `}
 `;
 
-const MoveToPreviousDiv = styled(Link)`
+const MoveToDiv = css`
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
   position: absolute;
-  left: 0;
+  opacity: 0.6;
+  top: 50%;
+  transform: translateY(-50%);
 
   &:hover {
-    opacity: 0.6;
+    opacity: 1;
   }
 `;
 
-const MoveToNextDiv = styled(Link)`
-  box-sizing: border-box;
-  cursor: pointer;
-  display: flex;
-  position: absolute;
-  right: 0;
+const MoveToPreviousDiv = styled(Link)`
+  ${MoveToDiv}
+  left: 0;
+`;
 
-  &:hover {
-    opacity: 0.6;
-  }
+const MoveToNextDiv = styled(Link)`
+  ${MoveToDiv}
+  right: 0;
 `;
