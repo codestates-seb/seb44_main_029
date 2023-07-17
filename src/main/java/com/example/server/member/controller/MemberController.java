@@ -15,18 +15,13 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-
-    @GetMapping("/success")
-    public ResponseEntity success(HttpServletRequest request, HttpServletResponse response){
-        String refreshToken = response.getHeader("Refresh-Token");
-        return new ResponseEntity("ok", HttpStatus.OK);
-    }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){
@@ -45,11 +40,9 @@ public class MemberController {
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request){
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION).substring(7);
-//        String refreshToken = request.getHeader("Refresh-Token");
 
         MemberIdAndTokenDto memberIdAndTokenDto = MemberIdAndTokenDto.builder()
                 .accessToken(accessToken)
-//                .refreshToken(refreshToken)
                 .build();
 
         memberService.logout(memberIdAndTokenDto);
@@ -63,13 +56,14 @@ public class MemberController {
     ResponseEntity signUp(@RequestBody MemberSignUpDto dto){
         Long response = memberService.signUp(dto);
 
-        if(response == -1) return new ResponseEntity(response, HttpStatus.ACCEPTED);
+        if(response == null) return new ResponseEntity(response, HttpStatus.ACCEPTED);
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
 
     @GetMapping("/{member-id}")
     ResponseEntity read(@PathVariable("member-id") Long memberId, HttpServletRequest request){
         Long requestId = (Long) request.getAttribute("memberId");
+
         if(!memberService.isRequesterSameOwner(requestId, memberId))
             return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);
 
