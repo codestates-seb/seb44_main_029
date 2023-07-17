@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 
@@ -80,20 +81,21 @@ public class MemberService{
     }
 
     public Long signUp(MemberSignUpDto dto){
-        long memberId = -1;
+        Long memberId = -1L;
 
         if(memberJpaRepository.findByMemberEmail(dto.getEmail()).isPresent()){
             log.info("Email 중복");
-            return memberId;
+            return memberId - 1;
         }else if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
             log.info("Username 중복");
-            return memberId - 1;
+            return memberId;
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode(dto.getPassword());
 
         Member member = Member.builder()
+                .active(true)
                 .email(dto.getEmail())
                 .username(dto.getUsername())
                 .password(password)
@@ -111,17 +113,29 @@ public class MemberService{
         Member member =  memberJpaRepository.findById(memberId)
                 .orElseThrow( () -> new UsernameNotFoundException("존재하지 않은 유저입니다."));
 
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
+        log.info("회원조회 성공");
         return memberMapper.memberToMemberResponseDto(member);
     }
 
     public Long update(MemberUpdateDto dto, Long memberId){
         if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
             log.info("Email 중복");
-            return Long.valueOf(-1);
+            return -2L;
         }
 
         Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow( () -> new UsernameNotFoundException("존재하지 않은 유저입니다."));
+
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
 
         MemberRecord record = recordMember(member);
 
@@ -133,6 +147,7 @@ public class MemberService{
         memberRecordJpaRepository.save(record);
         memberJpaRepository.save(member);
 
+        log.info("회원정보 수정 성공");
         return memberId;
     }
 
@@ -140,13 +155,18 @@ public class MemberService{
         Member member = memberJpaRepository.findById(memberId).
                 orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         String password = member.getPassword();
         String oldPassword = passwordEncoder.encode(dto.getOldPassword());
 
         if(!password.equals(oldPassword)){
-            return Long.valueOf(-1);
+            return null;
         }
 
         MemberRecord record = recordMember(member);
@@ -157,17 +177,30 @@ public class MemberService{
         return memberJpaRepository.save(member).getId();
     }
 
-    public void delete(Long memberId) {
-        Member member = memberJpaRepository.findById(memberId).get();
+    public Long delete(Long memberId) {
+        Member member = memberJpaRepository.findById(memberId)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
+        member.setActive(false);
+
+        MemberRecord record = recordMember(member);
+
+        memberRecordJpaRepository.save(record);
         memberJpaRepository.save(member);
+
+        return memberId;
     }
 
     public MemberRecord recordMember(Member member){
         return MemberRecord.builder()
+                .active(member.getActive())
                 .username(member.getUsername())
                 .email(member.getEmail())
-                .password(member.getPassword())
                 .imageUrl(member.getImageUrl())
                 .role(member.getRole())
                 .createAt(member.getModifiedAt())
@@ -175,9 +208,7 @@ public class MemberService{
                 .build();
     }
 
-    public Long getMemberId(Authentication authentication){
-        String username = authentication.getName();
-
-        return memberJpaRepository.findByMemberUsername(username).get().getId();
+    public boolean invaildMember(Member member){
+        return !member.getActive();
     }
 }

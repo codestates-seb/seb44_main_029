@@ -18,11 +18,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -59,9 +66,31 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(responseDto);
 
-        response.setHeader(HttpHeaders.AUTHORIZATION, accessToken);
+        response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
 
-        response.setContentType("application/json");
-        response.getWriter().write(jsonResponse);
+        String uri = createURI(request, accessToken, refreshToken, member.getId().toString()).toString();
+
+        getRedirectStrategy().sendRedirect(request, response, uri);
+//        response.setContentType("application/json");
+//        response.getWriter().write(jsonResponse);
+    }
+
+    public URI createURI(HttpServletRequest request, String accessToken, String refreshToken, String memberId){
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("authorization", accessToken);
+        params.add("refresh-token", refreshToken);
+        params.add("memberId", memberId);
+
+        String serverName = request.getServerName();
+
+        return UriComponentsBuilder
+                .newInstance()
+                .scheme("http")
+                .host("localhost")
+                .port(3000)
+                .path("/oauthloading")
+                .queryParams(params)
+                .build()
+                .toUri();
     }
 }
