@@ -103,8 +103,26 @@ const SignUpForm = ({
       setIsSignUpClicked(false);
       setIsLogInClicked(true);
     } catch (error) {
-      alert('Failed to Sign Up!');
-      console.error('Sign Up failed:', error);
+      if (
+        error instanceof Error &&
+        error.message === 'Username already taken'
+      ) {
+        setErrors((prevErros) => ({
+          ...prevErros,
+          username: '이미 사용중인 유저네임입니다.',
+        }));
+      } else if (
+        error instanceof Error &&
+        error.message === 'Email already exists'
+      ) {
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          email: '이미 등록된 이메일입니다.',
+        }));
+      } else {
+        alert('Failed to Sign Up!');
+        console.error('Sign Up failed:', error);
+      }
     }
   };
 
