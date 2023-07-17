@@ -10,7 +10,6 @@ import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
 interface ItemProps
   extends Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'> {
   themeId: number;
-  key: number;
   items: IThemeItemProps;
   currentItemIndex: number;
   firstItemContentId: number;
@@ -70,7 +69,7 @@ const DetailedItem = ({
         <MoveToPreviousDiv
           to={`/theme/${themeId}/${previousContentId || lastElementContentId}`}
         >
-          <img src={previousArrowSvg}></img>
+          <img src={previousArrowSvg} alt="Previous Arrow"></img>
         </MoveToPreviousDiv>
         <ItemImgDiv>
           <img src={contentUri} alt="content"></img>
@@ -87,7 +86,7 @@ const DetailedItem = ({
         <MoveToNextDiv
           to={`/theme/${themeId}/${nextContentId || firstItemContentId}`}
         >
-          <img src={nextArrowSvg}></img>
+          <img src={nextArrowSvg} alt="Next Arrow"></img>
         </MoveToNextDiv>
       </ItemContainerDiv>
     </Container>
