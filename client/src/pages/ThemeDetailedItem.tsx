@@ -9,7 +9,7 @@ import { IThemeItemProps } from '../types/types';
 import DetailedItem from '../components/theme/themeDetailedItem/DetailedItem';
 
 const ThemeDetailedItem = () => {
-  // 현재 선택된 테마 아이디와 contentId를 가져온다.c
+  // 현재 선택된 테마 아이디와 contentId를 가져온다.
   const { themeId, contentId } = useParams<{
     themeId: string;
     contentId: string;
@@ -17,6 +17,7 @@ const ThemeDetailedItem = () => {
   const numThemeId = parseInt(themeId || '');
   const numContentId = parseInt(contentId || '');
 
+  // 전체 이미지 리스트를 가져온다.
   const {
     data: items,
     status,
@@ -26,26 +27,39 @@ const ThemeDetailedItem = () => {
     ({ pageParam = 1 }) => GetThemeItems(numThemeId, pageParam, 100)
   );
 
+  // 현재 선택된 이미지를 찾는다.
   const currentItem =
     items && items.data
       ? items.data.find((item) => item.contentId === numContentId)
       : undefined;
 
-  const totalElementsNum = items?.pageInfo?.totalElements || 0;
+  // 현재 선택된 아이템의 인덱스를 찾는다.
+  const currentItemIndex =
+    items && items.data
+      ? items.data.findIndex((item) => item.contentId === numContentId)
+      : -1;
+
+  // 마지막 아이템의 contentId를 얻는다.
+  const lastElementContentId =
+    items && items.data && items.data.length > 0
+      ? items.data[items.data.length - 1].contentId
+      : 0;
 
   return (
     <Layout backgroundImageUrl={getBackgroundImage(themeId)}>
       <ContentContainer>
         {status === 'loading' && <div>loading...</div>}
         {status === 'error' && <div>{error.toString()}</div>}
-        {status === 'success' && currentItem ? ( // currentItem이 존재할 때만 <DetailedItem> 컴포넌트를 렌더링
+        {status === 'success' && currentItem ? (
           <DetailedItem
             key={currentItem.contentId}
             contentId={currentItem.contentId}
             liked={currentItem.liked}
             contentUri={currentItem.contentUri}
             themeId={numThemeId}
-            totalElementsNum={totalElementsNum}
+            items={items}
+            currentItemIndex={currentItemIndex}
+            lastElementContentId={lastElementContentId}
           />
         ) : undefined}
       </ContentContainer>
