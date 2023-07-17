@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const Loading = () => {
   if (location.search) {
@@ -18,16 +18,49 @@ const Loading = () => {
     }
   }
   return (
-    <Div>
-      <h1>로딩 중...</h1>
-    </Div>
+    <Container>
+      <Loader />
+      <LoadingText>구글 로그인중입니다...</LoadingText>
+    </Container>
   );
 };
 
 export default Loading;
 
-const Div = styled.div`
+const Container = styled.div`
   margin: 1rem;
   display: flex;
+
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+
+  background-color: #a8a8a8;
+`;
+
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const Loader = styled.div`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 4px solid #ffffff;
+  border-top-color: transparent;
+  animation: ${spin} 0.8s linear infinite;
+`;
+
+const LoadingText = styled.h1`
+  margin-top: 1rem;
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
 `;
