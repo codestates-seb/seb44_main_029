@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import SlideImg from './SlideImg';
 
 interface TitleTwoProps {
   observer: boolean;
@@ -11,7 +12,9 @@ const TitleTwo = ({ observer }: TitleTwoProps) => {
         <p>CozyState는 광고 없이,</p>
         <p>테마 속에서 즐거운 경험을 제공합니다.</p>
       </Box>
-      <Box2></Box2>
+      <Box2 observer={observer}>
+        <SlideImg />
+      </Box2>
     </Container>
   );
 };
@@ -58,8 +61,11 @@ const Box = styled.div`
   }
 `;
 
-const Box2 = styled.div`
+const Box2 = styled.div<{ observer: boolean }>`
   width: 300px;
   height: 300px;
-  border: 1px solid black;
+  margin-left: 50px;
+  opacity: 0;
+  animation: ${({ observer }) => (observer ? slideInAnimation : null)} 2s 0.8s
+    forwards;
 `;
