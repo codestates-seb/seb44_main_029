@@ -5,6 +5,7 @@ import SignUpForm from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
+
 interface LoginFormData {
   email: string;
   password: string;
@@ -102,7 +103,7 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
     setIsSignUpClicked(true);
   };
   // 클라이언트 아이디
-  const clientId: string = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
+  const clientId: any = process.env.REACT_APP_GOOGLE_CLIENT_ID || '';
 
   return (
     <>

@@ -2,15 +2,17 @@ import styled from 'styled-components';
 import Google from '../../assets/icon/icon_google.png';
 import { GoogleLogin, GoogleLoginTokens } from '../../api/api';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-
+import { useNavigate } from 'react-router-dom';
 const GoogleLoginButton: React.FC = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const googleLoginMutation = useMutation(GoogleLogin, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['googleLogin']);
       console.log('data', data);
-      window.location.href = data.headers.location;
+      // window.location.href = data.headers.location;
+
       // const accessToken = data.headers['authorization'];
       // const refreshToken = data.data.refreshToken;
       // const memberId = data.data.memberId;
@@ -21,28 +23,32 @@ const GoogleLoginButton: React.FC = () => {
     },
   });
 
-  const googleLoginTokensMutation = useMutation(GoogleLoginTokens, {
-    onSuccess: (data) => {
-      console.log('googleLoginTokens: ', data);
-      const { access_token, refresh_token } = data;
-      localStorage.setItem('accessToken', access_token);
-      localStorage.setItem('refreshToken', refresh_token);
-    },
+  // const googleLoginTokensMutation = useMutation(GoogleLoginTokens, {
+  //   onSuccess: (data) => {
+  //     console.log('googleLoginTokens: ', data);
+  //     const { access_token, refresh_token } = data;
+  //     localStorage.setItem('accessToken', access_token);
+  //     localStorage.setItem('refreshToken', refresh_token);
+  //   },
 
-    onError: (error) => {
-      console.error('에러메시지: ', error);
-    },
-  });
+  //   onError: (error) => {
+  //     console.error('에러메시지: ', error);
+  //   },
+  // });
 
-  const handleOAuthClick = async () => {
-    try {
-      await googleLoginMutation.mutateAsync();
-      queryClient.invalidateQueries(['googleLogin']);
-      handleRedirect();
-    } catch (error) {
-      alert('Failed to Log In!');
-      console.error('Google Log In failed:', error);
-    }
+  const handleOAuthClick = async (e: any) => {
+    e.preventDefault();
+    window.location.href =
+      'https://eb3f-175-123-6-225.ngrok-free.app/oauth2/authorization/google';
+    // window.location.href = 'http://localhost:3000/';
+    // try {
+    //   await googleLoginMutation.mutateAsync();
+    //   queryClient.invalidateQueries(['googleLogin']);
+    //   // handleRedirect();
+    // } catch (error) {
+    //   alert('Failed to Log In!');
+    //   console.error('Google Log In failed:', error);
+    // }
     // try {
     //   const response = await axios.post(
     //     'https://8d81-175-123-6-225.ngrok-free.app/oauth2/authorization/google'
@@ -57,13 +63,13 @@ const GoogleLoginButton: React.FC = () => {
     // }
   };
 
-  const handleRedirect = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const authorizationCode = urlParams.get('code');
-    if (authorizationCode) {
-      googleLoginTokensMutation.mutateAsync(authorizationCode);
-    }
-  };
+  // const handleRedirect = () => {
+  //   const urlParams = new URLSearchParams(window.location.search);
+  //   const authorizationCode = urlParams.get('code');
+  //   if (authorizationCode) {
+  //     googleLoginTokensMutation.mutateAsync(authorizationCode);
+  //   }
+  // };
 
   return (
     <OAuthButton onClick={handleOAuthClick}>
