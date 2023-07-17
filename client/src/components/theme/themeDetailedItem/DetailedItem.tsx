@@ -171,8 +171,6 @@ const MoveToDiv = css`
   display: flex;
   position: absolute;
   opacity: 0.6;
-  top: 50%;
-  transform: translateY(-50%);
 
   &:hover {
     opacity: 1;
