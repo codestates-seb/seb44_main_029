@@ -9,7 +9,7 @@ import {
 } from '../types/types';
 
 const BASE_URL = 'https://3509-175-123-6-225.ngrok-free.app/';
-const BASE_URL2 = 'https://0f75-221-141-172-40.ngrok-free.app/';
+const BASE_URL2 = 'https://ef91-221-141-172-40.ngrok-free.app/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -25,15 +25,15 @@ export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
 // 회원가입
 export const SignUp = (data: SignUpInfo) =>
   axios.post(`${BASE_URL}members`, data).then((res) => {
-    const { status, data } = res;
-    if (status === -1) {
-      throw new Error('Username already taken');
-    }
-    if (status === -2) {
-      throw new Error('Email already exists');
-    }
+    console.log(res);
+    // if (res === -1) {
+    //   throw new Error('Username already taken');
+    // }
+    // if (res === -2) {
+    //   throw new Error('Email already exists');
+    // }
 
-    return data;
+    return res;
   });
 
 // 로그인

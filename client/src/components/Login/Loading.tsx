@@ -1,22 +1,72 @@
 import styled, { keyframes } from 'styled-components';
 
 const Loading = () => {
-  if (location.search) {
-    const googleAccessToken = new URL(location.href).searchParams.get(
-      'authorization'
-    );
-    const googleRefreshToken = new URL(location.href).searchParams.get(
-      'refresh-token'
-    );
-    const googleMemberId = new URL(location.href).searchParams.get('memberId');
+  // const saveTokensToLocalStorage = async (
+  //   accessToken: string,
+  //   refreshToken: string,
+  //   memberId: string
+  // ): Promise<void> => {
+  //   try {
+  //     await Promise.all([
+  //       localStorage.setItem('accessToken', accessToken),
+  //       localStorage.setItem('refreshToken', refreshToken),
+  //       localStorage.setItem('memberId', memberId),
+  //     ]);
+  //     console.log('Tokens saved to local storage successfully.');
+  //   } catch (error) {
+  //     console.error('Error saving tokens to local storage:', error);
+  //   }
+  // };
 
-    if (googleAccessToken && googleRefreshToken && googleMemberId) {
-      localStorage.setItem('accessToken', googleAccessToken);
-      localStorage.setItem('refreshToken', googleRefreshToken);
-      localStorage.setItem('memberId', googleMemberId);
-      window.location.href = '/';
+  // (async () => {
+  //   const googleAccessToken = new URL(location.href).searchParams.get(
+  //     'authorization'
+  //   );
+  //   const googleRefreshToken = new URL(location.href).searchParams.get(
+  //     'refresh-token'
+  //   );
+  //   const googleMemberId = new URL(location.href).searchParams.get('memberId');
+
+  //   if (googleAccessToken && googleRefreshToken && googleMemberId) {
+  //     await saveTokensToLocalStorage(
+  //       googleAccessToken,
+  //       googleRefreshToken,
+  //       googleMemberId
+  //     );
+  //   } else {
+  //     console.error('Missing tokens: accessToken, refreshToken, or memberId');
+  //   }
+
+  //   window.location.href = '/';
+  // })();
+  const saveTokenToLocalStorage = (key: string, value: string): void => {
+    try {
+      localStorage.setItem(key, value);
+    } catch (error) {
+      console.error(
+        `토큰 "${key}"을(를) 로컬 스토리지에 저장하는 중 오류가 발생했습니다:`,
+        error
+      );
     }
+  };
+
+  const googleAccessToken = new URL(location.href).searchParams.get(
+    'authorization'
+  );
+  const googleRefreshToken = new URL(location.href).searchParams.get(
+    'refresh-token'
+  );
+  const googleMemberId = new URL(location.href).searchParams.get('memberId');
+
+  if (googleAccessToken && googleRefreshToken && googleMemberId) {
+    saveTokenToLocalStorage('accessToken', googleAccessToken);
+    saveTokenToLocalStorage('refreshToken', googleRefreshToken);
+    saveTokenToLocalStorage('memberId', googleMemberId);
+  } else {
+    console.error('토큰이 누락되었습니다: accessToken, refreshToken, memberId');
   }
+
+  window.location.href = '/';
   return (
     <Container>
       <Loader />
