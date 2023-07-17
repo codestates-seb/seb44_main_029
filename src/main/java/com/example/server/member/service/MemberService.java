@@ -102,11 +102,11 @@ public class MemberService{
     }
 
     public Long signUp(MemberSignUpDto dto){
-        Long memberId = -1L;
+        Long memberId = -3L;
 
         if(memberJpaRepository.findByMemberEmail(dto.getEmail()).isPresent()){
             log.info("Email 중복");
-            return memberId - 1;
+            return memberId;
         }else if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
             log.info("Username 중복");
             return memberId;
@@ -146,7 +146,7 @@ public class MemberService{
     public Long update(MemberUpdateDto dto, Long memberId){
         if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
             log.info("Username 중복");
-            return -1L;
+            return -3L;
         }
 
         Member member = memberJpaRepository.findById(memberId)
@@ -154,7 +154,7 @@ public class MemberService{
 
         if(invaildMember(member)){
             log.info("회원탈퇴 된 사용자입니다.");
-            return -3L;
+            return -4L;
         }
 
 

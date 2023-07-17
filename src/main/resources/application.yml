@@ -13,7 +13,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/tmpdb?useSSL=false&allowPublicKeyRetrieval=true&useLegacyAuth=false
     username: root
-    password: a9250991518A!
+    password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   profiles:
     active: local
