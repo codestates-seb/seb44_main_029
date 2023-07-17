@@ -1,8 +1,9 @@
 import styled, { keyframes } from 'styled-components';
 import { TbCarouselHorizontal, TbLogin } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
+import backgroundImg from '../../assets/images/background.jpg';
 
-const Title = () => {
+const TitleOne = () => {
   const navigate = useNavigate();
 
   return (
@@ -28,7 +29,7 @@ const Title = () => {
   );
 };
 
-export default Title;
+export default TitleOne;
 
 //페이드 아웃 애니메이션
 const fadeInAnimation = keyframes`
@@ -70,11 +71,15 @@ const fadeInAnimation2 = keyframes`
 `;
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-image: url(${backgroundImg});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   @media (min-width: 768px) {
   }
 
