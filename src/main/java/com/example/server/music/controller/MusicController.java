@@ -35,20 +35,6 @@ public class MusicController {
     }
 
 
-//    // s3에 저장된 mp3 파일의 url 가져오기 - 파일명으로 조회
-//    @GetMapping("/{music-id}")
-//    public ResponseEntity<String> getMusicUrl(@Positive @PathVariable("music-id")long musicId,
-//                                              @Positive @PathVariable("theme-id")long themeId){
-//        try {
-//            logger.info("getMusicUrl 호출됨");
-//            String mp3FileName = themeId + "-" + musicId + ".mp3";
-//            String mp3FileUrl = awsS3Service.getMP3FileUrl(mp3FileName);
-//            return ResponseEntity.ok(mp3FileUrl);
-//        }catch(Exception e){
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body("url 반환에 실패했습니다: " + e.getMessage());
-//        }
-//    }
 
     // s3에 저장된 mp3 파일의 url list 가져오기
     @GetMapping("/list")

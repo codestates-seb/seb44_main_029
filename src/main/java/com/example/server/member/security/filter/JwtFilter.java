@@ -1,5 +1,7 @@
 package com.example.server.member.security.filter;
 
+import com.example.server.member.entity.BlackList;
+import com.example.server.member.repository.BlackListJpaRepository;
 import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.service.TokenService;
@@ -8,7 +10,7 @@ import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+// import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -31,11 +33,12 @@ import java.util.Map;
 public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private JwtTokenProvider tokenProvider;
-    private RedisTemplate<String, Object> redisTemplate;
+    private BlackListJpaRepository blackListJpaRepository;
+    
 
-    public JwtFilter(JwtTokenProvider tokenProvider, RedisTemplate<String, Object> redisTemplate) {
+    public JwtFilter(JwtTokenProvider tokenProvider, BlackListJpaRepository blackListJpaRepository) {
         this.tokenProvider = tokenProvider;
-        this.redisTemplate = redisTemplate;
+        this.blackListJpaRepository = blackListJpaRepository;
     }
 
     @Override
@@ -44,9 +47,9 @@ public class JwtFilter extends OncePerRequestFilter {
         String requsetURI = request.getRequestURI();
 
         if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
-            String isLogout = (String) redisTemplate.opsForValue().get(jwt);
+//            String isLogout = (String) redisTemplate.opsForValue().get(jwt);
 
-            if(ObjectUtils.isEmpty(isLogout)) {
+            if(!blackListJpaRepository.findByToken(jwt).isPresent()) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 

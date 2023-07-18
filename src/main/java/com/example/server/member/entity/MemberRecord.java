@@ -24,6 +24,8 @@ public class MemberRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    Boolean active;
+
     @CreatedBy
     Long createdBy;
 
@@ -31,8 +33,6 @@ public class MemberRecord {
     String email;
 
     String username;
-
-    String password;
 
     String imageUrl;
 

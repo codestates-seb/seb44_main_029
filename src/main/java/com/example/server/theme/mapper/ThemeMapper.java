@@ -17,5 +17,5 @@ public interface ThemeMapper {
                 .build()).collect(Collectors.toList());
     }
 
-    Theme ThemePostDtoToTheme(ThemePostDto themePostDto);
+    // Theme ThemePostDtoToTheme(ThemePostDto themePostDto);
 }
