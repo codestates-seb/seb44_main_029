@@ -21,7 +21,7 @@ public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurity
 
     private JwtTokenProvider tokenProvider;
     private BlackListJpaRepository blackListJpaRepository;
-    private RedisTemplate<String, Object> redisTemplate;
+//    private RedisTemplate<String, Object> redisTemplate;
 
     public JwtSecurityConfig(JwtTokenProvider tokenProvider, BlackListJpaRepository blackListJpaRepository) {
         this.tokenProvider = tokenProvider;

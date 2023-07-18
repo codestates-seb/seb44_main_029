@@ -13,21 +13,13 @@ import com.example.server.member.repository.RefreshTokenJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -88,6 +80,7 @@ public class MemberService{
                     .accessToken(dto.getAccessToken())
                     .build();
 
+            refreshTokenJpaRepository.save(refreshToken);
             blackListJpaRepository.save(blackList);
         }else{
             throw new RuntimeException("Refresh Token is not exist");
@@ -113,7 +106,7 @@ public class MemberService{
         }
         else if(isEmailPresent){
             log.info("Email 중복");
-            return 2L;
+            return -2L;
         }else if(isUsernamePresent){
             log.info("Username 중복");
             return -1L;

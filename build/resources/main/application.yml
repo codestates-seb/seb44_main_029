@@ -17,7 +17,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   profiles:
     active: local
-    include: jwt, redis, oauth
+    include: jwt, oauth
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:

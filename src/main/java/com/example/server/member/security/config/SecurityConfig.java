@@ -12,7 +12,6 @@ import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -37,7 +36,6 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailService userDetailService;
     private final JwtTokenProvider tokenProvider;
-    private final RedisTemplate<String, Object> redisTemplate;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CustomOauth2UserService customOauth2UserService;
