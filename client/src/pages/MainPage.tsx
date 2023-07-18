@@ -3,7 +3,7 @@ import TitleOne from '../components/main/TitleOne';
 import TitleTwo from '../components/main/TitleTwo';
 import TitleThree from '../components/main/TitleThree';
 import { BiChevronsDown } from 'react-icons/bi';
-import backgroundImg from '../assets/images/background.jpg';
+
 import { useEffect, useState } from 'react';
 
 const MainPage = () => {
@@ -26,7 +26,7 @@ const MainPage = () => {
       // 현재 스크롤 위치와 화면 및 문서의 세로 길이를 출력
       if (scrollRatio > 0.7) {
         serObserver(3);
-      } else if (scrollRatio > 0.5) {
+      } else if (scrollRatio > 0.4) {
         serObserver(2);
       } else {
         serObserver(1);
@@ -70,10 +70,6 @@ const Layout = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-image: url(${backgroundImg});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
 `;
 
 const AnimationDiv = styled(BiChevronsDown)`
