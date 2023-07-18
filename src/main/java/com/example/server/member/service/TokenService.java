@@ -26,7 +26,6 @@ public class TokenService {
     long tokenExpired;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final JwtTokenProvider tokenProvider;
-//    private final RedisTemplate<String, Object> redisTemplate;
     private final MemberJpaRepository memberJpaRepository;
 
     public String createRefreshToken(String username) {
@@ -46,11 +45,6 @@ public class TokenService {
                     .member(member)
                     .build();
         }
-//        String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + member.getId());
-//        if(refreshToken != null)
-//            return refreshToken;
-//
-//        refreshToken = UUID.randomUUID().toString();
 
         refreshTokenJpaRepository.save(refreshToken);
 
