@@ -5,13 +5,13 @@ import com.example.server.member.dto.ResponseDto;
 import com.example.server.member.entity.Member;
 import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.repository.MemberJpaRepository;
-import com.example.server.member.repository.RefreshTokenJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.service.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+// import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,6 +41,7 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
     private final MemberJpaRepository memberJpaRepository;
     private final JwtTokenProvider tokenProvider;
     private final TokenService tokenService;
+    
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
@@ -55,10 +56,15 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authenticationToken);
 
+    
+
         ResponseDto responseDto = ResponseDto.builder()
                 .memberId(member.getId())
                 .refreshToken(refreshToken)
                 .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(responseDto);
 
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
 
