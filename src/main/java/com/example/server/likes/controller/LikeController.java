@@ -38,17 +38,11 @@ public class LikeController {
     }
 */
     
-    @PatchMapping("/{content-id}/{member-id}")
+    @PatchMapping("/{content-id}")
     synchronized public ResponseEntity patchlike(@Positive @PathVariable("content-id") Long contentId,
-                                       @Positive @PathVariable("member-id") Long memberId,
                                        HttpServletRequest request){
 
-        Long requestId = (Long) request.getAttribute("memberId");
-        //Long requestId = Long.parseLong(request.getHeader("memberId"));
-        if(!memberService.isRequesterSameOwner(requestId, memberId)){
-            return new ResponseEntity("요청자와 자원소유자가 다릅니다.", HttpStatus.FORBIDDEN);}
-
-        return likesService.patchLike(contentId, memberId, request);
+        return likesService.patchLike(contentId, request);
     }
 /*
     @GetMapping("/{content-id}/{member-id}")

@@ -11,7 +11,15 @@ public interface ContentMapper {
         return ContentResponseDto.builder()
                 .contentId(content.getContentId())
                 .ContentTitle(content.getTitle())
-                .ContentUri(content.getUri())
+                .themeTitle(content.getTheme().getTitle())
+                .howManyLiked(content.getLikes().size())
+                .build();
+    }
+
+    default ContentResponseDto ContentToContentResponseDto2(Content content){
+        return ContentResponseDto.builder()
+                .contentId(content.getContentId())
+                .ContentTitle(content.getTitle())
                 .themeTitle(content.getTheme().getTitle())
                 .howManyLiked(content.getLikes().size())
                 .build();

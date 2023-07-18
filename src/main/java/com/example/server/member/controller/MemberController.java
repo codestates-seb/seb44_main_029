@@ -72,7 +72,7 @@ public class MemberController {
     ResponseEntity signUp(@RequestBody MemberSignUpDto dto){
         Long response = memberService.signUp(dto);
 
-        if(response == -1) return new ResponseEntity(response, HttpStatus.ACCEPTED);
+        if(response < -1) return new ResponseEntity(response, HttpStatus.ACCEPTED);
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
 

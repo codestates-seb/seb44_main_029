@@ -12,5 +12,5 @@ public interface LikesService {
 
     void unlikeContent(Long contentId, Long memberId);
 */
-    ResponseEntity patchLike(Long contentId, Long memberId, HttpServletRequest request);
+    ResponseEntity patchLike(Long contentId, HttpServletRequest request);
 }

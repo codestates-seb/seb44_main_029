@@ -48,7 +48,12 @@ public class LikesServiceImpl implements LikesService{
     }
 */
     @Override
-    public ResponseEntity patchLike(Long contentId, Long memberId, HttpServletRequest request) {
+    public ResponseEntity patchLike(Long contentId, HttpServletRequest request) {
+
+        Long memberId = (Long) request.getAttribute("memberId");
+        //Long requestId = Long.parseLong(request.getHeader("memberId"));
+        if(memberId == null){
+            return new ResponseEntity("로그인이 필요합니다.", HttpStatus.FORBIDDEN);}
 
         Content content = contentRepository.findById(contentId).orElseThrow();
         Member member = memberJpaRepository.findById(memberId).orElseThrow();
