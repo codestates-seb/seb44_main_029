@@ -5,29 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="63086053-e9ec-4c54-afd3-e7b9d561f253" name="Changes" comment="refactor:Mapper 패키지 추가">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/server/music/controller/MusicDownloadController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/application-server.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/controller/MemberController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/controller/MemberController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberIdAndTokenDto$MemberIdAndTokenDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberIdAndTokenDto$MemberIdAndTokenDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberIdAndTokenDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberIdAndTokenDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberPasswordUpdateDto$MemberPasswordUpdateDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberPasswordUpdateDto$MemberPasswordUpdateDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberPasswordUpdateDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberPasswordUpdateDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/ResponseDto$ResponseDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/ResponseDto$ResponseDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/ResponseDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/ResponseDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/MemberRecord$MemberRecordBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/MemberRecord$MemberRecordBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/MemberRecord.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/MemberRecord.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/handler/CustomOAuth2SuccessHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/handler/CustomOAuth2SuccessHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/dto/UserDto$UserDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/dto/UserDto$UserDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/dto/UserDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/dto/UserDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/service/MemberService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/service/MemberService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/content/mapper/ContentMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/content/mapper/ContentMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/member/mapper/MemberMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/member/mapper/MemberMapperImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/theme/mapper/ThemeMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/theme/mapper/ThemeMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application-jwt.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application-oauth.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application-redis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application-server.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/aws.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/Mapper/MemberMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/music/controller/MusicDownloadController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/music/service/AwsS3Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/music/service/AwsS3Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-jwt.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-oauth.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-redis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-server.yml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/server/ServerApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/aws.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,8 +71,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -85,7 +101,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "Merging dev__back",
+    "git-widget-placeholder": "dev__back",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
