@@ -2,11 +2,14 @@ package com.example.server.member.service;
 
 import com.example.server.member.Mapper.MemberMapper;
 import com.example.server.member.dto.*;
+import com.example.server.member.entity.BlackList;
 import com.example.server.member.entity.Member;
 import com.example.server.member.entity.MemberRecord;
 import com.example.server.member.entity.RefreshToken;
+import com.example.server.member.repository.BlackListJpaRepository;
 import com.example.server.member.repository.MemberJpaRepository;
 import com.example.server.member.repository.MemberRecordJpaRepository;
+import com.example.server.member.repository.RefreshTokenJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 
@@ -38,7 +42,9 @@ public class MemberService{
     private final MemberJpaRepository memberJpaRepository;
     private final MemberRecordJpaRepository memberRecordJpaRepository;
     private final MemberMapper memberMapper;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RefreshTokenJpaRepository refreshTokenJpaRepository;
+    private final BlackListJpaRepository blackListJpaRepository;
+//    private final RedisTemplate<String, Object> redisTemplate;
 
     public boolean isRequesterSameOwner(Long requestId, Long ownerId){
         return requestId == ownerId;
@@ -49,12 +55,14 @@ public class MemberService{
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         String username = authentication.getName();
-        Member member = memberJpaRepository.findByMemberUsername(username).get();
+//        Member member = memberJpaRepository.findByMemberUsername(username).get();
 
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authentication);
 
-        redisTemplate.opsForValue().set("RT:" + member.getId(), refreshToken, refreshTokenExpired, TimeUnit.MILLISECONDS);
+
+
+//        redisTemplate.opsForValue().set("RT:" + member.getId(), refreshToken, refreshTokenExpired, TimeUnit.MILLISECONDS);
 
         MemberIdAndTokenDto response = MemberIdAndTokenDto.builder()
                 .refreshToken(refreshToken)
@@ -69,33 +77,53 @@ public class MemberService{
         if(!tokenProvider.validateToken(dto.getAccessToken()))
             throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
 
-        Authentication authentication = tokenProvider.getAuthentication(dto.getAccessToken());
+//        Authentication authentication = tokenProvider.getAuthentication(dto.getAccessToken());
 
-        if(redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
-            redisTemplate.delete("RT:" + authentication.getName());
+        RefreshToken refreshToken = refreshTokenJpaRepository.findByToken(dto.getRefreshToken()).get();
 
-            Long expiration = tokenProvider.getExpriation(dto.getAccessToken()).getTime();
-            redisTemplate.opsForValue().set(dto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+        if(refreshToken != null){
+            refreshToken.setActive(false);
+
+            BlackList blackList = BlackList.builder()
+                    .accessToken(dto.getAccessToken())
+                    .build();
+
+            blackListJpaRepository.save(blackList);
         }else{
             throw new RuntimeException("Refresh Token is not exist");
         }
+
+//        if(redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
+//            redisTemplate.delete("RT:" + authentication.getName());
+//
+//            Long expiration = tokenProvider.getExpriation(dto.getAccessToken()).getTime();
+//            redisTemplate.opsForValue().set(dto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+//        }else{
+//            throw new RuntimeException("Refresh Token is not exist");
+//        }
     }
 
     public Long signUp(MemberSignUpDto dto){
-        long memberId = -1;
+        boolean isEmailPresent = memberJpaRepository.findByMemberEmail(dto.getEmail()).isPresent();
+        boolean isUsernamePresent = memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent();
 
-        if(memberJpaRepository.findByMemberEmail(dto.getEmail()).isPresent()){
+        if(isEmailPresent && isUsernamePresent){
+            log.info("Email, Username 중복");
+            return -3L;
+        }
+        else if(isEmailPresent){
             log.info("Email 중복");
-            return memberId;
-        }else if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
+            return 2L;
+        }else if(isUsernamePresent){
             log.info("Username 중복");
-            return memberId - 1;
+            return -1L;
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode(dto.getPassword());
 
         Member member = Member.builder()
+                .active(true)
                 .email(dto.getEmail())
                 .username(dto.getUsername())
                 .password(password)
@@ -103,7 +131,7 @@ public class MemberService{
                 .role(Member.Role.USER)
                 .build();
 
-        memberId = memberJpaRepository.save(member).getId();
+        Long memberId = memberJpaRepository.save(member).getId();
 
         log.info("회원가입 성공");
         return memberId;
@@ -113,17 +141,29 @@ public class MemberService{
         Member member =  memberJpaRepository.findById(memberId)
                 .orElseThrow( () -> new UsernameNotFoundException("존재하지 않은 유저입니다."));
 
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
+        log.info("회원조회 성공");
         return memberMapper.memberToMemberResponseDto(member);
     }
 
     public Long update(MemberUpdateDto dto, Long memberId){
         if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
-            log.info("Email 중복");
-            return Long.valueOf(-1);
+            log.info("Username 중복");
+            return -2L;
         }
 
         Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow( () -> new UsernameNotFoundException("존재하지 않은 유저입니다."));
+
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
 
         MemberRecord record = recordMember(member);
 
@@ -135,6 +175,7 @@ public class MemberService{
         memberRecordJpaRepository.save(record);
         memberJpaRepository.save(member);
 
+        log.info("회원정보 수정 성공");
         return memberId;
     }
 
@@ -142,13 +183,18 @@ public class MemberService{
         Member member = memberJpaRepository.findById(memberId).
                 orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         String password = member.getPassword();
         String oldPassword = passwordEncoder.encode(dto.getOldPassword());
 
         if(!password.equals(oldPassword)){
-            return Long.valueOf(-1);
+            return null;
         }
 
         MemberRecord record = recordMember(member);
@@ -159,17 +205,30 @@ public class MemberService{
         return memberJpaRepository.save(member).getId();
     }
 
-    public void delete(Long memberId) {
-        Member member = memberJpaRepository.findById(memberId).get();
+    public Long delete(Long memberId) {
+        Member member = memberJpaRepository.findById(memberId)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
+        member.setActive(false);
+
+        MemberRecord record = recordMember(member);
+
+        memberRecordJpaRepository.save(record);
         memberJpaRepository.save(member);
+
+        return memberId;
     }
 
     public MemberRecord recordMember(Member member){
         return MemberRecord.builder()
+                .active(member.getActive())
                 .username(member.getUsername())
                 .email(member.getEmail())
-                .password(member.getPassword())
                 .imageUrl(member.getImageUrl())
                 .role(member.getRole())
                 .createAt(member.getModifiedAt())
@@ -177,9 +236,7 @@ public class MemberService{
                 .build();
     }
 
-    public Long getMemberId(Authentication authentication){
-        String username = authentication.getName();
-
-        return memberJpaRepository.findByMemberUsername(username).get().getId();
+    public boolean invaildMember(Member member){
+        return !member.getActive();
     }
 }
