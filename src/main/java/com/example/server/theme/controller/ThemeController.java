@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
@@ -31,19 +32,18 @@ public class ThemeController {
     public final ContentMapper contentMapper;
 
 
-    @GetMapping("/{theme_id}/{member_id}")
+    @GetMapping("/{theme_id}")
     public ResponseEntity getContentByTheme(
             @Valid @PathVariable("theme_id") Long themeId,
-            @Valid @PathVariable("member_id") Long memberId,
+            HttpServletRequest request,
             @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
-            @Positive @RequestParam(required = false, defaultValue = "20", value = "size") int size,
+            @Positive @RequestParam(required = false, defaultValue = "5", value = "size") int size,
             @RequestParam(required = false, defaultValue = "contentId", value = "criteria") String criteria,
             @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
 
-        List<Content> contents = contentService.getContentByTheme(themeId);
-        Page<Content> contentsPage = contentService.contentPagination(contents, page-1, size, criteria, sort);
+        Page<Content> contentsPage = contentService.contentPagination(contentService.getContentByTheme(themeId), page-1, size, criteria, sort);
 
-        return new ResponseEntity<>(new ContentPageDto<>(contentService.contentsResponse(contentsPage,memberId), contentsPage), HttpStatus.OK);
+        return new ResponseEntity<>(new ContentPageDto<>(contentService.contentsResponse(contentsPage,request), contentsPage), HttpStatus.OK);
     }
 
     @GetMapping
