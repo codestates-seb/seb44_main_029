@@ -2,6 +2,7 @@ package com.example.server.member.entity;
 
 import com.example.server.likes.entity.Likes;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -28,6 +29,8 @@ public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
+    Boolean active;
 
     @Email
     String email;
