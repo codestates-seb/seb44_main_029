@@ -179,3 +179,14 @@ export const RenewAccessToken = async () => {
     throw error;
   }
 };
+
+// 상세 이미지 정보 가져오기
+export const GetDetailedItem = async (contentId: number) => {
+  const response = await axios.get(`${BASE_URL}contents/${contentId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+    },
+  });
+  return response.data;
+};
