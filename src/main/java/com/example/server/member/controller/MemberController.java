@@ -76,8 +76,6 @@ public class MemberController {
 
     @PatchMapping("/{member-id}")
     ResponseEntity update(@RequestBody MemberUpdateDto dto, @PathVariable("member-id") Long memberId){
-
-
         Long response = memberService.update(dto, memberId);
 
         if(response < 1) return new ResponseEntity(response, HttpStatus.ACCEPTED);
