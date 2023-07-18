@@ -17,6 +17,7 @@ const Card = ({ image, themeName, videoName }: CardProps) => {
       <ImgLink to={`/theme/:themeId/:imageId`}>
         <img src={image} />
       </ImgLink>
+
       <ThemeTitle>{themeName}</ThemeTitle>
       <VideoIconDiv>
         <VideoTitle>{videoName}</VideoTitle>
@@ -31,60 +32,36 @@ const Card = ({ image, themeName, videoName }: CardProps) => {
 export default Card;
 
 const Container = styled.div`
-  width: 120px;
-  height: 140px;
+  width: 100%;
+  height: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  padding: 1rem;
+  box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
-  margin: 15px;
-
-  @media screen and (min-width: 576px) {
-    width: 50%;
-  }
-
-  @media screen and (min-width: 740px) {
-    width: 70%;
-  }
-  @media screen and (min-width: 1024px) {
-    width: 80%;
-  }
 `;
-
 const ImgLink = styled(Link)`
   cursor: pointer;
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  box-sizing: border-box;
   > img {
-    border-radius: 30px;
     width: 100%;
     max-height: 100px;
     height: 100%;
-    &:hover {
-      border: 1px solid rgba(255, 255, 255, 0.7);
-    }
-    @media screen and (min-width: 576px) {
-      width: 50%;
-      height: 50%;
-    }
-
-    @media screen and (min-width: 730px) {
-      width: 70%;
-      height: 70%;
-    }
-    @media screen and (min-width: 1024px) {
-      width: 100%;
-      height: 100%;
-    }
+    border-radius: 30px;
+    color: white;
+    box-sizing: border-box;
   }
 `;
 
 const ThemeTitle = styled.div`
+  width: 100%;
+  box-sizing: border-box;
   color: white;
   font-size: 13px;
   font-weight: bold;
-
-  @media screen and (min-width: 576px) {
-    font-size: 10px;
-  }
-  @media screen and (min-width: 1024px) {
-    font-size: 13px;
-  }
 `;
 
 const VideoIconDiv = styled.div`
