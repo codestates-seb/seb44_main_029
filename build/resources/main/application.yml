@@ -1,19 +1,21 @@
 cloud:
   aws:
     credentials:
-      accessKey: ${AWS_ACCESS_KEY}
-      secretKey: ${AWS_SECRET_KEY}
+      accessKey: ${AWS_ACCESS_KEY2}
+      secretKey: ${AWS_SECRET_KEY2}
     s3:
-      bucket: cozystates-bucket-01
+      bucket: 29maintest
     region:
       static: ap-northeast-2
     stack:
       auto: 'false'
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/cozystates?useSSL=false&allowPublicKeyRetrieval=true&useLegacyAuth=false
-    username: Dong
-    password: 1234
+    url: jdbc:mysql://maintest2.c8zi9upqdgoe.ap-northeast-2.rds.amazonaws.com:3306/testmain
+    username: admin
+    password: 0123456789
+    schema:
+      classpath: import.sql
     driver-class-name: com.mysql.cj.jdbc.Driver
   profiles:
     active: local

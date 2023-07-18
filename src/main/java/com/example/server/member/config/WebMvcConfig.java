@@ -21,6 +21,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new HttpInterceptor(tokenProvider, tokenService))
                 .addPathPatterns("/tokens/**")
                 .addPathPatterns("/members/**")
+                .addPathPatterns("/contents/**")
+                .addPathPatterns("/likes/**")
+                .addPathPatterns("/theme/**")
                 .excludePathPatterns("/css/**", "/images/**", "/js/**");
     }
 

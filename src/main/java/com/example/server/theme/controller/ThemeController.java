@@ -41,9 +41,7 @@ public class ThemeController {
             @RequestParam(required = false, defaultValue = "contentId", value = "criteria") String criteria,
             @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
 
-        Page<Content> contentsPage = contentService.contentPagination(contentService.getContentByTheme(themeId), page-1, size, criteria, sort);
-
-        return new ResponseEntity<>(new ContentPageDto<>(contentService.contentsResponse(contentsPage,request), contentsPage), HttpStatus.OK);
+        return themeService.themeResponse(themeId, request, page, size, criteria, sort);
     }
 
     @GetMapping

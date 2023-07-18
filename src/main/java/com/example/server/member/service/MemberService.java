@@ -41,7 +41,7 @@ public class MemberService{
     private final RedisTemplate<String, Object> redisTemplate;
 
     public boolean isRequesterSameOwner(Long requestId, Long ownerId){
-        return requestId == ownerId;
+        return (ownerId == requestId);
     }
 
     public MemberIdAndTokenDto login(MemberLoginDto dto){
