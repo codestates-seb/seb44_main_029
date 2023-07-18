@@ -7,6 +7,7 @@ import ThemeList from '../pages/ThemeList';
 import Profile from '../pages/Profile';
 import ProfileEdit from '../pages/ProfileEdit';
 import ThemeDetailedItem from '../pages/ThemeDetailedItem';
+import Loading from '../components/Login/Loading';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: '/profile/edit',
         element: <ProfileEdit />,
+      },
+      {
+        path: '/oauthloading',
+        element: <Loading />,
       },
     ],
   },
