@@ -114,7 +114,6 @@ export const PostUploadFile = async (data: FormData) => {
   const response = await axios.post(`${BASE_URL}musicUpload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data', // multipart/form-data
-      'ngrok-skip-browser-warning': '69420',
     },
   });
   return response;

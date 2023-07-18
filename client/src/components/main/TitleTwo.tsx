@@ -45,7 +45,7 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   color: white;
-  background-color: black;
+  background-color: #191f28;
 
   @media (min-width: 768px) {
   }
