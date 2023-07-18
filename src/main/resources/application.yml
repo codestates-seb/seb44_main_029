@@ -23,10 +23,10 @@ spring:
     properties:
       hibernate:
         format_sql: true  # (3) SQL pretty print
-    servlet:
-      multipart:
-        max-file-size: 10MB
-        max-request-size: 10MB
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
     sql:
       init:
         data-locations: classpath*:db/h2/data.sql
