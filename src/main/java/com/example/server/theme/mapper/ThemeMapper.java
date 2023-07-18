@@ -1,6 +1,5 @@
 package com.example.server.theme.mapper;
 
-import com.example.server.theme.dto.ThemePostDto;
 import com.example.server.theme.dto.ThemeResponseDto;
 import com.example.server.theme.entity.Theme;
 import org.mapstruct.Mapper;

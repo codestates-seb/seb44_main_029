@@ -1,8 +1,8 @@
-INSERT INTO theme (title) VALUES ('A');
-INSERT INTO theme (title) VALUES ('B');
-INSERT INTO theme (title) VALUES ('C');
-INSERT INTO theme (title) VALUES ('D');
-INSERT INTO theme (title) VALUES ('E');
+INSERT INTO theme (title) VALUES ('Nature');
+INSERT INTO theme (title) VALUES ('Space');
+INSERT INTO theme (title) VALUES ('Retro');
+INSERT INTO theme (title) VALUES ('Pixel Art');
+INSERT INTO theme (title) VALUES ('Animal');
 
 INSERT INTO content (title, uri, theme_id) VALUES ('a','https://29maintest.s3.ap-northeast-2.amazonaws.com/1-1.jpg',1);
 INSERT INTO content (title, uri, theme_id) VALUES ('b',null,2);
@@ -17,7 +17,7 @@ INSERT INTO content (title, uri, theme_id) VALUES ('d',null,4);
 INSERT INTO content (title, uri, theme_id) VALUES ('d',null,4);
 
 INSERT INTO content (title, uri, theme_id) VALUES ('e',null,5);
-INSERT INTO content (title, uri, theme_id) VALUES ('e',null,5);
+INSERT INTO content (title, uri, theme_id) VALUES ('Cat',null,5);
 INSERT INTO content (title, uri, theme_id) VALUES ('e',null,5);
 INSERT INTO content (title, uri, theme_id) VALUES ('e',null,5);
 INSERT INTO content (title, uri, theme_id) VALUES ('e',null,5);

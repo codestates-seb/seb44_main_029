@@ -48,12 +48,12 @@ public class LikesServiceImpl implements LikesService{
     }
 */
     @Override
-    public ResponseEntity patchLike(Long contentId, HttpServletRequest request) {
+    public ResponseEntity<?> patchLike(Long contentId, HttpServletRequest request) {
 
         Long memberId = (Long) request.getAttribute("memberId");
         //Long requestId = Long.parseLong(request.getHeader("memberId"));
         if(memberId == null){
-            return new ResponseEntity("로그인이 필요합니다.", HttpStatus.FORBIDDEN);}
+            return new ResponseEntity<>("로그인이 필요합니다.", HttpStatus.FORBIDDEN);}
 
         Content content = contentRepository.findById(contentId).orElseThrow();
         Member member = memberJpaRepository.findById(memberId).orElseThrow();
@@ -64,6 +64,8 @@ public class LikesServiceImpl implements LikesService{
             Likes newLikes = new Likes();
             newLikes.addMember(member);
             newLikes.addContent(content);
+            content.addLike(newLikes);
+            member.addLike(newLikes);
             likeRepository.save(newLikes);
         } else {
             content.deleteLike(likes);
@@ -71,6 +73,6 @@ public class LikesServiceImpl implements LikesService{
             likeRepository.delete(likes);
         };
 
-        return new ResponseEntity("Successfully Liked/Unliked", HttpStatus.OK);
+        return new ResponseEntity<>("Successfully Liked/Unliked", HttpStatus.OK);
     }
 }

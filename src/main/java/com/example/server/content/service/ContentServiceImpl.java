@@ -34,7 +34,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,42 +50,11 @@ public class ContentServiceImpl implements ContentService {
     private final ContentMapper contentMapper;
     private final S3Client s3Client;
     private final S3Presigner s3Presigner;
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(ContentController.class);
+    //private static final Logger logger = (Logger) LoggerFactory.getLogger(ContentController.class);
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
-/*
-    @Override
-    public String getContentFileUrl(String title) {
-        try {
-            GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-                    .bucket(bucketName)
-                    .key(title)
-                    .build();
 
-            PresignedGetObjectRequest presignedGetObjectRequest =
-                    s3Presigner.presignGetObject(GetObjectPresignRequest.builder()
-                                    .signatureDuration(Duration.ofMinutes(1))
-                                    .build());
-            String theUrl = presignedGetObjectRequest.url().toString();
-
-            return s3Client.utilities().getUrl(getUrlRequest).toExternalForm();
-        } catch (SdkException e) {
-            throw new RuntimeException("파일 검색 실패: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public String getContentUrl(long themeId, long contentId){
-        try {
-            logger.info("getContentUrl 호출됨");
-            String contentFileName = themeId + "-" + contentId + ".jpg";
-            return getContentFileUrl(contentFileName);
-        }catch(Exception e){
-            return "url 반환에 실패했습니다: ";
-        }
-    }
-*/
     @Override
     public List<Content> getContentByTheme(Long themeId) {
         Theme theme = themeRepository.findById(themeId)

@@ -25,14 +25,14 @@ public class ContentController {
     public final ContentRepository contentRepository;
 
     @GetMapping("/{content-id}")
-    public ResponseEntity getContent(@Positive @PathVariable("content-id") Long contentId,
+    public ResponseEntity<?> getContent(@Positive @PathVariable("content-id") Long contentId,
                                      HttpServletRequest request){
         return new ResponseEntity<>(contentService.contentResponse(contentId, request), HttpStatus.OK);
     }
 
     @JsonIgnore
     @GetMapping("/likes")
-    public ResponseEntity getLikes(
+    public ResponseEntity<?> getLikes(
             HttpServletRequest request,
             @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
             @Positive @RequestParam(required = false, defaultValue = "5", value = "size") int size,
@@ -43,7 +43,7 @@ public class ContentController {
     }
 
     @GetMapping("/likes/{theme-id}")
-    public ResponseEntity getLikesTheme(
+    public ResponseEntity<?> getLikesTheme(
             @Positive @PathVariable("theme-id") Long themeId,
             HttpServletRequest request,
             @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
