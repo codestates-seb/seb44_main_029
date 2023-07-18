@@ -58,7 +58,7 @@ const reboundBox = keyframes`
   }
 `;
 //맨위에서 아래로 내려오는 효과
-const slideBox = keyframes`
+export const slideBox = keyframes`
   0% {
     opacity: 0;
     margin-top: -300px;
@@ -87,7 +87,7 @@ const ModalOverlayDiv = styled.div`
   z-index: 100;
 `;
 
-const LogInShowDiv = styled.div`
+export const LogInShowDiv = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
@@ -99,7 +99,7 @@ const LogInShowDiv = styled.div`
   animation: ${reboundBox} 0.8s ease-in-out forwards;
 `;
 
-const SignOutShowDiv = styled.div`
+export const SignOutShowDiv = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   left: 50%;
