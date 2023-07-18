@@ -21,9 +21,13 @@ export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
     })
     .then((res) => res.data);
 
+// 회원가입
 export const SignUp = (data: SignUpInfo) =>
-  axios.post(`${BASE_URL}members`, data).then((res) => res.data);
+  axios.post(`${BASE_URL}members`, data).then((res) => {
+    return res;
+  });
 
+// 로그인
 export const Login = async (data: LoginInfo) => {
   const response = await axios.post(
     `${BASE_URL}members/login`,
@@ -42,26 +46,34 @@ export const Login = async (data: LoginInfo) => {
   return response;
 };
 
-export const Logout = async () => {
+// 로그아웃
+export const Logout = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
 
-  const response = await axios.post(`${BASE_URL}members/logout`, null, {
-    headers: {
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-      accessToken: `Bearer ${accessToken}`,
-      refreshToken: refreshToken,
-    },
-  });
+  try {
+    const response = await axios.post(`${BASE_URL}members/logout`, null, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-  return response;
+    return response;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
+
+      return Logout();
+    }
+    throw error;
+  }
 };
 
 // 프로필 수정
 export const PetchEditProfile = async (data: EditType) => {
   const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
+
   const respone = await axios.patch(
     `${BASE_URL}members`,
     {
@@ -72,8 +84,7 @@ export const PetchEditProfile = async (data: EditType) => {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
-        'access-token': `Bearer ${accessToken}`,
-        'refresh-token': refreshToken,
+        Authorization: `Bearer ${accessToken}`,
       },
     }
   );
@@ -144,13 +155,19 @@ export const RenewAccessToken = async () => {
   const refreshToken = localStorage.getItem('refreshToken');
 
   try {
-    const response = await axios.get(`${BASE_URL}/tokens/name`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${refreshToken}`,
-      },
-    });
+    const response = await axios.get(
+      `${BASE_URL}/tokens/name`,
+
+      {
+        data: {
+          'refresh-token': refreshToken,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+        },
+      }
+    );
 
     const newAccessToken = response.headers['authorization'];
     localStorage.setItem('accessToken', newAccessToken);

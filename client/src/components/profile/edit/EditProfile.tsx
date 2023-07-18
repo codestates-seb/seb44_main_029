@@ -55,6 +55,16 @@ const Container = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3);
   margin-bottom: 15px;
+
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    width: 80%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    width: 90%;
+  }
 `;
 
 const BtnGroupDiv = styled.div`
