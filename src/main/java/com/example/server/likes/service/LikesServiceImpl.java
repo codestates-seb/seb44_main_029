@@ -64,8 +64,6 @@ public class LikesServiceImpl implements LikesService{
             Likes newLikes = new Likes();
             newLikes.addMember(member);
             newLikes.addContent(content);
-            content.addLike(newLikes);
-            member.addLike(newLikes);
             likeRepository.save(newLikes);
         } else {
             content.deleteLike(likes);
