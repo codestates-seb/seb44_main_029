@@ -113,7 +113,7 @@ public class MemberService{
         }
         else if(isEmailPresent){
             log.info("Email 중복");
-            return 2L;
+            return -2L;
         }else if(isUsernamePresent){
             log.info("Username 중복");
             return -1L;
