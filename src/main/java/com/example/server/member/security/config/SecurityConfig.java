@@ -1,5 +1,6 @@
 package com.example.server.member.security.config;
 
+import com.example.server.member.repository.BlackListJpaRepository;
 import com.example.server.member.security.handler.CustomOAuth2SuccessHandler;
 import com.example.server.member.security.handler.JwtAccessDeniedHandler;
 import com.example.server.member.security.handler.JwtAuthenticationEntryPoint;
@@ -11,7 +12,7 @@ import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
+// import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -36,11 +37,12 @@ import java.util.List;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailService userDetailService;
     private final JwtTokenProvider tokenProvider;
-    private final RedisTemplate<String, Object> redisTemplate;
+    // private final RedisTemplate<String, Object> redisTemplate;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CustomOauth2UserService customOauth2UserService;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    private final BlackListJpaRepository blackListJpaRepository;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -109,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider, redisTemplate))
+                .apply(new JwtSecurityConfig(tokenProvider, blackListJpaRepository))
 
                 .and()
                 .oauth2Login()

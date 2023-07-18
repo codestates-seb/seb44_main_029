@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="63086053-e9ec-4c54-afd3-e7b9d561f253" name="Changes" comment="refactor:Mapper 패키지 추가">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/MusicResources/S3Config.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/Mapper/MemberMapper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/config/AwareConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/config/RedisConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberIdAndTokenDto$MemberIdAndTokenDtoBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberIdAndTokenDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberImageUpdateDto$MemberImageUpdateDtoBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberImageUpdateDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberPasswordUpdateDto$MemberPasswordUpdateDtoBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberPasswordUpdateDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/RefreshTokenDto$RefreshTokenDtoBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/RefreshTokenDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/ResponseDto$ResponseDtoBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/ResponseDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/MemberRecord$MemberRecordBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/MemberRecord$Role.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/MemberRecord.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/repository/MemberRecordJpaRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/handler/CustomOAuth2SuccessHandler.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/CustomOauth2UserService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/dto/OauthAttributes$OauthAttributesBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/dto/OauthAttributes.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/dto/UserDto$UserDtoBuilder.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/dto/UserDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/controller/MusicController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/controller/MusicUploadController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/dto/MusicDto$ResponseDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/dto/MusicDto.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/entity/Music.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/repository/MusicRepository.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/service/AwsS3Service.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/AwsS3Service.class.uniqueId3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/MemberController.class.uniqueId0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/MusicController.class.uniqueId2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/build/tmp/compileJava/compileTransaction/stash-dir/MusicUploadController.class.uniqueId1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/entity/BlackList.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/repository/BlackListJpaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/controller/MemberController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/controller/MemberController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberLoginDto$MemberLoginDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberLoginDto$MemberLoginDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberLoginDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberLoginDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberSignUpDto$MemberSignUpDtoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberSignUpDto$MemberSignUpDtoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberSignUpDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/dto/MemberSignUpDto.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/Member$MemberBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/Member$MemberBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/Member$Role.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/Member$Role.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/Member.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/Member.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/RefreshToken$RefreshTokenBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/RefreshToken$RefreshTokenBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/RefreshToken.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/entity/RefreshToken.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/config/JwtSecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/config/JwtSecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/filter/JwtFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/filter/JwtFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/service/MemberService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/service/MemberService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/service/TokenService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/service/TokenService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/content/mapper/ContentMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/content/mapper/ContentMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/member/mapper/MemberMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/member/mapper/MemberMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/theme/mapper/ThemeMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/theme/mapper/ThemeMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/config/RedisConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/controller/MemberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberIdAndTokenDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberIdAndTokenDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberLoginDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberLoginDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberPasswordUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberPasswordUpdateDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberSignUpDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberSignUpDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberUpdateDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/MemberUpdateDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/ResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/dto/ResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/entity/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/entity/Member.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/entity/MemberRecord.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/entity/MemberRecord.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/entity/RefreshToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/entity/RefreshToken.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/config/JwtSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/config/JwtSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/filter/JwtFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/filter/JwtFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/handler/CustomOAuth2SuccessHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/handler/CustomOAuth2SuccessHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/oauth/dto/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/security/oauth/dto/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/service/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/service/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/service/TokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/service/TokenService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/music/service/AwsS3Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/music/service/AwsS3Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/theme/mapper/ThemeMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/theme/mapper/ThemeMapper.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="server" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="build" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package-info" />
+        <option value="Class" />
+        <option value="Interface" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectId" id="2Rsb61ZSm0NRA8QJH86gK772Mm8" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Merging main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
+    "spring.configuration.checksum": "f388e2a0991e057a0316947c380806f0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DLEHDDUF\IdeaProjects\seb44_main_029\src\main\resources" />
+      <recent name="C:\Users\DLEHDDUF\IdeaProjects\seb44_main_029" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="server" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="server" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="server.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.server.ServerApplication" />
+      <option name="VM_PARAMETERS" value="-Dcom.amazonaws.sdk.disableEc2Metadata=true" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="63086053-e9ec-4c54-afd3-e7b9d561f253" name="Changes" comment="" />
+      <created>1688041562792</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1688041562792</updated>
+      <workItem from="1688041563867" duration="14961000" />
+      <workItem from="1688218555297" duration="594000" />
+      <workItem from="1688368618910" duration="18000000" />
+      <workItem from="1688433049888" duration="6055000" />
+      <workItem from="1688446629297" duration="1106000" />
+      <workItem from="1688447746844" duration="12272000" />
+      <workItem from="1688462515260" duration="649000" />
+      <workItem from="1688469741400" duration="715000" />
+      <workItem from="1688470477793" duration="32059000" />
+      <workItem from="1688548577405" duration="211000" />
+      <workItem from="1688556864839" duration="3760000" />
+      <workItem from="1688572569789" duration="2628000" />
+      <workItem from="1688604247065" duration="10611000" />
+      <workItem from="1688689842644" duration="21509000" />
+      <workItem from="1688802408173" duration="32976000" />
+      <workItem from="1688947170994" duration="48056000" />
+      <workItem from="1689064297642" duration="53561000" />
+      <workItem from="1689206206593" duration="28808000" />
+      <workItem from="1689290880445" duration="29413000" />
+      <workItem from="1689406947496" duration="20341000" />
+      <workItem from="1689438744574" duration="455000" />
+      <workItem from="1689474204171" duration="14323000" />
+      <workItem from="1689555506104" duration="22978000" />
+      <workItem from="1689639533340" duration="1972000" />
+    </task>
+    <task id="LOCAL-00001" summary="음성 기능 구현 완료">
+      <created>1688557715451</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1688557715451</updated>
+    </task>
+    <task id="LOCAL-00002" summary="음원 url list 조회기능 구현 완료">
+      <created>1688729952313</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1688729952313</updated>
+    </task>
+    <task id="LOCAL-00003" summary="회원, 음원 cors error 해결">
+      <created>1688971545975</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1688971545975</updated>
+    </task>
+    <task id="LOCAL-00004" summary="음원 업로드 기능 구현">
+      <created>1689126537017</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1689126537017</updated>
+    </task>
+    <task id="LOCAL-00005" summary="음원 조회, 음원 업로드 리팩토링">
+      <created>1689220796353</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1689220796354</updated>
+    </task>
+    <task id="LOCAL-00006" summary="최신 memeber merge">
+      <created>1689225936789</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1689225936789</updated>
+    </task>
+    <task id="LOCAL-00007" summary="refactor/remove: 음원 리스트 조회기능 분리, 음원 mapper 삭제">
+      <created>1689436657098</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1689436657098</updated>
+    </task>
+    <task id="LOCAL-00008" summary="refactor: 음원 리스트 조회기능 병합">
+      <created>1689520775066</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1689520775066</updated>
+    </task>
+    <task id="LOCAL-00009" summary="refactor: service 수정">
+      <created>1689560274441</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1689560274441</updated>
+    </task>
+    <task id="LOCAL-00010" summary="build 완료 직전">
+      <created>1689587128646</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1689587128646</updated>
+    </task>
+    <task id="LOCAL-00011" summary="refactor:Mapper 패키지 추가">
+      <created>1689589229547</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1689589229547</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="음성 기능 구현 완료" />
+    <MESSAGE value="음원 url list 조회기능 구현 완료" />
+    <MESSAGE value="회원 이미지 리스트 조회, 회원 이미지 갱신 구현" />
+    <MESSAGE value="회원, 음원 cors error 해결" />
+    <MESSAGE value="음원 업로드 기능 구현" />
+    <MESSAGE value="음원 조회, 음원 업로드 리팩토링" />
+    <MESSAGE value="최신 memeber merge" />
+    <MESSAGE value="refactor/remove: 음원 리스트 조회기능 분리, 음원 mapper 삭제" />
+    <MESSAGE value="refactor: 음원 리스트 조회기능 병합" />
+    <MESSAGE value="refactor: service 수정" />
+    <MESSAGE value="build 완료 직전" />
+    <MESSAGE value="refactor:Mapper 패키지 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor:Mapper 패키지 추가" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.sql.SQLNonTransientConnectionException" package="java.sql" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
