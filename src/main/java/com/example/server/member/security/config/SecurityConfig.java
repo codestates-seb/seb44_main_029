@@ -1,5 +1,6 @@
 package com.example.server.member.security.config;
 
+import com.example.server.member.repository.BlackListJpaRepository;
 import com.example.server.member.security.handler.CustomOAuth2SuccessHandler;
 import com.example.server.member.security.handler.JwtAccessDeniedHandler;
 import com.example.server.member.security.handler.JwtAuthenticationEntryPoint;
@@ -41,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CustomOauth2UserService customOauth2UserService;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    private final BlackListJpaRepository blackListJpaRepository;
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -109,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().permitAll()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider, redisTemplate))
+                .apply(new JwtSecurityConfig(tokenProvider, blackListJpaRepository))
 
                 .and()
                 .oauth2Login()
