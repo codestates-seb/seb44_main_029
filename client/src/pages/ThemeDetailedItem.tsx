@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import getBackgroundImage from '../utils/getBackgroundImage';
-import { GetThemeItems } from '../api/api';
-import { IThemeItemProps } from '../types/types';
+import { GetDetailedItem } from '../api/api';
+import { IDetailedItemProps } from '../types/types';
 import DetailedItem from '../components/theme/themeDetailedItem/DetailedItem';
 
 const ThemeDetailedItem = () => {
@@ -19,35 +19,25 @@ const ThemeDetailedItem = () => {
 
   // 전체 아이템 리스트를 가져온다.
   const {
-    data: items,
+    data: item,
     status,
     error,
-  } = useQuery<IThemeItemProps, AxiosError>(
-    ['items', numThemeId],
-    ({ pageParam = 1 }) => GetThemeItems(numThemeId, pageParam, 100)
+  } = useQuery<IDetailedItemProps, AxiosError>(['item', numContentId], () =>
+    GetDetailedItem(numContentId)
   );
 
-  // 현재 선택된 아이템을 찾는다.
-  const currentItem =
-    items && items.data
-      ? items.data.find((item) => item.contentId === numContentId)
-      : undefined;
+  // 현재 선택된 아이템 정보 = currentItem, 현재 테마 아이템들의 contentId 값 리스트가 담긴 배열 정보 = themeContentIds
+  const { contentResponseDto: currentItem, contentIds: themeContentIds = [] } =
+    item || {};
 
-  // 현재 선택된 아이템의 인덱스를 찾는다.
-  const currentItemIndex =
-    items && items.data
-      ? items.data.findIndex((item) => item.contentId === numContentId)
-      : -1;
+  // 현재 선택된 아이템의 index 값
+  const currentItemIndex = themeContentIds.indexOf(numContentId);
 
-  // 첫 번째 아이템의 contentId를 얻는다.
-  const firstItemContentId =
-    items && items.data && items.data.length > 0 ? items.data[0].contentId : 0;
+  // 첫 번째 아이템의 contentId 값
+  const firstItemContentId = themeContentIds[0] || 0;
 
-  // 마지막 아이템의 contentId를 얻는다.
-  const lastElementContentId =
-    items && items.data && items.data.length > 0
-      ? items.data[items.data.length - 1].contentId
-      : 0;
+  // 마지막 아이템의 contentId 값
+  const lastElementContentId = themeContentIds[themeContentIds.length - 1] || 0;
 
   return (
     <Layout backgroundImageUrl={getBackgroundImage(themeId)}>
@@ -57,11 +47,11 @@ const ThemeDetailedItem = () => {
         {status === 'success' && currentItem ? (
           <DetailedItem
             key={currentItem.contentId}
+            themeId={numThemeId}
             contentId={currentItem.contentId}
             liked={currentItem.liked}
-            contentUri={currentItem.contentUri}
-            themeId={numThemeId}
-            items={items}
+            item={currentItem}
+            themeContentIds={themeContentIds}
             currentItemIndex={currentItemIndex}
             firstItemContentId={firstItemContentId}
             lastElementContentId={lastElementContentId}
