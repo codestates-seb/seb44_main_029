@@ -2,12 +2,17 @@ package com.example.server.member.controller;
 
 import com.example.server.MusicResources.S3Config;
 import com.example.server.member.dto.*;
+import com.example.server.member.entity.Member;
 import com.example.server.member.service.MemberService;
 import com.example.server.member.service.TokenService;
+import com.example.server.music.controller.MusicController;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.s3.model.S3Object;
@@ -22,6 +27,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
+    private final TokenService tokenService;
+    private final S3Config s3Config;
+    private static final Logger logger = LoggerFactory.getLogger(MusicController.class);
+
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){

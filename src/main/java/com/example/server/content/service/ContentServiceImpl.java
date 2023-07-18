@@ -20,12 +20,8 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsRequest;
-import software.amazon.awssdk.services.s3.model.ListObjectsResponse;
-import software.amazon.awssdk.services.s3.model.S3Object;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,20 +40,6 @@ public class ContentServiceImpl implements ContentService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
-    @Value("${cloud.aws.region.static}")
-    private String region;
-
-    @Override
-    public String getContentUrl(long themeId, long contentId){
-        try {
-            logger.info("getContentUrl 호출됨");
-            String contentFileName = themeId + "-" + contentId + ".jpg";
-            return getContentFileUrl(contentFileName);
-        }catch(Exception e){
-            return "url 반환에 실패했습니다: ";
-        }
-    }
-
     @Override
     // content url 가져오기
     public String getContentFileUrl(String fileName) {
@@ -75,14 +57,26 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
+    public String getContentUrl(long themeId, long contentId){
+        try {
+            logger.info("getContentUrl 호출됨");
+            String contentFileName = themeId + "-" + contentId + ".jpg";
+            return getContentFileUrl(contentFileName);
+        }catch(Exception e){
+            return "url 반환에 실패했습니다: ";
+        }
+    }
+
+    @Override
     public List<Content> getContentByTheme(Long themeId) {
         // 없으면 에러 추가
         Theme theme = themeRepository.findById(themeId)
-                .orElseThrow(() -> new IllegalArgumentException("theme doesn't exist"));
+                .orElseThrow(() -> new IllegalArgumentException("THEME doesn't exist"));
         List<Content> contents = contentRepository.findByTheme(theme);
         for (Content content:contents){
             if (content.getUri() == null){
                 content.setUri(getContentUrl(content.getTheme().getThemeId(), content.getContentId()));
+                //contentRepository.save(content);
             }
         }
 
@@ -92,14 +86,14 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public List<Content> getLikes(Long memberId) {
         Member member = memberJpaRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("theme doesn't exist"));
+                .orElseThrow(() -> new IllegalArgumentException("THEME doesn't exist"));
         List<Content> contents = member.getLikes().stream()
                 .map(Likes::getContent)
                 .collect(Collectors.toList());
         for (Content content:contents){
             if (content.getUri() == null){
                 content.setUri(getContentUrl(content.getContentId(), content.getTheme().getThemeId()));
-                contentRepository.save(content);
+                //contentRepository.save(content);
             }
         }
 
@@ -120,9 +114,9 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public List<ContentResponseDto> contentsResponse(List<Content> contents, Long memberId){
+    public List<ContentResponseDto> contentsResponse(Page<Content> contents, Long memberId){
 
-        return contents.stream()
+        return contents.getContent().stream()
                 .map(Content -> {
                     ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(Content);
                     if (likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), Content).isPresent()){
