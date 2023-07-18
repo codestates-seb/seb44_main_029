@@ -31,6 +31,7 @@ const Container = styled.div`
   color: white;
   padding: 1.5rem;
   box-sizing: border-box;
+  margin: 1.5rem 0 0 0;
 `;
 const IconImg = styled.img`
   margin: 8px 40px;

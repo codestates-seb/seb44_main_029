@@ -31,16 +31,18 @@ const EditProfile = ({
 
   return (
     <Container>
-      <EditImg setImgUrl={setImgUrl} />
-      <EditName setUserName={setUserName} />
-      <BtnGroupDiv>
-        <Button bgColor="#007bff" onClick={handleSaveButton}>
-          저장
-        </Button>
-        <Button bgColor="#ff0000" onClick={handleCancleButton}>
-          취소
-        </Button>
-      </BtnGroupDiv>
+      <EditInfoDiv>
+        <EditImg setImgUrl={setImgUrl} />
+        <EditName setUserName={setUserName} />
+        <BtnGroupDiv>
+          <Button bgColor="#007bff" onClick={handleSaveButton}>
+            저장
+          </Button>
+          <Button bgColor="#ff0000" onClick={handleCancleButton}>
+            취소
+          </Button>
+        </BtnGroupDiv>
+      </EditInfoDiv>
     </Container>
   );
 };
@@ -48,23 +50,24 @@ const EditProfile = ({
 export default EditProfile;
 
 const Container = styled.div`
-  width: 824px;
-  height: 180px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  margin: 1.5rem 0 0 0;
+`;
+
+const EditInfoDiv = styled.div`
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  padding: 1.5rem;
+  box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
-  margin-bottom: 15px;
-
-  // 모바일 디바이스
-  @media screen and (min-width: 576px) {
-    width: 80%;
-  }
-
-  // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
-    width: 90%;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const BtnGroupDiv = styled.div`
@@ -78,10 +81,13 @@ const Button = styled.button<{ bgColor: string }>`
   background-color: ${(props) => props.bgColor || '#59a395'};
   border: none;
   border-radius: 5px;
+  box-sizing: border-box;
   width: 140px;
   height: 60px;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
   margin-right: 20px;
+  margin-left: auto;
+  margin-bottom: 10px;
 `;

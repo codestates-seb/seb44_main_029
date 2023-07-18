@@ -30,6 +30,7 @@ export default EditName;
 
 const Container = styled.div`
   flex-grow: 1;
+  box-sizing: border-box;
 `;
 
 const NameInput = styled.input`
@@ -37,8 +38,10 @@ const NameInput = styled.input`
   margin-bottom: 10px;
   outline: none;
   border: none;
+  box-sizing: border-box;
 `;
 const EmailDiv = styled.div`
   font-size: 24px;
   color: gray;
+  box-sizing: border-box;
 `;

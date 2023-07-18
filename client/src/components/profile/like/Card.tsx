@@ -58,50 +58,37 @@ const ImgLink = styled(Link)`
 
 const ThemeTitle = styled.div`
   width: 100%;
-  box-sizing: border-box;
+  border-radius: 0 0 0.33rem 0.33rem;
   color: white;
-  font-size: 13px;
+  box-sizing: border-box;
   font-weight: bold;
 `;
 
 const VideoIconDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  @media screen and (min-width: 576px) {
-    width: 70%;
-    height: 70%;
-  }
-  @media screen and (min-width: 1024px) {
-    width: 100%;
-    height: 100%;
-  }
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  box-sizing: border-box;
 `;
 const VideoTitle = styled.div`
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
   color: white;
-  font-size: 11px;
+  box-sizing: border-box;
   font-weight: bold;
-
-  @media screen and (min-width: 576px) {
-    font-size: 7px;
-  }
-  @media screen and (min-width: 1024px) {
-    font-size: 11px;
-  }
 `;
 
 const HeartIcon = styled.div`
-  width: 20px;
-  height: 20px;
-  @media screen and (min-width: 576px) {
-    width: 16px;
-    height: 16px;
-  }
-  @media screen and (min-width: 1024px) {
-    width: 20px;
-    height: 20px;
-  }
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  box-sizing: border-box;
 `;
 
 const HeartEmoji = styled.span`
   cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
 `;
