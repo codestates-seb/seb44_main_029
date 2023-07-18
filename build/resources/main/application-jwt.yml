@@ -1,4 +1,0 @@
-jwt:
-  secret: dmskamdskamdksalndsanjfkqwgefuinklsjfajdlshuwhuqgbkbdasndksajugfekfmaldbqanbd
-  access_token_expired: 3_600_000 #3_600_000
-  refresh_token_expired: 604_800_000
