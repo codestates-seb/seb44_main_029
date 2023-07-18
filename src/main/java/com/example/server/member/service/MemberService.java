@@ -102,14 +102,19 @@ public class MemberService{
     }
 
     public Long signUp(MemberSignUpDto dto){
-        Long memberId = -3L;
+        boolean isEmailPresent = memberJpaRepository.findByMemberEmail(dto.getEmail()).isPresent();
+        boolean isUsernamePresent = memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent();
 
-        if(memberJpaRepository.findByMemberEmail(dto.getEmail()).isPresent()){
+        if(isEmailPresent && isUsernamePresent){
+            log.info("Email, Username 중복");
+            return -3L;
+        }
+        else if(isEmailPresent){
             log.info("Email 중복");
-            return memberId;
-        }else if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
+            return 2L;
+        }else if(isUsernamePresent){
             log.info("Username 중복");
-            return memberId;
+            return -1L;
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -124,7 +129,7 @@ public class MemberService{
                 .role(Member.Role.USER)
                 .build();
 
-        memberId = memberJpaRepository.save(member).getId();
+        Long memberId = memberJpaRepository.save(member).getId();
 
         log.info("회원가입 성공");
         return memberId;
@@ -146,7 +151,7 @@ public class MemberService{
     public Long update(MemberUpdateDto dto, Long memberId){
         if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
             log.info("Username 중복");
-            return -3L;
+            return -2L;
         }
 
         Member member = memberJpaRepository.findById(memberId)
@@ -154,7 +159,7 @@ public class MemberService{
 
         if(invaildMember(member)){
             log.info("회원탈퇴 된 사용자입니다.");
-            return -4L;
+            return null;
         }
 
 
