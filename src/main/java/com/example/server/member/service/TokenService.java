@@ -27,7 +27,6 @@ public class TokenService {
     long tokenExpired;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final JwtTokenProvider tokenProvider;
-    private final RedisTemplate<String, Object> redisTemplate;
     private final MemberJpaRepository memberJpaRepository;
 
     public String createRefreshToken(String username) {
