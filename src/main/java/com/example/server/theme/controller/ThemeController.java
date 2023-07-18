@@ -1,14 +1,11 @@
 package com.example.server.theme.controller;
 
-import com.example.server.content.dto.ContentPageDto;
-import com.example.server.content.entity.Content;
 import com.example.server.content.mapper.ContentMapper;
 import com.example.server.content.service.ContentServiceImpl;
 import com.example.server.theme.mapper.ThemeMapper;
 import com.example.server.theme.service.ThemeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,8 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +29,7 @@ public class ThemeController {
 
 
     @GetMapping("/{theme_id}")
-    public ResponseEntity getContentByTheme(
+    public ResponseEntity<?> getContentByTheme(
             @Valid @PathVariable("theme_id") Long themeId,
             HttpServletRequest request,
             @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
@@ -45,7 +41,7 @@ public class ThemeController {
     }
 
     @GetMapping
-    public ResponseEntity getThemes(){
+    public ResponseEntity<?> getThemes(){
 
         return new ResponseEntity<>(themeMapper.ThemesToThemeResponseDtos(themeService.getThemes()), HttpStatus.OK);
     }

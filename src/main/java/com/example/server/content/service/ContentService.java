@@ -27,10 +27,10 @@ public interface ContentService {
 
     ContentListDto contentResponse(Long contentId, HttpServletRequest request);
 
-    ResponseEntity likeResponse(
+    ResponseEntity<?> likeResponse(
             HttpServletRequest request, int page, int size, String criteria, String sort);
 
-    ResponseEntity likeThemeResponse(
+    ResponseEntity<?> likeThemeResponse(
             Long themeId, HttpServletRequest request, int page, int size, String criteria, String sort);
 
 }

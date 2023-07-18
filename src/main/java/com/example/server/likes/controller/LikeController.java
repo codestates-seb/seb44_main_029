@@ -22,33 +22,11 @@ public class LikeController {
     public final LikesServiceImpl likesService;
     public final ContentServiceImpl contentService;
     public final MemberService memberService;
-/*
-    @PostMapping("/{content-id}/{member-id}")
-    public void setLike(@Positive @PathVariable("content-id") Long contentId,
-                        @Positive @PathVariable("member-id") Long memberId){
-
-        likesService.likeContent(contentId, memberId);
-    }
-
-    @DeleteMapping("/{content-id}/{member-id}")
-    public void setUnlike(@Positive @PathVariable("content-id") Long contentId,
-                          @Positive @PathVariable("member-id") Long memberId){
-
-        likesService.unlikeContent(contentId, memberId);
-    }
-*/
     
     @PatchMapping("/{content-id}")
-    synchronized public ResponseEntity patchlike(@Positive @PathVariable("content-id") Long contentId,
+    synchronized public ResponseEntity<?> patchlike(@Positive @PathVariable("content-id") Long contentId,
                                        HttpServletRequest request){
 
         return likesService.patchLike(contentId, request);
     }
-/*
-    @GetMapping("/{content-id}/{member-id}")
-    public ResponseEntity getLikedContent(@Positive @PathVariable("content-id") Long contentId,
-                                          @Positive @PathVariable("member-id") Long memberId){
-        return new ResponseEntity<>(contentService.likedContentResponse(contentId, memberId), HttpStatus.OK);
-    }
- */
 }
