@@ -50,9 +50,13 @@ export const Login = async (data: LoginInfo) => {
 // 로그아웃
 export const Logout = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   try {
     const response = await axios.post(`${BASE_URL}members/logout`, null, {
+      data: {
+        'refresh-token': refreshToken,
+      },
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
@@ -147,6 +151,7 @@ export const GetThemeLikes = async (
 
 // 토큰 재발급 API
 export const RenewAccessToken = async () => {
+  const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
 
   try {
@@ -160,6 +165,7 @@ export const RenewAccessToken = async () => {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${accessToken}`,
         },
       }
     );
@@ -169,8 +175,14 @@ export const RenewAccessToken = async () => {
 
     return newAccessToken;
   } catch (error) {
-    // 토큰 갱신 실패 시 처리, 예를 들어 로그인 페이지로 리디렉션하거나 오류 메시지 표시
+    // 토큰 갱신 실패 시 처리
     console.error('액세스 토큰 갱신에 실패했습니다:', error);
+
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('memberId');
+
+    alert('토큰이 만료되어 로그아웃 되었습니다. 다시 로그인 해주세요.');
     throw error;
   }
 };
