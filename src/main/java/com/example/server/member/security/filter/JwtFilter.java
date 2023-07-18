@@ -34,7 +34,7 @@ public class JwtFilter extends OncePerRequestFilter {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private JwtTokenProvider tokenProvider;
     private BlackListJpaRepository blackListJpaRepository;
-    private RedisTemplate<String, Object> redisTemplate;
+    
 
     public JwtFilter(JwtTokenProvider tokenProvider, BlackListJpaRepository blackListJpaRepository) {
         this.tokenProvider = tokenProvider;
