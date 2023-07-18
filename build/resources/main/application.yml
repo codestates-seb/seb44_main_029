@@ -4,7 +4,7 @@ cloud:
       accessKey: ${AWS_ACCESS_KEY2}
       secretKey: ${AWS_SECRET_KEY2}
     s3:
-      bucket: 29maintest
+      bucket: 29testmain
     region:
       static: ap-northeast-2
     stack:
@@ -23,7 +23,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-        ddl-auto: update
+        ddl-auto: create
     show-sql: true
     properties:
       hibernate:
