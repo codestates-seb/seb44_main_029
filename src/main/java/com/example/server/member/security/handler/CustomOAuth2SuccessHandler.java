@@ -41,7 +41,7 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
     private final MemberJpaRepository memberJpaRepository;
     private final JwtTokenProvider tokenProvider;
     private final TokenService tokenService;
-    private final RedisTemplate<String, Object> redisTemplate;
+    
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
@@ -56,7 +56,7 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authenticationToken);
 
-        redisTemplate.opsForValue().set("RT:" + member.getId(), refreshToken, refreshTokenExpired, TimeUnit.MILLISECONDS);
+    
 
         ResponseDto responseDto = ResponseDto.builder()
                 .memberId(member.getId())
