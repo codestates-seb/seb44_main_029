@@ -1,6 +1,8 @@
 package com.example.server.content.service;
 
 import com.example.server.content.controller.ContentController;
+import com.example.server.content.dto.ContentListDto;
+import com.example.server.content.dto.ContentPageDto;
 import com.example.server.content.dto.ContentResponseDto;
 import com.example.server.content.entity.Content;
 import com.example.server.content.mapper.ContentMapper;
@@ -21,6 +23,7 @@ import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,16 +72,15 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public List<Content> getContentByTheme(Long themeId) {
-        // 없으면 에러 추가
         Theme theme = themeRepository.findById(themeId)
                 .orElseThrow(() -> new IllegalArgumentException("THEME doesn't exist"));
         List<Content> contents = contentRepository.findByTheme(theme);
-        for (Content content:contents){
+        /*for (Content content:contents){
             if (content.getUri() == null){
                 content.setUri(getContentUrl(content.getTheme().getThemeId(), content.getContentId()));
-                //contentRepository.save(content);
+                contentRepository.save(content);
             }
-        }
+        }*/
 
         return contents;
     }
@@ -90,12 +92,13 @@ public class ContentServiceImpl implements ContentService {
         List<Content> contents = member.getLikes().stream()
                 .map(Likes::getContent)
                 .collect(Collectors.toList());
+        /*
         for (Content content:contents){
             if (content.getUri() == null){
                 content.setUri(getContentUrl(content.getContentId(), content.getTheme().getThemeId()));
-                //contentRepository.save(content);
+                contentRepository.save(content);
             }
-        }
+        }*/
 
         return contents;
     }
@@ -112,17 +115,95 @@ public class ContentServiceImpl implements ContentService {
         List<Content> pageContent = contents.subList(start, end);
         return new PageImpl<>(pageContent, pageRequest, contents.size());
     }
-
+/*
     @Override
     public List<ContentResponseDto> contentsResponse(Page<Content> contents, Long memberId){
 
         return contents.getContent().stream()
                 .map(Content -> {
                     ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(Content);
-                    if (likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), Content).isPresent()){
-                        contentResponseDto.setLiked(true);
-                    };
+                    contentResponseDto.setLiked(likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), Content).isPresent());
                     return contentResponseDto;
                 }).collect(Collectors.toList());
     }
+*/
+
+    @Override
+    public List<ContentResponseDto> contentsResponse(Page<Content> contents, HttpServletRequest request){
+        //Long memberId = Long.parseLong(request.getHeader("memberId"));
+        Long memberId = (Long) request.getAttribute("memberId");
+        if (request.getAttribute("memberId") == null) {
+        //if (request.getHeader("memberId") == null) {
+            return contents.getContent().stream()
+                    .map(Content -> {
+                        ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(Content);
+                        contentResponseDto.setLiked(false);
+                        return contentResponseDto;
+                    }).collect(Collectors.toList());
+        } else {
+            return contents.getContent().stream()
+                    .map(Content -> {
+                        ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(Content);
+                        contentResponseDto.setLiked(likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), Content).isPresent());
+                        return contentResponseDto;
+                    }).collect(Collectors.toList());
+        }
+
+    }
+
+    /*
+    @Override
+    public ContentListDto contentResponse(Long contentId, Long memberId){
+        Content content = contentRepository.findById(contentId).orElseThrow();
+        Long themeId = content.getTheme().getThemeId();
+
+        ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(content);
+        contentResponseDto.setLiked(likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), content).isPresent());
+
+        List<Long> contentIdList = contentRepository.findByTheme(themeRepository.findById(themeId).orElseThrow()).stream()
+                .map(Content::getContentId)
+                .collect(Collectors.toList());
+
+        return new ContentListDto(contentResponseDto, contentIdList);
+    }
+     */
+    @Override
+    public ContentListDto contentResponse(Long contentId, HttpServletRequest request){
+        Content content = contentRepository.findById(contentId).orElseThrow();
+        Long themeId = content.getTheme().getThemeId();
+
+        ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(content);
+
+        //Long memberId = Long.parseLong(request.getHeader("memberId"));
+        Long memberId = (Long) request.getAttribute("memberId");
+        if (memberId == null){
+            contentResponseDto.setLiked(false);
+        } else {
+            contentResponseDto.setLiked(likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), content).isPresent());
+        }
+
+        List<Long> contentIdList = contentRepository.findByTheme(themeRepository.findById(themeId).orElseThrow()).stream()
+                .map(Content::getContentId)
+                .collect(Collectors.toList());
+
+        return new ContentListDto(contentResponseDto, contentIdList);
+    }
+
+/*
+    @Override
+    public ContentListDto likedContentResponse(Long contentId, Long memberId){
+        Content content = contentRepository.findById(contentId).orElseThrow();
+        Member member = memberJpaRepository.findById(memberId).orElseThrow();
+
+        ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(content);
+        contentResponseDto.setLiked(likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), content).isPresent());
+
+        List<Long> likedContentIdList = member.getLikes().stream()
+                .map(Likes -> Likes.getContent().getContentId())
+                .collect(Collectors.toList());
+
+        return new ContentListDto(contentResponseDto, likedContentIdList);
+    }
+*/
+
 }

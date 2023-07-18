@@ -1,6 +1,9 @@
 package com.example.server.likes.service;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public interface LikesService {
@@ -9,5 +12,5 @@ public interface LikesService {
 
     void unlikeContent(Long contentId, Long memberId);
 */
-    void patchLike(Long contentId, Long memberId);
+    ResponseEntity patchLike(Long contentId, Long memberId, HttpServletRequest request);
 }
