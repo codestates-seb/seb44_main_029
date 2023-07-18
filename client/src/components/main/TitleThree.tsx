@@ -75,7 +75,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: black;
+  background-color: rgba(0, 0, 0, 1);
   @media (min-width: 768px) {
   }
 

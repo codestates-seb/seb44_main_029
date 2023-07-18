@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { TbCarouselHorizontal, TbLogin } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
-import backgroundImg from '../../assets/images/background.jpg';
 
 const TitleOne = () => {
   const navigate = useNavigate();
@@ -74,10 +73,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-image: url(${backgroundImg});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  background-color: rgba(0, 0, 0, 0.9);
   @media (min-width: 768px) {
   }
 
