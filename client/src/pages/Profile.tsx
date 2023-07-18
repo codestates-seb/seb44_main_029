@@ -25,16 +25,6 @@ const Profile = () => {
 export default Profile;
 
 export const Layout = styled.div`
-  /* max-width: 100%;
-  width: 100%;
-  max-height: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  overflow: hidden; */
-
   box-sizing: border-box;
   max-width: 100%;
   width: 100%;
@@ -63,20 +53,8 @@ export const Layout = styled.div`
 `;
 
 export const ContentContainer = styled.div`
-  /* box-sizing: border-box;
-  max-width: 924px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 0.7);
-  border-radius: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.3);
-  margin: 5rem; */
-
   box-sizing: border-box;
-  max-width: 1076px;
+  max-width: 924px;
   width: 100%;
   flex-direction: column;
   box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 0.7);
