@@ -8,7 +8,7 @@ import {
   EditType,
 } from '../types/types';
 
-const BASE_URL = 'https://f47f-175-123-6-225.ngrok-free.app/';
+const BASE_URL = 'https://f986-175-123-6-225.ngrok-free.app/';
 const BASE_URL2 = 'https://ef91-221-141-172-40.ngrok-free.app/';
 
 // 음악 리스트 요청
@@ -53,16 +53,19 @@ export const Logout = async (): Promise<any> => {
   const refreshToken = localStorage.getItem('refreshToken');
 
   try {
-    const response = await axios.post(`${BASE_URL}members/logout`, null, {
-      data: {
-        'refresh-token': refreshToken,
+    const response = await axios.post(
+      `${BASE_URL}members/logout`,
+      {
+        refreshToken: refreshToken,
       },
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
     return response;
   } catch (error: any) {
@@ -155,13 +158,12 @@ export const RenewAccessToken = async () => {
   const refreshToken = localStorage.getItem('refreshToken');
 
   try {
-    const response = await axios.get(
-      `${BASE_URL}/tokens/name`,
-
+    const response = await axios.post(
+      `${BASE_URL}tokens`,
       {
-        data: {
-          'refresh-token': refreshToken,
-        },
+        refreshToken: refreshToken,
+      },
+      {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
