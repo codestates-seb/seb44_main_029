@@ -31,7 +31,6 @@ public class JwtFilter extends OncePerRequestFilter {
         String requsetURI = request.getRequestURI();
 
         if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
-//            String isLogout = (String) redisTemplate.opsForValue().get(jwt);
 
             if(!blackListJpaRepository.findByToken(jwt).isPresent()) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);

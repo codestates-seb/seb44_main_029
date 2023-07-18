@@ -36,25 +36,15 @@ public class MemberService{
     private final MemberMapper memberMapper;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final BlackListJpaRepository blackListJpaRepository;
-//    private final RedisTemplate<String, Object> redisTemplate;
-
-    public boolean isRequesterSameOwner(Long requestId, Long ownerId){
-        return requestId == ownerId;
-    }
 
     public MemberIdAndTokenDto login(MemberLoginDto dto){
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         String username = authentication.getName();
-//        Member member = memberJpaRepository.findByMemberUsername(username).get();
 
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authentication);
-
-
-
-//        redisTemplate.opsForValue().set("RT:" + member.getId(), refreshToken, refreshTokenExpired, TimeUnit.MILLISECONDS);
 
         MemberIdAndTokenDto response = MemberIdAndTokenDto.builder()
                 .refreshToken(refreshToken)
@@ -69,7 +59,6 @@ public class MemberService{
         if(!tokenProvider.validateToken(dto.getAccessToken()))
             throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
 
-//        Authentication authentication = tokenProvider.getAuthentication(dto.getAccessToken());
 
         RefreshToken refreshToken = refreshTokenJpaRepository.findByToken(dto.getRefreshToken()).get();
 
@@ -85,15 +74,6 @@ public class MemberService{
         }else{
             throw new RuntimeException("Refresh Token is not exist");
         }
-
-//        if(redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
-//            redisTemplate.delete("RT:" + authentication.getName());
-//
-//            Long expiration = tokenProvider.getExpriation(dto.getAccessToken()).getTime();
-//            redisTemplate.opsForValue().set(dto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
-//        }else{
-//            throw new RuntimeException("Refresh Token is not exist");
-//        }
     }
 
     public Long signUp(MemberSignUpDto dto){
