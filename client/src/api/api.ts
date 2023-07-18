@@ -8,8 +8,7 @@ import {
   EditType,
 } from '../types/types';
 
-const BASE_URL = 'https://f47f-175-123-6-225.ngrok-free.app/';
-const BASE_URL2 = 'https://ef91-221-141-172-40.ngrok-free.app/';
+const BASE_URL = 'https://7793-221-141-172-40.ngrok-free.app/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -95,11 +94,11 @@ export const PetchEditProfile = async (data: EditType) => {
 // 테마 이미지 리스트 가져오기
 export const GetThemeItems = async (
   themeId: number,
-  pageParam = 1,
-  sizeParam = 20
+  pageParam: number,
+  sizeParam: number
 ): Promise<IThemeItemProps> => {
   const response = await axios.get(
-    `${BASE_URL2}theme/${themeId}/1?page=${pageParam}&size=${sizeParam}`,
+    `${BASE_URL}theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
     {
       headers: {
         'Content-Type': 'application/json',
@@ -123,10 +122,13 @@ export const PostUploadFile = async (data: FormData) => {
 
 // 이미지 좋아요 상태 업데이트
 export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
-  const response = await axios.patch(`${BASE_URL2}likes/${contentId}/1`, {
+  const accessToken = localStorage.getItem('accessToken');
+
+  const response = await axios.patch(`${BASE_URL}likes/${contentId}`, {
     headers: {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': '69420',
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return response.data;
@@ -136,10 +138,13 @@ export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
 export const GetThemeLikes = async (
   themeId: number
 ): Promise<IThemeItemProps> => {
-  const response = await axios.get(`${BASE_URL2}contents/1/likes/${themeId}`, {
+  const accessToken = localStorage.getItem('accessToken');
+
+  const response = await axios.get(`${BASE_URL}contents/likes/${themeId}`, {
     headers: {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': '69420',
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return response.data;
