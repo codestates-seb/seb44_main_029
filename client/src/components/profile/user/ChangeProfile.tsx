@@ -10,12 +10,15 @@ const ChangeProfile = ({
   };
   return (
     <Container>
-      <IconImg src={IconUser} />
       <UserInfoDiv>
-        <UsernameDiv>User Name</UsernameDiv>
-        <EmailDiv>Email</EmailDiv>
+        <IconImg src={IconUser} />
+        <div>
+          <UsernameDiv>User Name</UsernameDiv>
+          <EmailDiv>Email</EmailDiv>
+        </div>
+
+        <Button onClick={handleButton}>회원 정보 변경</Button>
       </UserInfoDiv>
-      <Button onClick={handleButton}>회원 정보 변경</Button>
     </Container>
   );
 };
@@ -23,37 +26,38 @@ const ChangeProfile = ({
 export default ChangeProfile;
 
 const Container = styled.div`
-  width: 824px;
-  height: 180px;
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  padding: 1.5rem;
+  box-sizing: border-box;
+`;
+const IconImg = styled.img`
+  margin: 8px 40px;
+  box-sizing: border-box;
+`;
+
+const UserInfoDiv = styled.div`
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  margin-bottom: 15px;
-
-  // 모바일 디바이스
-  @media screen and (min-width: 576px) {
-    width: 80%;
-  }
-
-  // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
-    width: 90%;
-  }
 `;
-const IconImg = styled.img`
-  width: 120px;
-  height: 120px;
-  margin: 8px 40px;
-`;
-
-const UserInfoDiv = styled.div``;
 const UsernameDiv = styled.div`
+  width: 100%;
+  color: white;
+  box-sizing: border-box;
   font-size: 32px;
   color: white;
   margin-bottom: 10px;
 `;
 const EmailDiv = styled.div`
+  box-sizing: border-box;
   font-size: 24px;
   color: gray;
 `;
@@ -61,6 +65,7 @@ const Button = styled.button`
   color: white;
   background-color: #59a395;
   border: none;
+  box-sizing: border-box;
   width: 140px;
   height: 60px;
   margin-left: auto;
@@ -72,15 +77,5 @@ const Button = styled.button`
 
   &:hover {
     background-color: #2aa58e;
-  }
-
-  // 모바일 디바이스
-  @media screen and (min-width: 576px) {
-    font-size: 60%;
-  }
-
-  // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
-    font-size: 90%;
   }
 `;
