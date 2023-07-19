@@ -8,16 +8,16 @@ const ThemeHeader = ({ currentThemeTitle }: ThemeHeaderProps) => {
   let description = '';
 
   // 테마 타이틀에 따라서 설명을 설정
-  if (currentThemeTitle === 'A') {
-    description = '테마 A에 대한 설명';
-  } else if (currentThemeTitle === 'B') {
-    description = '테마 B에 대한 설명';
-  } else if (currentThemeTitle === 'C') {
-    description = '테마 C에 대한 설명';
-  } else if (currentThemeTitle === 'D') {
-    description = '테마 D에 대한 설명';
-  } else if (currentThemeTitle === 'E') {
-    description = '테마 E에 대한 설명';
+  if (currentThemeTitle === 'Nature') {
+    description = 'Nature에 대한 설명';
+  } else if (currentThemeTitle === 'Space') {
+    description = 'Space에 대한 설명';
+  } else if (currentThemeTitle === 'Animal') {
+    description = 'Animal에 대한 설명';
+  } else if (currentThemeTitle === 'Pixel') {
+    description = 'Pixel에 대한 설명';
+  } else if (currentThemeTitle === 'Retro') {
+    description = 'Retro에 대한 설명';
   }
 
   return (
