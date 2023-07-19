@@ -9,7 +9,8 @@ import {
   UserInfo,
 } from '../types/types';
 
-const BASE_URL = 'ec2-54-180-127-81.ap-northeast-2.compute.amazonaws.com:8080/';
+const BASE_URL =
+  'http://ec2-54-180-127-81.ap-northeast-2.compute.amazonaws.com:8080/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>

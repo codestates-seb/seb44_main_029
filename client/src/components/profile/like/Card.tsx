@@ -5,17 +5,18 @@ import { Link } from 'react-router-dom';
 interface CardProps {
   image: string;
   themeTitle: string;
+  contentId: number;
   contentTitle: string;
 }
 
-const Card = ({ image, themeTitle, contentTitle }: CardProps) => {
+const Card = ({ image, themeTitle, contentId, contentTitle }: CardProps) => {
   const [isLiked, setIsLiked] = useState(true);
   const handleHeartIconClick = () => {
     setIsLiked(!isLiked);
   };
   return (
     <Container>
-      <ImgLink to={`/theme/:themeId/:imageId`}>
+      <ImgLink to={`/theme/1/${contentId}`}>
         <img src={image} />
       </ImgLink>
 

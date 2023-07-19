@@ -43,9 +43,9 @@ const LikeList = ({ cards }: LikeListProps) => {
     setCurrentPage(currentPage + 1);
   };
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [refetch]);
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <Container>
@@ -58,6 +58,7 @@ const LikeList = ({ cards }: LikeListProps) => {
               key={index}
               image={card.contentUri}
               themeTitle={card.themeTitle}
+              contentId={card.contentId}
               contentTitle={card.contentTitle}
             />
           ))}
@@ -86,7 +87,11 @@ const LikeList = ({ cards }: LikeListProps) => {
         </Button>
         <Button
           onClick={handleNextPage}
-          disabled={endIndex >= cards.length || slicedCards.length === 0}
+          disabled={
+            endIndex >= cards.length ||
+            slicedCards.length === 0 ||
+            slicedCards.length < 8
+          }
         >
           다음
         </Button>
