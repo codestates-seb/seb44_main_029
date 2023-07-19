@@ -26,7 +26,7 @@ public class MusicUploadController {
     }
 
 
-    @PostMapping
+    @PostMapping  // 관리자만 접근 가능하도록 접근권한 필요
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("themeId") long themeId) {
         if (file.isEmpty()) {
@@ -40,7 +40,4 @@ public class MusicUploadController {
         }
 
     }
-
-
-
 }
