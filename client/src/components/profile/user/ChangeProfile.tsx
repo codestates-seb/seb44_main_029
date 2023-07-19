@@ -21,10 +21,10 @@ const ChangeProfile = ({
     <Container>
       <UserInfoDiv>
         {imageUrl ? <IconImg src={imageUrl} /> : <IconImg src={IconUser} />}
-        <div>
+        <UserInfoSection>
           <UsernameDiv>{username}</UsernameDiv>
           <EmailDiv>{email}</EmailDiv>
-        </div>
+        </UserInfoSection>
 
         <Button onClick={handleButton}>회원 정보 변경</Button>
       </UserInfoDiv>
@@ -42,16 +42,10 @@ const Container = styled.div`
   box-sizing: border-box;
   margin: 1.5rem 0 0 0;
 `;
-const IconImg = styled.img`
-  width: 120px;
-  height: 120px;
-  margin: 8px 40px;
-  box-sizing: border-box;
-  border-radius: 10px;
-`;
 
 const UserInfoDiv = styled.div`
   width: 100%;
+  height: 200px;
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   padding: 1.5rem;
@@ -61,17 +55,33 @@ const UserInfoDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const IconImg = styled.img`
+  width: 20%;
+  margin: 8px 40px;
+  box-sizing: border-box;
+  border-radius: 10px;
+`;
+
 const UsernameDiv = styled.div`
   width: 100%;
   color: white;
   box-sizing: border-box;
-  font-size: 32px;
+  font-size: 200%;
   color: white;
   margin-bottom: 10px;
 `;
+
+const UserInfoSection = styled.section`
+  box-sizing: border-box;
+  width: 80%;
+  margin-left: 1.5rem;
+`;
+
 const EmailDiv = styled.div`
   box-sizing: border-box;
-  font-size: 24px;
+  width: 100%;
+  font-size: 150%;
   color: gray;
 `;
 const Button = styled.button`
@@ -79,8 +89,8 @@ const Button = styled.button`
   background-color: #59a395;
   border: none;
   box-sizing: border-box;
-  width: 140px;
-  height: 60px;
+  width: 30%;
+  padding: 1.5rem;
   margin-left: auto;
   margin-right: 20px;
   font-weight: bold;

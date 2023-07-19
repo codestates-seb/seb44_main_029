@@ -33,19 +33,22 @@ const EditName = ({
 export default EditName;
 
 const Container = styled.div`
-  flex-grow: 1;
+  /* flex-grow: 1; */
   box-sizing: border-box;
+  width: 100%;
 `;
 
 const NameInput = styled.input`
-  font-size: 32px;
+  font-size: 200%;
   margin-bottom: 10px;
   outline: none;
   border: none;
   box-sizing: border-box;
+  width: 100%;
 `;
 const EmailDiv = styled.div`
-  font-size: 24px;
+  font-size: 150%;
   color: gray;
   box-sizing: border-box;
+  width: 100%;
 `;
