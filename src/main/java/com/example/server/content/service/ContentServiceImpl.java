@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -94,7 +95,7 @@ public class ContentServiceImpl implements ContentService {
                 .map(Content::getContentId)
                 .collect(Collectors.toList());
 
-        //contentResponseDto.setContentUri(getContentFileUrl(content.getTitle()));
+        contentResponseDto.setContentUri(getContentFileUrl(content.getContentId()));
 
         return new ContentListDto(contentResponseDto, contentIdList);
     }
@@ -106,7 +107,7 @@ public class ContentServiceImpl implements ContentService {
                     .map(Content -> {
                         ContentResponseDto contentResponseDto = contentMapper.ContentToContentResponseDto(Content);
                         contentResponseDto.setLiked(false);
-                        //contentResponseDto.setContentUri();
+                        //contentResponseDto.setContentUri(getContentFileUrl(Content.getContentId()));
                         return contentResponseDto;
                     }).collect(Collectors.toList());
         } else {
@@ -164,8 +165,9 @@ public class ContentServiceImpl implements ContentService {
 
     // Content url 조회 - 메타데이터 기반 - Pre signed-url 적용 - 만료시간 1분
     public String getContentFileUrl(Long contentId){
+        // url
         try{
-            String url = null;
+            String url = "";
             ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
                     .bucket(bucketName)
                     .build();
@@ -179,7 +181,7 @@ public class ContentServiceImpl implements ContentService {
 
                 HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
                 Map<String, String> metadata = headObjectResponse.metadata();
-                String contentIdMetadata = metadata.get("contentId");
+                String contentIdMetadata = metadata.get("contentid");
 
                 // 메타데이터가 일치하는 값을 반환
                 if (contentIdMetadata != null && contentIdMetadata.equals(String.valueOf(contentId))) {
@@ -199,7 +201,6 @@ public class ContentServiceImpl implements ContentService {
                     break;
                 }
             }
-
             return url;
         } catch (SdkException e){
             throw new RuntimeException("URL 반환 실패: " + e.getMessage(), e);
@@ -207,21 +208,53 @@ public class ContentServiceImpl implements ContentService {
     }
 
     // 이미지 업로드 기능 - 관리자 권한필요 - 메타데이터 기반 업로드
-    public void upload(MultipartFile file, Long contentId)  {
+    public void upload(MultipartFile file, long contentId)  {
         String fileName = file.getOriginalFilename();
         try {
+            //추가할 것: thumbnail folder에도 업로드 해야함 - 완
+            //그 경로를 content에 같이 등록.
 
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key(fileName)
+                    .key("pictures/"+fileName)
                     .contentType(file.getContentType())
                     .contentLength(file.getSize())
                     .metadata(Collections.singletonMap("contentId", String.valueOf(contentId)))
                     .build();
 
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes())); // 바이트 배열로 전달
+
+            PutObjectRequest putObjectRequest2 = PutObjectRequest.builder()
+                    .bucket(bucketName)
+                    .key("thumbnails/"+fileName)
+                    .contentType(file.getContentType())
+                    .contentLength(file.getSize())
+                    .build();
+
+            s3Client.putObject(putObjectRequest2, RequestBody.fromBytes(file.getBytes()));
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public ResponseEntity<String> uploadSequence(MultipartFile file, String title, long themeId){
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("파일이 존재하지 않습니다");
+        }
+        try {
+            Content content = Content.builder()
+                    .theme(themeRepository.findById(themeId).orElseThrow())
+                    .title(title)
+                    .uri("https://"+bucketName+".s3.ap-northeast-2.amazonaws.com/thumbnails/"+file.getOriginalFilename())
+                    .build();
+            contentRepository.save(content);
+            upload(file, content.getContentId());
+
+            //long contentId = content.getContentId();
+            //contentService.upload(file, contentId);
+            return ResponseEntity.ok("이미지가 성공적으로 업로드 되었습니다");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 업로드 실패: {}" + e.getMessage());
         }
     }
 }
