@@ -77,17 +77,17 @@ public class MemberService{
     }
 
     public Long signUp(MemberSignUpDto dto){
-        boolean isEmailPresent = memberJpaRepository.findByMemberEmail(dto.getEmail()).isPresent();
-        boolean isUsernamePresent = memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent();
+        Member isEmailPresent = memberJpaRepository.findByMemberEmail(dto.getEmail()).orElse(null);
+        Member isUsernamePresent = memberJpaRepository.findByMemberUsername(dto.getUsername()).orElse(null);
 
-        if(isEmailPresent && isUsernamePresent){
+        if((isEmailPresent != null && isEmailPresent.getActive()) && (isEmailPresent != null && isUsernamePresent.getActive())){
             log.info("Email, Username 중복");
             return -3L;
         }
-        else if(isEmailPresent){
+        else if(isEmailPresent != null && isEmailPresent.getActive()){
             log.info("Email 중복");
             return -2L;
-        }else if(isUsernamePresent){
+        }else if(isEmailPresent != null && isUsernamePresent.getActive()){
             log.info("Username 중복");
             return -1L;
         }
@@ -124,7 +124,9 @@ public class MemberService{
     }
 
     public Long update(MemberUpdateDto dto, Long memberId){
-        if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
+        Member isPresentMember = memberJpaRepository.findByMemberUsername(dto.getUsername()).orElse(null);
+
+        if(isPresentMember != null && isPresentMember.getActive()){
             log.info("Username 중복");
             return -2L;
         }

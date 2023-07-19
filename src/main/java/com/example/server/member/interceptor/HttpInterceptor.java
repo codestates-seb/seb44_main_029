@@ -39,8 +39,7 @@ public class HttpInterceptor implements HandlerInterceptor{
             if(request.getRequestURI().contains("tokens")) {
                 try {
                     memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-                } catch (ExpiredJwtException expiredJwtException) {
-                }
+                } catch (ExpiredJwtException expiredJwtException) {}
             }else{
                 memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
             }

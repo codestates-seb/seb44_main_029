@@ -55,6 +55,11 @@ public class TokenService {
         RefreshToken token = refreshTokenJpaRepository.findByToken(refreshToken.getRefreshToken())
                 .orElseThrow(() -> new RuntimeException("Refresh Token is not exist"));
 
+        if(!token.getActive()){
+            log.info("유효하지 않은 Refresh Token입니다.");
+            throw new IllegalArgumentException("유효하지 않은 Refresh Token입니다.");
+        }
+
         Member member = memberJpaRepository.findById(token.getMember().getId()).get();
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
