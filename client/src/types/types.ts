@@ -36,3 +36,9 @@ export type EditType = {
   imageUrl: string | null;
   username: string | null;
 };
+
+export type UserInfo = {
+  username: string | null;
+  imageUrl: string | null;
+  email: string;
+};

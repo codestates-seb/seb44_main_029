@@ -6,6 +6,7 @@ import {
   IThemeItemProps,
   ItemInfo,
   EditType,
+  UserInfo,
 } from '../types/types';
 
 const BASE_URL =
@@ -80,9 +81,10 @@ export const Logout = async (): Promise<any> => {
 // 프로필 수정
 export const PetchEditProfile = async (data: EditType) => {
   const accessToken = localStorage.getItem('accessToken');
+  const memberId = localStorage.getItem('memberId');
 
   const respone = await axios.patch(
-    `${BASE_URL}members`,
+    `${BASE_URL}members/${memberId}`,
     {
       imageUrl: data.imageUrl,
       username: data.username,
@@ -191,4 +193,33 @@ export const RenewAccessToken = async () => {
     alert('토큰이 만료되어 로그아웃 되었습니다. 다시 로그인 해주세요.');
     throw error;
   }
+};
+
+// 회원정보 불러오기
+export const GetUserInfo = async (): Promise<UserInfo> => {
+  const accessToken = localStorage.getItem('accessToken');
+  const memberId = localStorage.getItem('memberId');
+
+  const response = await axios.get(`${BASE_URL}members/${memberId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+};
+
+// 프로필 페이지에서 좋아요 리스트 불러오기
+export const GetLikedContents = async (): Promise<IThemeItemProps> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  const response = await axios.get(`${BASE_URL}contents/likes`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
 };

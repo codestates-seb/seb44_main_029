@@ -1,9 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import SignUpForm from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
+import { SignUpButton } from '../signup/SignupForm';
+import { SignOutShowDiv } from '../header/Header';
 
 interface LoginFormData {
   email: string;
@@ -194,24 +196,10 @@ const Input = styled.input`
   }
 `;
 
-const LoginButton = styled.button`
+export const LoginButton = styled.button`
   margin-top: 10px;
   padding: 10px;
-  background-color: #1875ff;
-  color: white;
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #045bdf;
-  }
-`;
-
-const SignUpButton = styled.button`
   width: 300px;
-  margin-top: 10px;
-  padding: 10px;
   background-color: #1875ff;
   color: white;
   border: none;
@@ -228,26 +216,4 @@ const ErrorText = styled.p`
   font-size: 11px;
   margin-bottom: 10px;
   height: 12px;
-`;
-
-const slideBox = keyframes`
-  0% {
-    opacity: 0;
-    margin-top: -300px;
-  }
-  100% {
-    opacity: 1;
-    margin-top: 350px;
-  }
-`;
-const SignOutShowDiv = styled.div`
-  position: absolute;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  z-index: 101;
-  width: 400px;
-  // 희창 수정
-  height: 600px; // 550px
-  //slideBox 효과를, 0.5초 동안, 부드럽게, 마지막 모습 유지
-  animation: ${slideBox} 0.5s ease-in-out forwards;
 `;
