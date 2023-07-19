@@ -77,23 +77,29 @@ const slideOutAnimation2 = keyframes`
 `;
 
 const Container = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 1);
-  @media (min-width: 768px) {
+  @media (min-width: 300px) {
+    flex-direction: column;
   }
-
+  @media (min-width: 768px) {
+    flex-direction: column;
+  }
   @media (min-width: 1024px) {
+    flex-direction: column;
   }
 `;
 const Box = styled.div<{ observer: boolean }>`
+  position: absolute;
   display: flex;
   height: 100%;
   opacity: 0;
   color: white;
+  left: 0;
   animation: ${({ observer }) =>
       observer ? slideInAnimation : slideOutAnimation}
     1s 0.3s forwards;
@@ -101,41 +107,74 @@ const Box = styled.div<{ observer: boolean }>`
     height: 100%;
     width: 20vw;
     object-fit: cover;
-  }
-
-  @media (min-width: 300px) {
-    font-size: 2rem;
-  }
-  @media (min-width: 768px) {
-    font-size: 3rem;
+    @media (min-width: 300px) {
+      height: 70%;
+      width: 33vw;
+    }
+    @media (min-width: 768px) {
+      height: 100%;
+      width: 20vw;
+    }
+    @media (min-width: 1024px) {
+      height: 100%;
+      width: 20vw;
+    }
   }
 `;
 
 const Box2 = styled.div<{ observer: boolean }>`
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
   color: white;
   opacity: 0;
-  flex-grow: 1;
   animation: ${({ observer }) =>
       observer ? slideOutAnimation2 : slideOutAnimation}
     1s 1s forwards;
   > p {
     margin: 0;
     font-weight: bold;
+    @media (min-width: 300px) {
+      font-size: 1rem;
+    }
+    @media (min-width: 768px) {
+      font-size: 1.2rem;
+    }
+    @media (min-width: 1024px) {
+      font-size: 1.5rem;
+    }
   }
-
   @media (min-width: 300px) {
-    font-size: 2rem;
+    align-items: center;
+    bottom: -190%;
   }
   @media (min-width: 768px) {
-    font-size: 2rem;
+    align-items: end;
+    right: 5%;
+    bottom: -150%;
+  }
+  @media (min-width: 1024px) {
+    align-items: center;
+    right: 8%;
+    bottom: -150%;
   }
 `;
 const Column = styled.div<{ observer: boolean }>`
   font-weight: bold;
   display: flex;
+  @media (min-width: 300px) {
+    font-size: 1rem;
+    margin: 3px 0;
+  }
+  @media (min-width: 768px) {
+    font-size: 1.2rem;
+    margin: 20px 0;
+  }
+  @media (min-width: 1024px) {
+    font-size: 2rem;
+    margin: 10px 0;
+  }
   > p {
     margin: 0;
   }
