@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useQuery } from '@tanstack/react-query';
 import { GetUserInfo } from '../../../api/api';
+
 const ChangeProfile = ({
   setIsEdit,
 }: {
@@ -11,6 +12,7 @@ const ChangeProfile = ({
 
   const username = data?.username;
   const email = data?.email;
+  const imageUrl = data?.imageUrl;
 
   const handleButton = () => {
     setIsEdit(true);
@@ -18,7 +20,7 @@ const ChangeProfile = ({
   return (
     <Container>
       <UserInfoDiv>
-        <IconImg src={IconUser} />
+        {imageUrl ? <IconImg src={imageUrl} /> : <IconImg src={IconUser} />}
         <div>
           <UsernameDiv>{username}</UsernameDiv>
           <EmailDiv>{email}</EmailDiv>
@@ -41,8 +43,11 @@ const Container = styled.div`
   margin: 1.5rem 0 0 0;
 `;
 const IconImg = styled.img`
+  width: 120px;
+  height: 120px;
   margin: 8px 40px;
   box-sizing: border-box;
+  border-radius: 10px;
 `;
 
 const UserInfoDiv = styled.div`
