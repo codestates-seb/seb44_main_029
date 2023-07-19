@@ -13,11 +13,11 @@ const ThemeHeader = ({ currentThemeTitle }: ThemeHeaderProps) => {
   } else if (currentThemeTitle === 'Space') {
     description = '우주 관련 컨텐츠를 감상할 수 있는 테마';
   } else if (currentThemeTitle === 'Animal') {
-    description = 'Animal에 대한 설명';
+    description = '동물 관련 컨텐츠를 감상할 수 있는 테마';
   } else if (currentThemeTitle === 'Pixel') {
-    description = 'Pixel에 대한 설명';
+    description = '픽셀 관련 컨텐츠를 감상할 수 있는 테마';
   } else if (currentThemeTitle === 'Retro') {
-    description = 'Retro에 대한 설명';
+    description = '레트로 관련 컨텐츠를 감상할 수 있는 테마';
   }
 
   return (
