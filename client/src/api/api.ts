@@ -6,6 +6,7 @@ import {
   IThemeItemProps,
   ItemInfo,
   EditType,
+  UserInfo,
 } from '../types/types';
 
 const BASE_URL =
@@ -50,16 +51,22 @@ export const Login = async (data: LoginInfo) => {
 // 로그아웃
 export const Logout = async (): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken');
 
   try {
-    const response = await axios.post(`${BASE_URL}members/logout`, null, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${accessToken}`,
+    const response = await axios.post(
+      `${BASE_URL}members/logout`,
+      {
+        refreshToken: refreshToken,
       },
-    });
-
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     return response;
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
@@ -74,9 +81,10 @@ export const Logout = async (): Promise<any> => {
 // 프로필 수정
 export const PetchEditProfile = async (data: EditType) => {
   const accessToken = localStorage.getItem('accessToken');
+  const memberId = localStorage.getItem('memberId');
 
   const respone = await axios.patch(
-    `${BASE_URL}members`,
+    `${BASE_URL}members/${memberId}`,
     {
       imageUrl: data.imageUrl,
       username: data.username,
@@ -118,7 +126,6 @@ export const PostUploadFile = async (data: FormData) => {
   const response = await axios.post(`${BASE_URL}musicUpload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data', // multipart/form-data
-      'ngrok-skip-browser-warning': '69420',
     },
   });
   return response;
@@ -156,19 +163,20 @@ export const GetThemeLikes = async (
 
 // 토큰 재발급 API
 export const RenewAccessToken = async () => {
+  const accessToken = localStorage.getItem('accessToken');
   const refreshToken = localStorage.getItem('refreshToken');
 
   try {
-    const response = await axios.get(
-      `${BASE_URL}/tokens/name`,
-
+    const response = await axios.post(
+      `${BASE_URL}tokens`,
       {
-        data: {
-          'refresh-token': refreshToken,
-        },
+        refreshToken: refreshToken,
+      },
+      {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${accessToken}`,
         },
       }
     );
@@ -178,8 +186,14 @@ export const RenewAccessToken = async () => {
 
     return newAccessToken;
   } catch (error) {
-    // 토큰 갱신 실패 시 처리, 예를 들어 로그인 페이지로 리디렉션하거나 오류 메시지 표시
+    // 토큰 갱신 실패 시 처리
     console.error('액세스 토큰 갱신에 실패했습니다:', error);
+
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('memberId');
+
+    alert('토큰이 만료되어 로그아웃 되었습니다. 다시 로그인 해주세요.');
     throw error;
   }
 };
@@ -189,6 +203,35 @@ export const GetDetailedItem = async (contentId: number) => {
   const accessToken = localStorage.getItem('accessToken');
 
   const response = await axios.get(`${BASE_URL}contents/${contentId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+};
+
+// 회원정보 불러오기
+export const GetUserInfo = async (): Promise<UserInfo> => {
+  const accessToken = localStorage.getItem('accessToken');
+  const memberId = localStorage.getItem('memberId');
+
+  const response = await axios.get(`${BASE_URL}members/${memberId}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+};
+
+// 프로필 페이지에서 좋아요 리스트 불러오기
+export const GetLikedContents = async (): Promise<IThemeItemProps> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  const response = await axios.get(`${BASE_URL}contents/likes`, {
     headers: {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': '69420',

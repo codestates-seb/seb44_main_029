@@ -52,3 +52,9 @@ export interface DetailedItemProps {
   firstItemContentId: number;
   lastElementContentId: number;
 }
+
+export type UserInfo = {
+  username: string | null;
+  imageUrl: string | null;
+  email: string;
+};
