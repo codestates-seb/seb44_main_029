@@ -11,6 +11,7 @@ interface LikeListProps {
     image: string;
     themeName: string;
     videoName: string;
+    liked?: boolean;
   }[];
 }
 
@@ -60,6 +61,7 @@ const LikeList = ({ cards }: LikeListProps) => {
               themeTitle={card.themeTitle}
               contentId={card.contentId}
               contentTitle={card.contentTitle}
+              liked={card.liked}
             />
           ))}
         </List>
