@@ -53,6 +53,7 @@ const fadeInAnimation = keyframes`
     transform: translateY(3px);
     transform: translateX(3px);
     box-shadow: 0px 0px 1px 1px #a0a0a0;
+
   }
 `;
 const slideInAnimation = keyframes`
@@ -77,7 +78,7 @@ const slideOutAnimation2 = keyframes`
 `;
 
 const Container = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -136,44 +137,44 @@ const Box2 = styled.div<{ observer: boolean }>`
     margin: 0;
     font-weight: bold;
     @media (min-width: 300px) {
-      font-size: 1rem;
+      font-size: 1.5rem;
     }
     @media (min-width: 768px) {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
     }
     @media (min-width: 1024px) {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
     }
   }
   @media (min-width: 300px) {
     align-items: center;
-    bottom: -190%;
+    bottom: -195%;
   }
   @media (min-width: 768px) {
     align-items: end;
-    right: 5%;
-    bottom: -150%;
+    right: 0;
+    bottom: -160%;
   }
   @media (min-width: 1024px) {
-    align-items: center;
-    right: 8%;
-    bottom: -150%;
+    align-items: end;
+    right: 1%;
+    bottom: -160%;
   }
 `;
 const Column = styled.div<{ observer: boolean }>`
   font-weight: bold;
   display: flex;
   @media (min-width: 300px) {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin: 3px 0;
   }
   @media (min-width: 768px) {
-    font-size: 1.2rem;
-    margin: 20px 0;
+    font-size: 1.5rem;
+    margin: 10px 0;
   }
   @media (min-width: 1024px) {
-    font-size: 2rem;
-    margin: 10px 0;
+    font-size: 1.8rem;
+    margin: 30px 0;
   }
   > p {
     margin: 0;
