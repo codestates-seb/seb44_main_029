@@ -17,10 +17,10 @@ const LikeList = ({ cards }: LikeListProps) => {
     enabled: false, // Set initial enabled to false
   });
 
-  const ItemInfo = data?.data;
-  const PageInfo = data?.pageInfo;
+  const itemInfo = data?.data;
+  const pageInfo = data?.pageInfo;
 
-  console.log('ItemInfo', ItemInfo);
+  console.log('ItemInfo', itemInfo);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
