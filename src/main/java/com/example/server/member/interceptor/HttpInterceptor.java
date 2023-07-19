@@ -35,9 +35,15 @@ public class HttpInterceptor implements HandlerInterceptor{
         Long memberId = null;
         if(accessToken != null){
             accessToken = accessToken.substring(7); //Bearer 제거
-            try {
+
+            if(request.getRequestURI().contains("tokens")) {
+                try {
+                    memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+                } catch (ExpiredJwtException expiredJwtException) {
+                }
+            }else{
                 memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-            }catch (ExpiredJwtException expiredJwtException){}
+            }
 
             request.setAttribute("memberId", memberId);
         }
@@ -49,7 +55,7 @@ public class HttpInterceptor implements HandlerInterceptor{
         if(map.get("member-id") != null){
             Long requestId = Long.valueOf((String) map.get("member-id"));
 
-            if(memberId != requestId){
+            if(memberId != requestId ){
                 log.info("요청자와 자원소유자가 다릅니다.");
                 response.sendError(202, "요청자와 자원소유자가 다릅니다.");
                 return memberId == requestId;
