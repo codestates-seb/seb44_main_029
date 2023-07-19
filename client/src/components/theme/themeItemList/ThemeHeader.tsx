@@ -9,9 +9,9 @@ const ThemeHeader = ({ currentThemeTitle }: ThemeHeaderProps) => {
 
   // 테마 타이틀에 따라서 설명을 설정
   if (currentThemeTitle === 'Nature') {
-    description = 'Nature에 대한 설명';
+    description = '자연 관련 컨텐츠를 감상할 수 있는 테마';
   } else if (currentThemeTitle === 'Space') {
-    description = 'Space에 대한 설명';
+    description = '우주 관련 컨텐츠를 감상할 수 있는 테마';
   } else if (currentThemeTitle === 'Animal') {
     description = 'Animal에 대한 설명';
   } else if (currentThemeTitle === 'Pixel') {
