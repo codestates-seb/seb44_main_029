@@ -3,11 +3,8 @@ package com.example.server.member.security.config;
 import com.example.server.member.repository.BlackListJpaRepository;
 import com.example.server.member.security.filter.JwtFilter;
 import com.example.server.member.security.token.JwtTokenProvider;
-import com.example.server.member.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-// import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,7 +18,6 @@ public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurity
 
     private JwtTokenProvider tokenProvider;
     private BlackListJpaRepository blackListJpaRepository;
-    
 
     public JwtSecurityConfig(JwtTokenProvider tokenProvider, BlackListJpaRepository blackListJpaRepository) {
         this.tokenProvider = tokenProvider;
