@@ -6,6 +6,8 @@ import ThemeItemList from '../pages/ThemeItemList';
 import ThemeList from '../pages/ThemeList';
 import Profile from '../pages/Profile';
 import ProfileEdit from '../pages/ProfileEdit';
+import ThemeDetailedItem from '../pages/ThemeDetailedItem';
+import Loading from '../components/Login/Loading';
 
 const router = createBrowserRouter([
   {
@@ -15,12 +17,16 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <MainPage /> },
       {
+        path: '/theme',
+        element: <ThemeList />,
+      },
+      {
         path: '/theme/:themeId',
         element: <ThemeItemList />,
       },
       {
-        path: '/theme',
-        element: <ThemeList />,
+        path: '/theme/:themeId/:contentId',
+        element: <ThemeDetailedItem />,
       },
       {
         path: '/profile',
@@ -29,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: '/profile/edit',
         element: <ProfileEdit />,
+      },
+      {
+        path: '/oauthloading',
+        element: <Loading />,
       },
     ],
   },
