@@ -23,10 +23,10 @@ spring:
     properties:
       hibernate:
         format_sql: true  # (3) SQL pretty print
-    servlet:
-      multipart:
-        max-file-size: 10MB
-        max-request-size: 10MB
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
     sql:
       init:
         data-locations: classpath*:db/h2/data.sql
@@ -41,15 +41,15 @@ spring:
       client:
         registration:
           google:
-            client-id: ${CLIENT_ID}
-            client-secret: ${CLIENT_SECRET}
+            client-id: 492169011912-1o9evmkdle898mg5facghqgipvi415en.apps.googleusercontent.com #${CLIENT_ID}
+            client-secret: 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 #${CLIENT_SECRET}
             scope:
               - profile
               - email
 config:
   domain: http://cozystates-bucket-01.s3-website.ap-northeast-2.amazonaws.com
 jwt:
-  secret: ${JWT_SECRET}
+  secret: dmskamdskamdksalndsanjfkqwgefuinklsjfajdlshuwhuqgbkbdasndksajugfekfmaldbqanbd #${JWT_SECRET}
   access_token_expired: 3_600_000 #3_600_000
   refresh_token_expired: 604_800_000
             
