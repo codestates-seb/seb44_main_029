@@ -22,6 +22,7 @@ const EditImg = ({
   const handleClick = (url: string) => {
     setImgUrl(url);
     setCurrentUrl(url);
+    setIconImgClicked(false);
   };
 
   const { data } = useQuery(['userInfo'], GetUserInfo, {
