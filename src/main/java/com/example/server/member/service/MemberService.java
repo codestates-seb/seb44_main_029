@@ -13,21 +13,13 @@ import com.example.server.member.repository.RefreshTokenJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -44,25 +36,15 @@ public class MemberService{
     private final MemberMapper memberMapper;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final BlackListJpaRepository blackListJpaRepository;
-//    private final RedisTemplate<String, Object> redisTemplate;
-
-    public boolean isRequesterSameOwner(Long requestId, Long ownerId){
-        return requestId == ownerId;
-    }
 
     public MemberIdAndTokenDto login(MemberLoginDto dto){
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         String username = authentication.getName();
-//        Member member = memberJpaRepository.findByMemberUsername(username).get();
 
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authentication);
-
-
-
-//        redisTemplate.opsForValue().set("RT:" + member.getId(), refreshToken, refreshTokenExpired, TimeUnit.MILLISECONDS);
 
         MemberIdAndTokenDto response = MemberIdAndTokenDto.builder()
                 .refreshToken(refreshToken)
@@ -77,7 +59,6 @@ public class MemberService{
         if(!tokenProvider.validateToken(dto.getAccessToken()))
             throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
 
-//        Authentication authentication = tokenProvider.getAuthentication(dto.getAccessToken());
 
         RefreshToken refreshToken = refreshTokenJpaRepository.findByToken(dto.getRefreshToken()).get();
 
@@ -88,19 +69,11 @@ public class MemberService{
                     .accessToken(dto.getAccessToken())
                     .build();
 
+            refreshTokenJpaRepository.save(refreshToken);
             blackListJpaRepository.save(blackList);
         }else{
             throw new RuntimeException("Refresh Token is not exist");
         }
-
-//        if(redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
-//            redisTemplate.delete("RT:" + authentication.getName());
-//
-//            Long expiration = tokenProvider.getExpriation(dto.getAccessToken()).getTime();
-//            redisTemplate.opsForValue().set(dto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
-//        }else{
-//            throw new RuntimeException("Refresh Token is not exist");
-//        }
     }
 
     public Long signUp(MemberSignUpDto dto){

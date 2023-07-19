@@ -1,7 +1,11 @@
 package com.example.server.member.config;
 
+import com.example.server.member.auditor.AuditingAwareImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -9,15 +13,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
-public class AwareConfig implements AuditorAware<Long> {
-    @Override
-    public Optional<Long> getCurrentAuditor() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if(authentication == null || authentication.getPrincipal().equals("anonymousUser") || !authentication.isAuthenticated())
-            return null;
-
-        return Optional.of(Long.valueOf(authentication.getName()));
+@Configuration
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
+public class AwareConfig{
+    @Bean
+    AuditorAware<Long> auditorProvider(){
+        return new AuditingAwareImpl();
     }
 }
