@@ -8,7 +8,9 @@ const EditName = ({
 }: {
   setUserName: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
-  const { data } = useQuery(['userInfo'], GetUserInfo);
+  const { data } = useQuery(['userInfo'], GetUserInfo, {
+    enabled: false,
+  });
   const email = data?.email;
   //useRef로 현재 input값 받아오기
   const nameInputRef = useRef<HTMLInputElement | null>(null);

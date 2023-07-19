@@ -20,7 +20,7 @@ const LikeList = ({ cards }: LikeListProps) => {
   const itemInfo = data?.data;
   const pageInfo = data?.pageInfo;
 
-  console.log('ItemInfo', itemInfo);
+  console.log('좋아요 리스트: ', itemInfo);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
