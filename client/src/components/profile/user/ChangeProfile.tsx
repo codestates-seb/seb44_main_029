@@ -1,10 +1,17 @@
 import styled from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
+import { useQuery } from '@tanstack/react-query';
+import { GetUserInfo } from '../../../api/api';
 const ChangeProfile = ({
   setIsEdit,
 }: {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const { data } = useQuery(['userInfo'], GetUserInfo);
+
+  const username = data?.username;
+  const email = data?.email;
+
   const handleButton = () => {
     setIsEdit(true);
   };
@@ -13,8 +20,8 @@ const ChangeProfile = ({
       <UserInfoDiv>
         <IconImg src={IconUser} />
         <div>
-          <UsernameDiv>User Name</UsernameDiv>
-          <EmailDiv>Email</EmailDiv>
+          <UsernameDiv>{username}</UsernameDiv>
+          <EmailDiv>{email}</EmailDiv>
         </div>
 
         <Button onClick={handleButton}>회원 정보 변경</Button>
