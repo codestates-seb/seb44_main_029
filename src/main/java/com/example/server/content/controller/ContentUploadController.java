@@ -26,8 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class ContentUploadController {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-
-    private final AwsS3Service awsS3Service;
     private static final Logger logger = LoggerFactory.getLogger(MusicController.class);
     private final ContentRepository contentRepository;
     private final ThemeRepository themeRepository;
@@ -37,19 +35,7 @@ public class ContentUploadController {
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("title") String title,
                                              @RequestParam("themeId") long themeId) {
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body("파일이 존재하지 않습니다");
-        }
-        try {
-            Content content = Content.builder()
-                    .theme(themeRepository.findById(themeId).orElseThrow())
-                    .title(title)
-                    .build();
-            contentRepository.save(content);
-            contentService.upload(file, content.getContentId());
-            return ResponseEntity.ok("이미지가 성공적으로 업로드 되었습니다");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 업로드 실패: {}" + e.getMessage());
-        }
+
+        return contentService.uploadSequence(file, title, themeId);
     }
 }

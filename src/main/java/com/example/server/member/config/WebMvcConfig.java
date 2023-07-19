@@ -22,6 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/contents/**")
                 .addPathPatterns("/likes/**")
                 .addPathPatterns("/theme/**")
+                .addPathPatterns("/contentsUpload")
                 .excludePathPatterns("/css/**", "/images/**", "/js/**");
     }
 
