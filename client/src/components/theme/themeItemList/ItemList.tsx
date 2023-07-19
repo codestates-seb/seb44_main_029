@@ -10,10 +10,6 @@ interface ItemProps
   themeId: number;
 }
 
-interface LikeButtonProps {
-  isActive: boolean;
-}
-
 const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 현재 아이템의 좋아요 상태를 저장하는 상태
   const queryClient = useQueryClient();
@@ -101,7 +97,7 @@ const ItemLink = styled(Link)`
   }
 `;
 
-const LikeButton = styled.button<LikeButtonProps>`
+const LikeButton = styled.button<{ isActive: boolean }>`
   box-sizing: border-box;
   width: 2rem;
   height: 2rem;

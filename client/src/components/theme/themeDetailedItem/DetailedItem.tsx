@@ -131,16 +131,21 @@ const LikeButton = styled.button<{ isActive: boolean }>`
   justify-content: center;
   align-items: center;
   transition: 0.15s;
-  border: ${(props) =>
-    props.isActive
-      ? `2px solid rgba(255, 255, 255, 1)`
-      : `2px solid rgba(255, 255, 255, 0.5)`};
-  background-color: ${(props) =>
-    props.isActive ? `rgba(0, 170, 0, 0.9)` : `transparent`};
 
   &:hover {
     border: 2px solid rgba(255, 255, 255, 1);
   }
+
+  ${(props) =>
+    props.isActive
+      ? css`
+          border: 2px solid rgba(255, 255, 255, 1);
+          background-color: rgba(0, 170, 0, 0.9);
+        `
+      : css`
+          border: 2px solid rgba(255, 255, 255, 0.5);
+          background-color: transparent;
+        `}
 `;
 
 const MoveToDiv = css`
