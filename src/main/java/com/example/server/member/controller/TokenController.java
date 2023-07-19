@@ -21,12 +21,11 @@ public class TokenController {
 
     @GetMapping("")
     public ResponseEntity updateToken(@RequestBody RefreshTokenDto refreshToken, HttpServletRequest request, HttpServletResponse response){
-        Long memberId = (Long) request.getAttribute("memberId");
-        String token = tokenService.updateAccessToken(memberId, refreshToken);
+//        Long memberId = (Long) request.getAttribute("memberId");
+        String token = tokenService.updateAccessToken(refreshToken);
 
         if(token == null) return new ResponseEntity("Refresh Token이 존재하지 않습니다.", HttpStatus.FORBIDDEN);
         response.setHeader(HttpHeaders.AUTHORIZATION, token);
-//        response.setHeader("Refresh-Token", token.getRefreshToken());
 
         return new ResponseEntity(HttpStatus.OK);
     }
