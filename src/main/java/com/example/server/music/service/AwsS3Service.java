@@ -5,8 +5,13 @@ import com.example.server.music.controller.MusicController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -22,8 +27,10 @@ import software.amazon.awssdk.transfer.s3.model.UploadFileRequest;
 import software.amazon.awssdk.transfer.s3.progress.LoggingTransferListener;
 
 
-import java.io.IOException;
+import java.io.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 
@@ -69,7 +76,7 @@ public class AwsS3Service {
     }
 
 
-    // 음원 url 조회 - 메타데이터 기반 -
+    // 음원 url 조회 - 메타데이터 기반(url 원본)
     public List<String> getMp3FileListUrlV1(long themeId){
         try{
             List<String> musicList = new ArrayList<>(); // url
@@ -150,8 +157,6 @@ public class AwsS3Service {
     }
 
 
-
-
     // 음원 업로드 기능 - 관리자 권한필요 - 메타데이터 기반 업로드
     public void upload(MultipartFile file, long themeId)  {
         String fileName = file.getOriginalFilename();
@@ -170,5 +175,40 @@ public class AwsS3Service {
             e.printStackTrace();
         }
     }
+
+    // 음원 다운로드 기능
+    // 버킷에서 파일을 가져오고 그 내용을 byte[]로 변환하여 ResponseEntity로 반환
+    public ResponseEntity<Void> download(String fileName) throws IOException{
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+        // 파일의 내용을 가져옴
+        ResponseInputStream<GetObjectResponse> getObjectResponse = s3Client.getObject(getObjectRequest);
+        InputStream objectInputStream = getObjectResponse;
+
+        String resultFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        httpHeaders.setContentDispositionFormData("attachment", resultFileName);
+
+        // 로컬 다운로드 폴더 경로
+        String downloadFolderPath = "C:\\Users\\DLEHDDUF\\Downloads"; // C:
+
+        // 로컬 다운로드 폴더에 파일 저장
+        String filePath = downloadFolderPath + File.separator + resultFileName;
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = objectInputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, bytesRead);
+            }
+        }
+
+        return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
+
+    }
+
 
 }

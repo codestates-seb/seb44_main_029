@@ -3,6 +3,7 @@ package com.example.server.member.interceptor;
 import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.service.TokenService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,19 +30,17 @@ public class HttpInterceptor implements HandlerInterceptor{
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-//        String refreshToken = request.getHeader("Refresh-Token");
-
-//        response.setHeader("Refresh-Token", refreshToken);
-        Long memberId = null;
-
         response.setHeader(HttpHeaders.AUTHORIZATION, accessToken);
 
         log.info("Header에 Refresh-Token, Access-Token 삽입");
 
+        Long memberId = null;
         if(accessToken != null){
             if(!accessToken.equals("Bearer null")){
                 accessToken = accessToken.substring(7); //Bearer 제거
-                memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+                try {
+                    memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+                }catch (ExpiredJwtException expiredJwtException){}
 
                 request.setAttribute("memberId", memberId);
             }
@@ -54,7 +53,9 @@ public class HttpInterceptor implements HandlerInterceptor{
         if(map.get("member-id") != null){
             Long requestId = Long.valueOf((String) map.get("member-id"));
 
-            if(memberId != null){
+            if(memberId != requestId){
+                log.info("요청자와 자원소유자가 다릅니다.");
+                response.sendError(202, "요청자와 자원소유자가 다릅니다.");
                 return memberId == requestId;
             }
         }

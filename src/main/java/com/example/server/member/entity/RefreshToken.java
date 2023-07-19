@@ -18,9 +18,10 @@ public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    Boolean active;
     String token;
-    Date expired;
-
+//    Date expired;
+//
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     Member member;
