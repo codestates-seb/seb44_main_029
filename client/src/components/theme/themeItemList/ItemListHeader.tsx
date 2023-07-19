@@ -61,6 +61,7 @@ const LikeFilterButton = styled.button<LikeButtonProps>`
   font-size: 0.6rem;
   line-height: 13px;
   font-weight: bold;
+  cursor: pointer;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.1);

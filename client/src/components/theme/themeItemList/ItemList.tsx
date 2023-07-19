@@ -89,7 +89,7 @@ const Container = styled.div`
 
 const ItemLink = styled(Link)`
   box-sizing: border-box;
-  cursor: pointer;
+  cursor: zoom-in;
   display: flex;
 
   > img {
