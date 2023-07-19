@@ -1,11 +1,16 @@
 package com.example.server.likes.controller;
 
+import com.example.server.content.service.ContentServiceImpl;
 import com.example.server.likes.service.LikesServiceImpl;
+import com.example.server.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 
 @RestController
@@ -15,26 +20,13 @@ import javax.validation.constraints.Positive;
 @Slf4j
 public class LikeController {
     public final LikesServiceImpl likesService;
-/*
-    @PostMapping("/{content-id}/{member-id}")
-    public void setLike(@Positive @PathVariable("content-id") Long contentId,
-                        @Positive @PathVariable("member-id") Long memberId){
-
-        likesService.likeContent(contentId, memberId);
-    }
-
-    @DeleteMapping("/{content-id}/{member-id}")
-    public void setUnlike(@Positive @PathVariable("content-id") Long contentId,
-                          @Positive @PathVariable("member-id") Long memberId){
-
-        likesService.unlikeContent(contentId, memberId);
-    }
-*/
+    public final ContentServiceImpl contentService;
+    public final MemberService memberService;
     
-    @PatchMapping("/{content-id}/{member-id}")
-    synchronized public void patchlike(@Positive @PathVariable("content-id") Long contentId,
-                                       @Positive @PathVariable("member-id") Long memberId){
+    @PatchMapping("/{content-id}")
+    synchronized public ResponseEntity<?> patchlike(@Positive @PathVariable("content-id") Long contentId,
+                                       HttpServletRequest request){
 
-        likesService.patchLike(contentId, memberId);
+        return likesService.patchLike(contentId, request);
     }
 }

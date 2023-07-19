@@ -6,9 +6,13 @@ import com.example.server.likes.entity.Likes;
 import com.example.server.likes.repository.LikeRepository;
 import com.example.server.member.entity.Member;
 import com.example.server.member.repository.MemberJpaRepository;
+import com.example.server.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 
 @Transactional
@@ -18,6 +22,7 @@ public class LikesServiceImpl implements LikesService{
     public final ContentRepository contentRepository;
     public final LikeRepository likeRepository;
     public final MemberJpaRepository memberJpaRepository;
+    public final MemberService memberService;
 /*
     @Override
     public void likeContent(Long contentId, Long memberId) {
@@ -43,19 +48,31 @@ public class LikesServiceImpl implements LikesService{
     }
 */
     @Override
-    public void patchLike(Long contentId, Long memberId) {
+    public ResponseEntity<?> patchLike(Long contentId, HttpServletRequest request) {
+
+        Long memberId = (Long) request.getAttribute("memberId");
+        //Long requestId = Long.parseLong(request.getHeader("memberId"));
+        if(memberId == null){
+            return new ResponseEntity<>("로그인이 필요합니다.", HttpStatus.FORBIDDEN);}
+
         Content content = contentRepository.findById(contentId).orElseThrow();
         Member member = memberJpaRepository.findById(memberId).orElseThrow();
-        try{
-            Likes likes = likeRepository.findByMemberAndContent(member, content).orElseThrow(() -> new NullPointerException("New LIKES"));
+
+        Likes likes = likeRepository.findByMemberAndContent(member, content).orElse(null);
+
+        if (likes == null){
+            Likes newLikes = new Likes();
+            newLikes.addMember(member);
+            newLikes.addContent(content);
+            content.addLike(newLikes);
+            member.addLike(newLikes);
+            likeRepository.save(newLikes);
+        } else {
             content.deleteLike(likes);
             member.deleteLike(likes);
             likeRepository.delete(likes);
-        }catch (Exception e){
-            Likes likes = new Likes();
-            likes.addMember(member);
-            likes.addContent(content);
-            likeRepository.save(likes);
-        }
+        };
+
+        return new ResponseEntity<>("Successfully Liked/Unliked", HttpStatus.OK);
     }
 }
