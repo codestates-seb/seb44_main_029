@@ -6,15 +6,15 @@ import backgroundImg5 from '../assets/theme/5.png';
 
 const getBackgroundImage = (themeId: string | undefined) => {
   switch (themeId) {
-    case '1':
+    case '1': // Nature
       return backgroundImg1;
-    case '2':
+    case '2': // Space
       return backgroundImg2;
-    case '3':
+    case '3': // Animal
       return backgroundImg3;
-    case '4':
+    case '4': // Pixel
       return backgroundImg4;
-    case '5':
+    case '5': // Retro
       return backgroundImg5;
     default:
       return '';
