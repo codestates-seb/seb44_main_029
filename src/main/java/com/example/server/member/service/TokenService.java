@@ -10,7 +10,6 @@ import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +26,6 @@ public class TokenService {
     long tokenExpired;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final JwtTokenProvider tokenProvider;
-    private final RedisTemplate<String, Object> redisTemplate;
     private final MemberJpaRepository memberJpaRepository;
 
     public String createRefreshToken(String username) {
@@ -47,25 +45,19 @@ public class TokenService {
                     .member(member)
                     .build();
         }
-//        String refreshToken = (String) redisTemplate.opsForValue().get("RT:" + member.getId());
-//        if(refreshToken != null)
-//            return refreshToken;
-//
-//        refreshToken = UUID.randomUUID().toString();
 
         refreshTokenJpaRepository.save(refreshToken);
 
         return token;
     }
 
-    public String updateAccessToken(Long memberId, RefreshTokenDto refreshToken) {
-        Member member = memberJpaRepository.findById(memberId).get();
-
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
-
-//        String value = (String) redisTemplate.opsForValue().get("RT:" + memberId);
+    public String updateAccessToken(RefreshTokenDto refreshToken) {
         RefreshToken token = refreshTokenJpaRepository.findByToken(refreshToken.getRefreshToken())
                 .orElseThrow(() -> new RuntimeException("Refresh Token is not exist"));
+
+        Member member = memberJpaRepository.findById(token.getMember().getId()).get();
+
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
 
         String value = token.getToken();
 
