@@ -60,7 +60,6 @@ const Container = styled.div`
 
 const EditInfoDiv = styled.div`
   width: 100%;
-  height: 200px;
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   padding: 1.5rem;

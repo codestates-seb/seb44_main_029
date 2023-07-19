@@ -9,7 +9,9 @@ const ChangeProfile = ({
 }: {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { data, refetch } = useQuery(['userInfo'], GetUserInfo);
+  const { data, refetch } = useQuery(['userInfo'], GetUserInfo, {
+    enabled: false, // Set initial enabled to false
+  });
 
   const username = data?.username;
   const email = data?.email;
@@ -51,7 +53,6 @@ const Container = styled.div`
 
 const UserInfoDiv = styled.div`
   width: 100%;
-  height: 200px;
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   padding: 1.5rem;
@@ -63,7 +64,7 @@ const UserInfoDiv = styled.div`
 `;
 
 const IconImg = styled.img`
-  width: 20%;
+  width: 100%;
   margin: 8px 40px;
   box-sizing: border-box;
   border-radius: 10px;
@@ -106,7 +107,7 @@ const Button = styled.button`
   border: none;
   box-sizing: border-box;
   width: 30%;
-  padding: 1.5rem;
+  padding: 1rem;
   margin-left: auto;
   margin-right: 20px;
   font-weight: bold;

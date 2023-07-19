@@ -24,7 +24,9 @@ const EditImg = ({
     setCurrentUrl(url);
   };
 
-  const { data } = useQuery(['userInfo'], GetUserInfo);
+  const { data } = useQuery(['userInfo'], GetUserInfo, {
+    enabled: false,
+  });
   const imageUrl = data?.imageUrl;
 
   return (
@@ -40,12 +42,12 @@ const EditImg = ({
         </>
       )}
       {imageUrl ? (
-        <IconImg src={imageUrl} onClick={() => setIconImgClicked(true)} />
-      ) : (
         <IconImg
-          src={currentUrl ? currentUrl : IconUser}
+          src={currentUrl ? currentUrl : imageUrl}
           onClick={() => setIconImgClicked(true)}
         />
+      ) : (
+        <IconImg src={IconUser} onClick={() => setIconImgClicked(true)} />
       )}
     </Container>
   );
@@ -68,7 +70,7 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 const IconImg = styled.img`
-  width: 61.3%;
+  width: 60%;
   margin: 20px 40px;
   transition: scale 0.3s;
   border-radius: 10px;
