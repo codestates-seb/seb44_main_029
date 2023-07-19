@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 
 interface CardProps {
   image: string;
-  themeName: string;
-  videoName: string;
+  themeTitle: string;
+  contentTitle: string;
 }
 
-const Card = ({ image, themeName, videoName }: CardProps) => {
+const Card = ({ image, themeTitle, contentTitle }: CardProps) => {
   const [isLiked, setIsLiked] = useState(true);
   const handleHeartIconClick = () => {
     setIsLiked(!isLiked);
@@ -19,9 +19,9 @@ const Card = ({ image, themeName, videoName }: CardProps) => {
         <img src={image} />
       </ImgLink>
 
-      <ThemeTitle>{themeName}</ThemeTitle>
+      <ThemeTitle>{themeTitle}</ThemeTitle>
       <VideoIconDiv>
-        <VideoTitle>{videoName}</VideoTitle>
+        <VideoTitle>{contentTitle}</VideoTitle>
         <HeartIcon onClick={handleHeartIconClick}>
           <HeartEmoji>{isLiked ? '❤️' : '🤍'}</HeartEmoji>
         </HeartIcon>

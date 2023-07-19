@@ -3,18 +3,24 @@ import Card from './Card';
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetLikedContents } from '../../../api/api';
+import IconAirplane from '../../../assets/icon/icon_airplane.png';
+import { useNavigate } from 'react-router';
 
 interface LikeListProps {
   cards: {
     image: string;
     themeName: string;
     videoName: string;
-  }[]; // Replace 'any' with the actual type of your card data
+  }[];
 }
 
 const LikeList = ({ cards }: LikeListProps) => {
+  const navigate = useNavigate();
+  const handleImgClick = () => {
+    navigate('/theme');
+  };
   const { data, refetch } = useQuery(['LikedContents'], GetLikedContents, {
-    enabled: false, // Set initial enabled to false
+    enabled: false,
   });
 
   const itemInfo = data?.data;
@@ -23,11 +29,11 @@ const LikeList = ({ cards }: LikeListProps) => {
   console.log('좋아요 리스트: ', itemInfo);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = pageInfo?.size || 0;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const slicedCards = cards.slice(startIndex, endIndex);
+  const slicedCards = itemInfo?.slice(startIndex, endIndex) || [];
 
   const handlePrevPage = () => {
     setCurrentPage(currentPage - 1);
@@ -37,9 +43,9 @@ const LikeList = ({ cards }: LikeListProps) => {
     setCurrentPage(currentPage + 1);
   };
 
-  useEffect(() => {
-    refetch(); // Manually trigger the data fetching when the component mounts
-  }, [refetch]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [refetch]);
 
   return (
     <Container>
@@ -50,20 +56,38 @@ const LikeList = ({ cards }: LikeListProps) => {
           {slicedCards.map((card, index) => (
             <Card
               key={index}
-              image={card.image}
-              themeName={card.themeName}
-              videoName={card.videoName}
+              image={card.contentUri}
+              themeTitle={card.themeTitle}
+              contentTitle={card.contentTitle}
             />
           ))}
         </List>
       ) : (
-        <NoLikedImages>No liked images to show</NoLikedImages>
+        <NoLikedImages>
+          <p>현재 좋아요 버튼을 누른 이미지가 없습니다.</p>
+          <p>
+            우선, 테마를 선택하러 가볼까요?{' '}
+            <ImgDiv>
+              <Img
+                src={IconAirplane}
+                alt="Airplane"
+                onClick={handleImgClick}
+              ></Img>
+            </ImgDiv>
+          </p>
+        </NoLikedImages>
       )}
       <Pagination>
-        <Button onClick={handlePrevPage} disabled={currentPage === 1}>
+        <Button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1 || slicedCards.length === 0}
+        >
           이전
         </Button>
-        <Button onClick={handleNextPage} disabled={endIndex >= cards.length}>
+        <Button
+          onClick={handleNextPage}
+          disabled={endIndex >= cards.length || slicedCards.length === 0}
+        >
           다음
         </Button>
       </Pagination>
@@ -100,23 +124,36 @@ const List = styled.div`
   border-radius: 1rem;
 
   // 모바일 디바이스
-  @media screen and (min-width: 400px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   @media screen and (min-width: 576px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   // PC 및 큰 디바이스
   @media screen and (min-width: 1024px) {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 `;
 
 const NoLikedImages = styled.div`
   color: white;
   text-align: center;
+  > p {
+    font-size: 150%;
+  }
+`;
+
+const ImgDiv = styled.div`
+  width: 100%;
+  box-sizing: border-box;
+`;
+const Img = styled.img`
+  width: 10%;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover {
+    scale: 1.2;
+  }
 `;
 
 const Pagination = styled.div`
