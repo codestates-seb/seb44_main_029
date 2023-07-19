@@ -3,33 +3,20 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { UpdateLike } from '../../../api/api';
-import { IThemeItemProps, ItemInfo } from '../../../types/types';
+import { DetailedItemProps } from '../../../types/types';
 import previousArrowSvg from '../../../assets/icon/icon_previous_arrow.svg';
 import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
-
-interface ItemProps
-  extends Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'> {
-  themeId: number;
-  items: IThemeItemProps;
-  currentItemIndex: number;
-  firstItemContentId: number;
-  lastElementContentId: number;
-}
-
-interface LikeButtonProps {
-  isActive: boolean;
-}
 
 const DetailedItem = ({
   contentId,
   liked,
-  contentUri,
   themeId,
-  items,
+  item,
+  themeContentIds,
   currentItemIndex,
   firstItemContentId,
   lastElementContentId,
-}: ItemProps) => {
+}: DetailedItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 좋아요 상태 관리를 위한 상태
   const queryClient = useQueryClient();
 
@@ -37,7 +24,7 @@ const DetailedItem = ({
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
     onSuccess: () => {
       setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
-      queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 데이터를 갱신
+      queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 캐싱된 데이터를 서버의 최신 데이터로 갱신
     },
     onError: (error) => {
       console.log(`onError: ${error}`);
@@ -56,23 +43,21 @@ const DetailedItem = ({
   // 이전 및 다음 버튼의 이동 위치를 결정하는 함수
   const getContentId = (shift: number) => {
     const index = currentItemIndex + shift;
-    return items.data[index]?.contentId || null;
+    return themeContentIds[index] || null;
   };
 
   // 이전 및 다음 contentId 값 할당
-  const previousContentId = getContentId(-1);
-  const nextContentId = getContentId(+1);
+  const previousContentId = getContentId(-1) || lastElementContentId;
+  const nextContentId = getContentId(+1) || firstItemContentId;
 
   return (
     <Container>
       <ItemContainerDiv>
-        <MoveToPreviousDiv
-          to={`/theme/${themeId}/${previousContentId || lastElementContentId}`}
-        >
-          <img src={previousArrowSvg} alt="Previous Arrow"></img>
+        <MoveToPreviousDiv to={`/theme/${themeId}/${previousContentId}`}>
+          <img src={previousArrowSvg} alt="Previous Arrow" />
         </MoveToPreviousDiv>
         <ItemImgDiv>
-          <img src={contentUri} alt="content"></img>
+          <img src={item.contentUri} alt="content" />
         </ItemImgDiv>
         <OverlayControlDiv>
           <LikeButton
@@ -83,10 +68,8 @@ const DetailedItem = ({
             🤍
           </LikeButton>
         </OverlayControlDiv>
-        <MoveToNextDiv
-          to={`/theme/${themeId}/${nextContentId || firstItemContentId}`}
-        >
-          <img src={nextArrowSvg} alt="Next Arrow"></img>
+        <MoveToNextDiv to={`/theme/${themeId}/${nextContentId}`}>
+          <img src={nextArrowSvg} alt="Next Arrow" />
         </MoveToNextDiv>
       </ItemContainerDiv>
     </Container>
@@ -137,7 +120,7 @@ const ItemImgDiv = styled.div`
   }
 `;
 
-const LikeButton = styled.button<LikeButtonProps>`
+const LikeButton = styled.button<{ isActive: boolean }>`
   box-sizing: border-box;
   width: 2rem;
   height: 2rem;
@@ -148,21 +131,16 @@ const LikeButton = styled.button<LikeButtonProps>`
   justify-content: center;
   align-items: center;
   transition: 0.15s;
+  border: ${(props) =>
+    props.isActive
+      ? `2px solid rgba(255, 255, 255, 1)`
+      : `2px solid rgba(255, 255, 255, 0.5)`};
+  background-color: ${(props) =>
+    props.isActive ? `rgba(0, 170, 0, 0.9)` : `transparent`};
 
   &:hover {
     border: 2px solid rgba(255, 255, 255, 1);
   }
-
-  ${(props) =>
-    props.isActive
-      ? css`
-          border: 2px solid rgba(255, 255, 255, 1);
-          background-color: rgba(0, 170, 0, 0.9);
-        `
-      : css`
-          border: 2px solid rgba(255, 255, 255, 0.5);
-          background-color: transparent;
-        `}
 `;
 
 const MoveToDiv = css`
