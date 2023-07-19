@@ -61,7 +61,6 @@ const fadeInAnimation2 = keyframes`
   0% {
     opacity: 0;
   }
-
   100% {
     opacity: 1;
   }
@@ -74,10 +73,23 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.9);
-  @media (min-width: 768px) {
-  }
+`;
 
-  @media (min-width: 1024px) {
+const TitleDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+  > p {
+    margin: 0;
+  }
+  @media (min-width: 300px) {
+    font-size: 2rem;
+  }
+  @media (min-width: 768px) {
+    font-size: 4rem;
   }
 `;
 
@@ -96,9 +108,6 @@ const Column = styled.div`
 const BtnColumnDiv = styled.div`
   display: flex;
   > button {
-    width: 140px;
-    height: 40px;
-    border-radius: 5px;
     border: none;
     background-color: rgba(50, 50, 50, 0.8);
     color: white;
@@ -109,29 +118,22 @@ const BtnColumnDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 15px;
     font-weight: bold;
     transition: background-color 0.2s ease-in-out;
+    @media (min-width: 300px) {
+      font-size: 0.5rem;
+      width: 80px;
+      height: 30px;
+      border-radius: 5px;
+    }
+    @media (min-width: 768px) {
+      font-size: 1rem;
+      width: 150px;
+      height: 40px;
+      border-radius: 10px;
+    }
   }
   > button:hover {
     background-color: rgb(70, 70, 70);
-  }
-`;
-
-const TitleDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: bold;
-  > p {
-    margin: 0;
-  }
-  @media (min-width: 300px) {
-    font-size: 2rem;
-  }
-  @media (min-width: 768px) {
-    font-size: 4rem;
   }
 `;
