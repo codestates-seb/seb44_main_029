@@ -211,3 +211,17 @@ export const GetUserInfo = async (): Promise<UserInfo> => {
   });
   return response.data;
 };
+
+// 프로필 페이지에서 좋아요 리스트 불러오기
+export const GetLikedContents = async (): Promise<IThemeItemProps> => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  const response = await axios.get(`${BASE_URL}contents/likes`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+};
