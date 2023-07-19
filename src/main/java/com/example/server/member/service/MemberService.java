@@ -36,6 +36,7 @@ public class MemberService{
     private final MemberMapper memberMapper;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final BlackListJpaRepository blackListJpaRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public MemberIdAndTokenDto login(MemberLoginDto dto){
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
@@ -92,7 +93,7 @@ public class MemberService{
             return -1L;
         }
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode(dto.getPassword());
 
         Member member = Member.builder()
@@ -163,12 +164,10 @@ public class MemberService{
             return null;
         }
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         String password = member.getPassword();
-        String oldPassword = passwordEncoder.encode(dto.getOldPassword());
+        String oldPassword = dto.getOldPassword();
 
-        if(!password.equals(oldPassword)){
+        if(passwordEncoder.matches(oldPassword, password)){
             return null;
         }
 
