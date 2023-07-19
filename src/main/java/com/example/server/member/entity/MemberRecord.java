@@ -23,7 +23,7 @@ public class MemberRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
+    @Column(columnDefinition = "TINYINT(1)")
     Boolean active;
 
     @CreatedBy

@@ -1,6 +1,7 @@
 package com.example.server.member.security.filter;
 
 import com.example.server.member.repository.BlackListJpaRepository;
+import com.example.server.member.repository.RefreshTokenJpaRepository;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -31,12 +32,14 @@ public class JwtFilter extends OncePerRequestFilter {
         String requsetURI = request.getRequestURI();
 
         if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
-
             if(!blackListJpaRepository.findByToken(jwt).isPresent()) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
                 log.debug("Security Context에 '{}' 인증 정보를 저장했습니다., url: {}", authentication.getName(), requsetURI);
+            }else{
+                log.info("유효하지 않은 토큰입니다.");
+                throw new IllegalArgumentException("유효하지 않는 토큰입니다.");
             }
         }
 
