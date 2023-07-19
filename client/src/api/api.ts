@@ -8,7 +8,8 @@ import {
   EditType,
 } from '../types/types';
 
-const BASE_URL = 'https://7793-221-141-172-40.ngrok-free.app/';
+const BASE_URL =
+  'http://ec2-54-180-127-81.ap-northeast-2.compute.amazonaws.com:8080/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -65,7 +66,6 @@ export const Logout = async (): Promise<any> => {
         },
       }
     );
-
     return response;
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
@@ -121,7 +121,6 @@ export const PostUploadFile = async (data: FormData) => {
   const response = await axios.post(`${BASE_URL}musicUpload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data', // multipart/form-data
-      'ngrok-skip-browser-warning': '69420',
     },
   });
   return response;

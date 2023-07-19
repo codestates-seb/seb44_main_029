@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { GetMusic } from '../../api/api';
 import { IoPlay, IoPlayBack, IoPlayForward, IoPause } from 'react-icons/io5';
+import Spinner from '../../assets/gif/Spinner.svg';
 
 //오디오 플레이어
 const AudioPlayer = () => {
@@ -14,7 +15,7 @@ const AudioPlayer = () => {
   const [nowMusicId, setNowMusicId] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { themeId } = useParams();
-
+  const refetchInterval = 1 * 55 * 1000;
   // themeId가 변경될시 실행되는 쿼리
   const {
     data: musicList,
@@ -26,12 +27,16 @@ const AudioPlayer = () => {
     onSuccess: () => {
       setNowMusicId(0); // 쿼리 성공시 현재음악 0번대로 설정
     },
+    staleTime: refetchInterval, // 설정된 시간(1시간)이 지나면 데이터를 다시 요청합니다.
+    refetchInterval: refetchInterval, // 주기적인 간격으로 데이터를 자동으로 다시 요청합니다.
   });
 
   // musicList 변경시
   useEffect(() => {
-    if (!musicList) setNowMusicId(-1); // musicList가 없다면
-    if (isPlaying) handleTogglePlay(); // musicList 변경시 재생중인 경우
+    if (!musicList) {
+      setNowMusicId(-1);
+      if (isPlaying) handleTogglePlay(); // musicList 변경시 재생중인 경우
+    }
   }, [musicList]);
 
   //음원 변경시 새로운 인스턴스 생성 & 중복생성을 방지 하기위한 useEffect 로직
@@ -108,7 +113,7 @@ const AudioPlayer = () => {
           ))}
         </>
       ) : isFetching ? (
-        <>패칭됨..</>
+        <SpinnerImg src={Spinner} />
       ) : isError ? (
         <>API 실패</>
       ) : null}
@@ -226,4 +231,9 @@ const S_IoPause = styled(IoPause)`
     padding: 10px 12px;
     background-color: #bbddff;
   }
+`;
+
+const SpinnerImg = styled.img`
+  width: 100px;
+  color: white;
 `;
