@@ -11,8 +11,8 @@ const TitleTwo = ({ observer }: TitleTwoProps) => {
   return (
     <Container>
       <Box observer={observer}>
-        <p>CozyState는 광고 없이,</p>
-        <p>테마 속에서 즐거운 경험을 제공합니다.</p>
+        <p>CozyState는 테마 속에서,</p>
+        <p>즐거운 경험을 제공합니다.</p>
       </Box>
       <Box2 observer={observer} onClick={() => navigete('/theme')}>
         <SlideImg />
@@ -42,14 +42,19 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
   color: white;
   background-color: black;
-  @media (min-width: 768px) {
+  @media (min-width: 400px) {
+    justify-content: center;
+    flex-direction: column;
   }
-
+  @media (min-width: 768px) {
+    justify-content: center;
+    flex-direction: column;
+  }
   @media (min-width: 1024px) {
+    justify-content: space-around;
+    flex-direction: row;
   }
 `;
 
@@ -65,24 +70,46 @@ const Box = styled.div<{ observer: boolean }>`
     margin: 0;
     font-weight: bold;
   }
-  @media (min-width: 300px) {
-    font-size: 2rem;
+  @media (min-width: 400px) {
+    font-size: 1.5rem;
+    align-items: center;
   }
   @media (min-width: 768px) {
-    font-size: 3rem;
+    font-size: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    font-size: 2rem;
+    align-items: flex-start;
   }
 `;
 
 const Box2 = styled.div<{ observer: boolean }>`
-  width: 60vw;
-  height: 20vh;
-  margin: 15vh 0;
   opacity: 0;
   animation: ${({ observer }) => (observer ? slideInAnimation : null)} 1s 0.8s
     forwards;
-  transition: height 0.3s, margin 0.3s;
-  &:hover {
-    margin: 0;
-    height: 50vh;
+  transition: height 0.3s, width 0.3s, margin 0.3s;
+
+  @media (min-width: 400px) {
+    width: 400px;
+    height: 400px;
+  }
+  @media (min-width: 768px) {
+    width: 768px;
+    height: 30vh;
+    margin: 10vh 0;
+    &:hover {
+      width: 768px;
+      height: 50vh;
+      margin: 0;
+    }
+  }
+  @media (min-width: 1024px) {
+    width: 50vw;
+    height: 30vh;
+    &:hover {
+      width: 50vw;
+      height: 70vh;
+    }
   }
 `;
