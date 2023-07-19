@@ -49,7 +49,9 @@ public class HttpInterceptor implements HandlerInterceptor{
         if(map.get("member-id") != null){
             Long requestId = Long.valueOf((String) map.get("member-id"));
 
-            if(memberId != null){
+            if(memberId != requestId){
+                log.info("요청자와 자원소유자가 다릅니다.");
+                response.sendError(202, "요청자와 자원소유자가 다릅니다.");
                 return memberId == requestId;
             }
         }
