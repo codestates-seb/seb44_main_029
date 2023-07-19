@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
@@ -34,12 +36,14 @@ public class HttpInterceptor implements HandlerInterceptor{
 
         Long memberId = null;
         if(accessToken != null){
-            accessToken = accessToken.substring(7); //Bearer 제거
-            try {
-                memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-            }catch (ExpiredJwtException expiredJwtException){}
+            if(!accessToken.equals("Bearer null")){
+                accessToken = accessToken.substring(7); //Bearer 제거
+                try {
+                    memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+                }catch (ExpiredJwtException expiredJwtException){}
 
-            request.setAttribute("memberId", memberId);
+                request.setAttribute("memberId", memberId);
+            }
         }
 
         Map<String, Object> map = (Map<String, Object>) request.getAttribute(
