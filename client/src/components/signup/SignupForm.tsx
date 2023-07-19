@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { SignUp } from '../../api/api';
 import { SignUpInfo } from '../../types/types';
+import { LoginButton } from '../Login/LoginForm';
 interface SignUpFormData {
   username: string;
   email: string;
@@ -126,6 +127,11 @@ const SignUpForm = ({
     }
   };
 
+  const handleLogInClick = () => {
+    setIsSignUpClicked(false);
+    setIsLogInClicked(true);
+  };
+
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
@@ -177,6 +183,7 @@ const SignUpForm = ({
         <ErrorText>{errors.passwordCheck && errors.passwordCheck}</ErrorText>
         <SignUpButton type="submit">Sign Up</SignUpButton>
       </Form>
+      <LoginButton onClick={handleLogInClick}>Log In</LoginButton>
     </Container>
   );
 };
@@ -207,14 +214,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 300px;
-  margin: 50px 0px;
-`;
-
-const Label = styled.label<{ isFocused: boolean }>`
-  color: ${({ isFocused }) => (isFocused ? '#166cea' : '#999')};
-  font-size: ${({ isFocused }) => (isFocused ? '14px' : 'inherit')};
-  margin-bottom: 5px;
-  transition: all 0.5s ease;
+  margin: 50px 0px 0px 0px;
 `;
 
 const Input = styled.input`
@@ -232,7 +232,22 @@ const Input = styled.input`
   }
 `;
 
-const SignUpButton = styled.button`
+const Label = styled.label<{ isFocused: boolean }>`
+  color: ${({ isFocused }) => (isFocused ? '#166cea' : '#999')};
+  font-size: ${({ isFocused }) => (isFocused ? '14px' : 'inherit')};
+  margin-bottom: 5px;
+  transition: all 0.5s ease;
+`;
+
+const ErrorText = styled.div`
+  color: red;
+  font-size: 11px;
+  margin-bottom: 10px;
+  height: 12px;
+`;
+
+export const SignUpButton = styled.button`
+  width: 300px;
   margin-top: 10px;
   padding: 10px;
   background-color: #1875ff;
@@ -244,11 +259,4 @@ const SignUpButton = styled.button`
   &:hover {
     background-color: #045bdf;
   }
-`;
-
-const ErrorText = styled.div`
-  color: red;
-  font-size: 11px;
-  margin-bottom: 10px;
-  height: 12px;
 `;

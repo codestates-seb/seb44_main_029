@@ -1,6 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { GetUserInfo } from '../../../api/api';
 
 const EditImg = ({
   setImgUrl,
@@ -21,6 +23,10 @@ const EditImg = ({
     setImgUrl(url);
     setCurrentUrl(url);
   };
+
+  const { data } = useQuery(['userInfo'], GetUserInfo);
+  const imageUrl = data?.imageUrl;
+
   return (
     <Container>
       {isIconImgClicked && (
@@ -33,10 +39,14 @@ const EditImg = ({
           </ImgSelectDiv>
         </>
       )}
-      <IconImg
-        src={currentUrl ? currentUrl : IconUser}
-        onClick={() => setIconImgClicked(true)}
-      />
+      {imageUrl ? (
+        <IconImg src={imageUrl} onClick={() => setIconImgClicked(true)} />
+      ) : (
+        <IconImg
+          src={currentUrl ? currentUrl : IconUser}
+          onClick={() => setIconImgClicked(true)}
+        />
+      )}
     </Container>
   );
 };
@@ -53,11 +63,13 @@ const fadeIn = keyframes`
   }
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 97%;
+  box-sizing: border-box;
+`;
 const IconImg = styled.img`
-  width: 120px;
-  height: 120px;
-  margin: 8px 40px;
+  width: 61.3%;
+  margin: 20px 40px;
   transition: scale 0.3s;
   border-radius: 10px;
   &:hover {
