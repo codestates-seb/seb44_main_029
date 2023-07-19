@@ -76,7 +76,13 @@ const ThemeItemList = () => {
 
   // 좋아요 버튼을 클릭하여 좋아요한 아이템만 표시하거나 모든 아이템을 표시하는 함수
   const handleFilterlikeButton = () => {
-    setShowLikedOnly(!showLikedOnly);
+    const memberId = localStorage.getItem('memberId');
+
+    if (!memberId) {
+      alert('로그인이 필요한 기능입니다. 🙏');
+    } else {
+      setShowLikedOnly(!showLikedOnly);
+    }
   };
 
   // 좋아요한 아이템만 표시하도록 필터링하거나 전체 아이템 목록을 가져온다.

@@ -26,9 +26,15 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
 
   // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
   const handleLikeButtonClick = async () => {
+    const memberId = localStorage.getItem('memberId');
+
     try {
-      await handleUpdateLikeMutation.mutateAsync(contentId);
-      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+      if (!memberId) {
+        alert('로그인이 필요한 기능입니다. 🙏');
+      } else {
+        await handleUpdateLikeMutation.mutateAsync(contentId);
+        setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+      }
     } catch (error) {
       console.log(error);
     }
