@@ -8,9 +8,9 @@ import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { IThemeItemProps } from '../types/types';
-import { GetThemeItems } from '../api/api';
-import { GetThemeLikes } from '../api/api';
+import { GetThemeItems, GetThemeLikes } from '../api/api';
 import getBackgroundImage from '../utils/getBackgroundImage';
+import { PacmanLoader } from 'react-spinners';
 
 const ThemeItemList = () => {
   const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false); // 좋아요한 아이템만 표시할지 결정하는 상태
@@ -29,7 +29,7 @@ const ThemeItemList = () => {
     status,
   } = useInfiniteQuery<IThemeItemProps, AxiosError>(
     ['items', numThemeId],
-    ({ pageParam = 1 }) => GetThemeItems(numThemeId, pageParam, 20),
+    ({ pageParam = 1 }) => GetThemeItems(numThemeId, pageParam, 5),
     {
       keepPreviousData: true,
       getNextPageParam: (lastPage) => {
@@ -93,8 +93,12 @@ const ThemeItemList = () => {
           showLikedOnly={showLikedOnly}
         />
         <ItemListContainerDiv>
+          {status === 'loading' && (
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <PacmanLoader color="rgba(255, 255, 255, 1)" />
+            </div>
+          )}
           <ItemGridDiv>
-            {status === 'loading' && <div>loading...</div>}
             {status === 'error' && <div>{error.toString()}</div>}
             {status === 'success' &&
               filteredItems?.map((item) => (
@@ -107,6 +111,7 @@ const ThemeItemList = () => {
                 />
               ))}
           </ItemGridDiv>
+          {/* {showLikedOnly ? null : <div ref={targetRef} />} */}
           <div ref={targetRef} /> {/* 무한 스크롤 로딩 중 일시 중지 */}
         </ItemListContainerDiv>
       </ContentContainer>
