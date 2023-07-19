@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import Card from './Card';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { GetLikedContents } from '../../../api/api';
 
 interface LikeListProps {
   cards: {
@@ -11,8 +13,17 @@ interface LikeListProps {
 }
 
 const LikeList = ({ cards }: LikeListProps) => {
+  const { data, refetch } = useQuery(['LikedContents'], GetLikedContents, {
+    enabled: false, // Set initial enabled to false
+  });
+
+  const itemInfo = data?.data;
+  const pageInfo = data?.pageInfo;
+
+  console.log('ItemInfo', itemInfo);
+
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -25,6 +36,10 @@ const LikeList = ({ cards }: LikeListProps) => {
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
   };
+
+  useEffect(() => {
+    refetch(); // Manually trigger the data fetching when the component mounts
+  }, [refetch]);
 
   return (
     <Container>
@@ -55,61 +70,40 @@ const LikeList = ({ cards }: LikeListProps) => {
 export default LikeList;
 
 const Container = styled.div`
-  width: 824px;
-  height: 500px;
-  flex-direction: column;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  margin-top: 15px;
-
-  // 모바일 디바이스
-  @media screen and (min-width: 576px) {
-    width: 80%;
-  }
-
-  // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
-    width: 90%;
-  }
+  width: 100%;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  padding: 1.5rem;
+  box-sizing: border-box;
 `;
 
 const Title = styled.div`
-  width: 764px;
-  height: 70px;
-  color: white;
+  width: 100%;
   font-size: 24px;
+  border-radius: 0 0 0.33rem 0.33rem;
+  color: white;
+  padding: 1.5rem;
+  box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
-  margin-bottom: 9px;
-  display: flex;
-  align-items: center;
-
-  // 모바일 디바이스
-  @media screen and (min-width: 576px) {
-    width: 80%;
-  }
-
-  // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
-    width: 100%;
-  }
+  margin-bottom: 1rem;
 `;
 
 const List = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: 1fr;
   grid-template-rows: auto;
   grid-gap: 1rem;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(1, 1fr);
 
+  // 모바일 디바이스
   @media screen and (min-width: 576px) {
-    width: 80%;
+    grid-template-columns: repeat(2, 1fr);
   }
 
+  // PC 및 큰 디바이스
   @media screen and (min-width: 1024px) {
-    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
   }
 `;
 
@@ -118,13 +112,6 @@ const Pagination = styled.div`
   justify-content: center;
   align-items: center;
   margin-top: 9px;
-  @media screen and (min-width: 576px) {
-    width: 80%;
-  }
-
-  @media screen and (min-width: 1024px) {
-    width: 100%;
-  }
 `;
 
 const Button = styled.button`
