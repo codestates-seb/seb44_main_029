@@ -32,16 +32,19 @@ public class HttpInterceptor implements HandlerInterceptor{
 //        String refreshToken = request.getHeader("Refresh-Token");
 
 //        response.setHeader("Refresh-Token", refreshToken);
+        Long memberId = null;
+
         response.setHeader(HttpHeaders.AUTHORIZATION, accessToken);
 
         log.info("Header에 Refresh-Token, Access-Token 삽입");
 
-        Long memberId = null;
         if(accessToken != null){
-            accessToken = accessToken.substring(7); //Bearer 제거
-            memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+            if(!accessToken.equals("Bearer null")){
+                accessToken = accessToken.substring(7); //Bearer 제거
+                memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
 
-            request.setAttribute("memberId", memberId);
+                request.setAttribute("memberId", memberId);
+            }
         }
 
         Map<String, Object> map = (Map<String, Object>) request.getAttribute(
