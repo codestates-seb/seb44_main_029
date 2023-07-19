@@ -40,6 +40,7 @@ const Container = styled.div`
   padding: 1rem;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 1rem;
 `;
 const ImgLink = styled(Link)`
   cursor: pointer;

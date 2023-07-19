@@ -84,7 +84,6 @@ const Button = styled.button<{ bgColor: string }>`
   width: 60%;
   padding: 1rem;
   font-weight: bold;
-  font-size: 16px;
   cursor: pointer;
   margin-left: auto;
   margin-top: 10px;

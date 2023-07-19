@@ -23,7 +23,7 @@ const LikeList = ({ cards }: LikeListProps) => {
   console.log('좋아요 리스트: ', itemInfo);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -75,8 +75,6 @@ export default LikeList;
 
 const Container = styled.div`
   width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
-  color: white;
   padding: 1.5rem;
   box-sizing: border-box;
 `;
@@ -84,7 +82,7 @@ const Container = styled.div`
 const Title = styled.div`
   width: 100%;
   font-size: 24px;
-  border-radius: 0 0 0.33rem 0.33rem;
+  border-radius: 1rem;
   color: white;
   padding: 1.5rem;
   box-sizing: border-box;
@@ -99,15 +97,20 @@ const List = styled.div`
   grid-template-rows: auto;
   grid-gap: 1rem;
   grid-template-columns: repeat(1, 1fr);
+  border-radius: 1rem;
 
   // 모바일 디바이스
-  @media screen and (min-width: 576px) {
+  @media screen and (min-width: 400px) {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media screen and (min-width: 576px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   // PC 및 큰 디바이스
   @media screen and (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   }
 `;
 
