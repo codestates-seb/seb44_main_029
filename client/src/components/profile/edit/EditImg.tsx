@@ -48,7 +48,10 @@ const EditImg = ({
           onClick={() => setIconImgClicked(true)}
         />
       ) : (
-        <IconImg src={IconUser} onClick={() => setIconImgClicked(true)} />
+        <IconImg
+          src={currentUrl ? currentUrl : IconUser}
+          onClick={() => setIconImgClicked(true)}
+        />
       )}
     </Container>
   );
@@ -78,6 +81,8 @@ const IconImg = styled.img`
   box-sizing: border-box;
   border-radius: 10px;
   transition: scale 0.3s;
+  cursor: pointer;
+
   &:hover {
     scale: 1.1;
   }
