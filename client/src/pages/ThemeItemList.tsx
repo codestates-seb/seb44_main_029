@@ -8,9 +8,9 @@ import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { IThemeItemProps } from '../types/types';
-import { GetThemeItems } from '../api/api';
-import { GetThemeLikes } from '../api/api';
+import { GetThemeItems, GetThemeLikes } from '../api/api';
 import getBackgroundImage from '../utils/getBackgroundImage';
+import { PacmanLoader } from 'react-spinners';
 
 const ThemeItemList = () => {
   const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false); // 좋아요한 아이템만 표시할지 결정하는 상태
@@ -59,8 +59,8 @@ const ThemeItemList = () => {
   // 해당 구간에 도달하면 handleIntersect 함수를 호출하여 다음 페이지를 로드한다.
   useIntersectionObserver({
     root: null,
-    rootMargin: '0px',
-    threshold: 0.5,
+    rootMargin: '150px',
+    threshold: 0,
     target: targetRef,
     onIntersect: handleIntersect,
   });
@@ -93,8 +93,12 @@ const ThemeItemList = () => {
           showLikedOnly={showLikedOnly}
         />
         <ItemListContainerDiv>
+          {status === 'loading' && (
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <PacmanLoader color="rgba(255, 255, 255, 1)" size={20} />
+            </div>
+          )}
           <ItemGridDiv>
-            {status === 'loading' && <div>loading...</div>}
             {status === 'error' && <div>{error.toString()}</div>}
             {status === 'success' &&
               filteredItems?.map((item) => (
@@ -107,7 +111,7 @@ const ThemeItemList = () => {
                 />
               ))}
           </ItemGridDiv>
-          <div ref={targetRef} /> {/* 무한 스크롤 로딩 중 일시 중지 */}
+          {showLikedOnly ? null : <div ref={targetRef} />}
         </ItemListContainerDiv>
       </ContentContainer>
     </Layout>
