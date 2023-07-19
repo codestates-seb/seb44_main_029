@@ -1,44 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
 const Loading = () => {
-  // const saveTokensToLocalStorage = async (
-  //   accessToken: string,
-  //   refreshToken: string,
-  //   memberId: string
-  // ): Promise<void> => {
-  //   try {
-  //     await Promise.all([
-  //       localStorage.setItem('accessToken', accessToken),
-  //       localStorage.setItem('refreshToken', refreshToken),
-  //       localStorage.setItem('memberId', memberId),
-  //     ]);
-  //     console.log('Tokens saved to local storage successfully.');
-  //   } catch (error) {
-  //     console.error('Error saving tokens to local storage:', error);
-  //   }
-  // };
-
-  // (async () => {
-  //   const googleAccessToken = new URL(location.href).searchParams.get(
-  //     'authorization'
-  //   );
-  //   const googleRefreshToken = new URL(location.href).searchParams.get(
-  //     'refresh-token'
-  //   );
-  //   const googleMemberId = new URL(location.href).searchParams.get('memberId');
-
-  //   if (googleAccessToken && googleRefreshToken && googleMemberId) {
-  //     await saveTokensToLocalStorage(
-  //       googleAccessToken,
-  //       googleRefreshToken,
-  //       googleMemberId
-  //     );
-  //   } else {
-  //     console.error('Missing tokens: accessToken, refreshToken, or memberId');
-  //   }
-
-  //   window.location.href = '/';
-  // })();
   const saveTokenToLocalStorage = (key: string, value: string): void => {
     try {
       localStorage.setItem(key, value);
