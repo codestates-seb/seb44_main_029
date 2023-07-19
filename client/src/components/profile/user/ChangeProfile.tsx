@@ -2,13 +2,14 @@ import styled from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useQuery } from '@tanstack/react-query';
 import { GetUserInfo } from '../../../api/api';
+import { useEffect } from 'react';
 
 const ChangeProfile = ({
   setIsEdit,
 }: {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { data } = useQuery(['userInfo'], GetUserInfo);
+  const { data, refetch } = useQuery(['userInfo'], GetUserInfo);
 
   const username = data?.username;
   const email = data?.email;
@@ -17,6 +18,11 @@ const ChangeProfile = ({
   const handleButton = () => {
     setIsEdit(true);
   };
+
+  useEffect(() => {
+    refetch(); // Manually trigger the data fetching when the component mounts
+  }, [refetch]);
+
   return (
     <Container>
       <UserInfoDiv>
@@ -61,6 +67,16 @@ const IconImg = styled.img`
   margin: 8px 40px;
   box-sizing: border-box;
   border-radius: 10px;
+
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    width: 10%;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    width: 20%;
+  }
 `;
 
 const UsernameDiv = styled.div`
@@ -94,11 +110,22 @@ const Button = styled.button`
   margin-left: auto;
   margin-right: 20px;
   font-weight: bold;
-  font-size: 16px;
   cursor: pointer;
   border-radius: 5px;
 
   &:hover {
     background-color: #2aa58e;
+  }
+
+  // 모바일 디바이스
+  @media screen and (min-width: 576px) {
+    width: 15%;
+    font-size: 12px;
+  }
+
+  // PC 및 큰 디바이스
+  @media screen and (min-width: 1024px) {
+    width: 30%;
+    font-size: 16px;
   }
 `;

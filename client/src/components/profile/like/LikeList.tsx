@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import Card from './Card';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { GetLikedContents } from '../../../api/api';
 
 interface LikeListProps {
   cards: {
@@ -11,6 +13,15 @@ interface LikeListProps {
 }
 
 const LikeList = ({ cards }: LikeListProps) => {
+  const { data, refetch } = useQuery(['LikedContents'], GetLikedContents, {
+    enabled: false, // Set initial enabled to false
+  });
+
+  const ItemInfo = data?.data;
+  const PageInfo = data?.pageInfo;
+
+  console.log('ItemInfo', ItemInfo);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -25,6 +36,10 @@ const LikeList = ({ cards }: LikeListProps) => {
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
   };
+
+  useEffect(() => {
+    refetch(); // Manually trigger the data fetching when the component mounts
+  }, [refetch]);
 
   return (
     <Container>

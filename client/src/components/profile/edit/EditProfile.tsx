@@ -86,11 +86,12 @@ const Button = styled.button<{ bgColor: string }>`
   border-radius: 5px;
   box-sizing: border-box;
   width: 60%;
-  padding: 1.5rem;
+  padding: 1rem;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
   margin-left: auto;
+  margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 20px;
 `;
