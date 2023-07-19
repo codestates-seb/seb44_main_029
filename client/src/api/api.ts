@@ -8,7 +8,8 @@ import {
   EditType,
 } from '../types/types';
 
-const BASE_URL = 'https://7793-221-141-172-40.ngrok-free.app/';
+const BASE_URL =
+  'http://ec2-54-180-127-81.ap-northeast-2.compute.amazonaws.com:8080/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -97,12 +98,15 @@ export const GetThemeItems = async (
   pageParam: number,
   sizeParam: number
 ): Promise<IThemeItemProps> => {
+  const accessToken = localStorage.getItem('accessToken');
+
   const response = await axios.get(
     `${BASE_URL}theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
     {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${accessToken}`,
       },
     }
   );
@@ -124,7 +128,7 @@ export const PostUploadFile = async (data: FormData) => {
 export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  const response = await axios.patch(`${BASE_URL}likes/${contentId}`, {
+  const response = await axios.patch(`${BASE_URL}likes/${contentId}`, null, {
     headers: {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': '69420',
@@ -182,10 +186,13 @@ export const RenewAccessToken = async () => {
 
 // 상세 이미지 정보 가져오기
 export const GetDetailedItem = async (contentId: number) => {
+  const accessToken = localStorage.getItem('accessToken');
+
   const response = await axios.get(`${BASE_URL}contents/${contentId}`, {
     headers: {
       'Content-Type': 'application/json',
       'ngrok-skip-browser-warning': '69420',
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return response.data;
