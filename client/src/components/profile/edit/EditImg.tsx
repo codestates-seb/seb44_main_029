@@ -22,6 +22,7 @@ const EditImg = ({
   const handleClick = (url: string) => {
     setImgUrl(url);
     setCurrentUrl(url);
+    setIconImgClicked(false);
   };
 
   const { data } = useQuery(['userInfo'], GetUserInfo, {
@@ -47,7 +48,10 @@ const EditImg = ({
           onClick={() => setIconImgClicked(true)}
         />
       ) : (
-        <IconImg src={IconUser} onClick={() => setIconImgClicked(true)} />
+        <IconImg
+          src={currentUrl ? currentUrl : IconUser}
+          onClick={() => setIconImgClicked(true)}
+        />
       )}
     </Container>
   );
@@ -66,18 +70,24 @@ const fadeIn = keyframes`
 `;
 
 const Container = styled.div`
-  width: 97%;
+  width: 50%;
   box-sizing: border-box;
+  padding: 1rem;
 `;
+
 const IconImg = styled.img`
-  width: 60%;
-  margin: 20px 40px;
-  transition: scale 0.3s;
+  width: 50%;
+  margin: 8px 40px;
+  box-sizing: border-box;
   border-radius: 10px;
+  transition: scale 0.3s;
+  cursor: pointer;
+
   &:hover {
     scale: 1.1;
   }
 `;
+
 const ModalOverlayDiv = styled.div`
   position: fixed;
   top: 0;

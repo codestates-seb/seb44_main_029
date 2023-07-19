@@ -22,12 +22,15 @@ const EditName = ({
   };
   return (
     <Container>
-      <NameInput
-        ref={nameInputRef}
-        placeholder="New Name!"
-        onChange={handleNameInputChange}
-      />
-      <EmailDiv>{email}</EmailDiv>
+      <InputWrapper>
+        <NameInput
+          ref={nameInputRef}
+          placeholder="New Name!"
+          onChange={handleNameInputChange}
+        />
+      </InputWrapper>
+
+      <EmailDiv>email</EmailDiv>
     </Container>
   );
 };
@@ -35,22 +38,27 @@ const EditName = ({
 export default EditName;
 
 const Container = styled.div`
-  /* flex-grow: 1; */
   box-sizing: border-box;
   width: 100%;
+  margin-left: 1.5rem;
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const NameInput = styled.input`
-  font-size: 200%;
-  margin-bottom: 10px;
-  outline: none;
-  border: none;
-  box-sizing: border-box;
   width: 100%;
+  color: white;
+  box-sizing: border-box;
+  font-size: 150%;
+  color: white;
+  margin-bottom: 10px;
 `;
 const EmailDiv = styled.div`
-  font-size: 150%;
-  color: gray;
   box-sizing: border-box;
   width: 100%;
+  font-size: 150%;
+  color: gray;
 `;

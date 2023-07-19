@@ -1,30 +1,73 @@
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
-
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { UpdateLike } from '../../../api/api';
 interface CardProps {
   image: string;
-  themeName: string;
-  videoName: string;
+  themeTitle: string;
+  contentId: number;
+  contentTitle: string;
+  liked: boolean;
 }
 
-const Card = ({ image, themeName, videoName }: CardProps) => {
+interface LikeButtonProps {
+  isActive: boolean;
+}
+
+const Card = ({
+  image,
+  themeTitle,
+  contentId,
+  contentTitle,
+  liked,
+}: CardProps) => {
   const [isLiked, setIsLiked] = useState(true);
   const handleHeartIconClick = () => {
     setIsLiked(!isLiked);
   };
+  // 현재 아이템의 좋아요 상태를 저장하는 상태
+  const [likedItem, setLikedItem] = useState<boolean>(liked);
+  const queryClient = useQueryClient();
+
+  // 좋아요 업데이트를 위한 useMutation 정의
+  const handleUpdateLikeMutation = useMutation(UpdateLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 데이터를 갱신
+    },
+    onError: (error) => {
+      console.log(`onError: ${error}`);
+    },
+  });
+
+  // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
+  const handleLikeButtonClick = async () => {
+    try {
+      await handleUpdateLikeMutation.mutateAsync(contentId);
+      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Container>
-      <ImgLink to={`/theme/:themeId/:imageId`}>
+      <ImgLink to={`/theme/1/${contentId}`}>
         <img src={image} />
       </ImgLink>
 
-      <ThemeTitle>{themeName}</ThemeTitle>
+      <ThemeTitle>{themeTitle}</ThemeTitle>
       <VideoIconDiv>
-        <VideoTitle>{videoName}</VideoTitle>
-        <HeartIcon onClick={handleHeartIconClick}>
+        <VideoTitle>{contentTitle}</VideoTitle>
+        {/* <HeartIcon onClick={handleHeartIconClick}>
           <HeartEmoji>{isLiked ? '❤️' : '🤍'}</HeartEmoji>
-        </HeartIcon>
+        </HeartIcon> */}
+        <LikeButton
+          type="button"
+          isActive={likedItem}
+          onClick={handleLikeButtonClick}
+        >
+          🤍
+        </LikeButton>
       </VideoIconDiv>
     </Container>
   );
@@ -40,6 +83,7 @@ const Container = styled.div`
   padding: 1rem;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 1rem;
 `;
 const ImgLink = styled(Link)`
   cursor: pointer;
@@ -92,4 +136,32 @@ const HeartEmoji = styled.span`
   cursor: pointer;
   display: flex;
   justify-content: flex-end;
+`;
+
+const LikeButton = styled.button<LikeButtonProps>`
+  box-sizing: border-box;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.15s;
+
+  &:hover {
+    border: 2px solid rgba(255, 255, 255, 1);
+  }
+
+  ${(props) =>
+    props.isActive
+      ? css`
+          border: 2px solid rgba(255, 255, 255, 1);
+          background-color: rgba(0, 170, 0, 0.9);
+        `
+      : css`
+          border: 2px solid rgba(255, 255, 255, 0.5);
+          background-color: transparent;
+        `}
 `;
