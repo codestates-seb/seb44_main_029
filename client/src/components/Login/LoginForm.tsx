@@ -1,11 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import SignUpForm from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import { SignUpButton } from '../signup/SignupForm';
-import { SignOutShowDiv, slideBox } from '../header/Header';
+import { SignOutShowDiv } from '../header/Header';
 
 interface LoginFormData {
   email: string;
