@@ -69,7 +69,6 @@ const Container = styled.div`
   width: 50%;
   box-sizing: border-box;
   padding: 1rem;
-  border: 1px solid blue;
 `;
 
 const IconImg = styled.img`
