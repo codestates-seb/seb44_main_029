@@ -7,6 +7,7 @@ import getBackgroundImage from '../utils/getBackgroundImage';
 import { GetDetailedItem } from '../api/api';
 import { IDetailedItemProps } from '../types/types';
 import DetailedItem from '../components/theme/themeDetailedItem/DetailedItem';
+import { PacmanLoader } from 'react-spinners';
 
 const ThemeDetailedItem = () => {
   // 현재 선택된 테마 아이디와 contentId를 가져온다.
@@ -41,8 +42,12 @@ const ThemeDetailedItem = () => {
 
   return (
     <Layout backgroundImageUrl={getBackgroundImage(themeId)}>
+      {status === 'loading' && (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <PacmanLoader color="rgba(255, 255, 255, 1)" size={20} />
+        </div>
+      )}
       <ContentContainer>
-        {status === 'loading' && <div>loading...</div>}
         {status === 'error' && <div>{error.toString()}</div>}
         {status === 'success' && currentItem ? (
           <DetailedItem
