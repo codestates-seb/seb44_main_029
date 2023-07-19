@@ -10,9 +10,9 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
       </Box>
       <Box2 observer={observer}>
         <p>그림이 마음에 드셨나요?</p>
-        <Column>
-          <p>좋아요</p>
-          <p>버튼을 눌러서,</p>
+        <Column observer={observer}>
+          <p className="like">❤️</p>
+          <p>좋아요 버튼을 눌러서,</p>
         </Column>
         <p>당신만의 리스트를 만들어보세요.</p>
       </Box2>
@@ -23,29 +23,36 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
 export default TitleThree;
 //페이드 아웃 애니메이션
 const fadeInAnimation = keyframes`
-  0% {
-    color: blue;
-    opacity: 0;
-  }
-  50% {
+  20% {
+    color: red;
+    background-color: white;
+    box-shadow: 3px 3px 1px 1px #a0a0a0;
     opacity: 1;
-    color: blue;
-    text-shadow: 0px 0px white;
+  }
+  50%{
+    box-shadow: 3px 3px 1px 1px #a0a0a0;
+    transform: translateY(0px);
+    transform: translateX(0px);
+  }
+  60% {
+    transform: translateY(3px);
+    transform: translateX(3px);
+    box-shadow: 0px 0px 1px 1px #a0a0a0;
   }
 
-  70%{
-    color: white;
-    text-shadow: 10px 10px blue;
-  }
-
-  80%{
-    color: white;
-    text-shadow: 10px 10px blue;
+  65%{
+    transform: translateY(0px);
+    transform: translateX(0px);
+    box-shadow: 3px 3px 1px 1px #a0a0a0;
   }
 
   100%{
-    color: white;
-    text-shadow: none;
+    color: red;
+    background-color: white;
+    opacity: 1;
+    transform: translateY(3px);
+    transform: translateX(3px);
+    box-shadow: 0px 0px 1px 1px #a0a0a0;
   }
 `;
 const slideInAnimation = keyframes`
@@ -126,14 +133,21 @@ const Box2 = styled.div<{ observer: boolean }>`
     font-size: 2rem;
   }
 `;
-const Column = styled.div`
+const Column = styled.div<{ observer: boolean }>`
   font-weight: bold;
   display: flex;
   > p {
     margin: 0;
   }
   > .like {
-    margin: 0;
-    animation: ${fadeInAnimation} 5s ease-in-out;
+    opacity: 0;
+    padding: 0 5px;
+    margin: 0 5px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 1px 1px #a0a0a0;
+    animation: ${({ observer }) =>
+        observer ? fadeInAnimation : slideOutAnimation}
+      3s 2s forwards;
+    transition: box-shadow 2s;
   }
 `;
