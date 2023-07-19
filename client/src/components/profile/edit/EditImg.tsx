@@ -40,7 +40,7 @@ const EditImg = ({
         </>
       )}
       {imageUrl ? (
-        <IconImg src={imageUrl} />
+        <IconImg src={imageUrl} onClick={() => setIconImgClicked(true)} />
       ) : (
         <IconImg
           src={currentUrl ? currentUrl : IconUser}
@@ -63,11 +63,13 @@ const fadeIn = keyframes`
   }
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 97%;
+  box-sizing: border-box;
+`;
 const IconImg = styled.img`
-  width: 120px;
-  height: 120px;
-  margin: 8px 40px;
+  width: 61.3%;
+  margin: 20px 40px;
   transition: scale 0.3s;
   border-radius: 10px;
   &:hover {

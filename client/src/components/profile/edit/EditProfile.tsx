@@ -60,6 +60,7 @@ const Container = styled.div`
 
 const EditInfoDiv = styled.div`
   width: 100%;
+  height: 200px;
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   padding: 1.5rem;
@@ -73,21 +74,23 @@ const EditInfoDiv = styled.div`
 const BtnGroupDiv = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
   justify-content: space-around;
+  box-sizing: border-box;
+  width: 100%;
 `;
+
 const Button = styled.button<{ bgColor: string }>`
   color: white;
   background-color: ${(props) => props.bgColor || '#59a395'};
   border: none;
   border-radius: 5px;
   box-sizing: border-box;
-  width: 140px;
-  height: 60px;
+  width: 60%;
+  padding: 1.5rem;
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
-  margin-right: 20px;
   margin-left: auto;
   margin-bottom: 10px;
+  margin-right: 20px;
 `;
