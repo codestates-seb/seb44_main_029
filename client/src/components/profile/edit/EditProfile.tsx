@@ -51,19 +51,18 @@ export default EditProfile;
 
 const Container = styled.div`
   width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
-  color: white;
+  border: 1px solid blue;
   padding: 1.5rem;
   box-sizing: border-box;
-  margin: 1.5rem 0 0 0;
+  margin: 1.5rem, 0;
 `;
 
 const EditInfoDiv = styled.div`
   width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
-  color: white;
-  padding: 1.5rem;
   box-sizing: border-box;
+  border-radius: 1rem;
+  border: 1px solid blue;
+  padding: 1.5rem;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;

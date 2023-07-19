@@ -45,16 +45,20 @@ const LikeList = ({ cards }: LikeListProps) => {
     <Container>
       <Title>🍔 Like List</Title>
 
-      <List>
-        {slicedCards.map((card, index) => (
-          <Card
-            key={index}
-            image={card.image}
-            themeName={card.themeName}
-            videoName={card.videoName}
-          />
-        ))}
-      </List>
+      {slicedCards.length > 0 ? (
+        <List>
+          {slicedCards.map((card, index) => (
+            <Card
+              key={index}
+              image={card.image}
+              themeName={card.themeName}
+              videoName={card.videoName}
+            />
+          ))}
+        </List>
+      ) : (
+        <NoLikedImages>No liked images to show</NoLikedImages>
+      )}
       <Pagination>
         <Button onClick={handlePrevPage} disabled={currentPage === 1}>
           이전
@@ -105,6 +109,11 @@ const List = styled.div`
   @media screen and (min-width: 1024px) {
     grid-template-columns: repeat(4, 1fr);
   }
+`;
+
+const NoLikedImages = styled.div`
+  color: white;
+  text-align: center;
 `;
 
 const Pagination = styled.div`

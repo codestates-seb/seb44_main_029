@@ -28,13 +28,20 @@ const ChangeProfile = ({
   return (
     <Container>
       <UserInfoDiv>
-        {imageUrl ? <IconImg src={imageUrl} /> : <IconImg src={IconUser} />}
-        <UserInfoSection>
-          <UsernameDiv>{username}</UsernameDiv>
-          <EmailDiv>{email}</EmailDiv>
-        </UserInfoSection>
+        <ImageDiv>
+          {imageUrl ? <Img src={imageUrl} /> : <Img src={IconUser} />}
+        </ImageDiv>
 
-        <Button onClick={handleButton}>회원 정보 변경</Button>
+        <UserInfoSection>
+          <InputWrapper>
+            <UsernameDiv>username</UsernameDiv>
+          </InputWrapper>
+
+          <EmailDiv>email</EmailDiv>
+        </UserInfoSection>
+        <ButtonDiv>
+          <Button onClick={handleButton}>회원 정보 변경</Button>
+        </ButtonDiv>
       </UserInfoDiv>
     </Container>
   );
@@ -44,40 +51,47 @@ export default ChangeProfile;
 
 const Container = styled.div`
   width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
-  color: white;
+  border: 1px solid blue;
   padding: 1.5rem;
   box-sizing: border-box;
-  margin: 1.5rem 0 0 0;
+  margin: 1.5rem, 0;
 `;
 
 const UserInfoDiv = styled.div`
   width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
-  color: white;
-  padding: 1.5rem;
   box-sizing: border-box;
+  border-radius: 1rem;
+  border: 1px solid blue;
+  padding: 1.5rem;
   background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
-const IconImg = styled.img`
-  width: 100%;
+const ImageDiv = styled.div`
+  width: 50%;
+  box-sizing: border-box;
+  padding: 1rem;
+  border: 1px solid blue;
+`;
+
+const Img = styled.img`
+  width: 50%;
   margin: 8px 40px;
   box-sizing: border-box;
   border-radius: 10px;
+`;
 
-  // 모바일 디바이스
-  @media screen and (min-width: 576px) {
-    width: 10%;
-  }
+const UserInfoSection = styled.section`
+  box-sizing: border-box;
+  width: 100%;
+  margin-left: 1.5rem;
+`;
 
-  // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
-    width: 20%;
-  }
+const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const UsernameDiv = styled.div`
@@ -89,44 +103,36 @@ const UsernameDiv = styled.div`
   margin-bottom: 10px;
 `;
 
-const UserInfoSection = styled.section`
-  box-sizing: border-box;
-  width: 80%;
-  margin-left: 1.5rem;
-`;
-
 const EmailDiv = styled.div`
   box-sizing: border-box;
   width: 100%;
   font-size: 150%;
   color: gray;
 `;
+
+const ButtonDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  box-sizing: border-box;
+  width: 100%;
+`;
 const Button = styled.button`
   color: white;
   background-color: #59a395;
   border: none;
+  border-radius: 5px;
   box-sizing: border-box;
-  width: 30%;
+  width: 60%;
   padding: 1rem;
-  margin-left: auto;
-  margin-right: 20px;
   font-weight: bold;
   cursor: pointer;
-  border-radius: 5px;
+  margin-left: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 20px;
 
   &:hover {
     background-color: #2aa58e;
-  }
-
-  // 모바일 디바이스
-  @media screen and (min-width: 576px) {
-    width: 15%;
-    font-size: 12px;
-  }
-
-  // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
-    width: 30%;
-    font-size: 16px;
   }
 `;
