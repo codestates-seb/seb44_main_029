@@ -37,6 +37,22 @@ export type EditType = {
   username: string | null;
 };
 
+export interface IDetailedItemProps {
+  contentResponseDto: ItemInfo;
+  contentIds: number[];
+}
+
+export interface DetailedItemProps {
+  contentId: number;
+  liked: boolean;
+  themeId: number;
+  item: ItemInfo;
+  themeContentIds: number[];
+  currentItemIndex: number;
+  firstItemContentId: number;
+  lastElementContentId: number;
+}
+
 export type UserInfo = {
   username: string | null;
   imageUrl: string | null;
