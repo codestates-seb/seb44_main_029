@@ -221,6 +221,7 @@ export const RenewAccessToken = async () => {
     localStorage.removeItem('memberId');
 
     alert('토큰이 만료되어 로그아웃 되었습니다. 다시 로그인 해주세요.');
+    window.location.href = '/';
     throw error;
   }
 };

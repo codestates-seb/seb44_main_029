@@ -28,7 +28,7 @@ const Loading = () => {
     console.error('토큰이 누락되었습니다: accessToken, refreshToken, memberId');
   }
 
-  window.location.href = '/';
+  window.location.href = '/profile';
   return (
     <Container>
       <Loader />

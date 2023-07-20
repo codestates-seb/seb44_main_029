@@ -91,6 +91,7 @@ const LoginFormTwo = ({ setIsModal }: LoginFormProps) => {
       });
       queryClient.invalidateQueries(['login']);
       setIsModal(false);
+      window.location.href = '/profile';
     } catch (error) {
       alert('Failed to Log In!');
       console.error('Log In failed:', error);

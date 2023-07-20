@@ -94,6 +94,7 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
       });
       queryClient.invalidateQueries(['login']);
       setIsLogInClicked(false);
+      window.location.href = '/profile';
     } catch (error) {
       alert('Failed to Log In!');
       console.error('Log In failed:', error);
