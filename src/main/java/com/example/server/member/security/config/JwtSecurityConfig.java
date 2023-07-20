@@ -1,6 +1,7 @@
 package com.example.server.member.security.config;
 
 import com.example.server.member.repository.BlackListJpaRepository;
+import com.example.server.member.repository.RefreshTokenJpaRepository;
 import com.example.server.member.security.filter.JwtFilter;
 import com.example.server.member.security.token.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
