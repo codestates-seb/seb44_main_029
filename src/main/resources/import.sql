@@ -4,4 +4,4 @@ INSERT INTO theme (title) VALUES ('Retro');
 INSERT INTO theme (title) VALUES ('Pixel');
 INSERT INTO theme (title) VALUES ('Animal');
 
-INSERT INTO member (active, username, role) VALUES (true, "admin", "ROLE_ADMIN");
+INSERT INTO member (email, password, active, username, role) VALUES ("admin@adadad.com", "sksmsdurlwndlsektzzz123", true, "admin", "ADMIN");

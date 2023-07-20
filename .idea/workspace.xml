@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="09260857-fcaa-4388-9294-079cb15fa57b" name="Changes" comment="refactor:Mapper 패키지 추가">
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+=======
     <list default="true" id="63086053-e9ec-4c54-afd3-e7b9d561f253" name="Changes" comment="refactor:Mapper 패키지 추가">
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+>>>>>>> 89637241fab56e8ebb146731e3da894a8289ca86
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -118,7 +124,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="63086053-e9ec-4c54-afd3-e7b9d561f253" name="Changes" comment="" />
+      <changelist id="09260857-fcaa-4388-9294-079cb15fa57b" name="Changes" comment="refactor:Mapper 패키지 추가" />
       <created>1688041562792</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -147,6 +153,7 @@
       <workItem from="1689474204171" duration="14323000" />
       <workItem from="1689555506104" duration="22978000" />
       <workItem from="1689639533340" duration="1972000" />
+      <workItem from="1689770197306" duration="6985000" />
     </task>
     <task id="LOCAL-00001" summary="음성 기능 구현 완료">
       <created>1688557715451</created>
@@ -264,6 +271,32 @@
           <properties class="java.sql.SQLNonTransientConnectionException" package="java.sql" />
           <option name="timeStamp" value="1" />
         </breakpoint>
+<<<<<<< HEAD
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/server/member/service/MemberService.java</url>
+          <line>40</line>
+          <properties class="com.example.server.member.service.MemberService">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/server/member/security/util/CustomAuthenticationProvider.java</url>
+          <line>17</line>
+          <properties class="com.example.server.member.security.util.CustomAuthenticationProvider">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/server/member/security/filter/JwtFilter.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+=======
+>>>>>>> 89637241fab56e8ebb146731e3da894a8289ca86
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
