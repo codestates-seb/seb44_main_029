@@ -1,8 +1,12 @@
 import styled, { keyframes } from 'styled-components';
+import LoginFormTwo from '../Login/LoginFormTwo';
+import { useState } from 'react';
 
 const TitleThree = ({ observer }: { observer: boolean }) => {
+  const [isModal, setIsModal] = useState(false);
   return (
     <Container>
+      {isModal && <LoginFormTwo setIsModal={setIsModal} />}
       <Box observer={observer}>
         <img src="https://i.pinimg.com/originals/f2/95/8a/f2958a889d9a74c01d645dbc0d8bedbd.gif" />
         <img src="https://i.pinimg.com/originals/10/ed/f0/10edf0bc3280b426487a392526789865.gif" />
@@ -11,7 +15,9 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
       <Box2 observer={observer}>
         <p>그림이 마음에 드셨나요?</p>
         <Column observer={observer}>
-          <p className="like">❤️</p>
+          <p className="like" onClick={() => setIsModal(true)}>
+            ❤️
+          </p>
           <p>좋아요 버튼을 눌러서,</p>
         </Column>
         <p>당신만의 리스트를 만들어보세요.</p>

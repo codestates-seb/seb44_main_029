@@ -1,12 +1,15 @@
 import styled, { keyframes } from 'styled-components';
 import { TbCarouselHorizontal, TbLogin } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
-
+import { useState } from 'react';
+import LoginFormTwo from '../Login/LoginFormTwo';
 const TitleOne = () => {
+  const [isModal, setIsModal] = useState(false);
   const navigate = useNavigate();
 
   return (
     <Container>
+      {isModal && <LoginFormTwo setIsModal={setIsModal} />}
       <TitleDiv>
         <p>편안함을 제공하는</p>
         <Column>
@@ -14,7 +17,7 @@ const TitleOne = () => {
           <p className="fadeIn">CozyState</p>
         </Column>
         <BtnColumnDiv>
-          <button onClick={() => navigate('/theme')}>
+          <button onClick={() => setIsModal(true)}>
             <TbLogin />
             <p>로그인</p>
           </button>
