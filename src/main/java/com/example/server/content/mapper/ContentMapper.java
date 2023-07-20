@@ -14,7 +14,6 @@ public interface ContentMapper {
                 .ContentUri(content.getUri())
                 .themeTitle(content.getTheme().getTitle())
                 .howManyLiked(content.getLikes().size())
-                .liked(false)
                 .build();
     }
 }
