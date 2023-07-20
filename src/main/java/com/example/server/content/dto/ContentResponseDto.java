@@ -15,6 +15,8 @@ public class ContentResponseDto {
 
     String ContentUri;
 
+    Long themeId;
+
     String themeTitle;
 
     Integer howManyLiked;
