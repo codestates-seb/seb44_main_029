@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { GetUserInfo, DeleteMemberInfo } from '../../../api/api';
+import { GetUserInfo, DeleteMemberInfo, Logout } from '../../../api/api';
 import { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const ChangeProfile = ({
   setIsEdit,
 }: {
@@ -12,6 +12,7 @@ const ChangeProfile = ({
   const { data, refetch } = useQuery(['userInfo'], GetUserInfo, {
     enabled: false, // Set initial enabled to false
   });
+  const navigate = useNavigate();
 
   const username = data?.username;
   const email = data?.email;
@@ -23,7 +24,10 @@ const ChangeProfile = ({
 
   const withdrawalMutation = useMutation(DeleteMemberInfo, {
     onSuccess: () => {
-      console.log('Member information withdrawal successful.');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('memberId');
+      navigate('/');
     },
     onError: (error) => {
       console.error('Error withdrawing member information:', error);
@@ -50,10 +54,10 @@ const ChangeProfile = ({
 
         <UserInfoSection>
           <InputWrapper>
-            <UsernameDiv>username</UsernameDiv>
+            <UsernameDiv>{username}</UsernameDiv>
           </InputWrapper>
 
-          <EmailDiv>email</EmailDiv>
+          <EmailDiv>{email}</EmailDiv>
         </UserInfoSection>
         <ButtonDiv>
           <ChangeButton onClick={ChangeMemberInfo}>회원 정보 변경</ChangeButton>

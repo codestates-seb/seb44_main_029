@@ -21,9 +21,8 @@ const LikeList = () => {
 
   // page 값이 변경되면 업데이트된 page 값으로 쿼리가 다시 실행되어 다음 또는 이전 페이지에 대한 데이터를 가져온다.
   // size는 고정되어 있므므로 쿼리 키의 일부가 아니어야 함.
-  const { data, isLoading, isError, error } = useQuery(
-    ['likedContents', page],
-    () => GetLikedContents(page, size)
+  const { data } = useQuery(['likedContents', page], () =>
+    GetLikedContents(page, size)
   );
 
   console.log('좋아요 리스트 데이터: ', data);
@@ -52,15 +51,6 @@ const LikeList = () => {
   const handleNextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
-
-  if (isLoading) {
-    return <div>데이터 로딩 중입니다...</div>;
-  }
-
-  if (isError) {
-    const apiError = error as MyApiError;
-    return <div>Error: {apiError.message}</div>;
-  }
 
   // useEffect(() => {
   //   refetch();

@@ -30,7 +30,7 @@ const EditName = ({
         />
       </InputWrapper>
 
-      <EmailDiv>email</EmailDiv>
+      <EmailDiv>{email}</EmailDiv>
     </Container>
   );
 };
