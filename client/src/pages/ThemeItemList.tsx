@@ -174,17 +174,7 @@ const ItemListContainerDiv = styled.div`
 
 const ItemGridDiv = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   grid-template-rows: auto;
   grid-gap: 1rem;
-
-  // 모바일 디바이스
-  @media screen and (min-width: 576px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
 `;
