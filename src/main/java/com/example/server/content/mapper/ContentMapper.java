@@ -12,6 +12,7 @@ public interface ContentMapper {
                 .contentId(content.getContentId())
                 .ContentTitle(content.getTitle())
                 .ContentUri(content.getUri())
+                .themeId(content.getTheme().getThemeId())
                 .themeTitle(content.getTheme().getTitle())
                 .howManyLiked(content.getLikes().size())
                 .build();
