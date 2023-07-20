@@ -84,21 +84,30 @@ export const PetchEditProfile = async (data: EditType) => {
   const accessToken = localStorage.getItem('accessToken');
   const memberId = localStorage.getItem('memberId');
 
-  const respone = await axios.patch(
-    `${BASE_URL}members/${memberId}`,
-    {
-      imageUrl: data.imageUrl,
-      username: data.username,
-    },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${accessToken}`,
+  try {
+    const response = await axios.patch(
+      `${BASE_URL}members/${memberId}`,
+      {
+        imageUrl: data.imageUrl,
+        username: data.username,
       },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
+
+      return Logout();
     }
-  );
-  return respone;
+    throw error;
+  }
 };
 
 // 테마 이미지 리스트 가져오기
@@ -136,14 +145,23 @@ export const PostUploadFile = async (data: FormData) => {
 export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  const response = await axios.patch(`${BASE_URL}likes/${contentId}`, null, {
-    headers: {
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.patch(`${BASE_URL}likes/${contentId}`, null, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
+
+      return Logout();
+    }
+    throw error;
+  }
 };
 
 // 좋아요한 테마 이미지 리스트 가져오기
@@ -151,15 +169,23 @@ export const GetThemeLikes = async (
   themeId: number
 ): Promise<IThemeItemProps> => {
   const accessToken = localStorage.getItem('accessToken');
+  try {
+    const response = await axios.get(`${BASE_URL}contents/likes/${themeId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
 
-  const response = await axios.get(`${BASE_URL}contents/likes/${themeId}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response.data;
+      return Logout();
+    }
+    throw error;
+  }
 };
 
 // 토큰 재발급 API
@@ -217,15 +243,23 @@ export const GetDetailedItem = async (contentId: number) => {
 export const GetUserInfo = async (): Promise<UserInfo> => {
   const accessToken = localStorage.getItem('accessToken');
   const memberId = localStorage.getItem('memberId');
+  try {
+    const response = await axios.get(`${BASE_URL}members/${memberId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
 
-  const response = await axios.get(`${BASE_URL}members/${memberId}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response.data;
+      return Logout();
+    }
+    throw error;
+  }
 };
 
 // 프로필 페이지에서 좋아요 리스트 불러오기
@@ -235,15 +269,48 @@ export const GetLikedContents = async (
 ): Promise<IThemeItemProps> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  const response = await axios.get(
-    `${BASE_URL}contents/likes?page=${pageParam}&size=${sizeParam}`,
-    {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}contents/likes?page=${pageParam}&size=${sizeParam}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
+
+      return Logout();
+    }
+    throw error;
+  }
+};
+
+// 회원 탈퇴
+export const DeleteMemberInfo = async () => {
+  const memberId = localStorage.getItem('memberId');
+  const accessToken = localStorage.getItem('accessToken');
+  try {
+    const response = await axios.delete(`${BASE_URL}members/${memberId}`, {
       headers: {
         'Content-Type': 'application/json',
         'ngrok-skip-browser-warning': '69420',
         Authorization: `Bearer ${accessToken}`,
       },
+    });
+
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
+
+      return Logout();
     }
-  );
-  return response.data;
+    throw error;
+  }
 };
