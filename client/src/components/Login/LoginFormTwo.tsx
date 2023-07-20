@@ -179,7 +179,6 @@ const Label = styled.label<{ isFocused: boolean }>`
 const Input = styled.input`
   padding: 20px 10px 10px;
   margin-bottom: 20px;
-  border-radius: 30px;
   background-color: transparent;
   border: none;
   border-bottom: 1px solid #999;
