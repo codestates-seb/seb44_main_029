@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
@@ -9,6 +9,7 @@ interface CardProps {
   contentId: number;
   contentTitle: string;
   liked: boolean;
+  onLikeButtonClick: (contentId: number) => void;
 }
 
 interface LikeButtonProps {
@@ -21,6 +22,7 @@ const Card = ({
   contentId,
   contentTitle,
   liked,
+  onLikeButtonClick,
 }: CardProps) => {
   // 현재 아이템의 좋아요 상태를 저장하는 상태
   const [likedItem, setLikedItem] = useState<boolean>(liked);
@@ -42,13 +44,14 @@ const Card = ({
     try {
       await handleUpdateLikeMutation.mutateAsync(contentId);
       setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+      onLikeButtonClick(contentId);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <Container>
+    <Container isVisible={likedItem}>
       <ImgLink to={`/theme/1/${contentId}`}>
         <img src={image} />
       </ImgLink>
@@ -70,7 +73,7 @@ const Card = ({
 
 export default Card;
 
-const Container = styled.div`
+const Container = styled.div<{ isVisible: boolean }>`
   width: 100%;
   height: 100%;
   border-radius: 0 0 0.33rem 0.33rem;
@@ -79,6 +82,11 @@ const Container = styled.div`
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 1rem;
+  ${(props) =>
+    !props.isVisible &&
+    css`
+      display: none; // Hide the entire component when isVisible is false
+    `}
 `;
 const ImgLink = styled(Link)`
   cursor: pointer;
