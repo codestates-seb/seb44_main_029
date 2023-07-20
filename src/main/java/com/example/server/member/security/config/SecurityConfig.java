@@ -1,6 +1,7 @@
 package com.example.server.member.security.config;
 
 import com.example.server.member.repository.BlackListJpaRepository;
+import com.example.server.member.repository.RefreshTokenJpaRepository;
 import com.example.server.member.security.handler.CustomOAuth2SuccessHandler;
 import com.example.server.member.security.handler.JwtAccessDeniedHandler;
 import com.example.server.member.security.handler.JwtAuthenticationEntryPoint;

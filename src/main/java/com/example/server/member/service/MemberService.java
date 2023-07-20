@@ -36,6 +36,7 @@ public class MemberService{
     private final MemberMapper memberMapper;
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
     private final BlackListJpaRepository blackListJpaRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public MemberIdAndTokenDto login(MemberLoginDto dto){
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword());
@@ -77,22 +78,22 @@ public class MemberService{
     }
 
     public Long signUp(MemberSignUpDto dto){
-        boolean isEmailPresent = memberJpaRepository.findByMemberEmail(dto.getEmail()).isPresent();
-        boolean isUsernamePresent = memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent();
+        Member isEmailPresent = memberJpaRepository.findByMemberEmail(dto.getEmail()).orElse(null);
+        Member isUsernamePresent = memberJpaRepository.findByMemberUsername(dto.getUsername()).orElse(null);
 
-        if(isEmailPresent && isUsernamePresent){
+        if((isEmailPresent != null && isEmailPresent.getActive()) && (isEmailPresent != null && isUsernamePresent.getActive())){
             log.info("Email, Username 중복");
             return -3L;
         }
-        else if(isEmailPresent){
+        else if(isEmailPresent != null && isEmailPresent.getActive()){
             log.info("Email 중복");
             return -2L;
-        }else if(isUsernamePresent){
+        }else if(isEmailPresent != null && isUsernamePresent.getActive()){
             log.info("Username 중복");
             return -1L;
         }
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode(dto.getPassword());
 
         Member member = Member.builder()
@@ -124,7 +125,9 @@ public class MemberService{
     }
 
     public Long update(MemberUpdateDto dto, Long memberId){
-        if(memberJpaRepository.findByMemberUsername(dto.getUsername()).isPresent()){
+        Member isPresentMember = memberJpaRepository.findByMemberUsername(dto.getUsername()).orElse(null);
+
+        if(isPresentMember != null && isPresentMember.getActive()){
             log.info("Username 중복");
             return -2L;
         }
@@ -161,12 +164,10 @@ public class MemberService{
             return null;
         }
 
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
         String password = member.getPassword();
-        String oldPassword = passwordEncoder.encode(dto.getOldPassword());
+        String oldPassword = dto.getOldPassword();
 
-        if(!password.equals(oldPassword)){
+        if(passwordEncoder.matches(oldPassword, password)){
             return null;
         }
 
