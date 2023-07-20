@@ -21,7 +21,6 @@ public class TokenController {
 
     @PostMapping("")
     public ResponseEntity updateToken(@RequestBody RefreshTokenDto refreshToken, HttpServletRequest request, HttpServletResponse response){
-//        Long memberId = (Long) request.getAttribute("memberId");
         String token = tokenService.updateAccessToken(refreshToken);
 
         if(token == null) return new ResponseEntity("Refresh Token이 존재하지 않습니다.", HttpStatus.FORBIDDEN);
