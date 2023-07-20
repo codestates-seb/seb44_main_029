@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 public class TokenController {
     private final TokenService tokenService;
 
-    @GetMapping("")
+    @PostMapping("")
     public ResponseEntity updateToken(@RequestBody RefreshTokenDto refreshToken, HttpServletRequest request, HttpServletResponse response){
 //        Long memberId = (Long) request.getAttribute("memberId");
         String token = tokenService.updateAccessToken(refreshToken);
