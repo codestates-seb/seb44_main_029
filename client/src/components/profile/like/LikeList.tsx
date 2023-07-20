@@ -6,10 +6,6 @@ import { GetLikedContents } from '../../../api/api';
 import IconAirplane from '../../../assets/icon/icon_airplane.png';
 import { useNavigate } from 'react-router';
 
-interface MyApiError {
-  message: string;
-}
-
 const LikeList = () => {
   const navigate = useNavigate();
   const handleImgClick = () => {

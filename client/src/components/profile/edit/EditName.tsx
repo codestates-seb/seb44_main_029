@@ -50,10 +50,9 @@ const InputWrapper = styled.div`
 
 const NameInput = styled.input`
   width: 100%;
-  color: white;
   box-sizing: border-box;
   font-size: 150%;
-  color: white;
+  color: black;
   margin-bottom: 10px;
 `;
 const EmailDiv = styled.div`
