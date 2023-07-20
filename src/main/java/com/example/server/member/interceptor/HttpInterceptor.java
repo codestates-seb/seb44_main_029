@@ -36,23 +36,18 @@ public class HttpInterceptor implements HandlerInterceptor{
 
         Long memberId = null;
         if(accessToken != null){
-<<<<<<< HEAD
-            accessToken = accessToken.substring(7); //Bearer 제거
 
-            if(request.getRequestURI().contains("tokens")) {
-                try {
-                    memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-                } catch (ExpiredJwtException expiredJwtException) {}
-            }else{
-                memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-            }
-=======
             if(!accessToken.equals("Bearer null")){
+
                 accessToken = accessToken.substring(7); //Bearer 제거
-                try {
+
+                if(request.getRequestURI().contains("tokens")) {
+                    try {
+                        memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+                    } catch (ExpiredJwtException expiredJwtException) {}
+                }else{
                     memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-                }catch (ExpiredJwtException expiredJwtException){}
->>>>>>> 89637241fab56e8ebb146731e3da894a8289ca86
+                }
 
                 request.setAttribute("memberId", memberId);
             }
