@@ -5,6 +5,7 @@ import com.example.server.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -12,6 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admins")
 public class AdminController {
     private final MemberService memberService;
+
+//    private final BCryptPasswordEncoder passwordEncoder;
+//
+//    @GetMapping("")
+//    public String getPassword(){
+//        return passwordEncoder.encode("adminpassword");
+//    }
     @PatchMapping("/{member-id}")
     public ResponseEntity update(@PathVariable("member-id") Long memberId,
                                  @RequestBody MemberUpdateDto dto){

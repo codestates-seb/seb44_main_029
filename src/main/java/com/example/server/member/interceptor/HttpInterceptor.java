@@ -33,18 +33,23 @@ public class HttpInterceptor implements HandlerInterceptor{
         log.info("Header에 Refresh-Token, Access-Token 삽입");
 
         Long memberId = null;
-        if(accessToken != null){
-            accessToken = accessToken.substring(7); //Bearer 제거
 
-            if(request.getRequestURI().contains("tokens")) {
-                try {
+        if(accessToken != null) {
+            if (!accessToken.equals("Bearer null")) {
+
+                accessToken = accessToken.substring(7); //Bearer 제거
+
+                if (request.getRequestURI().contains("tokens")) {
+                    try {
+                        memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+                    } catch (ExpiredJwtException expiredJwtException) {
+                    }
+                } else {
                     memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-                } catch (ExpiredJwtException expiredJwtException) {}
-            }else{
-                memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-            }
+                }
 
-            request.setAttribute("memberId", memberId);
+                request.setAttribute("memberId", memberId);
+            }
         }
 
         Map<String, Object> map = (Map<String, Object>) request.getAttribute(
