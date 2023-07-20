@@ -1,8 +1,13 @@
 import styled, { keyframes } from 'styled-components';
+import LoginFormTwo from '../Login/LoginFormTwo';
+import { useState } from 'react';
 
 const TitleThree = ({ observer }: { observer: boolean }) => {
+  const [isModal, setIsModal] = useState(false);
+  const accessToken = localStorage.getItem('accessToken');
   return (
     <Container>
+      {isModal && <LoginFormTwo setIsModal={setIsModal} />}
       <Box observer={observer}>
         <img src="https://i.pinimg.com/originals/f2/95/8a/f2958a889d9a74c01d645dbc0d8bedbd.gif" />
         <img src="https://i.pinimg.com/originals/10/ed/f0/10edf0bc3280b426487a392526789865.gif" />
@@ -11,7 +16,9 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
       <Box2 observer={observer}>
         <p>그림이 마음에 드셨나요?</p>
         <Column observer={observer}>
-          <p className="like">❤️</p>
+          <p className="like" onClick={() => setIsModal(!Boolean(accessToken))}>
+            ❤️
+          </p>
           <p>좋아요 버튼을 눌러서,</p>
         </Column>
         <p>당신만의 리스트를 만들어보세요.</p>
@@ -81,55 +88,53 @@ const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: rgba(0, 0, 0, 1);
   @media (min-width: 300px) {
     flex-direction: column;
   }
   @media (min-width: 768px) {
-    flex-direction: column;
   }
   @media (min-width: 1024px) {
-    flex-direction: column;
+    flex-direction: row;
   }
 `;
 const Box = styled.div<{ observer: boolean }>`
-  position: absolute;
   display: flex;
-  height: 100%;
   opacity: 0;
-  color: white;
-  left: 0;
   animation: ${({ observer }) =>
       observer ? slideInAnimation : slideOutAnimation}
     1s 0.3s forwards;
   > img {
     height: 100%;
-    width: 20vw;
     object-fit: cover;
     @media (min-width: 300px) {
-      height: 70%;
       width: 33vw;
     }
     @media (min-width: 768px) {
-      height: 100%;
-      width: 20vw;
     }
     @media (min-width: 1024px) {
-      height: 100%;
       width: 20vw;
     }
+  }
+  @media (min-width: 300px) {
+    height: 70%;
+  }
+  @media (min-width: 768px) {
+    height: 50%;
+  }
+  @media (min-width: 1024px) {
+    height: 100%;
   }
 `;
 
 const Box2 = styled.div<{ observer: boolean }>`
-  position: absolute;
   display: flex;
   flex-direction: column;
-  align-items: center;
   color: white;
+  justify-content: center;
+  align-items: center;
   opacity: 0;
+  flex-grow: 1;
   animation: ${({ observer }) =>
       observer ? slideOutAnimation2 : slideOutAnimation}
     1s 1s forwards;
@@ -137,44 +142,37 @@ const Box2 = styled.div<{ observer: boolean }>`
     margin: 0;
     font-weight: bold;
     @media (min-width: 300px) {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
     }
     @media (min-width: 768px) {
-      font-size: 1.5rem;
+      font-size: 2rem;
     }
     @media (min-width: 1024px) {
       font-size: 1.8rem;
     }
   }
   @media (min-width: 300px) {
-    align-items: center;
-    bottom: -195%;
   }
   @media (min-width: 768px) {
-    align-items: end;
-    right: 0;
-    bottom: -160%;
   }
   @media (min-width: 1024px) {
-    align-items: end;
-    right: 1%;
-    bottom: -160%;
   }
 `;
+
 const Column = styled.div<{ observer: boolean }>`
   font-weight: bold;
   display: flex;
   @media (min-width: 300px) {
-    font-size: 1.5rem;
-    margin: 3px 0;
+    font-size: 1.3rem;
+    margin: 10px 0;
   }
   @media (min-width: 768px) {
-    font-size: 1.5rem;
-    margin: 10px 0;
+    font-size: 2rem;
+    margin: 20px 0;
   }
   @media (min-width: 1024px) {
     font-size: 1.8rem;
-    margin: 30px 0;
+    margin: 20px 0;
   }
   > p {
     margin: 0;
