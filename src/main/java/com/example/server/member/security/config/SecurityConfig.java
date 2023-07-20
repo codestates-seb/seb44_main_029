@@ -101,6 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
 
                 .authorizeRequests()
+                .antMatchers("/admins/**").hasRole("ADMIN")
                 .antMatchers("/tokens/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/members", "/members/login").permitAll()
                 .antMatchers("/members/logout").authenticated()
