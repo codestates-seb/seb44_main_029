@@ -6,8 +6,6 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
-<<<<<<< HEAD
-=======
 import org.springframework.security.core.Authentication;
 >>>>>>> a6e2750d6861ac975a3373930f4d76576af22e27
 import org.springframework.web.servlet.HandlerInterceptor;
