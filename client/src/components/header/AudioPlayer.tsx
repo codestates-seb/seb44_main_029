@@ -50,6 +50,13 @@ const AudioPlayer = () => {
         autoplay: isPlaying,
       });
       setSound(soundInstance);
+      const url = musicList[nowMusicId];
+      // URL에서 '?' 이후의 쿼리 파라미터를 제거하고, '/'로 분리하여 배열로 만듭니다.
+      const pathSegments = url.split('?')[0].split('/');
+      // 배열의 마지막 요소는 파일 이름입니다.
+      const fileName = pathSegments[pathSegments.length - 1];
+      const decodedFileName = decodeURIComponent(fileName);
+      console.log(decodedFileName);
       return () => {
         soundInstance.unload();
       };
