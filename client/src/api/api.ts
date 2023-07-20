@@ -228,15 +228,23 @@ export const RenewAccessToken = async () => {
 // 상세 이미지 정보 가져오기
 export const GetDetailedItem = async (contentId: number) => {
   const accessToken = localStorage.getItem('accessToken');
+  try {
+    const response = await axios.get(`${BASE_URL}contents/${contentId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
 
-  const response = await axios.get(`${BASE_URL}contents/${contentId}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response.data;
+      return Logout();
+    }
+    throw error;
+  }
 };
 
 // 회원정보 불러오기
