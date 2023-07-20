@@ -91,11 +91,11 @@ public class ContentServiceImpl implements ContentService {
             contentResponseDto.setLiked(likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), content).isPresent());
         }
 
+        contentResponseDto.setContentUri(getContentFileUrl(contentId));
+
         List<Long> contentIdList = contentRepository.findByTheme(themeRepository.findById(themeId).orElseThrow()).stream()
                 .map(Content::getContentId)
                 .collect(Collectors.toList());
-
-        contentResponseDto.setContentUri(getContentFileUrl(content.getContentId()));
 
         return new ContentListDto(contentResponseDto, contentIdList);
     }
