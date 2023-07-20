@@ -9,15 +9,6 @@ import java.util.List;
 
 
 public class MusicDto {
-//    @Getter
-//    @Setter
-//    @NoArgsConstructor
-//    @AllArgsConstructor
-//    public static class PostMusicDto{
-//
-//
-//    }
-//
     @Getter
     @Setter
     @NoArgsConstructor
