@@ -5,6 +5,7 @@ import { useState } from 'react';
 import LoginFormTwo from '../Login/LoginFormTwo';
 const TitleOne = () => {
   const [isModal, setIsModal] = useState(false);
+  const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
 
   return (
@@ -17,10 +18,12 @@ const TitleOne = () => {
           <p className="fadeIn">CozyState</p>
         </Column>
         <BtnColumnDiv>
-          <button onClick={() => setIsModal(true)}>
-            <TbLogin />
-            <p>로그인</p>
-          </button>
+          {!accessToken && (
+            <button onClick={() => setIsModal(true)}>
+              <TbLogin />
+              <p>로그인</p>
+            </button>
+          )}
           <button onClick={() => navigate('/theme')}>
             <TbCarouselHorizontal />
             <p>테마 둘러보기</p>

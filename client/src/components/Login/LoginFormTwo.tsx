@@ -149,7 +149,7 @@ const Container = styled.div`
   z-index: 102;
   overflow: hidden;
   width: 400px;
-  height: 500px;
+  height: 550px;
   background-color: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;

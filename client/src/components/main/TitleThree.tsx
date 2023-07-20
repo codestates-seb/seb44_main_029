@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 const TitleThree = ({ observer }: { observer: boolean }) => {
   const [isModal, setIsModal] = useState(false);
+  const accessToken = localStorage.getItem('accessToken');
   return (
     <Container>
       {isModal && <LoginFormTwo setIsModal={setIsModal} />}
@@ -15,7 +16,7 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
       <Box2 observer={observer}>
         <p>그림이 마음에 드셨나요?</p>
         <Column observer={observer}>
-          <p className="like" onClick={() => setIsModal(true)}>
+          <p className="like" onClick={() => setIsModal(!Boolean(accessToken))}>
             ❤️
           </p>
           <p>좋아요 버튼을 눌러서,</p>
