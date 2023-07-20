@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import backgroundImg from '../assets/images/profile_background.png';
 import ChangeProfile from '../components/profile/user/ChangeProfile';
 import LikeList from '../components/profile/like/LikeList';
-import { cardsData } from '../components/profile/like/cardsData';
 import EditProfile from '../components/profile/edit/EditProfile';
 import { useState } from 'react';
 
@@ -16,7 +15,7 @@ const Profile = () => {
         ) : (
           <ChangeProfile setIsEdit={setIsEdit} />
         )}
-        <LikeList cards={cardsData} />
+        <LikeList />
       </ContentContainer>
     </Layout>
   );

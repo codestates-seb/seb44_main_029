@@ -10,7 +10,7 @@ import {
 } from '../types/types';
 
 const BASE_URL =
-  'http://ec2-54-180-127-81.ap-northeast-2.compute.amazonaws.com:8080/';
+  'http://ec2-3-39-72-136.ap-northeast-2.compute.amazonaws.com:8080/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -67,6 +67,7 @@ export const Logout = async (): Promise<any> => {
         },
       }
     );
+
     return response;
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
@@ -228,15 +229,21 @@ export const GetUserInfo = async (): Promise<UserInfo> => {
 };
 
 // 프로필 페이지에서 좋아요 리스트 불러오기
-export const GetLikedContents = async (): Promise<IThemeItemProps> => {
+export const GetLikedContents = async (
+  pageParam: number,
+  sizeParam: number
+): Promise<IThemeItemProps> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  const response = await axios.get(`${BASE_URL}contents/likes`, {
-    headers: {
-      'Content-Type': 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await axios.get(
+    `${BASE_URL}contents/likes?page=${pageParam}&size=${sizeParam}`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': '69420',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
   return response.data;
 };

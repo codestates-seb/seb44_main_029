@@ -24,6 +24,7 @@ const Card = ({
 }: CardProps) => {
   // 현재 아이템의 좋아요 상태를 저장하는 상태
   const [likedItem, setLikedItem] = useState<boolean>(liked);
+
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
@@ -45,6 +46,11 @@ const Card = ({
       console.log(error);
     }
   };
+
+  // useEffect(() => {
+  //   setLikedItem(liked);
+  // }, [liked]);
+
   return (
     <Container>
       <ImgLink to={`/theme/1/${contentId}`}>
