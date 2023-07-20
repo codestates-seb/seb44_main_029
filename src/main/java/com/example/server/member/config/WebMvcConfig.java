@@ -13,10 +13,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     private final JwtTokenProvider tokenProvider;
-    private final TokenService tokenService;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new HttpInterceptor(tokenProvider, tokenService))
+        registry.addInterceptor(new HttpInterceptor(tokenProvider))
                 .addPathPatterns("/tokens/**")
                 .addPathPatterns("/members/**")
                 .addPathPatterns("/contents/**")

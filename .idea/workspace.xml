@@ -4,17 +4,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-<<<<<<< HEAD
     <list default="true" id="09260857-fcaa-4388-9294-079cb15fa57b" name="Changes" comment="refactor:Mapper 패키지 추가">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" afterDir="false" />
-=======
-    <list default="true" id="63086053-e9ec-4c54-afd3-e7b9d561f253" name="Changes" comment="refactor:Mapper 패키지 추가">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.1.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
->>>>>>> 89637241fab56e8ebb146731e3da894a8289ca86
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/config/WebMvcConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/config/WebMvcConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/controller/TokenController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/controller/TokenController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/interceptor/HttpInterceptor.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/interceptor/HttpInterceptor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/config/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/config/SecurityConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/CustomOauth2UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/member/security/oauth/CustomOauth2UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/controller/MusicUploadController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/example/server/music/controller/MusicUploadController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/content/mapper/ContentMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/content/mapper/ContentMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/theme/mapper/ThemeMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/build/generated/sources/annotationProcessor/java/main/com/example/server/theme/mapper/ThemeMapperImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/import.sql" beforeDir="false" afterPath="$PROJECT_DIR$/build/resources/main/import.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/server/member/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/server/member/config/WebMvcConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/import.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/import.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,8 +71,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="package-info" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -91,7 +101,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;dev__back&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;back__feat1&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -113,6 +123,13 @@
   </component>
   <component name="RunManager">
     <configuration name="ServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <envs>
+        <env name="AWS_ACCESS_KEY" value="AKIAVJOSTGPX3LLI23EF" />
+        <env name="AWS_SECRET_KEY" value="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" />
+        <env name="CLIENT_ID" value="492169011912-1o9evmkdle898mg5facghqgipvi415en.apps.googleusercontent.com" />
+        <env name="CLIENT_SECRET" value="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" />
+        <env name="JWT_SECRET" value="dmskamdskamdksalndsanjfkqwgefuinklsjfajdlshuwhuqgbkbdasndksajugfekfmaldbqanbd" />
+      </envs>
       <module name="server.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.server.ServerApplication" />
       <option name="VM_PARAMETERS" value="-Dcom.amazonaws.sdk.disableEc2Metadata=true" />
@@ -243,7 +260,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="back_feat_member2" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -271,11 +300,10 @@
           <properties class="java.sql.SQLNonTransientConnectionException" package="java.sql" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-<<<<<<< HEAD
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/server/member/service/MemberService.java</url>
           <line>40</line>
-          <properties class="com.example.server.member.service.MemberService">
+          <properties class="com.example.server.member.service.MemberService" method="login">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -284,7 +312,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/com/example/server/member/security/util/CustomAuthenticationProvider.java</url>
           <line>17</line>
-          <properties class="com.example.server.member.security.util.CustomAuthenticationProvider">
+          <properties class="com.example.server.member.security.util.CustomAuthenticationProvider" method="authenticate">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -295,8 +323,6 @@
           <line>30</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
-=======
->>>>>>> 89637241fab56e8ebb146731e3da894a8289ca86
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>
