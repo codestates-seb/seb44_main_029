@@ -74,7 +74,17 @@ const Container = styled.section`
   height: 40vh;
   display: flex;
   justify-content: space-between;
+
   cursor: pointer;
+  @media (min-width: 300px) {
+    height: 60vh;
+  }
+  @media (min-width: 768px) {
+    height: 40vh;
+  }
+  @media (min-width: 1024px) {
+    height: 40vh;
+  }
 `;
 
 const PreviousThemeImg = styled.img`
@@ -85,6 +95,7 @@ const PreviousThemeImg = styled.img`
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   opacity: 0.7;
   transition: opacity 0.3s ease-in-out;
+  -webkit-user-drag: none;
   cursor: pointer;
   //호버 시 투명도 사라짐
   &:hover {
@@ -98,6 +109,7 @@ const CurrentThemeImg = styled.img`
   object-fit: cover;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   border-radius: 20px;
+  -webkit-user-drag: none;
   cursor: pointer;
   animation: ${zoomAnimation} 5s ease-in-out infinite,
     ${fadeInAnimation} 1s ease-in-out;
@@ -111,6 +123,7 @@ const NextThemeImg = styled.img`
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   opacity: 0.7;
   transition: opacity 0.3s ease-in-out;
+  -webkit-user-drag: none;
   cursor: pointer;
   //호버 시 투명도 사라짐
   &:hover {

@@ -39,6 +39,7 @@ const Container = styled.div`
 `;
 
 const Image = styled.img<{ isActive: boolean }>`
+  -webkit-user-drag: none;
   position: absolute;
   top: 0;
   left: 0;

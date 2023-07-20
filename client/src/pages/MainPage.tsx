@@ -70,6 +70,7 @@ const Layout = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  -webkit-user-drag: none;
 `;
 
 const AnimationDiv = styled(BiChevronsDown)`

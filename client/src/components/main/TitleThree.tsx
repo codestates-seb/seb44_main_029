@@ -107,6 +107,7 @@ const Box = styled.div<{ observer: boolean }>`
   > img {
     height: 100%;
     object-fit: cover;
+    -webkit-user-drag: none;
     @media (min-width: 300px) {
       width: 33vw;
     }
