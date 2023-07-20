@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/musicUpload")
+@RequestMapping("/admins/musicUpload")
 @Slf4j
 public class MusicUploadController {
 
@@ -38,6 +38,5 @@ public class MusicUploadController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("음원 업로드 실패: {}" + e.getMessage());
         }
-
     }
 }

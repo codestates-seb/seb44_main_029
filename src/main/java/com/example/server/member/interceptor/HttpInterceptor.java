@@ -2,17 +2,10 @@ package com.example.server.member.interceptor;
 
 import com.example.server.member.security.token.JwtTokenProvider;
 import com.example.server.member.service.TokenService;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +18,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class HttpInterceptor implements HandlerInterceptor{
     private final JwtTokenProvider tokenProvider;
-    private final TokenService tokenService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -35,24 +27,20 @@ public class HttpInterceptor implements HandlerInterceptor{
         log.info("Header에 Refresh-Token, Access-Token 삽입");
 
         Long memberId = null;
-        if(accessToken != null){
-<<<<<<< HEAD
-            accessToken = accessToken.substring(7); //Bearer 제거
 
-            if(request.getRequestURI().contains("tokens")) {
-                try {
-                    memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-                } catch (ExpiredJwtException expiredJwtException) {}
-            }else{
-                memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-            }
-=======
-            if(!accessToken.equals("Bearer null")){
+        if(accessToken != null) {
+            if (!accessToken.equals("Bearer null")) {
+
                 accessToken = accessToken.substring(7); //Bearer 제거
-                try {
+
+                if (request.getRequestURI().contains("tokens")) {
+                    try {
+                        memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+                    } catch (ExpiredJwtException expiredJwtException) {
+                    }
+                } else {
                     memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-                }catch (ExpiredJwtException expiredJwtException){}
->>>>>>> 89637241fab56e8ebb146731e3da894a8289ca86
+                }
 
                 request.setAttribute("memberId", memberId);
             }
