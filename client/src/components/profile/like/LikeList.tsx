@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Card from './Card';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetLikedContents } from '../../../api/api';
 import IconAirplane from '../../../assets/icon/icon_airplane.png';
@@ -21,22 +21,9 @@ const LikeList = () => {
     GetLikedContents(page, size)
   );
 
-  console.log('좋아요 리스트 데이터: ', data);
-
-  // const { data, refetch } = useQuery(['LikedContents'], GetLikedContents, {
-  //   enabled: false,
-  // });
-
   // data에서 data, pageInfo 뽑아냄
   const itemInfo = data?.data;
   const pageInfo = data?.pageInfo;
-
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const itemsPerPage = pageInfo?.size || 0;
-
-  // const startIndex = (currentPage - 1) * itemsPerPage;
-  // const endIndex = startIndex + itemsPerPage;
-  // const slicedCards = itemInfo?.slice(startIndex, endIndex) || [];
 
   const handlePrevPage = () => {
     if (page > 1) {
@@ -45,12 +32,10 @@ const LikeList = () => {
   };
 
   const handleNextPage = () => {
-    setPage((prevPage) => prevPage + 1);
+    if (pageInfo?.totalPages && page < pageInfo.totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
-
-  // useEffect(() => {
-  //   refetch();
-  // }, [refetch]);
 
   return (
     <Container>

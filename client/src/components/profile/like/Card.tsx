@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
@@ -47,10 +47,6 @@ const Card = ({
     }
   };
 
-  // useEffect(() => {
-  //   setLikedItem(liked);
-  // }, [liked]);
-
   return (
     <Container>
       <ImgLink to={`/theme/1/${contentId}`}>
@@ -62,7 +58,7 @@ const Card = ({
         <ContentTitle>{contentTitle}</ContentTitle>
         <LikeButton
           type="button"
-          isActive={likedItem}
+          isActive={liked}
           onClick={handleLikeButtonClick}
         >
           🤍
