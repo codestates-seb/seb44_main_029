@@ -4,6 +4,7 @@ INSERT INTO theme (title) VALUES ('C');
 INSERT INTO theme (title) VALUES ('D');
 INSERT INTO theme (title) VALUES ('E');
 
+<<<<<<< HEAD
 INSERT INTO content (title, uri, theme_id) VALUES ('a',null,1);
 INSERT INTO content (title, uri, theme_id) VALUES ('b',null,2);
 INSERT INTO content (title, uri, theme_id) VALUES ('b',null,2);
@@ -70,3 +71,6 @@ INSERT INTO content (title, uri, theme_id) VALUES ('a',null,1);
 INSERT INTO content (title, uri, theme_id) VALUES ('a',null,1);
 
 INSERT INTO member (email, password, active, username, role) VALUES ("admin@adadad.com", "sksmsdurlwndlsektzzz123", true, "admin", "ADMIN");
+=======
+INSERT INTO member (active, username, role) VALUES (true, "admin", "ROLE_ADMIN");
+>>>>>>> 89637241fab56e8ebb146731e3da894a8289ca86

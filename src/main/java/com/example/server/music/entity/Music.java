@@ -24,6 +24,7 @@ public class Music {
 
     @Column
     private String title;
+
     @Column
     private double playtime;
 
