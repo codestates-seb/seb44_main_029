@@ -10,8 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
@@ -35,12 +33,20 @@ public class HttpInterceptor implements HandlerInterceptor{
         log.info("Header에 Refresh-Token, Access-Token 삽입");
 
         Long memberId = null;
-        if(accessToken != null){
-            if(!accessToken.equals("Bearer null")){
+
+        if(accessToken != null) {
+            if (!accessToken.equals("Bearer null")) {
+
                 accessToken = accessToken.substring(7); //Bearer 제거
-                try {
+
+                if (request.getRequestURI().contains("tokens")) {
+                    try {
+                        memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
+                    } catch (ExpiredJwtException expiredJwtException) {
+                    }
+                } else {
                     memberId = Long.valueOf(tokenProvider.getSubjectFromToken(accessToken));
-                }catch (ExpiredJwtException expiredJwtException){}
+                }
 
                 request.setAttribute("memberId", memberId);
             }
@@ -53,7 +59,7 @@ public class HttpInterceptor implements HandlerInterceptor{
         if(map.get("member-id") != null){
             Long requestId = Long.valueOf((String) map.get("member-id"));
 
-            if(memberId != requestId){
+            if(memberId != requestId ){
                 log.info("요청자와 자원소유자가 다릅니다.");
                 response.sendError(202, "요청자와 자원소유자가 다릅니다.");
                 return memberId == requestId;
