@@ -30,6 +30,7 @@ public class Member implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(columnDefinition = "TINYINT(1)")
     Boolean active;
 
     @Email
