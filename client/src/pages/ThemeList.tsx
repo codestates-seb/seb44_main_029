@@ -89,9 +89,34 @@ const TextContainer = styled.section`
   //페이드 아웃 1.5초
   animation: ${fadeInAnimation} 1.5s ease-in-out;
   > h1 {
-    font-size: 250%;
+    @media (min-width: 300px) {
+      font-size: 200%;
+      margin-bottom: 0;
+    }
+    @media (min-width: 768px) {
+      font-size: 250%;
+    }
+    @media (min-width: 1024px) {
+      font-size: 300%;
+    }
   }
   > p {
     font-weight: bold;
+    @media (min-width: 300px) {
+      font-size: 110%;
+    }
+    @media (min-width: 768px) {
+    }
+    @media (min-width: 1024px) {
+      font-size: 130%;
+    }
+  }
+  @media (min-width: 300px) {
+    flex-direction: column;
+  }
+  @media (min-width: 768px) {
+  }
+  @media (min-width: 1024px) {
+    flex-direction: row;
   }
 `;

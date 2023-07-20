@@ -75,6 +75,15 @@ const Container = styled.section`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+  @media (min-width: 300px) {
+    height: 60vh;
+  }
+  @media (min-width: 768px) {
+    height: 40vh;
+  }
+  @media (min-width: 1024px) {
+    height: 40vh;
+  }
 `;
 
 const PreviousThemeImg = styled.img`
