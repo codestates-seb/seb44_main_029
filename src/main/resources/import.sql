@@ -69,4 +69,4 @@ INSERT INTO content (title, uri, theme_id) VALUES ('a',null,1);
 INSERT INTO content (title, uri, theme_id) VALUES ('a',null,1);
 INSERT INTO content (title, uri, theme_id) VALUES ('a',null,1);
 
-INSERT INTO member (active, username, role) VALUES (true, "admin", "ROLE_ADMIN");
+INSERT INTO member (email, password, active, username, role) VALUES ("admin@adadad.com", "sksmsdurlwndlsektzzz123", true, "admin", "ADMIN");
