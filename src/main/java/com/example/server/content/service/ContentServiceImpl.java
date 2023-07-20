@@ -91,11 +91,11 @@ public class ContentServiceImpl implements ContentService {
             contentResponseDto.setLiked(likeRepository.findByMemberAndContent(memberJpaRepository.findById(memberId).orElseThrow(), content).isPresent());
         }
 
+        contentResponseDto.setContentUri(getContentFileUrl(contentId));
+
         List<Long> contentIdList = contentRepository.findByTheme(themeRepository.findById(themeId).orElseThrow()).stream()
                 .map(Content::getContentId)
                 .collect(Collectors.toList());
-
-        contentResponseDto.setContentUri(getContentFileUrl(content.getContentId()));
 
         return new ContentListDto(contentResponseDto, contentIdList);
     }
@@ -168,11 +168,14 @@ public class ContentServiceImpl implements ContentService {
         // url
         try{
             String url = "";
+            String themeTitle = contentRepository.findById(contentId).orElseThrow().getTheme().getTitle();
             ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
                     .bucket(bucketName)
+                    .prefix("pictures/"+themeTitle+"/")
                     .build();
 
             ListObjectsResponse listObjectsResponse = s3Client.listObjects(listObjectsRequest);
+
             for(S3Object s3Object : listObjectsResponse.contents()) {
                 HeadObjectRequest headObjectRequest = HeadObjectRequest.builder() // 메타데이터 객체 요청
                         .bucket(bucketName)
@@ -208,25 +211,27 @@ public class ContentServiceImpl implements ContentService {
     }
 
     // 이미지 업로드 기능 - 관리자 권한필요 - 메타데이터 기반 업로드
-    public void upload(MultipartFile file, long contentId)  {
-        String fileName = file.getOriginalFilename();
+    public void upload(MultipartFile file, long contentId, String themeTitle, String fileName)  {
         try {
-            //추가할 것: thumbnail folder에도 업로드 해야함 - 완
-            //그 경로를 content에 같이 등록.
-
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key("pictures/"+fileName)
+                    .key("pictures/"+themeTitle+"/"+fileName)
                     .contentType(file.getContentType())
                     .contentLength(file.getSize())
                     .metadata(Collections.singletonMap("contentId", String.valueOf(contentId)))
                     .build();
 
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes())); // 바이트 배열로 전달
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void thumbnailUpload(MultipartFile file, long contentId, String themeTitle, String fileName){
+        try {
             PutObjectRequest putObjectRequest2 = PutObjectRequest.builder()
                     .bucket(bucketName)
-                    .key("thumbnails/"+fileName)
+                    .key("thumbnails/"+themeTitle+"/"+fileName)
                     .contentType(file.getContentType())
                     .contentLength(file.getSize())
                     .build();
@@ -242,19 +247,22 @@ public class ContentServiceImpl implements ContentService {
             return ResponseEntity.badRequest().body("파일이 존재하지 않습니다");
         }
         try {
+            String fileName = file.getOriginalFilename();
+            String themeTitle = themeRepository.findById(themeId).orElseThrow().getTitle();
             Content content = Content.builder()
                     .theme(themeRepository.findById(themeId).orElseThrow())
                     .title(title)
-                    .uri("https://"+bucketName+".s3.ap-northeast-2.amazonaws.com/thumbnails/"+file.getOriginalFilename())
+                    .uri("https://"+bucketName+".s3.ap-northeast-2.amazonaws.com/thumbnails/"+themeTitle+"/"+file.getOriginalFilename())
                     .build();
             contentRepository.save(content);
-            upload(file, content.getContentId());
+            upload(file, content.getContentId(), themeTitle, fileName);
+            thumbnailUpload(file, content.getContentId(), themeTitle, fileName);
 
-            //long contentId = content.getContentId();
-            //contentService.upload(file, contentId);
             return ResponseEntity.ok("이미지가 성공적으로 업로드 되었습니다");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("이미지 업로드 실패: {}" + e.getMessage());
         }
     }
+
+
 }
