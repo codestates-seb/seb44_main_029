@@ -22,10 +22,6 @@ const Card = ({
   contentTitle,
   liked,
 }: CardProps) => {
-  const [isLiked, setIsLiked] = useState(true);
-  const handleHeartIconClick = () => {
-    setIsLiked(!isLiked);
-  };
   // 현재 아이템의 좋아요 상태를 저장하는 상태
   const [likedItem, setLikedItem] = useState<boolean>(liked);
   const queryClient = useQueryClient();
@@ -56,11 +52,8 @@ const Card = ({
       </ImgLink>
 
       <ThemeTitle>{themeTitle}</ThemeTitle>
-      <VideoIconDiv>
-        <VideoTitle>{contentTitle}</VideoTitle>
-        {/* <HeartIcon onClick={handleHeartIconClick}>
-          <HeartEmoji>{isLiked ? '❤️' : '🤍'}</HeartEmoji>
-        </HeartIcon> */}
+      <ContentDiv>
+        <ContentTitle>{contentTitle}</ContentTitle>
         <LikeButton
           type="button"
           isActive={likedItem}
@@ -68,7 +61,7 @@ const Card = ({
         >
           🤍
         </LikeButton>
-      </VideoIconDiv>
+      </ContentDiv>
     </Container>
   );
 };
@@ -109,7 +102,7 @@ const ThemeTitle = styled.div`
   font-weight: bold;
 `;
 
-const VideoIconDiv = styled.div`
+const ContentDiv = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -117,25 +110,12 @@ const VideoIconDiv = styled.div`
   color: white;
   box-sizing: border-box;
 `;
-const VideoTitle = styled.div`
+const ContentTitle = styled.div`
   width: 100%;
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   box-sizing: border-box;
   font-weight: bold;
-`;
-
-const HeartIcon = styled.div`
-  width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
-  color: white;
-  box-sizing: border-box;
-`;
-
-const HeartEmoji = styled.span`
-  cursor: pointer;
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const LikeButton = styled.button<LikeButtonProps>`

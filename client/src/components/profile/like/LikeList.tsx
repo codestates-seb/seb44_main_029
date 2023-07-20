@@ -6,16 +6,7 @@ import { GetLikedContents } from '../../../api/api';
 import IconAirplane from '../../../assets/icon/icon_airplane.png';
 import { useNavigate } from 'react-router';
 
-interface LikeListProps {
-  cards: {
-    image: string;
-    themeName: string;
-    videoName: string;
-    liked?: boolean;
-  }[];
-}
-
-const LikeList = ({ cards }: LikeListProps) => {
+const LikeList = () => {
   const navigate = useNavigate();
   const handleImgClick = () => {
     navigate('/theme');
@@ -90,7 +81,7 @@ const LikeList = ({ cards }: LikeListProps) => {
         <Button
           onClick={handleNextPage}
           disabled={
-            endIndex >= cards.length ||
+            endIndex >= slicedCards.length ||
             slicedCards.length === 0 ||
             slicedCards.length < 8
           }
