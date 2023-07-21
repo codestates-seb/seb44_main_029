@@ -97,7 +97,7 @@ const ImageDiv = styled.div`
 `;
 
 const Img = styled.img`
-  width: 50%;
+  width: 70%;
   margin: 8px 40px;
   box-sizing: border-box;
   border-radius: 10px;
