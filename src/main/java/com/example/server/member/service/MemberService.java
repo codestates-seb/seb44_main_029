@@ -71,9 +71,6 @@ public class MemberService{
     }
 
     public Boolean logout(MemberIdAndTokenDto dto){
-        if(!tokenProvider.validateToken(dto.getAccessToken()))
-            throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
-
         Member member = memberJpaRepository.findById(dto.getMemberId())
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
 
@@ -200,6 +197,11 @@ public class MemberService{
     public Long delete(Long memberId) {
         Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
+
+        if(member.getUsername().equals("guest") || member.getUsername().equals("admin")){
+            log.info("해당 계정은 삭제할 수 없습니다.");
+            return -5L;
+        }
 
         if(invaildMember(member)){
             log.info("회원탈퇴 된 사용자입니다.");
