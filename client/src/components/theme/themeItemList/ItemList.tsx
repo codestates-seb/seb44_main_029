@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import { useState } from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ItemInfo } from '../../../types/types';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { UpdateLike } from '../../../api/api';
+import LoginForm from '../../Login/LoginForm';
 
 interface ItemProps
   extends Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'> {
@@ -12,6 +13,7 @@ interface ItemProps
 
 const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 현재 아이템의 좋아요 상태를 저장하는 상태
+  const [isModal, setIsModal] = useState(false);
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
@@ -31,6 +33,7 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
     try {
       if (!memberId) {
         alert('로그인이 필요한 기능입니다. 🙏');
+        setIsModal(!isModal);
       } else {
         await handleUpdateLikeMutation.mutateAsync(contentId);
         setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
@@ -46,14 +49,11 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
         <img src={contentUri} alt="item-image"></img>
       </ItemLink>
       <OverlayControlDiv>
-        <LikeButton
-          type="button"
-          isActive={likedItem}
-          onClick={handleLikeButtonClick}
-        >
-          🤍
+        <LikeButton type="button" onClick={handleLikeButtonClick}>
+          {likedItem ? '❤️' : '🤍'}
         </LikeButton>
       </OverlayControlDiv>
+      {isModal && <LoginForm setIsModal={setIsModal} />}
     </Container>
   );
 };
@@ -103,10 +103,10 @@ const ItemLink = styled(Link)`
   }
 `;
 
-const LikeButton = styled.button<{ isActive: boolean }>`
+const LikeButton = styled.button`
   box-sizing: border-box;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
   pointer-events: auto;
@@ -114,19 +114,10 @@ const LikeButton = styled.button<{ isActive: boolean }>`
   justify-content: center;
   align-items: center;
   transition: 0.15s;
+  background-color: transparent;
+  border: 0;
 
   &:hover {
-    border: 2px solid rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 0.6);
   }
-
-  ${(props) =>
-    props.isActive
-      ? css`
-          border: 2px solid rgba(255, 255, 255, 1);
-          background-color: rgba(0, 170, 0, 0.9);
-        `
-      : css`
-          border: 2px solid rgba(255, 255, 255, 0.5);
-          background-color: transparent;
-        `}
 `;

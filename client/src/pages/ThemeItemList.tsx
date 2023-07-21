@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import ThemeHeader from '../components/theme/themeItemList/ThemeHeader';
 import ItemListHeader from '../components/theme/themeItemList/ItemListHeader';
@@ -12,12 +12,13 @@ import { GetThemeItems, GetThemeLikes } from '../api/api';
 import getBackgroundImage from '../utils/getBackgroundImage';
 import { PacmanLoader } from 'react-spinners';
 import Masonry from 'react-masonry-css';
+import LoginForm from '../components/Login/LoginForm';
 
 const breakpointColumnsObj = {
   default: 6,
   1025: 4,
-  481: 2,
-  320: 1,
+  768: 2,
+  360: 1,
 };
 
 const ThemeItemList = () => {
@@ -26,6 +27,7 @@ const ThemeItemList = () => {
   const { themeId } = useParams<{ themeId: string }>(); // 현재 선택된 테마 아이디를 가져온다.
   const numThemeId = parseInt(themeId || ''); // string 타입으로 들어온 데이터를 number 타입으로 변환한다.
   const [currentThemeTitle, setCurrentThemeTitle] = useState<string>(''); // 현재 테마 타이틀을 표시하기 위해 사용되는 상태
+  const [isModal, setIsModal] = useState(false);
 
   // 테마 이미지 리스트를 가져와서 무하스크롤을 구현하는 함수
   const {
@@ -88,6 +90,7 @@ const ThemeItemList = () => {
 
     if (!memberId) {
       alert('로그인이 필요한 기능입니다. 🙏');
+      setIsModal(!isModal);
     } else {
       setShowLikedOnly(!showLikedOnly);
     }
@@ -112,12 +115,12 @@ const ThemeItemList = () => {
               <PacmanLoader color="rgba(255, 255, 255, 1)" size={20} />
             </div>
           )}
+          {status === 'error' && <div>{error.toString()}</div>}
           <MasonryStyled
             breakpointCols={breakpointColumnsObj}
             className="masonry-grid"
             columnClassName="masonry-grid_column"
           >
-            {status === 'error' && <div>{error.toString()}</div>}
             {status === 'success' &&
               filteredItems?.map((item) => (
                 <ItemList
@@ -132,6 +135,7 @@ const ThemeItemList = () => {
           {showLikedOnly ? null : <div ref={targetRef} />}
         </ItemListContainerDiv>
       </ContentContainer>
+      {isModal && <LoginForm setIsModal={setIsModal} />}
     </Layout>
   );
 };
@@ -188,9 +192,6 @@ const MasonryStyled = styled(Masonry)`
   display: flex;
   width: auto;
   gap: 1rem;
-
-  .masonry-grid_column {
-  }
 
   .masonry-grid_column > div {
     margin-bottom: 1rem;
