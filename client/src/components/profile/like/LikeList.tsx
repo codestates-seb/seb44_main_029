@@ -1,19 +1,18 @@
 import styled from 'styled-components';
 import Card from './Card';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetLikedContents } from '../../../api/api';
 import IconAirplane from '../../../assets/icon/icon_airplane.png';
 import { useNavigate } from 'react-router';
-import { IThemeItemProps, ItemInfo } from '../../../types/types';
+import { IThemeItemProps } from '../../../types/types';
 
 const LikeList = () => {
+  // 좋아요 리스트가 없을 경우 테마 리스트 페이지로 이동
   const navigate = useNavigate();
   const handleImgClick = () => {
     navigate('/theme');
   };
-
-  const [itemInfo, setItemInfo] = useState<ItemInfo[]>([]);
 
   const size = 8;
   const [page, setPage] = useState(1);
@@ -23,30 +22,19 @@ const LikeList = () => {
   const { data } = useQuery<IThemeItemProps>(['likedContents', page], () =>
     GetLikedContents(page, size)
   );
-  useEffect(() => {
-    if (data) {
-      setItemInfo(data.data);
-    }
-  }, [data]);
-  const handleLikeButtonClick = (contentId: number) => {
-    // Set likedItem to false for the card with the given contentId
-    setItemInfo((prevItemInfo) =>
-      prevItemInfo.map((item) =>
-        item.contentId === contentId ? { ...item, liked: false } : item
-      )
-    );
-  };
 
   // data에서 data, pageInfo 뽑아냄
-  // const itemInfo = data?.data;
+  const itemInfo = data?.data;
   const pageInfo = data?.pageInfo;
 
+  // 이전 페이지
   const handlePrevPage = () => {
     if (page > 1) {
       setPage((prevPage) => prevPage - 1);
     }
   };
 
+  // 다음 페이지
   const handleNextPage = () => {
     if (pageInfo?.totalPages && page < pageInfo.totalPages) {
       setPage((prevPage) => prevPage + 1);
@@ -68,7 +56,6 @@ const LikeList = () => {
               contentId={card.contentId}
               contentTitle={card.contentTitle}
               liked={card.liked}
-              onLikeButtonClick={handleLikeButtonClick}
             />
           ))}
         </List>

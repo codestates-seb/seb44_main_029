@@ -1,15 +1,14 @@
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { UpdateLike } from '../../../api/api';
+
 interface CardProps {
   image: string;
   themeTitle: string;
   contentId: number;
   contentTitle: string;
   liked: boolean;
-  onLikeButtonClick: (contentId: number) => void;
 }
 
 interface LikeButtonProps {
@@ -22,36 +21,25 @@ const Card = ({
   contentId,
   contentTitle,
   liked,
-  onLikeButtonClick,
 }: CardProps) => {
-  // 현재 아이템의 좋아요 상태를 저장하는 상태
-  const [likedItem, setLikedItem] = useState<boolean>(liked);
-
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 데이터를 갱신
+      queryClient.invalidateQueries(['likedContents']); // 'items' 쿼리를 무효화하여 데이터를 갱신
     },
     onError: (error) => {
       console.log(`onError: ${error}`);
     },
   });
 
-  // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
-  const handleLikeButtonClick = async () => {
-    try {
-      await handleUpdateLikeMutation.mutateAsync(contentId);
-      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
-      onLikeButtonClick(contentId);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleLikedButton = async () => {
+    await handleUpdateLikeMutation.mutateAsync(contentId);
   };
 
   return (
-    <Container isVisible={likedItem}>
+    <Container>
       <ImgLink to={`/theme/1/${contentId}`}>
         <img src={image} />
       </ImgLink>
@@ -59,11 +47,7 @@ const Card = ({
       <ThemeTitle>{themeTitle}</ThemeTitle>
       <ContentDiv>
         <ContentTitle>{contentTitle}</ContentTitle>
-        <LikeButton
-          type="button"
-          isActive={liked}
-          onClick={handleLikeButtonClick}
-        >
+        <LikeButton type="button" isActive={liked} onClick={handleLikedButton}>
           🤍
         </LikeButton>
       </ContentDiv>
@@ -73,7 +57,7 @@ const Card = ({
 
 export default Card;
 
-const Container = styled.div<{ isVisible: boolean }>`
+const Container = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 0 0 0.33rem 0.33rem;
@@ -82,11 +66,6 @@ const Container = styled.div<{ isVisible: boolean }>`
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 1rem;
-  ${(props) =>
-    !props.isVisible &&
-    css`
-      display: none; // Hide the entire component when isVisible is false
-    `}
 `;
 const ImgLink = styled(Link)`
   cursor: pointer;
