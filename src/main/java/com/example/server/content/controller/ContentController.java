@@ -3,6 +3,7 @@ package com.example.server.content.controller;
 import com.example.server.content.mapper.ContentMapper;
 import com.example.server.content.repository.ContentRepository;
 import com.example.server.content.service.ContentServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.annotate.JsonIgnore;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 
+@Tag(name = "Contents", description = "API about Contents")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/contents")
@@ -40,18 +42,6 @@ public class ContentController {
             @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
 
         return contentService.likeResponse(request, page, size, criteria, sort);
-    }
-
-    @GetMapping("/likes/{theme-id}")
-    public ResponseEntity<?> getLikesTheme(
-            @Positive @PathVariable("theme-id") Long themeId,
-            HttpServletRequest request,
-            @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
-            @Positive @RequestParam(required = false, defaultValue = "8", value = "size") int size,
-            @RequestParam(required = false, defaultValue = "contentId", value = "criteria") String criteria,
-            @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
-
-        return contentService.likeThemeResponse(themeId, request, page, size, criteria, sort);
     }
 
 }
