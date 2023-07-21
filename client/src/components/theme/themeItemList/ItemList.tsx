@@ -10,10 +10,6 @@ interface ItemProps
   themeId: number;
 }
 
-interface LikeButtonProps {
-  isActive: boolean;
-}
-
 const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 현재 아이템의 좋아요 상태를 저장하는 상태
   const queryClient = useQueryClient();
@@ -30,9 +26,15 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
 
   // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
   const handleLikeButtonClick = async () => {
+    const memberId = localStorage.getItem('memberId');
+
     try {
-      await handleUpdateLikeMutation.mutateAsync(contentId);
-      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+      if (!memberId) {
+        alert('로그인이 필요한 기능입니다. 🙏');
+      } else {
+        await handleUpdateLikeMutation.mutateAsync(contentId);
+        setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+      }
     } catch (error) {
       console.log(error);
     }
@@ -89,7 +91,7 @@ const Container = styled.div`
 
 const ItemLink = styled(Link)`
   box-sizing: border-box;
-  cursor: pointer;
+  cursor: zoom-in;
   display: flex;
 
   > img {
@@ -101,7 +103,7 @@ const ItemLink = styled(Link)`
   }
 `;
 
-const LikeButton = styled.button<LikeButtonProps>`
+const LikeButton = styled.button<{ isActive: boolean }>`
   box-sizing: border-box;
   width: 2rem;
   height: 2rem;
