@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
+import { useState } from 'react';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { ItemInfo } from '../../../types/types';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
