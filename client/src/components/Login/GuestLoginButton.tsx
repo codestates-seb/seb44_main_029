@@ -10,8 +10,8 @@ interface LoginFormData {
 
 const GuestLoginButton: React.FC = () => {
   const loginFormData: LoginFormData = {
-    email: 'guesttest@naver.com',
-    password: 'guesttest12!!!',
+    email: 'guest@gmail.com',
+    password: 'guest123!@#',
   };
 
   const loginMutation = useMutation(Login, {
