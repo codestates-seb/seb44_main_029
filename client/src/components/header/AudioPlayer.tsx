@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { GetMusic } from '../../api/api';
 import { IoPlay, IoPlayBack, IoPlayForward, IoPause } from 'react-icons/io5';
 import Spinner from '../../assets/gif/Spinner.svg';
+import TimerModal from '../theme/themeList/TimerModal';
 
 //오디오 플레이어
 const AudioPlayer = () => {
@@ -105,6 +106,7 @@ const AudioPlayer = () => {
 
   return (
     <Container>
+      <TimerModal setIsPlaying={setIsPlaying} />
       {musicList ? (
         <>
           {isPlaying ? (
