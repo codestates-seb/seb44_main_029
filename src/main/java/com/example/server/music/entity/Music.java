@@ -32,10 +32,4 @@ public class Music {
     @JoinColumn(name = "themeId")
     private Theme theme;
 
-//    public void setTheme(Theme theme) {
-//        this.theme = theme;
-//    }
-
-
-
 }
