@@ -9,8 +9,7 @@ import {
   UserInfo,
 } from '../types/types';
 
-const BASE_URL =
-  'http://ec2-3-39-72-136.ap-northeast-2.compute.amazonaws.com:8080/';
+const BASE_URL = 'https://2521-175-123-6-225.ngrok-free.app/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -70,9 +69,8 @@ export const Logout = async (): Promise<any> => {
 
     return response;
   } catch (error: any) {
-    if (error.response && error.response.status === 500) {
+    if (error.response && error.response.status === 401) {
       await RenewAccessToken();
-
       return Logout();
     }
     throw error;
@@ -80,7 +78,7 @@ export const Logout = async (): Promise<any> => {
 };
 
 // 프로필 수정
-export const PetchEditProfile = async (data: EditType) => {
+export const PetchEditProfile = async (data: EditType): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
   const memberId = localStorage.getItem('memberId');
 
@@ -103,8 +101,7 @@ export const PetchEditProfile = async (data: EditType) => {
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
       await RenewAccessToken();
-
-      return Logout();
+      return PetchEditProfile(data);
     }
     throw error;
   }
@@ -157,8 +154,7 @@ export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
       await RenewAccessToken();
-
-      return Logout();
+      return UpdateLike(contentId);
     }
     throw error;
   }
@@ -181,8 +177,7 @@ export const GetThemeLikes = async (
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
       await RenewAccessToken();
-
-      return Logout();
+      return GetThemeLikes(themeId);
     }
     throw error;
   }
@@ -211,7 +206,7 @@ export const RenewAccessToken = async () => {
     const newAccessToken = response.headers['authorization'];
     localStorage.setItem('accessToken', newAccessToken);
 
-    return newAccessToken;
+    return response.data;
   } catch (error) {
     // 토큰 갱신 실패 시 처리
     console.error('액세스 토큰 갱신에 실패했습니다:', error);
@@ -227,7 +222,7 @@ export const RenewAccessToken = async () => {
 };
 
 // 상세 이미지 정보 가져오기
-export const GetDetailedItem = async (contentId: number) => {
+export const GetDetailedItem = async (contentId: number): Promise<any> => {
   const accessToken = localStorage.getItem('accessToken');
   try {
     const response = await axios.get(`${BASE_URL}contents/${contentId}`, {
@@ -241,8 +236,7 @@ export const GetDetailedItem = async (contentId: number) => {
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
       await RenewAccessToken();
-
-      return Logout();
+      return GetDetailedItem(contentId);
     }
     throw error;
   }
@@ -264,8 +258,7 @@ export const GetUserInfo = async (): Promise<UserInfo> => {
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
       await RenewAccessToken();
-
-      return Logout();
+      return GetUserInfo();
     }
     throw error;
   }
@@ -293,15 +286,14 @@ export const GetLikedContents = async (
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
       await RenewAccessToken();
-
-      return Logout();
+      return GetLikedContents(pageParam, sizeParam);
     }
     throw error;
   }
 };
 
 // 회원 탈퇴
-export const DeleteMemberInfo = async () => {
+export const DeleteMemberInfo = async (): Promise<any> => {
   const memberId = localStorage.getItem('memberId');
   const accessToken = localStorage.getItem('accessToken');
   try {
@@ -317,8 +309,7 @@ export const DeleteMemberInfo = async () => {
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
       await RenewAccessToken();
-
-      return Logout();
+      return DeleteMemberInfo();
     }
     throw error;
   }
