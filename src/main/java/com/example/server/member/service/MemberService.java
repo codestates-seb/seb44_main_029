@@ -52,6 +52,12 @@ public class MemberService{
             return null;
         }
 
+        RefreshToken check = refreshTokenJpaRepository.findByMemberId(member.getId()).orElse(null);
+        if(check != null && check.getActive()){
+            log.info("이미 로그인 한 사용자입니다.");
+            return null;
+        }
+
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authentication);
 
