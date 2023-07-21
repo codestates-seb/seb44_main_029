@@ -10,15 +10,31 @@ import { useState } from 'react';
 const ThemeList = () => {
   const themeData = [
     {
-      src: img1,
-      title: '산속길',
+      src: 'https://i.pinimg.com/originals/6e/91/03/6e91030dc0b74d8adc153963370c9964.gif',
+      title: '자연',
       content:
         ' 산 속으로 들어가 싱그러운 공기를 마시며 아름다운 자연 풍경을 감상해요.',
     },
-    { src: img2, title: '르네상스', content: '테마 내용2 입니다' },
-    { src: img3, title: '우주', content: '테마 내용3 입니다' },
-    { src: img4, title: '바다와 파도', content: '테마 내용4 입니다' },
-    { src: img5, title: '도시의 밤', content: '테마 내용5 입니다' },
+    {
+      src: 'https://i.pinimg.com/originals/87/89/5e/87895ebc9ca9e9748484e3bd143d28ab.gif',
+      title: '우주',
+      content: '테마 내용2 입니다',
+    },
+    {
+      src: 'https://i.pinimg.com/originals/be/77/47/be774768f255356c86706f1c930b2e22.gif',
+      title: '동물',
+      content: '테마 내용3 입니다',
+    },
+    {
+      src: 'https://i.pinimg.com/originals/dc/a6/16/dca616db3450b5a64c0d1b655a7d0be5.gif',
+      title: '픽셀',
+      content: '테마 내용4 입니다',
+    },
+    {
+      src: 'https://i.pinimg.com/originals/ad/9b/46/ad9b466393d0bf09d9b4647a2ecd3778.gif',
+      title: '레트로',
+      content: '테마 내용5 입니다',
+    },
   ];
   const [currentThemeIndex, setCurrentThemeIndex] = useState(0);
   const imgList = themeData.map((el) => el.src);
@@ -89,6 +105,7 @@ const TextContainer = styled.section`
   //페이드 아웃 1.5초
   animation: ${fadeInAnimation} 1.5s ease-in-out;
   > h1 {
+    margin: 0;
     @media (min-width: 300px) {
       font-size: 200%;
       margin-bottom: 0;

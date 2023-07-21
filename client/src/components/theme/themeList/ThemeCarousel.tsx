@@ -28,10 +28,9 @@ const ThemeCarousel = ({
 
   return (
     <Container>
-      <PreviousDiv>
+      <PreviousDiv onClick={handlePreviousTheme}>
         <FiChevronsLeft />
         <PreviousThemeImg
-          onClick={handlePreviousTheme}
           src={
             imgList[(currentThemeIndex - 1 + imgList.length) % imgList.length]
           }
@@ -43,12 +42,9 @@ const ThemeCarousel = ({
           navigate(`/theme/${currentThemeIndex + 1}`);
         }}
       />
-      <NextDiv>
+      <NextDiv onClick={handleNextTheme}>
         <FiChevronsRight />
-        <NextThemeImg
-          onClick={handleNextTheme}
-          src={imgList[(currentThemeIndex + 1) % imgList.length]}
-        />
+        <NextThemeImg src={imgList[(currentThemeIndex + 1) % imgList.length]} />
       </NextDiv>
     </Container>
   );
@@ -122,13 +118,8 @@ const PreviousThemeImg = styled.img`
   border-radius: 0 20px 20px 0;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);
   opacity: 0.7;
-  transition: opacity 0.3s ease-in-out;
   -webkit-user-drag: none;
   cursor: pointer;
-  //호버 시 투명도 사라짐
-  &:hover {
-    opacity: 1;
-  }
 `;
 
 const CurrentThemeImg = styled.img`
@@ -166,6 +157,9 @@ const PreviousDiv = styled.div`
     :first-child {
       opacity: 1;
     }
+    :last-child {
+      opacity: 1;
+    }
   }
   //화실표 아이콘
   > :first-child {
@@ -187,6 +181,7 @@ const PreviousDiv = styled.div`
     }
   }
   > :last-child {
+    transition: opacity 0.3s ease-in-out;
     height: 100%;
   }
 `;
@@ -196,6 +191,9 @@ const NextDiv = styled.div`
   align-items: center;
   &:hover {
     :first-child {
+      opacity: 1;
+    }
+    :last-child {
       opacity: 1;
     }
   }
@@ -219,6 +217,7 @@ const NextDiv = styled.div`
     }
   }
   > :last-child {
+    transition: opacity 0.3s ease-in-out;
     height: 100%;
   }
 `;
