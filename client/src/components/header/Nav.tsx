@@ -3,19 +3,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
-import { FiAlignJustify, FiHome, FiUser } from 'react-icons/fi';
+import { FiAlignJustify, FiHome, FiUser, FiX } from 'react-icons/fi';
 import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
+import LoginFormTwo from '../Login/LoginFormTwo';
 
 // Nav 컴포넌트
-const Nav = ({
-  setIsLogInClicked,
-  setIsSignUpClicked,
-}: {
-  setIsLogInClicked: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  // 호버 여부 상태 관리
+const Nav = () => {
   const [isClicked, setIsClick] = useState(false);
+  const [isModal, setIsModal] = useState(false);
   const navigate = useNavigate();
 
   // 로컬스토리지에 있는 액세스토큰 꺼내오기
@@ -50,7 +45,7 @@ const Nav = ({
       alert('로그인이 필요한 기능입니다. 🙏');
     }
     if (!accessToken) {
-      setIsLogInClicked(true);
+      setIsModal(true);
     } else {
       navigate('/profile');
     }
@@ -58,16 +53,18 @@ const Nav = ({
 
   return (
     <Container>
-      <NavBtnDiv onMouseLeave={() => setIsClick(false)} isClicked={isClicked}>
-        {/* 마우스 호버시 나타나는 메뉴바 */}
+      {isModal && <LoginFormTwo setIsModal={setIsModal} />}
+      <NavBtnDiv isClicked={isClicked}>
+        {/* 클릭시 나타나는 메뉴바 */}
         {isClicked ? (
           <>
+            <S_FiX onClick={() => setIsClick(false)} />
             <S_FiHome onClick={() => navigate('/')} />
             <S_FiUser onClick={handleProfileClick} />
             <S_TbCarouselHorizontal onClick={() => navigate('/theme')} />
             {/* jwtToken 토큰 유무 분기 */}
             {!accessToken ? (
-              <S_TbLogin onClick={() => setIsLogInClicked(true)} />
+              <S_TbLogin onClick={() => setIsModal(true)} />
             ) : (
               <S_TbLogout onClick={handleLogOut} />
             )}
@@ -125,7 +122,7 @@ const S_FiAlignJustify = styled(FiAlignJustify)`
 const S_FiHome = styled(FiHome)`
   width: 30px;
   height: auto;
-  border-radius: 0 0 0 10px;
+  border-radius: 10px 0 0 10px;
   padding: 20px 0px;
   color: white;
   //살짝 둥근 배경효과
@@ -144,7 +141,7 @@ const S_FiHome = styled(FiHome)`
 const S_FiUser = styled(FiUser)`
   width: 30px;
   height: auto;
-  border-radius: 0 0 0 10px;
+  border-radius: 10px 0 0 10px;
   padding: 20px 0px;
   color: white;
   //살짝 둥근 배경효과
@@ -163,7 +160,7 @@ const S_FiUser = styled(FiUser)`
 const S_TbCarouselHorizontal = styled(TbCarouselHorizontal)`
   width: 30px;
   height: auto;
-  border-radius: 0 0 0 10px;
+  border-radius: 10px 0 0 10px;
   padding: 20px 0px;
   color: white;
   //살짝 둥근 배경효과
@@ -182,7 +179,7 @@ const S_TbCarouselHorizontal = styled(TbCarouselHorizontal)`
 const S_TbLogin = styled(TbLogin)`
   width: 30px;
   height: auto;
-  border-radius: 0 0 0 10px;
+  border-radius: 10px 0 0 10px;
   padding: 20px 0px;
   color: white;
   //살짝 둥근 배경효과
@@ -201,13 +198,32 @@ const S_TbLogin = styled(TbLogin)`
 const S_TbLogout = styled(TbLogout)`
   width: 30px;
   height: auto;
-  border-radius: 0 0 0 10px;
+  border-radius: 10px 0 0 10px;
   padding: 20px 0px;
   color: white;
   //살짝 둥근 배경효과
   transition: background-color 0.2s, padding 0.2s;
   &:hover {
     padding: 20px;
+    background-color: #dbdbdb;
+  }
+  //클릭 시 색상변화
+  &:active {
+    background-color: #bbddff;
+    transition: background-color 0.05s, padding 0.05s;
+  }
+`;
+
+const S_FiX = styled(FiX)`
+  width: 40px;
+  height: auto;
+  padding: 15px 0px;
+  border-radius: 0 0 0 10px;
+  color: white;
+  //살짝 둥근 배경효과
+  transition: background-color 0.2s, padding 0.2s;
+  &:hover {
+    padding: 15px;
     background-color: #dbdbdb;
   }
   //클릭 시 색상변화
