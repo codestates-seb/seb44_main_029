@@ -29,6 +29,9 @@ const OAuthButton = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  &:hover {
+    background-color: #f1f5f9;
+  }
 `;
 
 const S_FcGoogle = styled(FcGoogle)`

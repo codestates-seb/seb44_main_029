@@ -231,12 +231,12 @@ const Input = styled.input`
   color: #000000;
   outline: none;
   &:focus {
-    box-shadow: 3px 3px 3px 1px #1875ff;
+    box-shadow: 3px 3px 3px 1px #4b4b4b;
   }
 `;
 
 const Label = styled.label<{ isFocused: boolean }>`
-  color: ${({ isFocused }) => (isFocused ? '#166cea' : '#999')};
+  color: ${({ isFocused }) => (isFocused ? '#131313' : '#999')};
   font-size: ${({ isFocused }) => (isFocused ? '14px' : 'inherit')};
   margin-bottom: 5px;
   transition: all 0.5s ease;
@@ -253,13 +253,13 @@ export const SignUpButton = styled.button`
   width: 300px;
   margin-top: 10px;
   padding: 10px;
-  background-color: #1875ff;
+  background-color: #4b4b4b;
   color: white;
   border: none;
   border-radius: 30px;
   cursor: pointer;
 
   &:hover {
-    background-color: #045bdf;
+    background-color: #424242;
   }
 `;

@@ -22,6 +22,9 @@ const GuestButton = styled.button`
   align-items: center;
   margin-bottom: 20px;
   border-radius: 8px;
+  &:hover {
+    background-color: #f1f5f9;
+  }
 `;
 
 const S_TbUserCircle = styled(TbUserCircle)`
