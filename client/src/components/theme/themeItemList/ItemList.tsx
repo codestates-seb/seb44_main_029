@@ -19,7 +19,7 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
   // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 데이터를 갱신
+      queryClient.invalidateQueries(['likes']); // 'likes' 쿼리를 무효화하여 데이터를 갱신
     },
     onError: (error) => {
       console.log(`onError: ${error}`);
@@ -116,6 +116,7 @@ const LikeButton = styled.button`
   transition: 0.15s;
   background-color: transparent;
   border: 0;
+  font-size: 1.3rem;
 
   &:hover {
     color: rgba(0, 0, 0, 0.6);
