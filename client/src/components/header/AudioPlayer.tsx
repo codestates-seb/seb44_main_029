@@ -1,22 +1,24 @@
 import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { GetMusic } from '../../api/api';
+import TimerModal from '../theme/themeList/TimerModal';
 import { IoPlay, IoPlayBack, IoPlayForward, IoPause } from 'react-icons/io5';
 import Spinner from '../../assets/gif/Spinner.svg';
-import TimerModal from '../theme/themeList/TimerModal';
 
 //오디오 플레이어
 const AudioPlayer = () => {
   const [sound, setSound] = useState<Howl | null>(null);
   const [musicTitle, setMusicTitle] = useState('');
-  const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
   const [nowMusicId, setNowMusicId] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { themeId } = useParams();
+  const location = useLocation();
+  const isThemePath = /^\/theme\/\d+$/.test(location.pathname);
+  const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
   const refetchInterval = 1 * 55 * 1000;
   // themeId가 변경될시 실행되는 쿼리
   const {
@@ -58,7 +60,7 @@ const AudioPlayer = () => {
       // 배열의 마지막 요소는 파일 이름입니다.
       const fileName = pathSegments[pathSegments.length - 1];
       const removeMp3 = fileName.split('.')[0];
-      const decodedFileName = decodeURIComponent(fileName);
+      const decodedFileName = decodeURIComponent(removeMp3);
       setMusicTitle(decodedFileName);
       console.log(decodedFileName);
       return () => {
@@ -106,7 +108,9 @@ const AudioPlayer = () => {
 
   return (
     <Container>
-      <TimerModal setIsPlaying={setIsPlaying} />
+      {isThemePath && !isPlaying && (
+        <TimerModal handleTogglePlay={handleTogglePlay} />
+      )}
       {musicList ? (
         <>
           {isPlaying ? (

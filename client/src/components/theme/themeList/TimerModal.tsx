@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const TimerModal = ({
-  setIsPlaying,
-}: {
-  setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const TimerModal = ({ handleTogglePlay }: { handleTogglePlay: () => void }) => {
   const [showModal, setShowModal] = useState(true);
 
   useEffect(() => {
@@ -17,7 +13,7 @@ const TimerModal = ({
   }, []);
 
   const handleYesButtonClick = () => {
-    setIsPlaying(true);
+    handleTogglePlay();
     setShowModal(false);
   };
 
@@ -29,7 +25,7 @@ const TimerModal = ({
     <ModalOverlay show={showModal}>
       <ModalContainer>
         <ModalContent>
-          <div>곡과 함께할까요?</div>
+          <div>음악과 함께?</div>
           <ButtonContainer>
             <Button onClick={handleYesButtonClick}>예</Button>
             <Button onClick={handleNoButtonClick}>아니오</Button>
