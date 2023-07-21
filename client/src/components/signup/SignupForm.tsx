@@ -218,7 +218,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 300px;
-  margin: 50px 0px 0px 0px;
+  margin: 30px 0px 0px 0px;
 `;
 
 const Input = styled.input`
@@ -245,7 +245,7 @@ const Label = styled.label<{ isFocused: boolean }>`
 const ErrorText = styled.div`
   color: red;
   font-size: 11px;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   height: 12px;
 `;
 

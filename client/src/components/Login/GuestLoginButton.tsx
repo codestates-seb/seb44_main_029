@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { TbUserCircle } from 'react-icons/tb';
-import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 
 interface LoginFormData {
@@ -10,14 +10,12 @@ interface LoginFormData {
 
 const GuestLoginButton: React.FC = () => {
   const loginFormData: LoginFormData = {
-    email: 'guest@gmail.com',
-    password: 'guest123!@#',
+    email: 'guesttest@naver.com',
+    password: 'guesttest12!!!',
   };
 
-  const queryClient = useQueryClient();
   const loginMutation = useMutation(Login, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries(['login']);
       const accessToken = data.headers['authorization'];
       const refreshToken = data.data.refreshToken;
       const memberId = data.data.memberId;
@@ -31,7 +29,6 @@ const GuestLoginButton: React.FC = () => {
     try {
       await loginMutation.mutateAsync(loginFormData);
       alert('Log In success!');
-      queryClient.invalidateQueries(['login']);
       window.location.href = '/profile';
     } catch (error) {
       alert('Failed to Log In!');
@@ -40,8 +37,8 @@ const GuestLoginButton: React.FC = () => {
   };
 
   return (
-    <GuestButton>
-      <S_TbUserCircle onClick={guestButtonClick} />
+    <GuestButton onClick={guestButtonClick}>
+      <S_TbUserCircle />
       Guest로 로그인
     </GuestButton>
   );
