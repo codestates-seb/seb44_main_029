@@ -2,9 +2,10 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import SignUpFormTwo from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { Login } from '../../api/api';
+import { Login, Logout } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import GuestLoginButton from './GuestLoginButton';
+import { useNavigate } from 'react-router';
 
 interface LoginFormData {
   email: string;
@@ -15,6 +16,7 @@ interface LoginFormProps {
 }
 const LoginForm = ({ setIsModal }: LoginFormProps) => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
     email: '',
@@ -73,6 +75,20 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
     },
   });
 
+  // 로그아웃 성공 시
+  const handleLogoutMutation = useMutation(Logout, {
+    onSuccess: () => {
+      // 토큰 및 멤버아이디 삭제
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('memberId');
+      navigate('/');
+    },
+    onError: (error) => {
+      console.error('Logout failed:', error);
+    },
+  });
+
   // 폼 제출하는 함수
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -82,15 +98,23 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
     }
 
     try {
-      await loginMutation.mutateAsync(loginFormData);
-      alert('Log In success!');
-      setLoginFormData({
-        email: '',
-        password: '',
-      });
-      queryClient.invalidateQueries(['login']);
-      setIsModal(false);
-      window.location.href = '/profile';
+      const response = await loginMutation.mutateAsync(loginFormData);
+      if (response.status === 200) {
+        alert('Log In success!');
+        setLoginFormData({
+          email: '',
+          password: '',
+        });
+        queryClient.invalidateQueries(['login']);
+        setIsModal(false);
+        window.location.href = '/profile';
+      } else if (response.status === 202 && response.data === null) {
+        alert('회원가입부터 다시 진행해주세요.');
+        setIsModal(true);
+      } else if (response.status === 202 && response.data === -6) {
+        alert('중복 로그인이 되어 로그아웃 처리됩니다.');
+        handleLogoutMutation.mutate();
+      }
     } catch (error) {
       alert('Failed to Log In!');
       console.error('Log In failed:', error);
