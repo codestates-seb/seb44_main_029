@@ -9,9 +9,7 @@ const ChangeProfile = ({
 }: {
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { data, refetch } = useQuery(['userInfo'], GetUserInfo, {
-    enabled: false, // Set initial enabled to false
-  });
+  const { data } = useQuery(['userInfo'], GetUserInfo);
   const navigate = useNavigate();
 
   const username = data?.username;
@@ -22,7 +20,9 @@ const ChangeProfile = ({
     setIsEdit(true);
   };
 
+  // 회원 탈퇴
   const withdrawalMutation = useMutation(DeleteMemberInfo, {
+    // 요청 성공하면 로컬 스토리지에 토큰, 멤버아이디 삭제 후 메인페이지로 이동
     onSuccess: () => {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
@@ -34,16 +34,13 @@ const ChangeProfile = ({
     },
   });
 
+  // 회원 정보 탈퇴 버튼을 클릭했을 때
   const WithdrawalMemberInfo = () => {
     const isConfirmed = window.confirm('회원 탈퇴를 진행하시겠습니까?');
     if (isConfirmed) {
       withdrawalMutation.mutate();
     }
   };
-
-  useEffect(() => {
-    refetch(); // Manually trigger the data fetching when the component mounts
-  }, [refetch]);
 
   return (
     <Container>
@@ -61,9 +58,14 @@ const ChangeProfile = ({
         </UserInfoSection>
         <ButtonDiv>
           <ChangeButton onClick={ChangeMemberInfo}>회원 정보 변경</ChangeButton>
-          <WithdrawalButton onClick={WithdrawalMemberInfo}>
-            회원 정보 탈퇴
-          </WithdrawalButton>
+          {email && (
+            <WithdrawalButton
+              onClick={WithdrawalMemberInfo}
+              disabled={email === 'guesttest@naver.com'}
+            >
+              회원 정보 탈퇴
+            </WithdrawalButton>
+          )}
         </ButtonDiv>
       </UserInfoDiv>
     </Container>
@@ -174,5 +176,11 @@ const WithdrawalButton = styled.button`
 
   &:hover {
     background-color: #f73737;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 `;
