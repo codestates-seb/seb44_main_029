@@ -5,63 +5,70 @@ import { useQuery } from '@tanstack/react-query';
 import { GetLikedContents } from '../../../api/api';
 import IconAirplane from '../../../assets/icon/icon_airplane.png';
 import { useNavigate } from 'react-router';
+import { IThemeItemProps, ItemInfo } from '../../../types/types';
 
-interface LikeListProps {
-  cards: {
-    image: string;
-    themeName: string;
-    videoName: string;
-    liked?: boolean;
-  }[];
-}
-
-const LikeList = ({ cards }: LikeListProps) => {
+const LikeList = () => {
   const navigate = useNavigate();
   const handleImgClick = () => {
     navigate('/theme');
   };
-  const { data, refetch } = useQuery(['LikedContents'], GetLikedContents, {
-    enabled: false,
-  });
 
-  const itemInfo = data?.data;
+  const [itemInfo, setItemInfo] = useState<ItemInfo[]>([]);
+
+  const size = 8;
+  const [page, setPage] = useState(1);
+
+  // page 값이 변경되면 업데이트된 page 값으로 쿼리가 다시 실행되어 다음 또는 이전 페이지에 대한 데이터를 가져온다.
+  // size는 고정되어 있므므로 쿼리 키의 일부가 아니어야 함.
+  const { data } = useQuery<IThemeItemProps>(['likedContents', page], () =>
+    GetLikedContents(page, size)
+  );
+  useEffect(() => {
+    if (data) {
+      setItemInfo(data.data);
+    }
+  }, [data]);
+  const handleLikeButtonClick = (contentId: number) => {
+    // Set likedItem to false for the card with the given contentId
+    setItemInfo((prevItemInfo) =>
+      prevItemInfo.map((item) =>
+        item.contentId === contentId ? { ...item, liked: false } : item
+      )
+    );
+  };
+
+  // data에서 data, pageInfo 뽑아냄
+  // const itemInfo = data?.data;
   const pageInfo = data?.pageInfo;
 
-  console.log('좋아요 리스트: ', itemInfo);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = pageInfo?.size || 0;
-
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const slicedCards = itemInfo?.slice(startIndex, endIndex) || [];
-
   const handlePrevPage = () => {
-    setCurrentPage(currentPage - 1);
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
   };
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (pageInfo?.totalPages && page < pageInfo.totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
-
-  useEffect(() => {
-    refetch();
-  }, [refetch]);
 
   return (
     <Container>
       <Title>🍔 Like List</Title>
 
-      {slicedCards.length > 0 ? (
+      {itemInfo && itemInfo.length > 0 ? (
         <List>
-          {slicedCards.map((card, index) => (
+          {itemInfo.map((card, index) => (
             <Card
               key={index}
               image={card.contentUri}
+              // themeId={card.themeId}
               themeTitle={card.themeTitle}
               contentId={card.contentId}
               contentTitle={card.contentTitle}
               liked={card.liked}
+              onLikeButtonClick={handleLikeButtonClick}
             />
           ))}
         </List>
@@ -83,16 +90,18 @@ const LikeList = ({ cards }: LikeListProps) => {
       <Pagination>
         <Button
           onClick={handlePrevPage}
-          disabled={currentPage === 1 || slicedCards.length === 0}
+          disabled={pageInfo?.page === 1 || itemInfo?.length === 0}
         >
           이전
         </Button>
         <Button
           onClick={handleNextPage}
           disabled={
-            endIndex >= cards.length ||
-            slicedCards.length === 0 ||
-            slicedCards.length < 8
+            pageInfo?.totalPages === undefined ||
+            pageInfo.totalPages >= (itemInfo?.length || 0) ||
+            itemInfo?.length === 0 ||
+            (itemInfo?.length || 0) < 8 ||
+            page === pageInfo.totalPages
           }
         >
           다음

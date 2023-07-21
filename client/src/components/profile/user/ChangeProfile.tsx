@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
-import { useQuery } from '@tanstack/react-query';
-import { GetUserInfo } from '../../../api/api';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { GetUserInfo, DeleteMemberInfo, Logout } from '../../../api/api';
 import { useEffect } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 const ChangeProfile = ({
   setIsEdit,
 }: {
@@ -12,13 +12,33 @@ const ChangeProfile = ({
   const { data, refetch } = useQuery(['userInfo'], GetUserInfo, {
     enabled: false, // Set initial enabled to false
   });
+  const navigate = useNavigate();
 
   const username = data?.username;
   const email = data?.email;
   const imageUrl = data?.imageUrl;
 
-  const handleButton = () => {
+  const ChangeMemberInfo = () => {
     setIsEdit(true);
+  };
+
+  const withdrawalMutation = useMutation(DeleteMemberInfo, {
+    onSuccess: () => {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('memberId');
+      navigate('/');
+    },
+    onError: (error) => {
+      console.error('Error withdrawing member information:', error);
+    },
+  });
+
+  const WithdrawalMemberInfo = () => {
+    const isConfirmed = window.confirm('회원 탈퇴를 진행하시겠습니까?');
+    if (isConfirmed) {
+      withdrawalMutation.mutate();
+    }
   };
 
   useEffect(() => {
@@ -34,13 +54,16 @@ const ChangeProfile = ({
 
         <UserInfoSection>
           <InputWrapper>
-            <UsernameDiv>username</UsernameDiv>
+            <UsernameDiv>{username}</UsernameDiv>
           </InputWrapper>
 
-          <EmailDiv>email</EmailDiv>
+          <EmailDiv>{email}</EmailDiv>
         </UserInfoSection>
         <ButtonDiv>
-          <Button onClick={handleButton}>회원 정보 변경</Button>
+          <ChangeButton onClick={ChangeMemberInfo}>회원 정보 변경</ChangeButton>
+          <WithdrawalButton onClick={WithdrawalMemberInfo}>
+            회원 정보 탈퇴
+          </WithdrawalButton>
         </ButtonDiv>
       </UserInfoDiv>
     </Container>
@@ -74,7 +97,7 @@ const ImageDiv = styled.div`
 `;
 
 const Img = styled.img`
-  width: 50%;
+  width: 70%;
   margin: 8px 40px;
   box-sizing: border-box;
   border-radius: 10px;
@@ -114,7 +137,7 @@ const ButtonDiv = styled.div`
   box-sizing: border-box;
   width: 100%;
 `;
-const Button = styled.button`
+const ChangeButton = styled.button`
   color: white;
   background-color: #59a395;
   border: none;
@@ -131,5 +154,25 @@ const Button = styled.button`
 
   &:hover {
     background-color: #2aa58e;
+  }
+`;
+
+const WithdrawalButton = styled.button`
+  color: white;
+  background-color: #fa4545;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 60%;
+  padding: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 20px;
+
+  &:hover {
+    background-color: #f73737;
   }
 `;

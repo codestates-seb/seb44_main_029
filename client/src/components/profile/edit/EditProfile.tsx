@@ -35,10 +35,10 @@ const EditProfile = ({
         <EditImg setImgUrl={setImgUrl} />
         <EditName setUserName={setUserName} />
         <BtnGroupDiv>
-          <Button bgColor="#007bff" onClick={handleSaveButton}>
+          <Button bgColor="#3690f0" onClick={handleSaveButton}>
             저장
           </Button>
-          <Button bgColor="#ff0000" onClick={handleCancleButton}>
+          <Button bgColor="#f73737" onClick={handleCancleButton}>
             취소
           </Button>
         </BtnGroupDiv>

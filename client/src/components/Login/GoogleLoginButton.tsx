@@ -5,7 +5,7 @@ const GoogleLoginButton: React.FC = () => {
   const handleOAuthClick = async (e: any) => {
     e.preventDefault();
     window.location.href =
-      'http://ec2-54-180-127-81.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google';
+      'http://ec2-3-39-72-136.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google';
   };
 
   return (

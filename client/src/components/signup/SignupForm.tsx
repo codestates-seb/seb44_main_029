@@ -220,7 +220,6 @@ const Form = styled.form`
 const Input = styled.input`
   padding: 10px 10px 10px;
   margin-bottom: 20px;
-  border-radius: 30px;
   background-color: transparent;
   border: none;
   border-bottom: 1px solid #999;

@@ -9,6 +9,7 @@ interface CardProps {
   contentId: number;
   contentTitle: string;
   liked: boolean;
+  onLikeButtonClick: (contentId: number) => void;
 }
 
 interface LikeButtonProps {
@@ -21,13 +22,11 @@ const Card = ({
   contentId,
   contentTitle,
   liked,
+  onLikeButtonClick,
 }: CardProps) => {
-  const [isLiked, setIsLiked] = useState(true);
-  const handleHeartIconClick = () => {
-    setIsLiked(!isLiked);
-  };
   // 현재 아이템의 좋아요 상태를 저장하는 상태
   const [likedItem, setLikedItem] = useState<boolean>(liked);
+
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
@@ -45,37 +44,36 @@ const Card = ({
     try {
       await handleUpdateLikeMutation.mutateAsync(contentId);
       setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+      onLikeButtonClick(contentId);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <Container>
+    <Container isVisible={likedItem}>
       <ImgLink to={`/theme/1/${contentId}`}>
         <img src={image} />
       </ImgLink>
 
       <ThemeTitle>{themeTitle}</ThemeTitle>
-      <VideoIconDiv>
-        <VideoTitle>{contentTitle}</VideoTitle>
-        {/* <HeartIcon onClick={handleHeartIconClick}>
-          <HeartEmoji>{isLiked ? '❤️' : '🤍'}</HeartEmoji>
-        </HeartIcon> */}
+      <ContentDiv>
+        <ContentTitle>{contentTitle}</ContentTitle>
         <LikeButton
           type="button"
-          isActive={likedItem}
+          isActive={liked}
           onClick={handleLikeButtonClick}
         >
           🤍
         </LikeButton>
-      </VideoIconDiv>
+      </ContentDiv>
     </Container>
   );
 };
 
 export default Card;
 
-const Container = styled.div`
+const Container = styled.div<{ isVisible: boolean }>`
   width: 100%;
   height: 100%;
   border-radius: 0 0 0.33rem 0.33rem;
@@ -84,6 +82,11 @@ const Container = styled.div`
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 1rem;
+  ${(props) =>
+    !props.isVisible &&
+    css`
+      display: none; // Hide the entire component when isVisible is false
+    `}
 `;
 const ImgLink = styled(Link)`
   cursor: pointer;
@@ -109,7 +112,7 @@ const ThemeTitle = styled.div`
   font-weight: bold;
 `;
 
-const VideoIconDiv = styled.div`
+const ContentDiv = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -117,25 +120,12 @@ const VideoIconDiv = styled.div`
   color: white;
   box-sizing: border-box;
 `;
-const VideoTitle = styled.div`
+const ContentTitle = styled.div`
   width: 100%;
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   box-sizing: border-box;
   font-weight: bold;
-`;
-
-const HeartIcon = styled.div`
-  width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
-  color: white;
-  box-sizing: border-box;
-`;
-
-const HeartEmoji = styled.span`
-  cursor: pointer;
-  display: flex;
-  justify-content: flex-end;
 `;
 
 const LikeButton = styled.button<LikeButtonProps>`
