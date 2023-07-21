@@ -129,6 +129,7 @@ const LikeButton = styled.button`
   transition: 0.15s;
   background-color: transparent;
   border: 0;
+  font-size: 1.3rem;
 
   &:hover {
     color: rgba(0, 0, 0, 0.6);

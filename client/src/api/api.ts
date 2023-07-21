@@ -163,22 +163,27 @@ export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
 
 // 좋아요한 테마 이미지 리스트 가져오기
 export const GetThemeLikes = async (
-  themeId: number
+  themeId: number,
+  pageParam: number,
+  sizeParam: number
 ): Promise<IThemeItemProps> => {
   const accessToken = localStorage.getItem('accessToken');
   try {
-    const response = await axios.get(`${BASE_URL}contents/likes/${themeId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await axios.get(
+      `${BASE_URL}contents/likes/${themeId}?page=${pageParam}&size=${sizeParam}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.status === 500) {
       await RenewAccessToken();
-      return GetThemeLikes(themeId);
+      return GetThemeLikes(themeId, pageParam, sizeParam);
     }
     throw error;
   }
