@@ -3,7 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { SignUp } from '../../api/api';
 import { SignUpInfo } from '../../types/types';
-import { LoginButton } from '../Login/LoginForm';
+
 interface SignUpFormData {
   username: string;
   email: string;
@@ -238,6 +238,8 @@ const Input = styled.input`
 const Label = styled.label<{ isFocused: boolean }>`
   color: ${({ isFocused }) => (isFocused ? '#131313' : '#999')};
   font-size: ${({ isFocused }) => (isFocused ? '14px' : 'inherit')};
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
   margin-bottom: 5px;
   transition: all 0.5s ease;
 `;
@@ -249,8 +251,11 @@ const ErrorText = styled.div`
   height: 12px;
 `;
 
-export const SignUpButton = styled.button`
-  width: 300px;
+const SignUpButton = styled.button`
+  width: 100%;
+  height: 8.5%;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
   margin-top: 10px;
   padding: 10px;
   background-color: #4b4b4b;
@@ -258,6 +263,40 @@ export const SignUpButton = styled.button`
   border: none;
   border-radius: 30px;
   cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0.8rem 0.5rem 1.4rem #bec5d0, -0.3rem -0.4rem 0.8rem #fbfbfb;
+
+  &:active {
+    box-shadow: inset -0.3rem -0.1rem 1.4rem #2c2c2c,
+      inset 0.3rem 0.4rem 0.8rem #bec5d0;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: #424242;
+  }
+`;
+
+const LoginButton = styled.button`
+  width: 75%;
+  height: 7%;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #4b4b4b;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0.8rem 0.5rem 1.4rem #bec5d0, -0.3rem -0.4rem 0.8rem #fbfbfb;
+
+  &:active {
+    box-shadow: inset -0.3rem -0.1rem 1.4rem #2c2c2c,
+      inset 0.3rem 0.4rem 0.8rem #bec5d0;
+    cursor: pointer;
+  }
 
   &:hover {
     background-color: #424242;

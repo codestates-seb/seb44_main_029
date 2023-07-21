@@ -4,7 +4,6 @@ import SignUpFormTwo from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
-import { SignUpButton } from '../signup/SignupForm';
 import GuestLoginButton from './GuestLoginButton';
 
 interface LoginFormData {
@@ -202,6 +201,8 @@ const Form = styled.form`
 const Label = styled.label<{ isFocused: boolean }>`
   color: ${({ isFocused }) => (isFocused ? '#131313' : '#999')};
   font-size: ${({ isFocused }) => (isFocused ? '14px' : 'inherit')};
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
   margin-bottom: 5px;
   transition: all 0.5s ease;
 `;
@@ -220,15 +221,52 @@ const Input = styled.input`
   }
 `;
 
-export const LoginButton = styled.button`
+const LoginButton = styled.button`
+  width: 100%;
+  height: 15%;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
   margin-top: 10px;
   padding: 10px;
-  width: 300px;
   background-color: #4b4b4b;
   color: white;
   border: none;
   border-radius: 30px;
   cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0.8rem 0.5rem 1.4rem #bec5d0, -0.3rem -0.4rem 0.8rem #fbfbfb;
+
+  &:active {
+    box-shadow: inset -0.3rem -0.1rem 1.4rem #2c2c2c,
+      inset 0.3rem 0.4rem 0.8rem #bec5d0;
+    cursor: pointer;
+  }
+
+  &:hover {
+    background-color: #424242;
+  }
+`;
+
+const SignUpButton = styled.button`
+  width: 75%;
+  height: 8%;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #4b4b4b;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  border-radius: 10px;
+  box-shadow: 0.8rem 0.5rem 1.4rem #bec5d0, -0.3rem -0.4rem 0.8rem #fbfbfb;
+
+  &:active {
+    box-shadow: inset -0.3rem -0.1rem 1.4rem #2c2c2c,
+      inset 0.3rem 0.4rem 0.8rem #bec5d0;
+    cursor: pointer;
+  }
 
   &:hover {
     background-color: #424242;

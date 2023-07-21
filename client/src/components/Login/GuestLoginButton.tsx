@@ -47,8 +47,9 @@ const GuestLoginButton: React.FC = () => {
 export default GuestLoginButton;
 
 const GuestButton = styled.button`
-  width: 300px;
-  height: 40px;
+  box-sizing: border-box;
+  width: 75%;
+  height: 8%;
   background-color: white;
   border: 1px solid rgb(224, 224, 224);
   cursor: pointer;
@@ -57,6 +58,8 @@ const GuestButton = styled.button`
   align-items: center;
   margin-bottom: 20px;
   border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
   &:hover {
     background-color: #f1f5f9;
   }
