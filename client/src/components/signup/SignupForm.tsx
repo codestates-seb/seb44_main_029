@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { SignUp } from '../../api/api';
 import { SignUpInfo } from '../../types/types';
@@ -13,13 +13,9 @@ interface SignUpFormData {
 
 interface SignUpFormProps {
   setIsSignUpClicked: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsLogInClicked: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SignUpForm = ({
-  setIsSignUpClicked,
-  setIsLogInClicked,
-}: SignUpFormProps) => {
+const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
   const queryClient = useQueryClient();
 
   const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>({
@@ -103,7 +99,6 @@ const SignUpForm = ({
         });
         queryClient.invalidateQueries(['signup']);
         setIsSignUpClicked(false);
-        setIsLogInClicked(true);
       } else if (response.status === 202 && response.data === -1) {
         setErrors((prevErros) => ({
           ...prevErros,
@@ -125,11 +120,6 @@ const SignUpForm = ({
       alert('Failed to Sign Up!');
       console.error('Sign Up failed:', error);
     }
-  };
-
-  const handleLogInClick = () => {
-    setIsSignUpClicked(false);
-    setIsLogInClicked(true);
   };
 
   return (
@@ -183,28 +173,42 @@ const SignUpForm = ({
         <ErrorText>{errors.passwordCheck && errors.passwordCheck}</ErrorText>
         <SignUpButton type="submit">Sign Up</SignUpButton>
       </Form>
-      <LoginButton onClick={handleLogInClick}>Log In</LoginButton>
+      <LoginButton onClick={() => setIsSignUpClicked(false)}>
+        Log In
+      </LoginButton>
     </Container>
   );
 };
 
 export default SignUpForm;
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
 
 // Styled Components
 const Container = styled.div`
-  //원영 수정 ------------
-  z-index: 102; //++
-  overflow: hidden; // ++
-  width: 100%; //400px
-  height: 100%; //550px
-  background-color: rgba(255, 255, 255); //투명도 0.9
-  //---------------------
+  position: fixed; // 화면 중앙에 고정되도록 설정
+  top: 50%; // 화면 세로 중앙 위치
+  left: 50%; // 화면 가로 중앙 위치
+  transform: translate(-50%, -50%); // 중앙 정렬을 위한 변환
+  z-index: 102;
+  overflow: hidden;
+  width: 400px;
+  height: 600px;
+  background-color: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
   opacity: 0.95;
   border-radius: 20px;
+
+  animation: ${fadeIn} 0.3s ease-in-out forwards;
   > h1 {
     color: #000000;
   }

@@ -5,7 +5,7 @@ import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
 import { FiAlignJustify, FiHome, FiUser, FiX } from 'react-icons/fi';
 import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
-import LoginFormTwo from '../Login/LoginFormTwo';
+import LoginForm from '../Login/LoginForm';
 
 // Nav 컴포넌트
 const Nav = () => {
@@ -53,7 +53,7 @@ const Nav = () => {
 
   return (
     <Container>
-      {isModal && <LoginFormTwo setIsModal={setIsModal} />}
+      {isModal && <LoginForm setIsModal={setIsModal} />}
       <NavBtnDiv isClicked={isClicked}>
         {/* 클릭시 나타나는 메뉴바 */}
         {isClicked ? (
