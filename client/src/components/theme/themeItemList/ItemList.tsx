@@ -49,12 +49,8 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
         <img src={contentUri} alt="item-image"></img>
       </ItemLink>
       <OverlayControlDiv>
-        <LikeButton
-          type="button"
-          isActive={likedItem}
-          onClick={handleLikeButtonClick}
-        >
-          🤍
+        <LikeButton type="button" onClick={handleLikeButtonClick}>
+          {likedItem ? '❤️' : '🤍'}
         </LikeButton>
       </OverlayControlDiv>
       {isModal && <LoginForm setIsModal={setIsModal} />}
@@ -107,10 +103,10 @@ const ItemLink = styled(Link)`
   }
 `;
 
-const LikeButton = styled.button<{ isActive: boolean }>`
+const LikeButton = styled.button`
   box-sizing: border-box;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
   pointer-events: auto;
@@ -118,19 +114,10 @@ const LikeButton = styled.button<{ isActive: boolean }>`
   justify-content: center;
   align-items: center;
   transition: 0.15s;
+  background-color: transparent;
+  border: 0;
 
   &:hover {
-    border: 2px solid rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 0.6);
   }
-
-  ${(props) =>
-    props.isActive
-      ? css`
-          border: 2px solid rgba(255, 255, 255, 1);
-          background-color: rgba(0, 170, 0, 0.9);
-        `
-      : css`
-          border: 2px solid rgba(255, 255, 255, 0.5);
-          background-color: transparent;
-        `}
 `;
