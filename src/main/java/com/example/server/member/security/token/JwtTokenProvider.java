@@ -89,7 +89,6 @@ public class JwtTokenProvider implements InitializingBean {
             response.sendError(HttpStatus.SC_UNAUTHORIZED, "잘못된 JWT 서명입니다.");
         }catch (ExpiredJwtException e){
             log.info("만료된 JWT 토큰입니다.");
-//            response.sendError(HttpStatus.SC_UNAUTHORIZED, "만료된 JWT 토큰입니다.");
         }catch (UnsupportedJwtException e){
             log.info("지원되지 않는 JWT 토큰입니다.");
             response.sendError(HttpStatus.SC_UNAUTHORIZED, "지원되지 않는 JWT 토큰입니다.");
