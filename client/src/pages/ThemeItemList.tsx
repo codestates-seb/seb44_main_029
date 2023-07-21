@@ -11,6 +11,14 @@ import { IThemeItemProps } from '../types/types';
 import { GetThemeItems, GetThemeLikes } from '../api/api';
 import getBackgroundImage from '../utils/getBackgroundImage';
 import { PacmanLoader } from 'react-spinners';
+import Masonry from 'react-masonry-css';
+
+const breakpointColumnsObj = {
+  default: 6,
+  1025: 4,
+  481: 2,
+  320: 1,
+};
 
 const ThemeItemList = () => {
   const [showLikedOnly, setShowLikedOnly] = useState<boolean>(false); // 좋아요한 아이템만 표시할지 결정하는 상태
@@ -29,7 +37,7 @@ const ThemeItemList = () => {
     status,
   } = useInfiniteQuery<IThemeItemProps, AxiosError>(
     ['items', numThemeId],
-    ({ pageParam = 1 }) => GetThemeItems(numThemeId, pageParam, 20),
+    ({ pageParam = 1 }) => GetThemeItems(numThemeId, pageParam, 18),
     {
       keepPreviousData: true,
       getNextPageParam: (lastPage) => {
@@ -104,7 +112,11 @@ const ThemeItemList = () => {
               <PacmanLoader color="rgba(255, 255, 255, 1)" size={20} />
             </div>
           )}
-          <ItemGridDiv>
+          <MasonryStyled
+            breakpointCols={breakpointColumnsObj}
+            className="masonry-grid"
+            columnClassName="masonry-grid_column"
+          >
             {status === 'error' && <div>{error.toString()}</div>}
             {status === 'success' &&
               filteredItems?.map((item) => (
@@ -116,7 +128,7 @@ const ThemeItemList = () => {
                   themeId={numThemeId}
                 />
               ))}
-          </ItemGridDiv>
+          </MasonryStyled>
           {showLikedOnly ? null : <div ref={targetRef} />}
         </ItemListContainerDiv>
       </ContentContainer>
@@ -155,7 +167,7 @@ const Layout = styled.div<{ backgroundImageUrl: string }>`
 
 const ContentContainer = styled.div`
   box-sizing: border-box;
-  max-width: 1076px;
+  max-width: 1920px;
   width: 100%;
   flex-direction: column;
   box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 0.7);
@@ -167,14 +179,20 @@ const ItemListContainerDiv = styled.div`
   width: 100%;
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
-  padding: 1.5rem;
+  padding: 1rem;
   box-sizing: border-box;
   overflow: auto;
 `;
 
-const ItemGridDiv = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  grid-template-rows: auto;
-  grid-gap: 1rem;
+const MasonryStyled = styled(Masonry)`
+  display: flex;
+  width: auto;
+  gap: 1rem;
+
+  .masonry-grid_column {
+  }
+
+  .masonry-grid_column > div {
+    margin-bottom: 1rem;
+  }
 `;
