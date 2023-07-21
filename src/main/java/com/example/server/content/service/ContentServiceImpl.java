@@ -252,7 +252,7 @@ public class ContentServiceImpl implements ContentService {
             Content content = Content.builder()
                     .theme(themeRepository.findById(themeId).orElseThrow())
                     .title(title)
-                    .uri("https://"+bucketName+".s3.ap-northeast-2.amazonaws.com/thumbnails/"+themeTitle+"/"+file.getOriginalFilename())
+                    .uri("http://"+bucketName+".s3.ap-northeast-2.amazonaws.com/thumbnails/"+themeTitle+"/"+file.getOriginalFilename())
                     .build();
             contentRepository.save(content);
             upload(file, content.getContentId(), themeTitle, fileName);

@@ -41,15 +41,15 @@ spring:
       client:
         registration:
           google:
-            client-id: 492169011912-1o9evmkdle898mg5facghqgipvi415en.apps.googleusercontent.com #${CLIENT_ID}
-            client-secret: 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 #${CLIENT_SECRET}
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
             scope:
               - profile
               - email
 config:
   domain: http://cozystates.com.s3-website.ap-northeast-2.amazonaws.com
 jwt:
-  secret: dmskamdskamdksalndsanjfkqwgefuinklsjfajdlshuwhuqgbkbdasndksajugfekfmaldbqanbd #${JWT_SECRET}
-  access_token_expired: 3_600_000 #3_600_000
+  secret: ${JWT_SECRET}
+  access_token_expired: 3000 #3_600_000
   refresh_token_expired: 604_800_000
 
