@@ -44,6 +44,20 @@ public class MemberService{
 
         String username = authentication.getName();
 
+        Member member = memberJpaRepository.findByMemberUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
+
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
+
+        RefreshToken check = refreshTokenJpaRepository.findByMemberId(member.getId()).orElse(null);
+        if(check != null && check.getActive()){
+            log.info("이미 로그인 한 사용자입니다.");
+            return null;
+        }
+
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authentication);
 
@@ -56,10 +70,14 @@ public class MemberService{
         return response;
     }
 
-    public void logout(MemberIdAndTokenDto dto){
-        if(!tokenProvider.validateToken(dto.getAccessToken()))
-            throw new IllegalArgumentException("로그아웃: 유효하지 않은 토큰입니다.");
+    public Boolean logout(MemberIdAndTokenDto dto){
+        Member member = memberJpaRepository.findById(dto.getMemberId())
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
 
+        if(invaildMember(member)){
+            log.info("회원탈퇴 된 사용자입니다.");
+            return null;
+        }
 
         RefreshToken refreshToken = refreshTokenJpaRepository.findByToken(dto.getRefreshToken()).get();
 
@@ -75,6 +93,9 @@ public class MemberService{
         }else{
             throw new RuntimeException("Refresh Token is not exist");
         }
+
+        log.info("로그아웃 완료");
+        return true;
     }
 
     public Long signUp(MemberSignUpDto dto){
@@ -93,7 +114,6 @@ public class MemberService{
             return -1L;
         }
 
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String password = passwordEncoder.encode(dto.getPassword());
 
         Member member = Member.builder()
@@ -167,14 +187,9 @@ public class MemberService{
         String password = member.getPassword();
         String oldPassword = dto.getOldPassword();
 
-        if(passwordEncoder.matches(oldPassword, password)){
-            return null;
+        if(!passwordEncoder.matches(oldPassword, password)){
+            return -4L;
         }
-
-        MemberRecord record = recordMember(member);
-        member.setPassword(passwordEncoder.encode(dto.getNewPassword()));
-
-        memberRecordJpaRepository.save(record);
 
         return memberJpaRepository.save(member).getId();
     }
@@ -182,6 +197,11 @@ public class MemberService{
     public Long delete(Long memberId) {
         Member member = memberJpaRepository.findById(memberId)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
+
+        if(member.getUsername().equals("guest") || member.getUsername().equals("admin")){
+            log.info("해당 계정은 삭제할 수 없습니다.");
+            return -5L;
+        }
 
         if(invaildMember(member)){
             log.info("회원탈퇴 된 사용자입니다.");

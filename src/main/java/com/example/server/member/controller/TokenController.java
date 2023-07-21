@@ -20,10 +20,10 @@ public class TokenController {
     private final TokenService tokenService;
 
     @PostMapping("")
-    public ResponseEntity updateToken(@RequestBody RefreshTokenDto refreshToken, HttpServletRequest request, HttpServletResponse response){
+    public ResponseEntity updateToken(@RequestBody RefreshTokenDto refreshToken, HttpServletResponse response){
         String token = tokenService.updateAccessToken(refreshToken);
 
-        if(token == null) return new ResponseEntity("Refresh Token이 존재하지 않습니다.", HttpStatus.FORBIDDEN);
+        if(token == null) return new ResponseEntity("Refresh Token이 존재하지 않습니다.", HttpStatus.UNAUTHORIZED);
         response.setHeader(HttpHeaders.AUTHORIZATION, token);
 
         return new ResponseEntity(HttpStatus.OK);
