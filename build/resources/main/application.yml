@@ -4,23 +4,16 @@ cloud:
       accessKey: ${AWS_ACCESS_KEY}
       secretKey: ${AWS_SECRET_KEY}
     s3:
-      bucket: cozystates-bucket-01
+      bucket: cozystates.com
     region:
       static: ap-northeast-2
     stack:
       auto: 'false'
 spring:
   datasource:
-<<<<<<< HEAD
-#    url: jdbc:mysql://database-cozystates.c1hypxzbotyv.ap-northeast-2.rds.amazonaws.com:13306/cozystates?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    url: jdbc:mysql://localhost:3306/tmpdb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    username: root
-    password: 1234
-=======
     url: jdbc:mysql://database-cozystates.c1hypxzbotyv.ap-northeast-2.rds.amazonaws.com:13306/cozystates?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     username: admin
     password: 12341234
->>>>>>> a6e2750d6861ac975a3373930f4d76576af22e27
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
@@ -54,9 +47,9 @@ spring:
               - profile
               - email
 config:
-  domain: http://cozystates-bucket-01.s3-website.ap-northeast-2.amazonaws.com
+  domain: http://cozystates.com.s3-website.ap-northeast-2.amazonaws.com
 jwt:
   secret: ${JWT_SECRET}
-  access_token_expired: 3_600_000 #3_600_000
+  access_token_expired: 3_600_000
   refresh_token_expired: 604_800_000
 

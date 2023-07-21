@@ -1,7 +1,6 @@
 package com.example.server.member.interceptor;
 
 import com.example.server.member.security.token.JwtTokenProvider;
-import com.example.server.member.service.TokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

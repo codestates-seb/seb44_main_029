@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String jwt = resolveToken(request);
         String requsetURI = request.getRequestURI();
 
-        if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
+        if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt, response)){
             if(!blackListJpaRepository.findByToken(jwt).isPresent()) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -39,7 +39,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 log.debug("Security Context에 '{}' 인증 정보를 저장했습니다., url: {}", authentication.getName(), requsetURI);
             }else{
                 log.info("유효하지 않은 토큰입니다.");
-                throw new IllegalArgumentException("유효하지 않는 토큰입니다.");
+                throw new IllegalArgumentException("BlackList에 저장되어 유효하지 않는 토큰입니다.");
             }
         }
 
