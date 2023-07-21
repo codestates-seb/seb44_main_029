@@ -142,25 +142,91 @@ public class AwsS3Service {
     }
 
     //음원 조회v3 - pre-signed 비동기 처리
+//    public List<String> getMp3FileListUrlV3(long themeId) {
+//        try {
+//            List<String> musicList = new ArrayList<>(); // 반환 url 리스트
+//            // 개체 목록 요청
+//            ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
+//                    .bucket(bucketName)
+//                    .build();
+//
+//            // .listObjects()로 실제 s3client의 객체 목록 가져옴
+//            ListObjectsResponse listObjectsResponse = s3Client.listObjects(listObjectsRequest);
+//            // 스트림으로 객체 키 추출 - 데이터 병렬처리
+//            List<String> objectKeys = listObjectsResponse.contents().stream()// 객체 목록 얻은 후 스트림 변환
+//                    .map(S3Object::key)
+//                    .collect(Collectors.toList()); // 결과를 리스트로 수집
+//
+//            // 비동기적으로 객체 정보 처리
+//            List<CompletableFuture<String>> futures = objectKeys.stream()// 리스트 각 객체 키를 이용해서 CompletableFuture생성
+//                    .map(key -> CompletableFuture.supplyAsync(() -> { // 비동기 작업을 생성, supplyAsync()
+//                        // 객체의 메타 데이터를 가져옴
+//                        HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+//                                .bucket(bucketName)
+//                                .key(key)
+//                                .build();
+//
+//                        HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+//                        Map<String, String> metadata = headObjectResponse.metadata();
+//                        String themeIdMetadata = metadata.get("themeid");
+//
+//                        // 메타데이터가 주어진 themeId와 일치하는 경우에만 Pre-signed URL 생성하여 반환
+//                        if (themeIdMetadata != null && themeIdMetadata.equals(String.valueOf(themeId))) {
+//                            GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+//                                    .bucket(bucketName)
+//                                    .key(key)
+//                                    .build();
+//
+//                            // pre-signed 객체 요청
+//                            GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
+//                                    .signatureDuration(Duration.ofMinutes(1)) // 만료시간
+//                                    .getObjectRequest(getObjectRequest)
+//                                    .build();
+//
+//                            PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(getObjectPresignRequest);
+//                            return presignedGetObjectRequest.url().toString();
+//                        } else {
+//                            return null; // url이 존재하지 않는다면 null 값을 넣어준다.
+//                        }
+//                    }))
+//                    .collect(Collectors.toList());
+//
+//            // futures 리스트에 있는 모든 completablefuture들이 완료되기를 기다림.(allOf)
+//            CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+//            // 최종적으로 pre-signed url이 담긴 List<String>이 저장
+//            CompletableFuture<List<String>> allUrlsFuture = allFutures.thenApply(v -> //allFutures는 실제 결과를 가지고있지 않다.
+//                    futures.stream() //
+//                            .map(CompletableFuture::join)
+//                            .filter(Objects::nonNull)
+//                            .collect(Collectors.toList()) // 필터링 후 실제 pre-signed url이 담긴 리스트 생성
+//            );
+//
+//            musicList.addAll(allUrlsFuture.get());
+//
+//            return musicList;
+//        } catch (Exception e) {
+//            throw new RuntimeException("list 반환 실패: " + e.getMessage(), e);
+//        }
+//    }
+
+
+    // 비동기 처리 업그레이드
     public List<String> getMp3FileListUrlV3(long themeId) {
         try {
             List<String> musicList = new ArrayList<>(); // 반환 url 리스트
-            // 개체 목록 요청
+
             ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
                     .bucket(bucketName)
                     .build();
 
-            // .listObjects()로 실제 s3client의 객체 목록 가져옴
             ListObjectsResponse listObjectsResponse = s3Client.listObjects(listObjectsRequest);
-            // 스트림으로 객체 키 추출 - 데이터 병렬처리
-            List<String> objectKeys = listObjectsResponse.contents().stream()// 객체 목록 얻은 후 스트림 변환
-                    .map(S3Object::key)
-                    .collect(Collectors.toList()); // 결과를 리스트로 수집
 
-            // 비동기적으로 객체 정보 처리
-            List<CompletableFuture<String>> futures = objectKeys.stream()// 리스트 각 객체 키를 이용해서 CompletableFuture생성
-                    .map(key -> CompletableFuture.supplyAsync(() -> { // 비동기 작업을 생성, supplyAsync()
-                        // 객체의 메타 데이터를 가져옴
+            List<String> objectKeys = listObjectsResponse.contents().stream()
+                    .map(S3Object::key)
+                    .collect(Collectors.toList());
+
+            List<String> urls = objectKeys.stream()
+                    .map(key -> {
                         HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
                                 .bucket(bucketName)
                                 .key(key)
@@ -170,39 +236,27 @@ public class AwsS3Service {
                         Map<String, String> metadata = headObjectResponse.metadata();
                         String themeIdMetadata = metadata.get("themeid");
 
-                        // 메타데이터가 주어진 themeId와 일치하는 경우에만 Pre-signed URL 생성하여 반환
                         if (themeIdMetadata != null && themeIdMetadata.equals(String.valueOf(themeId))) {
                             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                                     .bucket(bucketName)
                                     .key(key)
                                     .build();
 
-                            // pre-signed 객체 요청
                             GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
-                                    .signatureDuration(Duration.ofMinutes(1)) // 만료시간
+                                    .signatureDuration(Duration.ofSeconds(10)) // Pre-signed URL의 유효기간을 조정
                                     .getObjectRequest(getObjectRequest)
                                     .build();
 
                             PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(getObjectPresignRequest);
                             return presignedGetObjectRequest.url().toString();
                         } else {
-                            return null; // url이 존재하지 않는다면 null 값을 넣어준다.
+                            return null;
                         }
-                    }))
+                    })
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
 
-            // futures 리스트에 있는 모든 completablefuture들이 완료되기를 기다림.(allOf)
-            CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
-            // 최종적으로 pre-signed url이 담긴 List<String>이 저장
-            CompletableFuture<List<String>> allUrlsFuture = allFutures.thenApply(v -> //allFutures는 실제 결과를 가지고있지 않다.
-                    futures.stream() //
-                            .map(CompletableFuture::join)
-                            .filter(Objects::nonNull)
-                            .collect(Collectors.toList()) // 필터링 후 실제 pre-signed url이 담긴 리스트 생성
-            );
-
-            musicList.addAll(allUrlsFuture.get());
-
+            musicList.addAll(urls);
             return musicList;
         } catch (Exception e) {
             throw new RuntimeException("list 반환 실패: " + e.getMessage(), e);
