@@ -1,22 +1,19 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import styled from 'styled-components';
-import SignUpForm from '../signup/SignupForm';
+import styled, { keyframes } from 'styled-components';
+import SignUpFormTwo from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import { SignUpButton } from '../signup/SignupForm';
-import { SignOutShowDiv } from '../header/Header';
 
 interface LoginFormData {
   email: string;
   password: string;
 }
-
 interface LoginFormProps {
-  setIsLogInClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
+const LoginForm = ({ setIsModal }: LoginFormProps) => {
   const queryClient = useQueryClient();
 
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
@@ -93,7 +90,7 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
         password: '',
       });
       queryClient.invalidateQueries(['login']);
-      setIsLogInClicked(false);
+      setIsModal(false);
       window.location.href = '/profile';
     } catch (error) {
       alert('Failed to Log In!');
@@ -107,10 +104,10 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
 
   return (
     <>
+      <ModalOverlayDiv onClick={() => setIsModal(false)} />
       {!isSignUpClicked ? (
         <Container>
           <GoogleLoginButton />
-
           <Form onSubmit={handleSubmit}>
             <Label htmlFor="email" isFocused={loginFormData.email !== ''}>
               Email
@@ -137,33 +134,59 @@ const LoginForm = ({ setIsLogInClicked }: LoginFormProps) => {
           <SignUpButton onClick={handleSignUpClick}>Sign Up</SignUpButton>
         </Container>
       ) : (
-        <SignOutShowDiv>
-          <SignUpForm
-            setIsSignUpClicked={setIsSignUpClicked}
-            setIsLogInClicked={setIsLogInClicked}
-          />
-        </SignOutShowDiv>
+        <SignUpFormTwo setIsSignUpClicked={setIsSignUpClicked} />
       )}
     </>
   );
 };
 export default LoginForm;
 
+const reboundBox = keyframes`
+  0% {
+    height: 100px;
+  }
+  40%{
+    height: 650px;
+  }
+  60%{
+    height: 500px;
+  }
+  80%{
+    height: 600px;
+  }
+  100% {
+    height: 550px;
+  }
+`;
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
 // Styled Components
 const Container = styled.div`
-  //원영 수정 ------------
-  z-index: 102; //++
-  overflow: hidden; // ++
-  width: 100%; //400px
-  height: 100%; //550px
-  background-color: rgba(255, 255, 255); //투명도 0.9
-  //---------------------
+  position: fixed; // 화면 중앙에 고정되도록 설정
+  top: 50%; // 화면 세로 중앙 위치
+  left: 50%; // 화면 가로 중앙 위치
+  transform: translate(-50%, -50%); // 중앙 정렬을 위한 변환
+  z-index: 102;
+  overflow: hidden;
+  width: 400px;
+  height: 550px;
+  background-color: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
   opacity: 0.95;
   border-radius: 20px;
+
+  animation: ${fadeIn} 0.3s ease-in-out forwards;
   > h1 {
     color: #000000;
   }
@@ -216,4 +239,14 @@ const ErrorText = styled.p`
   font-size: 11px;
   margin-bottom: 10px;
   height: 12px;
+`;
+
+const ModalOverlayDiv = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
 `;

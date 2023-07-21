@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import LoginFormTwo from '../Login/LoginFormTwo';
+import LoginForm from '../Login/LoginForm';
 import { useState } from 'react';
 
 const TitleThree = ({ observer }: { observer: boolean }) => {
@@ -7,7 +7,7 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
   const accessToken = localStorage.getItem('accessToken');
   return (
     <Container>
-      {isModal && <LoginFormTwo setIsModal={setIsModal} />}
+      {isModal && <LoginForm setIsModal={setIsModal} />}
       <Box observer={observer}>
         <img src="https://i.pinimg.com/originals/f2/95/8a/f2958a889d9a74c01d645dbc0d8bedbd.gif" />
         <img src="https://i.pinimg.com/originals/10/ed/f0/10edf0bc3280b426487a392526789865.gif" />
