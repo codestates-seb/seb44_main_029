@@ -5,6 +5,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import { SignUpButton } from '../signup/SignupForm';
+import GuestLoginButton from './GuestLoginButton';
 
 interface LoginFormData {
   email: string;
@@ -108,6 +109,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
       {!isSignUpClicked ? (
         <Container>
           <GoogleLoginButton />
+          <GuestLoginButton />
           <Form onSubmit={handleSubmit}>
             <Label htmlFor="email" isFocused={loginFormData.email !== ''}>
               Email

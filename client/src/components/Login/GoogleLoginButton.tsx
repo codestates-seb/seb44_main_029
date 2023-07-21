@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Google from '../../assets/icon/icon_google.png';
+import { FcGoogle } from 'react-icons/fc';
 
 const GoogleLoginButton: React.FC = () => {
   const handleOAuthClick = async (e: any) => {
@@ -10,8 +10,8 @@ const GoogleLoginButton: React.FC = () => {
 
   return (
     <OAuthButton onClick={handleOAuthClick}>
-      <Img src={Google} alt="Google logo" />
-      Login with Google
+      <S_FcGoogle />
+      Google로 로그인
     </OAuthButton>
   );
 };
@@ -19,18 +19,19 @@ const GoogleLoginButton: React.FC = () => {
 export default GoogleLoginButton;
 
 const OAuthButton = styled.button`
-  width: 200px;
+  width: 300px;
   height: 40px;
   background-color: white;
   border: 1px solid rgb(224, 224, 224);
   cursor: pointer;
-  margin: 50px 0px;
+  margin: 50px 0 5px 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
 `;
 
-const Img = styled.img`
+const S_FcGoogle = styled(FcGoogle)`
   width: 24px;
   height: 24px;
   margin-right: 10px;
