@@ -9,9 +9,17 @@ interface CardProps {
   themeTitle: string;
   contentId: number;
   liked: boolean;
+  handleItemDelete: () => void;
 }
 
-const Card = ({ image, themeId, themeTitle, contentId, liked }: CardProps) => {
+const Card = ({
+  image,
+  themeId,
+  themeTitle,
+  contentId,
+  liked,
+  handleItemDelete,
+}: CardProps) => {
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
@@ -26,6 +34,7 @@ const Card = ({ image, themeId, themeTitle, contentId, liked }: CardProps) => {
 
   const handleLikedButton = async () => {
     await handleUpdateLikeMutation.mutateAsync(contentId);
+    handleItemDelete();
   };
 
   return (

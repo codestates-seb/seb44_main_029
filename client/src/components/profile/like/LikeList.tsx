@@ -43,6 +43,18 @@ const LikeList = () => {
     }
   };
 
+  // 좋아요 이미지를 삭제 처리
+  const handleItemDelete = () => {
+    // 삭제 후 현재 페이지가 비어있는지 확인
+    if (itemInfo && itemInfo.length === 1) {
+      // 첫 번째 페이지에 있다면 첫 번째 페이지 그대로
+      if (page === 1) return;
+
+      // 첫 번째 페이지가 아니라면, 이전 페이지로 돌아가기.
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
   return (
     <Container>
       <Title>❤️ Like List</Title>
@@ -57,6 +69,7 @@ const LikeList = () => {
               themeTitle={card.themeTitle}
               contentId={card.contentId}
               liked={card.liked}
+              handleItemDelete={handleItemDelete}
             />
           ))}
         </List>
