@@ -5,6 +5,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import { SignUpButton } from '../signup/SignupForm';
+import GuestLoginButton from './GuestLoginButton';
 
 interface LoginFormData {
   email: string;
@@ -64,7 +65,6 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
   const loginMutation = useMutation(Login, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['login']);
-      console.log('data', data);
       const accessToken = data.headers['authorization'];
       const refreshToken = data.data.refreshToken;
       const memberId = data.data.memberId;
@@ -108,6 +108,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
       {!isSignUpClicked ? (
         <Container>
           <GoogleLoginButton />
+          <GuestLoginButton />
           <Form onSubmit={handleSubmit}>
             <Label htmlFor="email" isFocused={loginFormData.email !== ''}>
               Email
@@ -199,7 +200,7 @@ const Form = styled.form`
 `;
 
 const Label = styled.label<{ isFocused: boolean }>`
-  color: ${({ isFocused }) => (isFocused ? '#166cea' : '#999')};
+  color: ${({ isFocused }) => (isFocused ? '#131313' : '#999')};
   font-size: ${({ isFocused }) => (isFocused ? '14px' : 'inherit')};
   margin-bottom: 5px;
   transition: all 0.5s ease;
@@ -215,7 +216,7 @@ const Input = styled.input`
   color: #000000;
   outline: none;
   &:focus {
-    box-shadow: 3px 3px 3px 1px #1875ff;
+    box-shadow: 3px 3px 3px 1px #4b4b4b;
   }
 `;
 
@@ -223,14 +224,14 @@ export const LoginButton = styled.button`
   margin-top: 10px;
   padding: 10px;
   width: 300px;
-  background-color: #1875ff;
+  background-color: #4b4b4b;
   color: white;
   border: none;
   border-radius: 30px;
   cursor: pointer;
 
   &:hover {
-    background-color: #045bdf;
+    background-color: #424242;
   }
 `;
 
