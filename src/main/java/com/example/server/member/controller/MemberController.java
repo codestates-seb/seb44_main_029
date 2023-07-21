@@ -42,7 +42,7 @@ public class MemberController {
         MemberIdAndTokenDto tokenAndId = memberService.login(dto);
 
         if(tokenAndId == null) return new ResponseEntity<>("null", HttpStatus.ACCEPTED);
-        else if(tokenAndId.getMemberId() == -1L) return new ResponseEntity(tokenAndId.getMemberId(), HttpStatus.ACCEPTED);
+        else if(tokenAndId.getMemberId() == -6L) return new ResponseEntity(tokenAndId.getMemberId(), HttpStatus.ACCEPTED);
 
         response.setHeader(HttpHeaders.AUTHORIZATION, tokenAndId.getAccessToken());
 

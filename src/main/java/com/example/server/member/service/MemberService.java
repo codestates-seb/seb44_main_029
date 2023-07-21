@@ -57,7 +57,7 @@ public class MemberService{
             if (check != null && check.getActive()) {
                 log.info("이미 로그인 한 사용자입니다.");
                 return MemberIdAndTokenDto.builder()
-                        .memberId(-1L).build();
+                        .memberId(-6L).build();
             }
         }
 
