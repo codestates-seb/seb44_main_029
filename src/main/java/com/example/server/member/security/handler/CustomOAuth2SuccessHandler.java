@@ -75,19 +75,17 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
 //        response.getWriter().write(jsonResponse);
     }
 
-    public URI createURI(HttpServletRequest request, String accessToken, String refreshToken, String memberId){
+    public URI createURI(String accessToken, String refreshToken, String memberId){
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("authorization", accessToken);
         params.add("refresh-token", refreshToken);
         params.add("memberId", memberId);
 
-        String serverName = request.getServerName();
-
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost")
-                .port(3000)
+                .host("cozystates.com")
+                .port(80)
                 .path("/oauthloading")
                 .queryParams(params)
                 .build()

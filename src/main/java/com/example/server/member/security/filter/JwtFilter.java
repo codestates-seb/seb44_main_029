@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String jwt = resolveToken(request);
         String requsetURI = request.getRequestURI();
 
-        if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt, response)){
+        if(StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
             if(!blackListJpaRepository.findByToken(jwt).isPresent()) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
