@@ -33,6 +33,8 @@ public class MemberController {
     public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){
         MemberIdAndTokenDto tokenAndId = memberService.login(dto);
 
+        if(tokenAndId == null) return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+
         response.setHeader(HttpHeaders.AUTHORIZATION, tokenAndId.getAccessToken());
 
         ResponseDto responseDto = ResponseDto.builder()
@@ -50,13 +52,15 @@ public class MemberController {
         MemberIdAndTokenDto memberIdAndTokenDto = MemberIdAndTokenDto.builder()
                 .refreshToken(refreshToken.getRefreshToken())
                 .accessToken(accessToken)
+                .memberId((Long) request.getAttribute("memberId"))
                 .build();
 
-        memberService.logout(memberIdAndTokenDto);
+        Boolean response = memberService.logout(memberIdAndTokenDto);
 
-        SecurityContextHolder.clearContext();
+        if(response == true)
+            SecurityContextHolder.clearContext();
 
-        return new ResponseEntity(true, HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
     @PostMapping("")
