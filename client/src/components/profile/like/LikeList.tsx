@@ -27,6 +27,8 @@ const LikeList = () => {
   const itemInfo = data?.data;
   const pageInfo = data?.pageInfo;
 
+  console.log('itemInfo: ', itemInfo);
+
   // 이전 페이지
   const handlePrevPage = () => {
     if (page > 1) {
@@ -43,7 +45,7 @@ const LikeList = () => {
 
   return (
     <Container>
-      <Title>🍔 Like List</Title>
+      <Title>❤️ Like List</Title>
 
       {itemInfo && itemInfo.length > 0 ? (
         <List>
@@ -51,10 +53,9 @@ const LikeList = () => {
             <Card
               key={index}
               image={card.contentUri}
-              // themeId={card.themeId}
+              themeId={card.themeId}
               themeTitle={card.themeTitle}
               contentId={card.contentId}
-              contentTitle={card.contentTitle}
               liked={card.liked}
             />
           ))}

@@ -13,6 +13,7 @@ export type SignUpInfo = {
 
 export interface ItemInfo {
   contentId: number;
+  themeId: number;
   themeTitle: string;
   liked: boolean;
   howManyLiked: number;

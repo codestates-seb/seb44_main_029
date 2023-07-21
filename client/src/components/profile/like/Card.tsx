@@ -1,33 +1,23 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { UpdateLike } from '../../../api/api';
 
 interface CardProps {
   image: string;
+  themeId: number;
   themeTitle: string;
   contentId: number;
-  contentTitle: string;
   liked: boolean;
 }
 
-interface LikeButtonProps {
-  isActive: boolean;
-}
-
-const Card = ({
-  image,
-  themeTitle,
-  contentId,
-  contentTitle,
-  liked,
-}: CardProps) => {
+const Card = ({ image, themeId, themeTitle, contentId, liked }: CardProps) => {
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['likedContents']); // 'items' 쿼리를 무효화하여 데이터를 갱신
+      queryClient.invalidateQueries(['likedContents']);
     },
     onError: (error) => {
       console.log(`onError: ${error}`);
@@ -40,15 +30,14 @@ const Card = ({
 
   return (
     <Container>
-      <ImgLink to={`/theme/1/${contentId}`}>
+      <ImgLink to={`/theme/${themeId}/${contentId}`}>
         <img src={image} />
       </ImgLink>
 
-      <ThemeTitle>{themeTitle}</ThemeTitle>
       <ContentDiv>
-        <ContentTitle>{contentTitle}</ContentTitle>
-        <LikeButton type="button" isActive={liked} onClick={handleLikedButton}>
-          🤍
+        <ThemeTitle>{themeTitle}</ThemeTitle>
+        <LikeButton type="button" onClick={handleLikedButton}>
+          ❤️
         </LikeButton>
       </ContentDiv>
     </Container>
@@ -107,10 +96,10 @@ const ContentTitle = styled.div`
   font-weight: bold;
 `;
 
-const LikeButton = styled.button<LikeButtonProps>`
+const LikeButton = styled.button`
   box-sizing: border-box;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
   pointer-events: auto;
@@ -118,19 +107,11 @@ const LikeButton = styled.button<LikeButtonProps>`
   justify-content: center;
   align-items: center;
   transition: 0.15s;
+  background-color: transparent;
+  border: 0;
+  font-size: 1.3rem;
 
   &:hover {
-    border: 2px solid rgba(255, 255, 255, 1);
+    color: rgba(0, 0, 0, 0.6);
   }
-
-  ${(props) =>
-    props.isActive
-      ? css`
-          border: 2px solid rgba(255, 255, 255, 1);
-          background-color: rgba(0, 170, 0, 0.9);
-        `
-      : css`
-          border: 2px solid rgba(255, 255, 255, 0.5);
-          background-color: transparent;
-        `}
 `;
