@@ -1,7 +1,7 @@
 import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { GetMusic } from '../../api/api';
 import { IoPlay, IoPlayBack, IoPlayForward, IoPause } from 'react-icons/io5';
@@ -10,6 +10,7 @@ import Spinner from '../../assets/gif/Spinner.svg';
 //오디오 플레이어
 const AudioPlayer = () => {
   const [sound, setSound] = useState<Howl | null>(null);
+  const [musicTitle, setMusicTitle] = useState('');
   const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
   const [nowMusicId, setNowMusicId] = useState<number>(-1);
@@ -55,7 +56,9 @@ const AudioPlayer = () => {
       const pathSegments = url.split('?')[0].split('/');
       // 배열의 마지막 요소는 파일 이름입니다.
       const fileName = pathSegments[pathSegments.length - 1];
+      const removeMp3 = fileName.split('.')[0];
       const decodedFileName = decodeURIComponent(fileName);
+      setMusicTitle(decodedFileName);
       console.log(decodedFileName);
       return () => {
         soundInstance.unload();
@@ -118,6 +121,11 @@ const AudioPlayer = () => {
               active={volume <= currentVolume}
             />
           ))}
+          <MusicTitleContainerdiv>
+            <MusicTitleDiv>
+              <p>{musicTitle}</p>
+            </MusicTitleDiv>
+          </MusicTitleContainerdiv>
         </>
       ) : isFetching ? (
         <SpinnerImg src={Spinner} />
@@ -129,6 +137,16 @@ const AudioPlayer = () => {
 };
 
 export default AudioPlayer;
+
+// 무한으로 텍스트를 한 방향으로 움직이는 애니메이션 키프레임을 정의합니다.
+const marquee = keyframes`
+  0% {
+    transform: translateX(100%); /* 시작 위치 (0px) */
+  }
+  100% {
+    transform: translateX(-100%); /* 목표 위치 (-100%만큼 왼쪽으로 이동) */
+  }
+`;
 
 //오디오 컨테이너
 const Container = styled.div`
@@ -157,6 +175,15 @@ const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
   }
 `;
 
+const MusicTitleContainerdiv = styled.div`
+  color: white;
+  overflow: hidden;
+`;
+
+const MusicTitleDiv = styled.div`
+  color: white;
+  animation: ${marquee} 5s linear infinite;
+`;
 const S_IoPlay = styled(IoPlay)`
   height: 26px;
   width: auto;
