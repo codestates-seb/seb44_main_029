@@ -29,10 +29,7 @@ const Header = () => {
           />
         </SignOutShowDiv>
       ) : null}
-      <Nav
-        setIsLogInClicked={setIsLogInClicked}
-        setIsSignUpClicked={setIsSignUpClicked}
-      />
+      <Nav />
     </Container>
   );
 };
