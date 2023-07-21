@@ -247,7 +247,7 @@ const Label = styled.label<{ isFocused: boolean }>`
 const ErrorText = styled.div`
   color: red;
   font-size: 11px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   height: 12px;
 `;
 
