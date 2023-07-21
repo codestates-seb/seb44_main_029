@@ -56,23 +56,11 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authenticationToken);
 
-    
-
-        ResponseDto responseDto = ResponseDto.builder()
-                .memberId(member.getId())
-                .refreshToken(refreshToken)
-                .build();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse = objectMapper.writeValueAsString(responseDto);
-
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
 
-        String uri = createURI(request, accessToken, refreshToken, member.getId().toString()).toString();
+        String uri = createURI(accessToken, refreshToken, member.getId().toString()).toString();
 
         getRedirectStrategy().sendRedirect(request, response, uri);
-//        response.setContentType("application/json");
-//        response.getWriter().write(jsonResponse);
     }
 
     public URI createURI(String accessToken, String refreshToken, String memberId){
