@@ -11,10 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import software.amazon.awssdk.services.s3.model.S3Object;
 
@@ -29,8 +32,13 @@ import java.util.UUID;
 public class MemberController {
     private final MemberService memberService;
 
+    @GetMapping("/get")
+    public String get(){
+        return new BCryptPasswordEncoder().encode("guest123!@#");
+    }
+
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){
+    public ResponseEntity login(@RequestBody @Validated MemberLoginDto dto, HttpServletResponse response){
         MemberIdAndTokenDto tokenAndId = memberService.login(dto);
 
         if(tokenAndId == null) return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
@@ -64,7 +72,7 @@ public class MemberController {
     }
 
     @PostMapping("")
-    ResponseEntity signUp(@RequestBody MemberSignUpDto dto){
+    ResponseEntity signUp(@RequestBody @Validated MemberSignUpDto dto){
         Long response = memberService.signUp(dto);
 
         if(response < 1) return new ResponseEntity(response, HttpStatus.ACCEPTED);
@@ -79,7 +87,7 @@ public class MemberController {
     }
 
     @PatchMapping("/{member-id}")
-    ResponseEntity update(@RequestBody MemberUpdateDto dto, @PathVariable("member-id") Long memberId){
+    ResponseEntity update(@RequestBody @Validated MemberUpdateDto dto, @PathVariable("member-id") Long memberId){
         Long response = memberService.update(dto, memberId);
 
         if(response < 1) return new ResponseEntity(response, HttpStatus.ACCEPTED);
@@ -87,7 +95,7 @@ public class MemberController {
     }
 
     @PatchMapping("/password/{member-id}")
-    ResponseEntity updatePassword(@PathVariable("member-id") Long memberId, @RequestBody MemberPasswordUpdateDto dto){
+    ResponseEntity updatePassword(@PathVariable("member-id") Long memberId, @RequestBody @Validated MemberPasswordUpdateDto dto){
         Long response = memberService.updatePassword(memberId, dto);
 
         return new ResponseEntity(response, HttpStatus.OK);
@@ -95,8 +103,10 @@ public class MemberController {
 
     @DeleteMapping("/{member-id}")
     ResponseEntity delete(@PathVariable("member-id") Long memberId){
-        memberService.delete(memberId);
+        Long response = memberService.delete(memberId);
 
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        if(response == -5) return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

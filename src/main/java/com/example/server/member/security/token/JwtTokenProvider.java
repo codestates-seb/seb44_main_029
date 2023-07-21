@@ -6,6 +6,7 @@ import com.example.server.member.service.MemberService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +18,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.DatatypeConverter;
+import java.io.IOException;
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -72,32 +75,26 @@ public class JwtTokenProvider implements InitializingBean {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
-    public Map getClaimsFromToken(String token){
-        return (Map<String, Object>) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get(AUTHORITIES_KEY);
-    }
-
     public String getSubjectFromToken(String token){
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    public Date getExpriation(String token)
-    {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getExpiration();
-    }
-
-    public boolean validateToken(String token){
+    public boolean validateToken(String token, HttpServletResponse response) throws IOException {
         try{
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
             return true;
         }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
+            response.sendError(HttpStatus.SC_UNAUTHORIZED, "잘못된 JWT 서명입니다.");
         }catch (ExpiredJwtException e){
             log.info("만료된 JWT 토큰입니다.");
         }catch (UnsupportedJwtException e){
             log.info("지원되지 않는 JWT 토큰입니다.");
+            response.sendError(HttpStatus.SC_UNAUTHORIZED, "지원되지 않는 JWT 토큰입니다.");
         }catch(IllegalArgumentException e){
             log.info("JWT 토큰이 잘못되었습니다.");
+            response.sendError(HttpStatus.SC_UNAUTHORIZED, "JWT 토큰이 잘못되었습니다.");
         }
 
         return false;
