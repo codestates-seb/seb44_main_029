@@ -9,7 +9,8 @@ import {
   UserInfo,
 } from '../types/types';
 
-const BASE_URL = 'https://2521-175-123-6-225.ngrok-free.app/';
+const BASE_URL =
+  'http://ec2-3-39-72-136.ap-northeast-2.compute.amazonaws.com:8080/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
