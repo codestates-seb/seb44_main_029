@@ -41,7 +41,8 @@ public class MemberController {
     public ResponseEntity login(@RequestBody @Validated MemberLoginDto dto, HttpServletResponse response){
         MemberIdAndTokenDto tokenAndId = memberService.login(dto);
 
-        if(tokenAndId == null) return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+        if(tokenAndId == null) return new ResponseEntity<>("null", HttpStatus.ACCEPTED);
+        else if(tokenAndId.getMemberId() == -1L) return new ResponseEntity(tokenAndId.getMemberId(), HttpStatus.ACCEPTED);
 
         response.setHeader(HttpHeaders.AUTHORIZATION, tokenAndId.getAccessToken());
 
@@ -64,6 +65,8 @@ public class MemberController {
                 .build();
 
         Boolean response = memberService.logout(memberIdAndTokenDto);
+
+        if(response == null) return new ResponseEntity("null", HttpStatus.ACCEPTED);
 
         if(response == true)
             SecurityContextHolder.clearContext();
@@ -105,7 +108,7 @@ public class MemberController {
     ResponseEntity delete(@PathVariable("member-id") Long memberId){
         Long response = memberService.delete(memberId);
 
-        if(response == -5) return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        if(response == -5) return new ResponseEntity<>("null", HttpStatus.ACCEPTED);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
