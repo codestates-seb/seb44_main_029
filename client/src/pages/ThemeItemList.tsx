@@ -4,7 +4,7 @@ import ThemeHeader from '../components/theme/themeItemList/ThemeHeader';
 import ItemListHeader from '../components/theme/themeItemList/ItemListHeader';
 import ItemList from '../components/theme/themeItemList/ItemList';
 import { AxiosError } from 'axios';
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import useIntersectionObserver from '../hooks/useIntersectionObserver';
 import { IThemeItemProps } from '../types/types';
@@ -33,9 +33,9 @@ const ThemeItemList = () => {
   const {
     data: items,
     error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+    fetchNextPage: fetchItemsNextPage,
+    hasNextPage: itemsHasNextPage,
+    isFetchingNextPage: itemsIsFetchingNextPage,
     status,
   } = useInfiniteQuery<IThemeItemProps, AxiosError>(
     ['items', numThemeId],
@@ -55,13 +55,46 @@ const ThemeItemList = () => {
           setCurrentThemeTitle(currentThemeTitle);
         }
       },
+      enabled: showLikedOnly === false,
+    }
+  );
+
+  const {
+    data: likedItems,
+    fetchNextPage: fetchLikedItemsNextPage,
+    hasNextPage: likedItemsHasNextPage,
+    isFetchingNextPage: likedItemsIsFetchingNextPage,
+  } = useInfiniteQuery<IThemeItemProps, AxiosError>(
+    ['likes', numThemeId],
+    ({ pageParam = 1 }) => GetThemeLikes(numThemeId, pageParam, 18), // 여기서 pageParam 추가
+    {
+      keepPreviousData: true,
+      getNextPageParam: (lastPage) => {
+        const { pageInfo } = lastPage;
+        if (pageInfo.page < pageInfo.totalPages) {
+          return pageInfo.page + 1;
+        }
+        return false;
+      },
+      enabled: showLikedOnly === true,
     }
   );
 
   // 교차점에 도달했을 때, 다음 페이지의 이미지들을 가져와 표시하는 함수
   const handleIntersect = async (entry: IntersectionObserverEntry) => {
-    if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
-      await fetchNextPage();
+    if (entry.isIntersecting) {
+      // showLikedOnly가 true이면, likedItems의 nextPage를 가져온다.
+      if (
+        showLikedOnly &&
+        likedItemsHasNextPage &&
+        !likedItemsIsFetchingNextPage
+      ) {
+        await fetchLikedItemsNextPage();
+      }
+      // showLikedOnly가 false이면, items의 nextPage를 가져온다.
+      else if (!showLikedOnly && itemsHasNextPage && !itemsIsFetchingNextPage) {
+        await fetchItemsNextPage();
+      }
     }
   };
 
@@ -74,15 +107,6 @@ const ThemeItemList = () => {
     target: targetRef,
     onIntersect: handleIntersect,
   });
-
-  // 좋아요한 아이템 목록을 가져온다.
-  const { data: likedItems } = useQuery<IThemeItemProps, AxiosError>(
-    ['likes'],
-    () => GetThemeLikes(numThemeId),
-    {
-      enabled: showLikedOnly, // showLikedOnly가 true일 때만 쿼리를 실행한다.
-    }
-  );
 
   // 좋아요 버튼을 클릭하여 좋아요한 아이템만 표시하거나 모든 아이템을 표시하는 함수
   const handleFilterlikeButton = () => {
@@ -98,7 +122,7 @@ const ThemeItemList = () => {
 
   // 좋아요한 아이템만 표시하도록 필터링하거나 전체 아이템 목록을 가져온다.
   const filteredItems = showLikedOnly
-    ? likedItems?.data
+    ? likedItems?.pages?.flatMap((page) => page.data) || []
     : items?.pages?.flatMap((page) => page.data) || [];
 
   return (
@@ -132,7 +156,7 @@ const ThemeItemList = () => {
                 />
               ))}
           </MasonryStyled>
-          {showLikedOnly ? null : <div ref={targetRef} />}
+          <div ref={targetRef} />
         </ItemListContainerDiv>
       </ContentContainer>
       {isModal && <LoginForm setIsModal={setIsModal} />}
