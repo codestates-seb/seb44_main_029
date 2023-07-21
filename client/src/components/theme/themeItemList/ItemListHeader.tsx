@@ -15,17 +15,22 @@ const ItemListHeader = ({
 }: ItemListHeaderProps) => {
   return (
     <Container>
-      <ListFilterDiv>
+      <ItemListHeaderDiv>
         <h3 className="item-list-title">Item List</h3>
-        <LikeFilterButton
-          type="button"
-          isActive={showLikedOnly}
-          onClick={handleFilterlikeButton}
-        >
-          Like <br />
-          {showLikedOnly ? '❤️' : '🤍'}
-        </LikeFilterButton>
-      </ListFilterDiv>
+        <LikeFilterButtonDiv>
+          <p className="filter-like-button-description">
+            내가 좋아요를 누른 이미지만 보기 →
+          </p>
+          <LikeFilterButton
+            type="button"
+            isActive={showLikedOnly}
+            onClick={handleFilterlikeButton}
+          >
+            Like <br />
+            {showLikedOnly ? '❤️' : '🤍'}
+          </LikeFilterButton>
+        </LikeFilterButtonDiv>
+      </ItemListHeaderDiv>
     </Container>
   );
 };
@@ -37,7 +42,7 @@ const Container = styled.div`
   display: flex;
 `;
 
-const ListFilterDiv = styled.div`
+const ItemListHeaderDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -45,8 +50,21 @@ const ListFilterDiv = styled.div`
   background-color: rgba(255, 255, 255, 0.05);
 
   .item-list-title {
-    margin: 0.8rem 3rem;
+    margin: 0.8rem 1rem 0.8rem 3rem;
     color: rgba(255, 255, 255, 1);
+  }
+`;
+
+const LikeFilterButtonDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .filter-like-button-description {
+    margin: 0 1rem 0 0;
+    display: flex;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
   }
 `;
 

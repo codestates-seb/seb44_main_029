@@ -115,12 +115,12 @@ const ThemeItemList = () => {
               <PacmanLoader color="rgba(255, 255, 255, 1)" size={20} />
             </div>
           )}
+          {status === 'error' && <div>{error.toString()}</div>}
           <MasonryStyled
             breakpointCols={breakpointColumnsObj}
             className="masonry-grid"
             columnClassName="masonry-grid_column"
           >
-            {status === 'error' && <div>{error.toString()}</div>}
             {status === 'success' &&
               filteredItems?.map((item) => (
                 <ItemList
@@ -192,9 +192,6 @@ const MasonryStyled = styled(Masonry)`
   display: flex;
   width: auto;
   gap: 1rem;
-
-  .masonry-grid_column {
-  }
 
   .masonry-grid_column > div {
     margin-bottom: 1rem;
