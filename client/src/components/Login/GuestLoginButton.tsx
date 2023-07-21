@@ -18,7 +18,6 @@ const GuestLoginButton: React.FC = () => {
   const loginMutation = useMutation(Login, {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['login']);
-      console.log('data', data);
       const accessToken = data.headers['authorization'];
       const refreshToken = data.data.refreshToken;
       const memberId = data.data.memberId;
