@@ -9,7 +9,6 @@ import LoginFormTwo from '../Login/LoginFormTwo';
 
 // Nav 컴포넌트
 const Nav = () => {
-  // 호버 여부 상태 관리
   const [isClicked, setIsClick] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const navigate = useNavigate();
@@ -56,7 +55,7 @@ const Nav = () => {
     <Container>
       {isModal && <LoginFormTwo setIsModal={setIsModal} />}
       <NavBtnDiv isClicked={isClicked}>
-        {/* 마우스 호버시 나타나는 메뉴바 */}
+        {/* 클릭시 나타나는 메뉴바 */}
         {isClicked ? (
           <>
             <S_FiX onClick={() => setIsClick(false)} />

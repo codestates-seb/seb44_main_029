@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import SignUpFormTwo from '../signup/SignupFormTwo';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
@@ -140,6 +140,24 @@ const LoginFormTwo = ({ setIsModal }: LoginFormProps) => {
 };
 export default LoginFormTwo;
 
+const reboundBox = keyframes`
+  0% {
+    height: 100px;
+  }
+  40%{
+    height: 650px;
+  }
+  60%{
+    height: 500px;
+  }
+  80%{
+    height: 600px;
+  }
+  100% {
+    height: 550px;
+  }
+`;
+
 // Styled Components
 const Container = styled.div`
   position: fixed; // 화면 중앙에 고정되도록 설정
@@ -157,6 +175,9 @@ const Container = styled.div`
   box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.3);
   opacity: 0.95;
   border-radius: 20px;
+
+  //slideBox 효과를, 0.5초 동안, 부드럽게, 마지막 모습 유지
+  animation: ${reboundBox} 0.8s ease-in-out forwards;
   > h1 {
     color: #000000;
   }
