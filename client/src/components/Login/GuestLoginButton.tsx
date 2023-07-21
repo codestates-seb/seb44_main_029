@@ -28,4 +28,5 @@ const S_TbUserCircle = styled(TbUserCircle)`
   width: 24px;
   height: 24px;
   margin-right: 10px;
+  color: #4b4b4b;
 `;
