@@ -20,12 +20,6 @@ import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
-import software.amazon.awssdk.transfer.s3.S3TransferManager;
-import software.amazon.awssdk.transfer.s3.model.CompletedFileUpload;
-import software.amazon.awssdk.transfer.s3.model.FileUpload;
-import software.amazon.awssdk.transfer.s3.model.UploadFileRequest;
-import software.amazon.awssdk.transfer.s3.progress.LoggingTransferListener;
-
 
 import java.io.*;
 
@@ -33,10 +27,11 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 
 /**
- * 메타데이터를 통해 파일을 업로드 하고 업로드된 파일의 url을 생성합니다.(보류)
  *
  * s3에 저장된 mp3 파일의 url을 클라이언트에게 전달하는 service
  * */
@@ -59,24 +54,8 @@ public class AwsS3Service {
         this.s3Presigner = s3Presigner;
     }
 
-    // 음원 url 하나만 가져오는 경우 - 파일 이름 검색 기준
-    public String getMP3FileUrl(String fileName) {
-        try {
-            GetUrlRequest getUrlRequest = GetUrlRequest.builder()
-                    .bucket(bucketName)
-                    .key(fileName)
-                    .build();
 
-            return s3Client.utilities().getUrl(getUrlRequest).toExternalForm();
-
-        } catch (SdkException e) {
-            // S3 오류 처리
-            throw new RuntimeException("파일 검색 실패: " + e.getMessage(), e);
-        }
-    }
-
-
-    // 음원 url 조회 - 메타데이터 기반(url 원본)
+    // 음원 url 조회 v1 - 메타데이터 기반 조회
     public List<String> getMp3FileListUrlV1(long themeId){
         try{
             List<String> musicList = new ArrayList<>(); // url
@@ -112,30 +91,35 @@ public class AwsS3Service {
         }
     }
 
-    // 음원 url 조회 - 메타데이터 기반 - Pre signed-url 적용 - 만료시간 1분
-    public List<String> getMp3FileListUrlV2(long themeId){
-        try{
+
+    // 음원 조회v2  pre signed url 적용 - 만료시간 1분
+    public List<String> getMp3FileListUrlV2(long themeId) {
+        try {
             List<String> musicList = new ArrayList<>(); // url
-            ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
+            ListObjectsV2Request listObjectsRequest = ListObjectsV2Request.builder()
                     .bucket(bucketName)
                     .build();
 
-            ListObjectsResponse listObjectsResponse = s3Client.listObjects(listObjectsRequest);
-            for(S3Object s3Object : listObjectsResponse.contents()) {
+            ListObjectsV2Response listObjectsResponse = s3Client.listObjectsV2(listObjectsRequest);
+            List<String> objectKeys = listObjectsResponse.contents().stream()
+                    .map(S3Object::key)
+                    .collect(Collectors.toList());
+
+            for (String key : objectKeys) {
                 HeadObjectRequest headObjectRequest = HeadObjectRequest.builder() // 메타데이터 객체 요청
                         .bucket(bucketName)
-                        .key(s3Object.key())
+                        .key(key)
                         .build();
 
                 HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
                 Map<String, String> metadata = headObjectResponse.metadata();
                 String themeIdMetadata = metadata.get("themeid");
 
-                // 메타데이터가 일치하는 값들만 url 값들을 리스트에 추가
+                // 메타데이터가 주어진 themeId와 일치하는 경우에만 Pre-signed URL 생성하여 리스트에 추가
                 if (themeIdMetadata != null && themeIdMetadata.equals(String.valueOf(themeId))) {
                     GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                             .bucket(bucketName)
-                            .key(s3Object.key())
+                            .key(key)
                             .build();
 
                     // pre-signed 객체 요청
@@ -150,11 +134,83 @@ public class AwsS3Service {
                     musicList.add(theUrl);
                 }
             }
+
             return musicList;
-        } catch (SdkException e){
+        } catch (SdkException e) {
             throw new RuntimeException("list 반환 실패: " + e.getMessage(), e);
         }
     }
+
+    //음원 조회v3 - pre-signed 비동기 처리
+    public List<String> getMp3FileListUrlV3(long themeId) {
+        try {
+            List<String> musicList = new ArrayList<>(); // 반환 url 리스트
+            // 개체 목록 요청
+            ListObjectsRequest listObjectsRequest = ListObjectsRequest.builder()
+                    .bucket(bucketName)
+                    .build();
+
+            // .listObjects()로 실제 s3client의 객체 목록 가져옴
+            ListObjectsResponse listObjectsResponse = s3Client.listObjects(listObjectsRequest);
+            // 스트림으로 객체 키 추출 - 데이터 병렬처리
+            List<String> objectKeys = listObjectsResponse.contents().stream()// 객체 목록 얻은 후 스트림 변환
+                    .map(S3Object::key)
+                    .collect(Collectors.toList()); // 결과를 리스트로 수집
+
+            // 비동기적으로 객체 정보 처리
+            List<CompletableFuture<String>> futures = objectKeys.stream()// 리스트 각 객체 키를 이용해서 CompletableFuture생성
+                    .map(key -> CompletableFuture.supplyAsync(() -> { // 비동기 작업을 생성, supplyAsync()
+                        // 객체의 메타 데이터를 가져옴
+                        HeadObjectRequest headObjectRequest = HeadObjectRequest.builder()
+                                .bucket(bucketName)
+                                .key(key)
+                                .build();
+
+                        HeadObjectResponse headObjectResponse = s3Client.headObject(headObjectRequest);
+                        Map<String, String> metadata = headObjectResponse.metadata();
+                        String themeIdMetadata = metadata.get("themeid");
+
+                        // 메타데이터가 주어진 themeId와 일치하는 경우에만 Pre-signed URL 생성하여 반환
+                        if (themeIdMetadata != null && themeIdMetadata.equals(String.valueOf(themeId))) {
+                            GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                                    .bucket(bucketName)
+                                    .key(key)
+                                    .build();
+
+                            // pre-signed 객체 요청
+                            GetObjectPresignRequest getObjectPresignRequest = GetObjectPresignRequest.builder()
+                                    .signatureDuration(Duration.ofMinutes(1)) // 만료시간
+                                    .getObjectRequest(getObjectRequest)
+                                    .build();
+
+                            PresignedGetObjectRequest presignedGetObjectRequest = s3Presigner.presignGetObject(getObjectPresignRequest);
+                            return presignedGetObjectRequest.url().toString();
+                        } else {
+                            return null; // url이 존재하지 않는다면 null 값을 넣어준다.
+                        }
+                    }))
+                    .collect(Collectors.toList());
+
+            // futures 리스트에 있는 모든 completablefuture들이 완료되기를 기다림.(allOf)
+            CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+            // 최종적으로 pre-signed url이 담긴 List<String>이 저장
+            CompletableFuture<List<String>> allUrlsFuture = allFutures.thenApply(v -> //allFutures는 실제 결과를 가지고있지 않다.
+                    futures.stream() //
+                            .map(CompletableFuture::join)
+                            .filter(Objects::nonNull)
+                            .collect(Collectors.toList()) // 필터링 후 실제 pre-signed url이 담긴 리스트 생성
+            );
+
+            musicList.addAll(allUrlsFuture.get());
+
+            return musicList;
+        } catch (Exception e) {
+            throw new RuntimeException("list 반환 실패: " + e.getMessage(), e);
+        }
+    }
+
+
+
 
 
     // 음원 업로드 기능 - 관리자 권한필요 - 메타데이터 기반 업로드
@@ -176,6 +232,7 @@ public class AwsS3Service {
         }
     }
 
+
     // 음원 다운로드 기능
     // 버킷에서 파일을 가져오고 그 내용을 byte[]로 변환하여 ResponseEntity로 반환
     public ResponseEntity<Void> download(String fileName) throws IOException{
@@ -194,7 +251,7 @@ public class AwsS3Service {
         httpHeaders.setContentDispositionFormData("attachment", resultFileName);
 
         // 로컬 다운로드 폴더 경로
-        String downloadFolderPath = "C:\\Users\\DLEHDDUF\\Downloads"; // C:
+        String downloadFolderPath = "C:\\Users\\Downloads"; // windows
 
         // 로컬 다운로드 폴더에 파일 저장
         String filePath = downloadFolderPath + File.separator + resultFileName;

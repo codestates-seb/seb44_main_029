@@ -69,6 +69,7 @@ public class TokenService {
         if(value == null || !value.equals(refreshToken.getRefreshToken()))
             return null;
 
+        log.info("토큰 발급 완료");
         return tokenProvider.createToken(authentication);
     }
 }
