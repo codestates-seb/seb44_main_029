@@ -9,9 +9,17 @@ interface CardProps {
   themeTitle: string;
   contentId: number;
   liked: boolean;
+  handleItemDelete: () => void;
 }
 
-const Card = ({ image, themeId, themeTitle, contentId, liked }: CardProps) => {
+const Card = ({
+  image,
+  themeId,
+  themeTitle,
+  contentId,
+  liked,
+  handleItemDelete,
+}: CardProps) => {
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
@@ -26,6 +34,7 @@ const Card = ({ image, themeId, themeTitle, contentId, liked }: CardProps) => {
 
   const handleLikedButton = async () => {
     await handleUpdateLikeMutation.mutateAsync(contentId);
+    handleItemDelete();
   };
 
   return (
@@ -64,11 +73,21 @@ const ImgLink = styled(Link)`
   box-sizing: border-box;
   > img {
     width: 100%;
-    max-height: 100px;
-    height: 100%;
     border-radius: 30px;
     color: white;
     box-sizing: border-box;
+    @media (min-width: 150px) {
+      height: 250px;
+    }
+    @media (min-width: 300px) {
+      height: 300px;
+    }
+    @media (min-width: 768px) {
+      height: 250px;
+    }
+    @media (min-width: 1024px) {
+      height: 150px;
+    }
   }
 `;
 
@@ -87,13 +106,6 @@ const ContentDiv = styled.div`
   border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   box-sizing: border-box;
-`;
-const ContentTitle = styled.div`
-  width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
-  color: white;
-  box-sizing: border-box;
-  font-weight: bold;
 `;
 
 const LikeButton = styled.button`

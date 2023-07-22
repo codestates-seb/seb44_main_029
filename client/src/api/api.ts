@@ -116,17 +116,25 @@ export const GetThemeItems = async (
 ): Promise<IThemeItemProps> => {
   const accessToken = localStorage.getItem('accessToken');
 
-  const response = await axios.get(
-    `${BASE_URL}theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        'ngrok-skip-browser-warning': '69420',
-        Authorization: `Bearer ${accessToken}`,
-      },
+  try {
+    const response = await axios.get(
+      `${BASE_URL}theme/${themeId}?page=${pageParam}&size=${sizeParam}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': '69420',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 500) {
+      await RenewAccessToken();
+      return GetThemeItems(themeId, pageParam, sizeParam);
     }
-  );
-  return response.data;
+    throw error;
+  }
 };
 
 // 업로드 요청
@@ -222,7 +230,7 @@ export const RenewAccessToken = async () => {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('memberId');
 
-    alert('토큰이 만료되어 로그아웃 되었습니다. 다시 로그인 해주세요.');
+    alert('액세스 토큰 갱신에 실패했습니다. 다시 로그인 해주세요.');
     window.location.href = '/';
     throw error;
   }

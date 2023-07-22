@@ -9,6 +9,15 @@ import ProfileEdit from '../pages/ProfileEdit';
 import ThemeDetailedItem from '../pages/ThemeDetailedItem';
 import Loading from '../components/Login/Loading';
 
+// 인증 상태를 확인 후 인증된 경우 : Profile
+// 인증되지 않은 경우 : LoginForm
+const renderBasedOnAuthStatus = () => {
+  const isAuthenticated = localStorage.getItem('accessToken');
+  const isLoggedIn = isAuthenticated && isAuthenticated !== 'null';
+
+  return isLoggedIn ? <Profile /> : <MainPage />;
+};
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -30,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/profile',
-        element: <Profile />,
+        element: renderBasedOnAuthStatus(),
       },
       {
         path: '/profile/edit',

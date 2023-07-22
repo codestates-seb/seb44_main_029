@@ -19,8 +19,9 @@ const GoogleLoginButton: React.FC = () => {
 export default GoogleLoginButton;
 
 const OAuthButton = styled.button`
-  width: 300px;
-  height: 40px;
+  box-sizing: border-box;
+  width: 75%;
+  height: 8%;
   background-color: white;
   border: 1px solid rgb(224, 224, 224);
   cursor: pointer;
@@ -29,6 +30,8 @@ const OAuthButton = styled.button`
   justify-content: center;
   align-items: center;
   border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
   &:hover {
     background-color: #f1f5f9;
   }
