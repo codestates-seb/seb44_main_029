@@ -122,13 +122,22 @@ const Container = styled.div`
 
 const Title = styled.div`
   width: 100%;
-  font-size: 24px;
   border-radius: 1rem;
   color: white;
   padding: 1.5rem;
   box-sizing: border-box;
   background-color: rgba(0, 0, 0, 0.3);
   margin-bottom: 1rem;
+
+  @media (min-width: 300px) {
+    font-size: 100%;
+  }
+  @media (min-width: 768px) {
+    font-size: 120%;
+  }
+  @media (min-width: 1024px) {
+    font-size: 150%;
+  }
 `;
 
 const List = styled.div`
@@ -155,7 +164,16 @@ const NoLikedImages = styled.div`
   color: white;
   text-align: center;
   > p {
-    font-size: 150%;
+    @media (min-width: 300px) {
+      font-size: 50%;
+      margin-bottom: 0;
+    }
+    @media (min-width: 768px) {
+      font-size: 100%;
+    }
+    @media (min-width: 1024px) {
+      font-size: 150%;
+    }
   }
 `;
 

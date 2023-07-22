@@ -73,11 +73,21 @@ const ImgLink = styled(Link)`
   box-sizing: border-box;
   > img {
     width: 100%;
-    max-height: 100px;
-    height: 100%;
     border-radius: 30px;
     color: white;
     box-sizing: border-box;
+    @media (min-width: 150px) {
+      height: 300px;
+    }
+    @media (min-width: 300px) {
+      height: 250px;
+    }
+    @media (min-width: 768px) {
+      height: 200px;
+    }
+    @media (min-width: 1024px) {
+      height: 150px;
+    }
   }
 `;
 

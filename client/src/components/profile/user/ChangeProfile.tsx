@@ -113,31 +113,56 @@ const UserInfoSection = styled.section`
 
 const InputWrapper = styled.div`
   box-sizing: border-box;
-  width: 100%;
+  width: 80%;
   display: flex;
   align-items: center;
 `;
 
-const UsernameDiv = styled.div`
+const UsernameDiv = styled.p`
   box-sizing: border-box;
-  width: 100%;
-  color: white;
-  font-size: 200%;
+  width: 50%;
   color: white;
   margin-bottom: 10px;
+
+  @media (min-width: 150px) {
+    font-size: 20px;
+  }
+
+  @media (min-width: 300px) {
+    font-size: 24px;
+  }
+  @media (min-width: 768px) {
+    font-size: 28px;
+  }
+  @media (min-width: 1024px) {
+    font-size: 32px;
+  }
 `;
 
-const EmailDiv = styled.div`
+const EmailDiv = styled.p`
   box-sizing: border-box;
-  width: 100%;
-  font-size: 150%;
+  width: 50%;
   color: gray;
+
+  @media (min-width: 150px) {
+    font-size: 12px;
+  }
+
+  @media (min-width: 300px) {
+    font-size: 16px;
+  }
+  @media (min-width: 768px) {
+    font-size: 20px;
+  }
+  @media (min-width: 1024px) {
+    font-size: 24px;
+  }
 `;
 
 const ButtonDiv = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: space-around;
+  flex-direction: column;
   box-sizing: border-box;
   width: 100%;
 `;
@@ -147,7 +172,6 @@ const ChangeButton = styled.button`
   border: none;
   border-radius: 5px;
   box-sizing: border-box;
-  width: 60%;
   padding: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -158,6 +182,24 @@ const ChangeButton = styled.button`
 
   &:hover {
     background-color: #2aa58e;
+  }
+
+  @media (min-width: 150px) {
+    font-size: 40%;
+    width: 40px;
+  }
+
+  @media (min-width: 300px) {
+    font-size: 40%;
+    width: 80px;
+  }
+  @media (min-width: 768px) {
+    font-size: 60%;
+    width: 120px;
+  }
+  @media (min-width: 1024px) {
+    font-size: 80%;
+    width: 180px;
   }
 `;
 
@@ -184,5 +226,23 @@ const WithdrawalButton = styled.button`
     background-color: #ccc;
     cursor: not-allowed;
     opacity: 0.7;
+  }
+
+  @media (min-width: 150px) {
+    font-size: 40%;
+    width: 40px;
+  }
+
+  @media (min-width: 300px) {
+    font-size: 40%;
+    width: 80px;
+  }
+  @media (min-width: 768px) {
+    font-size: 60%;
+    width: 120px;
+  }
+  @media (min-width: 1024px) {
+    font-size: 80%;
+    width: 180px;
   }
 `;
