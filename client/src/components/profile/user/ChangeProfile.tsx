@@ -60,7 +60,7 @@ const ChangeProfile = ({
           {email && (
             <WithdrawalButton
               onClick={WithdrawalMemberInfo}
-              disabled={email === 'guesttest@naver.com'}
+              disabled={email === 'guest@gmail.com'}
             >
               회원 정보 탈퇴
             </WithdrawalButton>
