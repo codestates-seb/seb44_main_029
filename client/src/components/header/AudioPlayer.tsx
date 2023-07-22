@@ -13,7 +13,7 @@ const AudioPlayer = () => {
   const [sound, setSound] = useState<Howl | null>(null);
   const [musicTitle, setMusicTitle] = useState('');
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
-  const [nowMusicId, setNowMusicId] = useState<number>(-1);
+  const [nowMusicId, setNowMusicId] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { themeId } = useParams();
   const location = useLocation();
@@ -51,27 +51,29 @@ const AudioPlayer = () => {
       });
       // 음원 등록
       setSound(soundInstance);
-      // const url = musicList[nowMusicId];
-      // // 음원 제목 등록
-      // getMusicTitleFromUrl(url);
+      const url = musicList[nowMusicId];
+      const title = getMusicTitleFromUrl(url);
+      setMusicTitle(title);
+      // 음원 제목 등록
       return () => {
         soundInstance.unload();
       };
     }
   }, [nowMusicId, musicList]);
 
-  // // URL에서 MusicTitle을 추출해서 상태를 변경하는 함수
-  // const getMusicTitleFromUrl = (url: string) => {
-  //   // URL에서 '?' 이후의 쿼리 파라미터를 제거하고, '/'로 분리하여 배열로 만든다
-  //   const pathSegments = url.split('?')[0].split('/');
-  //   // 배열의 마지막 요소는 파일 이름
-  //   const fileName = pathSegments[pathSegments.length - 1];
-  //   // fileName에사 .mp3 제거버전
-  //   const removeMp3 = fileName.split('.')[0];
-  //   // 정상적으로 보이도록 하기위한 디코딩과정
-  //   const decodedFileName = decodeURIComponent(removeMp3);
-  //   setMusicTitle(decodedFileName);
-  // };
+  // URL에서 MusicTitle을 추출해서 상태를 변경하는 함수
+  const getMusicTitleFromUrl = (url: string) => {
+    if (!url) return '다음곡을 재생해 주세요!';
+    // URL에서 '?' 이후의 쿼리 파라미터를 제거하고, '/'로 분리하여 배열로 만든다
+    const pathSegments = url.split('?')[0].split('/');
+    // 배열의 마지막 요소는 파일 이름
+    const fileName = pathSegments[pathSegments.length - 1];
+    // fileName에사 .mp3 제거버전
+    const removeMp3 = fileName.split('.')[0];
+    // 정상적으로 보이도록 하기위한 디코딩과정
+    const decodedFileName = decodeURIComponent(removeMp3);
+    return decodedFileName;
+  };
 
   //음원 변경 핸들러
   const handleChangeMusic = (next: boolean) => {
@@ -112,9 +114,9 @@ const AudioPlayer = () => {
 
   return (
     <Container>
-      {isThemePath && <TimerModal handleTogglePlay={handleTogglePlay} />}
       {musicList && musicList.length > 0 ? (
         <>
+          {isThemePath && <TimerModal handleTogglePlay={handleTogglePlay} />}
           {isPlaying ? (
             <S_IoPause onClick={handleTogglePlay} />
           ) : (
