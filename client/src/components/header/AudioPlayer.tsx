@@ -37,7 +37,7 @@ const AudioPlayer = () => {
   });
   // 경로 변경시
   useEffect(() => {
-    if (isPlaying) handleTogglePlay(); // 자동재생중이면 끄기
+    if (!themeId && isPlaying) handleTogglePlay(); // 자동재생중이면 끄기
   }, [location]);
 
   //음원 변경 & 음원리스트 변경시 새로운 인스턴스 생성 & 중복생성을 방지 하기위한 useEffect 로직
@@ -116,7 +116,7 @@ const AudioPlayer = () => {
     <Container>
       {musicList && musicList.length > 0 ? (
         <>
-          {isThemePath && <TimerModal handleTogglePlay={handleTogglePlay} />}
+          {!isPlaying && <TimerModal handleTogglePlay={handleTogglePlay} />}
           {isPlaying ? (
             <S_IoPause onClick={handleTogglePlay} />
           ) : (
