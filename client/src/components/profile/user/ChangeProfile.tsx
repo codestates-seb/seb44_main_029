@@ -55,17 +55,23 @@ const ChangeProfile = ({
 
           <EmailDiv>{email}</EmailDiv>
         </UserInfoSection>
-        <ButtonDiv>
-          <ChangeButton onClick={ChangeMemberInfo}>회원 정보 변경</ChangeButton>
-          {email && (
+        {email && (
+          <ButtonDiv>
+            <ChangeButton
+              onClick={ChangeMemberInfo}
+              disabled={email === 'guest@gmail.com'}
+            >
+              회원 정보 변경
+            </ChangeButton>
+
             <WithdrawalButton
               onClick={WithdrawalMemberInfo}
               disabled={email === 'guest@gmail.com'}
             >
               회원 정보 탈퇴
             </WithdrawalButton>
-          )}
-        </ButtonDiv>
+          </ButtonDiv>
+        )}
       </UserInfoDiv>
     </Container>
   );
@@ -124,10 +130,10 @@ const UsernameDiv = styled.div`
   margin-bottom: 10px;
 
   @media (min-width: 150px) {
-    font-size: 20px;
+    font-size: 14px;
   }
   @media (min-width: 300px) {
-    font-size: 24px;
+    font-size: 20px;
   }
   @media (min-width: 768px) {
     font-size: 28px;
@@ -143,10 +149,10 @@ const EmailDiv = styled.div`
   color: gray;
 
   @media (min-width: 150px) {
-    font-size: 12px;
+    font-size: 8px;
   }
   @media (min-width: 300px) {
-    font-size: 16px;
+    font-size: 12px;
   }
   @media (min-width: 768px) {
     font-size: 20px;
@@ -179,6 +185,12 @@ const ChangeButton = styled.button`
 
   &:hover {
     background-color: #2aa58e;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 
   @media (min-width: 150px) {
