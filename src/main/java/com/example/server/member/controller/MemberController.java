@@ -38,7 +38,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Validated MemberLoginDto dto, HttpServletResponse response){
+    public ResponseEntity login(@RequestBody MemberLoginDto dto, HttpServletResponse response){
         MemberIdAndTokenDto tokenAndId = memberService.login(dto);
 
         if(tokenAndId == null) return new ResponseEntity<>("null", HttpStatus.ACCEPTED);
