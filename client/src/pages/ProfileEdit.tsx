@@ -1,10 +1,12 @@
 import { styled } from 'styled-components';
-import Upload from '../components/upload/Upload';
+import MusicUpload from '../components/upload/MusicUpload';
+import ImageUpload from '../components/upload/ImageUpload';
 
 const ProfileEdit = () => {
   return (
     <Div>
-      <Upload />
+      <MusicUpload />
+      <ImageUpload />
     </Div>
   );
 };

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { PostUploadFile } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
 
-const Upload = () => {
+const ImageUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [themeId, setThemeId] = useState<string>('1');
 
@@ -46,8 +46,7 @@ const Upload = () => {
   return (
     <Container>
       <SelectDiv>
-        {' '}
-        <p>{file ? file.name : '파일을 업로드 하세요!'}</p>
+        <p>{file ? file.name : '이미지를 업로드 하세요!'}</p>
         <ThemeSelect value={themeId} onChange={handleThemeIdChange}>
           {Array.from({ length: 5 }, (_, index) => (
             <option key={index + 1} value={index + 1}>
@@ -62,17 +61,10 @@ const Upload = () => {
           type="file"
           id="file"
           onChange={handleFileChange}
-          accept=".jpg,.jpeg,.png,.gif,.mp3"
+          accept=".jpg,.jpeg,.png,.gif"
         />
         {file ? (
-          <>
-            {file.type.startsWith('image/') && (
-              <img src={URL.createObjectURL(file)} alt="Image Preview" />
-            )}
-            {file.type.startsWith('audio/') && (
-              <audio src={URL.createObjectURL(file)} controls />
-            )}
-          </>
+          <img src={URL.createObjectURL(file)} alt="Image Preview" />
         ) : (
           <p>Click me!</p>
         )}
@@ -89,7 +81,7 @@ const Upload = () => {
   );
 };
 
-export default Upload;
+export default ImageUpload;
 
 const Container = styled.div`
   display: flex;
