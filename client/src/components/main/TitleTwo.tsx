@@ -12,7 +12,8 @@ const TitleTwo = ({ observer }: TitleTwoProps) => {
     <Container>
       <Box observer={observer}>
         <p>CozyState는 테마 속에서,</p>
-        <p>즐거운 경험을 제공합니다.</p>
+        <p>조화로운 페이지와 음원과 함께</p>
+        <p>사용자에게 즐거운 경험을 드립니다.</p>
       </Box>
       <Box2 observer={observer} onClick={() => navigete('/theme')}>
         <SlideImg />
