@@ -12,7 +12,8 @@ const TitleTwo = ({ observer }: TitleTwoProps) => {
     <Container>
       <Box observer={observer}>
         <p>CozyState는 테마 속에서,</p>
-        <p>즐거운 경험을 제공합니다.</p>
+        <p>조화로운 페이지와 음원과 함께</p>
+        <p>사용자에게 즐거운 경험을 드립니다.</p>
       </Box>
       <Box2 observer={observer} onClick={() => navigete('/theme')}>
         <SlideImg />
@@ -44,7 +45,7 @@ const Container = styled.div`
   align-items: center;
   color: white;
   background-color: black;
-  @media (min-width: 400px) {
+  @media (min-width: 300px) {
     justify-content: center;
     flex-direction: column;
   }
@@ -70,7 +71,7 @@ const Box = styled.div<{ observer: boolean }>`
     margin: 0;
     font-weight: bold;
   }
-  @media (min-width: 400px) {
+  @media (min-width: 300px) {
     font-size: 1.5rem;
     align-items: center;
   }
@@ -86,11 +87,17 @@ const Box = styled.div<{ observer: boolean }>`
 
 const Box2 = styled.div<{ observer: boolean }>`
   opacity: 0;
+  cursor: pointer;
+
   animation: ${({ observer }) => (observer ? slideInAnimation : null)} 1s 0.8s
     forwards;
   transition: height 0.3s, width 0.3s, margin 0.3s;
 
-  @media (min-width: 400px) {
+  @media (min-width: 300px) {
+    width: 300px;
+    height: 300px;
+  }
+  @media (min-width: 500px) {
     width: 400px;
     height: 400px;
   }

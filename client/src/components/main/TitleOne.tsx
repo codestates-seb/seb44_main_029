@@ -11,25 +11,23 @@ const TitleOne = () => {
   return (
     <Container>
       {isModal && <LoginForm setIsModal={setIsModal} />}
-      <TitleDiv>
-        <p>편안함을 제공하는</p>
-        <Column>
-          <p>미디어 서비스 </p>
-          <p className="fadeIn">CozyState</p>
-        </Column>
-        <BtnColumnDiv>
-          {!accessToken && (
-            <button onClick={() => setIsModal(true)}>
-              <TbLogin />
-              <p>로그인</p>
-            </button>
-          )}
-          <button onClick={() => navigate('/theme')}>
-            <TbCarouselHorizontal />
-            <p>테마 둘러보기</p>
+      <p>편안함을 제공하는</p>
+      <Column>
+        <p>미디어 서비스 </p>
+        <p className="fadeIn">CozyState</p>
+      </Column>
+      <BtnColumnDiv>
+        {!accessToken && (
+          <button onClick={() => setIsModal(true)}>
+            <TbLogin />
+            <p>로그인</p>
           </button>
-        </BtnColumnDiv>
-      </TitleDiv>
+        )}
+        <button onClick={() => navigate('/theme')}>
+          <TbCarouselHorizontal />
+          <p>테마 둘러보기</p>
+        </button>
+      </BtnColumnDiv>
     </Container>
   );
 };
@@ -75,19 +73,12 @@ const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.9);
-`;
-
-const TitleDiv = styled.div`
-  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   color: white;
   font-weight: bold;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgb(0, 0, 0, 1));
   > p {
     margin: 0;
   }
@@ -101,13 +92,22 @@ const TitleDiv = styled.div`
 
 const Column = styled.div`
   display: flex;
+  align-items: center;
+  @media (min-width: 300px) {
+    flex-direction: column;
+  }
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
   > p {
     margin: 0;
-    margin-right: 30px;
+    @media (min-width: 768px) {
+      margin-right: 20px;
+    }
   }
   > .fadeIn {
     margin: 0;
-    animation: ${fadeInAnimation} 5s ease-in-out;
+    animation: ${fadeInAnimation} 4s ease-in-out;
   }
 `;
 
@@ -125,6 +125,7 @@ const BtnColumnDiv = styled.div`
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.2s ease-in-out;
     @media (min-width: 300px) {
       font-size: 0.5rem;
@@ -137,6 +138,26 @@ const BtnColumnDiv = styled.div`
       width: 150px;
       height: 40px;
       border-radius: 10px;
+    }
+    // 아이콘
+    > :first-child {
+      @media (min-width: 300px) {
+        font-size: 250%;
+        margin-right: 0px;
+      }
+      @media (min-width: 768px) {
+        font-size: 150%;
+        margin-right: 5px;
+      }
+    }
+    // <p>
+    > p {
+      @media (min-width: 300px) {
+        display: none;
+      }
+      @media (min-width: 768px) {
+        display: contents;
+      }
     }
   }
   > button:hover {

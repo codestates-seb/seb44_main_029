@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
@@ -11,7 +11,19 @@ import LoginForm from '../Login/LoginForm';
 const Nav = () => {
   const [isClicked, setIsClick] = useState(false);
   const [isModal, setIsModal] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  // 외부 영역 클릭 시
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
+        setIsClick(false);
+      }
+    };
+    window.addEventListener('mousedown', handleClick);
+    return () => window.removeEventListener('mousedown', handleClick);
+  }, [modalRef]);
 
   // 로컬스토리지에 있는 액세스토큰 꺼내오기
   const accessToken = localStorage.getItem('accessToken');
@@ -52,7 +64,7 @@ const Nav = () => {
   };
 
   return (
-    <Container>
+    <Container ref={modalRef}>
       {isModal && <LoginForm setIsModal={setIsModal} />}
       <NavBtnDiv isClicked={isClicked}>
         {/* 클릭시 나타나는 메뉴바 */}

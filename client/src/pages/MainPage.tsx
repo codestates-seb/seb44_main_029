@@ -7,6 +7,7 @@ import { BiChevronsDown } from 'react-icons/bi';
 import { useEffect, useState } from 'react';
 
 const MainPage = () => {
+  // 현재 감지된 페이지의 넘버입니다, 1 ~ 3
   const [observer, serObserver] = useState(1);
   //다음 타이틀로 이동
   const handleScrollDown = () => {
@@ -78,6 +79,7 @@ const AnimationDiv = styled(BiChevronsDown)`
   bottom: 0;
   margin-bottom: 10px;
   opacity: 0;
+  cursor: pointer;
   animation: ${fadeInAnimation} 1s ease-in-out 3s forwards,
     ${moveUpDown} 2s ease-in-out infinite;
 `;

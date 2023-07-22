@@ -20,15 +20,23 @@ const TimerModal = ({ handleTogglePlay }: { handleTogglePlay: () => void }) => {
   const handleNoButtonClick = () => {
     setShowModal(false);
   };
+  // 체크시 다시는 TimerModal을 안 보여줌.
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    localStorage.setItem('neverOpenTimerModal', `${e.target.checked}`);
+  };
 
   return (
     <ModalContainer show={showModal}>
       <ModalContent>
-        <div>음악과 함께?</div>
+        <div>BGM을 재생 하시겠습니까?</div>
         <ButtonContainer>
           <Button onClick={handleYesButtonClick}>예</Button>
           <Button onClick={handleNoButtonClick}>아니오</Button>
         </ButtonContainer>
+        <CheckboxContainer>
+          <input type="checkbox" onChange={(e) => handleCheckbox(e)} />
+          <label>다음부터 띄우지 않기</label>
+        </CheckboxContainer>
       </ModalContent>
     </ModalContainer>
   );
@@ -39,24 +47,10 @@ const slideRigthIn = keyframes`
   0% , 100%{
     right: -20%;
   }
-  10%, 90% {
+  15%, 85% {
     opacity: 1;
     right: 0%;
   }
-`;
-
-// 모달 창의 뒷 배경이 어두워지는 오버레이 스타일
-const ModalOverlay = styled.div<{ show: boolean }>`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 어두운 배경 색상 */
-  display: ${(props) =>
-    props.show
-      ? 'block'
-      : 'none'}; /* showModal 상태에 따라 보이기/숨기기 설정 */
 `;
 
 // 모달 창을 감싸는 컨테이너 스타일
@@ -73,7 +67,7 @@ const ModalContainer = styled.div<{ show: boolean }>`
     props.show
       ? 'block'
       : 'none'}; /* showModal 상태에 따라 보이기/숨기기 설정 */
-  animation: ${slideRigthIn} 3s ease-in-out;
+  animation: ${slideRigthIn} 5s ease-in-out;
 `;
 
 // 모달 창의 내용 스타일
@@ -95,6 +89,16 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+
+  input[type='checkbox'] {
+    margin-right: 5px;
+  }
 `;
 
 export default TimerModal;
