@@ -3,6 +3,7 @@ package com.example.server.member.controller;
 import com.example.server.member.dto.MemberIdAndTokenDto;
 import com.example.server.member.dto.RefreshTokenDto;
 import com.example.server.member.service.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/tokens")
+@Tag(name = "TokenController", description = "API about Token")
 public class TokenController {
     private final TokenService tokenService;
 

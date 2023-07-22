@@ -31,9 +31,9 @@ public class OpenApiConfig {
 */
     @Bean
     public OpenAPI openAPI() {
-        Info info = new Info().title("Spring Boot API Example")
-                .description("Spring Boot API 예시 프로젝트입니다.")
-                .version("v0.0.1");
+        Info info = new Info().title("Project CozyStates")
+                .description("Main team 029의 프로젝트 CozyStates API 문서입니다.")
+                .version("v1.0.0");
 
         // SecuritySecheme명
         String jwtSchemeName = "jwtAuth";
@@ -44,15 +44,13 @@ public class OpenApiConfig {
                 .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
                         .name(jwtSchemeName)
                         .type(SecurityScheme.Type.HTTP) // HTTP 방식
-                        //.type(SecurityScheme.Type.OAUTH2) //OAUTH2
                         .scheme("bearer")
                         .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)
 
         Components components2 = new Components()
                 .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
                         .name(jwtSchemeName)
-                        .type(SecurityScheme.Type.OAUTH2) // HTTP 방식
-                        //.type(SecurityScheme.Type.OAUTH2) //OAUTH2
+                        .type(SecurityScheme.Type.OAUTH2) //OAUTH2
                         .scheme("bearer")
                         .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)
 

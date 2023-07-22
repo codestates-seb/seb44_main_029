@@ -7,6 +7,7 @@ import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.service.MemberService;
 import com.example.server.member.service.TokenService;
 import com.example.server.music.controller.MusicController;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
+@Tag(name = "MemberController", description = "API about Member")
 public class MemberController {
     private final MemberService memberService;
 
