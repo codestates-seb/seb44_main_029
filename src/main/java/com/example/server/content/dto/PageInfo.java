@@ -6,19 +6,14 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-@Schema(description = "Pagination Information")
 public class PageInfo {
 
 
-    @Schema(description = "Requested Page")
     private int page;
 
-    @Schema(description = "Page Size")
     private int size;
 
-    @Schema(description = "Total Number of Searched Elements")
     private long totalElements;
 
-    @Schema(description = "Total Number of Pages")
     private int totalPages;
 }

@@ -1,0 +1,28 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ServerApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <envs>
+      <env name="AWS_ACCESS_KEY" value="AKIAVJOSTGPX3LLI23EF" />
+      <env name="AWS_SECRET_KEY" value="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" />
+      <env name="CLIENT_ID" value="492169011912-1o9evmkdle898mg5facghqgipvi415en.apps.googleusercontent.com" />
+      <env name="CLIENT_SECRET" value="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" />
+      <env name="JWT_SECRET" value="dmskamdskamdksalndsanjfkqwgefuinklsjfajdlshuwhuqgbkbdasndksajugfekfmaldbqanbd" />
+    </envs>
+    <option name="MAIN_CLASS_NAME" value="com.example.server.ServerApplication" />
+    <module name="server.main" />
+    <option name="VM_PARAMETERS" value="-Dcom.amazonaws.sdk.disableEc2Metadata=true" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.example.server.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <extension name="software.aws.toolkits.jetbrains.core.execution.JavaAwsConnectionExtension">
+      <option name="credential" />
+      <option name="region" />
+      <option name="useCurrentConnection" value="false" />
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

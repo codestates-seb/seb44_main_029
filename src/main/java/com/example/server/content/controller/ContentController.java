@@ -1,5 +1,8 @@
 package com.example.server.content.controller;
 
+import com.example.server.content.dto.ContentListDto;
+import com.example.server.content.dto.ContentPageDto;
+import com.example.server.content.dto.ContentResponseDto;
 import com.example.server.content.mapper.ContentMapper;
 import com.example.server.content.repository.ContentRepository;
 import com.example.server.content.service.ContentServiceImpl;
@@ -27,8 +30,8 @@ public class ContentController {
     public final ContentRepository contentRepository;
 
     @GetMapping("/{content-id}")
-    public ResponseEntity<?> getContent(@Positive @PathVariable("content-id") Long contentId,
-                                     HttpServletRequest request){
+    public ResponseEntity<ContentListDto> getContent(@Positive @PathVariable("content-id") Long contentId,
+                                                     HttpServletRequest request){
         return new ResponseEntity<>(contentService.contentResponse(contentId, request), HttpStatus.OK);
     }
 

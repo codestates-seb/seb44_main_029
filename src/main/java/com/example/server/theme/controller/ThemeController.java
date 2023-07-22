@@ -4,6 +4,7 @@ import com.example.server.content.mapper.ContentMapper;
 import com.example.server.content.service.ContentServiceImpl;
 import com.example.server.theme.mapper.ThemeMapper;
 import com.example.server.theme.service.ThemeServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
-
+@Tag(name = "Contents", description = "API about Contents")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/theme")
@@ -39,10 +40,11 @@ public class ThemeController {
 
         return themeService.themeResponse(themeId, request, page, size, criteria, sort);
     }
-
+/*
     @GetMapping
     public ResponseEntity<?> getThemes(){
 
         return new ResponseEntity<>(themeMapper.ThemesToThemeResponseDtos(themeService.getThemes()), HttpStatus.OK);
     }
+ */
 }

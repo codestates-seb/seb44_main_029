@@ -6,6 +6,7 @@ import com.example.server.content.service.ContentServiceImpl;
 import com.example.server.music.controller.MusicController;
 import com.example.server.music.service.AwsS3Service;
 import com.example.server.theme.repository.ThemeRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+@Tag(name = "Contents", description = "API about Contents")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/contentsUpload")
@@ -35,7 +37,7 @@ public class ContentUploadController {
 
         return contentService.uploadSequence(file, title, themeId);
     }
-
+/*
     @PatchMapping
     public ResponseEntity<String> thumbnailUploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("title") String title,
@@ -43,4 +45,5 @@ public class ContentUploadController {
 
         return contentService.uploadSequence(file, title, themeId);
     }
+ */
 }
