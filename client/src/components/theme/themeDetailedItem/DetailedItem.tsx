@@ -67,6 +67,7 @@ const DetailedItem = ({
         <MoveToNextDiv to={`/theme/${themeId}/${nextContentId}`}>
           <img src={nextArrowSvg} alt="Next Arrow" />
         </MoveToNextDiv>
+        <CloseButtonLink to={`/theme/${themeId}`}>✕</CloseButtonLink>
       </ItemContainerDiv>
     </Container>
   );
@@ -81,6 +82,31 @@ const Container = styled.div`
   overflow: auto;
 `;
 
+const CloseButtonLink = styled(Link)`
+  position: absolute;
+  bottom: 2rem;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 1);
+  background-color: transparent;
+  border: none;
+  transition: 0.2s;
+  text-decoration: none;
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.6);
+  }
+`;
+
+const ItemContainerDiv = styled.div`
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const OverlayControlDiv = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -91,15 +117,6 @@ const OverlayControlDiv = styled.div`
   padding: 0.5rem;
   pointer-events: none;
   justify-content: center;
-`;
-
-const ItemContainerDiv = styled.div`
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const ItemImgDiv = styled.div`
@@ -142,6 +159,7 @@ const MoveToDiv = css`
   display: flex;
   position: absolute;
   opacity: 0.6;
+  transition: 0.2s;
 
   &:hover {
     opacity: 1;

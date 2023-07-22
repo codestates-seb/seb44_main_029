@@ -168,6 +168,7 @@ export const GetThemeLikes = async (
   sizeParam: number
 ): Promise<IThemeItemProps> => {
   const accessToken = localStorage.getItem('accessToken');
+
   try {
     const response = await axios.get(
       `${BASE_URL}contents/likes/${themeId}?page=${pageParam}&size=${sizeParam}`,

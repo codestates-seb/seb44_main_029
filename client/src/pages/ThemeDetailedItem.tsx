@@ -47,8 +47,8 @@ const ThemeDetailedItem = () => {
           <PacmanLoader color="rgba(255, 255, 255, 1)" size={20} />
         </div>
       )}
+      {status === 'error' && <div>{error.toString()}</div>}
       <ContentContainer>
-        {status === 'error' && <div>{error.toString()}</div>}
         {status === 'success' && currentItem ? (
           <DetailedItem
             key={currentItem.contentId}
