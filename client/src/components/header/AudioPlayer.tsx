@@ -17,9 +17,10 @@ const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { themeId } = useParams();
   const location = useLocation();
-  const isThemePath = /^\/theme\/\d+$/.test(location.pathname);
   const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
   const refetchInterval = 1 * 55 * 1000;
+  const checkLocalStorage =
+    localStorage.getItem('neverOpenTimerModal') === 'true';
 
   // themeId가 변경될시 실행되는 쿼리
   const {
@@ -116,7 +117,9 @@ const AudioPlayer = () => {
     <Container>
       {musicList && musicList.length > 0 ? (
         <>
-          {!isPlaying && <TimerModal handleTogglePlay={handleTogglePlay} />}
+          {!isPlaying && !checkLocalStorage && (
+            <TimerModal handleTogglePlay={handleTogglePlay} />
+          )}
           {isPlaying ? (
             <S_IoPause onClick={handleTogglePlay} />
           ) : (

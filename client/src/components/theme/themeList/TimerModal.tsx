@@ -20,6 +20,10 @@ const TimerModal = ({ handleTogglePlay }: { handleTogglePlay: () => void }) => {
   const handleNoButtonClick = () => {
     setShowModal(false);
   };
+  // 체크시 다시는 TimerModal을 안 보여줌.
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    localStorage.setItem('neverOpenTimerModal', `${e.target.checked}`);
+  };
 
   return (
     <ModalContainer show={showModal}>
@@ -29,6 +33,10 @@ const TimerModal = ({ handleTogglePlay }: { handleTogglePlay: () => void }) => {
           <Button onClick={handleYesButtonClick}>예</Button>
           <Button onClick={handleNoButtonClick}>아니오</Button>
         </ButtonContainer>
+        <CheckboxContainer>
+          <input type="checkbox" onChange={(e) => handleCheckbox(e)} />
+          <label>다음부터 띄우지 않기</label>
+        </CheckboxContainer>
       </ModalContent>
     </ModalContainer>
   );
@@ -81,6 +89,16 @@ const Button = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+
+  input[type='checkbox'] {
+    margin-right: 5px;
+  }
 `;
 
 export default TimerModal;
