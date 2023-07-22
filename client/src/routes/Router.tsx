@@ -14,6 +14,7 @@ import Loading from '../components/Login/Loading';
 const renderBasedOnAuthStatus = () => {
   const isAuthenticated = localStorage.getItem('accessToken');
   const isLoggedIn = isAuthenticated && isAuthenticated !== 'null';
+
   return isLoggedIn ? <Profile /> : <MainPage />;
 };
 

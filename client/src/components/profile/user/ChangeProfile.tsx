@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { GetUserInfo, DeleteMemberInfo, Logout } from '../../../api/api';
-import { useEffect } from 'react';
+import { GetUserInfo, DeleteMemberInfo } from '../../../api/api';
 import { useNavigate } from 'react-router-dom';
 const ChangeProfile = ({
   setIsEdit,
@@ -118,7 +117,7 @@ const InputWrapper = styled.div`
   align-items: center;
 `;
 
-const UsernameDiv = styled.p`
+const UsernameDiv = styled.div`
   box-sizing: border-box;
   width: 50%;
   color: white;
@@ -127,7 +126,6 @@ const UsernameDiv = styled.p`
   @media (min-width: 150px) {
     font-size: 20px;
   }
-
   @media (min-width: 300px) {
     font-size: 24px;
   }
@@ -139,7 +137,7 @@ const UsernameDiv = styled.p`
   }
 `;
 
-const EmailDiv = styled.p`
+const EmailDiv = styled.div`
   box-sizing: border-box;
   width: 50%;
   color: gray;
@@ -147,7 +145,6 @@ const EmailDiv = styled.p`
   @media (min-width: 150px) {
     font-size: 12px;
   }
-
   @media (min-width: 300px) {
     font-size: 16px;
   }
