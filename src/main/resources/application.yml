@@ -47,11 +47,11 @@ spring:
               - profile
               - email
 config:
-  domain: http://cozystates.com.s3-website.ap-northeast-2.amazonaws.com/
+  domain: http://cozystates.com.s3-website.ap-northeast-2.amazonaws.com
 
 jwt:
   secret: ${JWT_SECRET}
-  access_token_expired: 3_600_000 #3_600_000
+  access_token_expired: 3_600_000
   refresh_token_expired: 604_800_000
 
 springdoc:

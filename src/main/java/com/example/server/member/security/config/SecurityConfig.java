@@ -101,9 +101,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
 
                 .authorizeRequests()
+                .antMatchers("/admins/**").hasRole("ADMIN")
                 .antMatchers("/tokens/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/members/**").permitAll()
-                .antMatchers("/members/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/members", "/members/login").permitAll()
+                .antMatchers("/members/logout").authenticated()
+                .antMatchers(HttpMethod.GET, "/members/**").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/member/**").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/members/**").authenticated()
                 .anyRequest().permitAll()
 
                 .and()
