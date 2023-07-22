@@ -44,7 +44,7 @@ const Container = styled.div`
   align-items: center;
   color: white;
   background-color: black;
-  @media (min-width: 400px) {
+  @media (min-width: 300px) {
     justify-content: center;
     flex-direction: column;
   }
@@ -70,7 +70,7 @@ const Box = styled.div<{ observer: boolean }>`
     margin: 0;
     font-weight: bold;
   }
-  @media (min-width: 400px) {
+  @media (min-width: 300px) {
     font-size: 1.5rem;
     align-items: center;
   }
@@ -87,11 +87,16 @@ const Box = styled.div<{ observer: boolean }>`
 const Box2 = styled.div<{ observer: boolean }>`
   opacity: 0;
   cursor: pointer;
+
   animation: ${({ observer }) => (observer ? slideInAnimation : null)} 1s 0.8s
     forwards;
   transition: height 0.3s, width 0.3s, margin 0.3s;
 
-  @media (min-width: 400px) {
+  @media (min-width: 300px) {
+    width: 300px;
+    height: 300px;
+  }
+  @media (min-width: 500px) {
     width: 400px;
     height: 400px;
   }
