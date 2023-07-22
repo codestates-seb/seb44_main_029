@@ -40,7 +40,7 @@ public class MusicController {
     @GetMapping("/list")
     public ResponseEntity getMusicUrlList(@Positive @PathVariable("theme-id") long themeId){
 
-        List<String> mp3List = awsS3Service.getMp3FileListUrlV2(themeId);
+        List<String> mp3List = awsS3Service.getMp3FileListUrlV3(themeId);
         return ResponseEntity.ok(mp3List);
     }
 
