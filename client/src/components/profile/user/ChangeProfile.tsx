@@ -112,14 +112,16 @@ const UserInfoSection = styled.section`
 `;
 
 const InputWrapper = styled.div`
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
   align-items: center;
 `;
 
 const UsernameDiv = styled.div`
+  box-sizing: border-box;
   width: 100%;
   color: white;
-  box-sizing: border-box;
   font-size: 200%;
   color: white;
   margin-bottom: 10px;
