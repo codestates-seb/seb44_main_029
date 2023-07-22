@@ -1,8 +1,11 @@
 package com.example.server.documentation;
 
+import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.OAuthFlow;
+import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springdoc.core.GroupedOpenApi;
@@ -33,12 +36,14 @@ public class OpenApiConfig {
     public OpenAPI openAPI() {
         Info info = new Info().title("Project CozyStates")
                 .description("Main team 029의 프로젝트 CozyStates API 문서입니다.")
-                .version("v1.0.0");
+                .version("v1.0.0")
+                .termsOfService("Team 029");
 
         // SecuritySecheme명
         String jwtSchemeName = "jwtAuth";
+        String OAuth = "OAuth 2.0";
         // API 요청헤더에 인증정보 포함
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName, OAuth);
         // SecuritySchemes 등록
         Components components = new Components()
                 .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
@@ -46,13 +51,15 @@ public class OpenApiConfig {
                         .type(SecurityScheme.Type.HTTP) // HTTP 방식
                         .scheme("bearer")
                         .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)
-
+/*
         Components components2 = new Components()
-                .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
-                        .name(jwtSchemeName)
+                .addSecuritySchemes(OAuth, new SecurityScheme()
+                        .name(OAuth)
                         .type(SecurityScheme.Type.OAUTH2) //OAUTH2
-                        .scheme("bearer")
-                        .bearerFormat("JWT")); // 토큰 형식을 지정하는 임의의 문자(Optional)
+                        .flows(new OAuthFlows()
+                                .clientCredentials(new OAuthFlow()
+                                        .tokenUrl("http://www.google.com"+"/oauth/token"))));
+*/
 
         return new OpenAPI()
                 .info(info)
