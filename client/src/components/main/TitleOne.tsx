@@ -76,9 +76,9 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.9);
   color: white;
   font-weight: bold;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgb(0, 0, 0, 1));
   > p {
     margin: 0;
   }
