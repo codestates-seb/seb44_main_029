@@ -53,7 +53,7 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
 
-        String refreshToken = tokenService.createRefreshToken(username);
+        String refreshToken = tokenService.createRefreshToken(username, false);
         String accessToken = tokenProvider.createToken(authenticationToken);
 
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);

@@ -22,7 +22,7 @@ public class RefreshToken {
     Boolean active;
     String token;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     Member member;
 }
