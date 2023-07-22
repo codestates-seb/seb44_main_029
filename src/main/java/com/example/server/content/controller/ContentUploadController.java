@@ -6,6 +6,9 @@ import com.example.server.content.service.ContentServiceImpl;
 import com.example.server.music.controller.MusicController;
 import com.example.server.music.service.AwsS3Service;
 import com.example.server.theme.repository.ThemeRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,14 @@ public class ContentUploadController {
     private final ThemeRepository themeRepository;
     private final ContentServiceImpl contentService;
 
+    @Operation(summary = "파일 업로드",
+            description = "파일을 Title과 Theme ID를 정하여 업로드합니다. \r\n \r \n" +
+                    "파일은 원본과 Thumbnail로 나뉘어서 업로드됩니다.")
+
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "업로드 성공"),
+            @ApiResponse(responseCode = "500", description = "업로드 실패")
+    })
     @PostMapping
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("title") String title,
