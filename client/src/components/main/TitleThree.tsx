@@ -28,41 +28,28 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
 };
 
 export default TitleThree;
-//페이드 아웃 애니메이션
-const fadeInAnimation = keyframes`
-  20% {
-    color: red;
-    background-color: white;
-    box-shadow: 3px 3px 1px 1px #a0a0a0;
+//페이드 아웃 클릭 애니메이션
+const fadeInClickAnimation = keyframes`
+  20%, 100%{
     opacity: 1;
   }
-  50%{
-    box-shadow: 3px 3px 1px 1px #a0a0a0;
+  50%, 65%{
+    box-shadow: 3px 2px 1px 1px #a0a0a0;
     transform: translateY(0px);
     transform: translateX(0px);
   }
   60% {
-    transform: translateY(3px);
+    transform: translateY(2px);
     transform: translateX(3px);
     box-shadow: 0px 0px 1px 1px #a0a0a0;
-  }
-
-  65%{
-    transform: translateY(0px);
-    transform: translateX(0px);
-    box-shadow: 3px 3px 1px 1px #a0a0a0;
-  }
-
-  100%{
-    color: red;
-    background-color: white;
-    opacity: 1;
-    transform: translateY(3px);
-    transform: translateX(3px);
-    box-shadow: 0px 0px 1px 1px #a0a0a0;
-
   }
 `;
+const fadeInAnimation2 = keyframes`
+  100% {
+    opacity: 1;
+  }
+`;
+
 const slideInAnimation = keyframes`
   0% {
     transform: translateX(-100%);
@@ -73,14 +60,9 @@ const slideInAnimation = keyframes`
   }
 `;
 
-const slideOutAnimation = keyframes`
+const slideOutAnimation = keyframes`  
   100% {
     opacity: 0;
-  }
-`;
-const slideOutAnimation2 = keyframes`
-  100% {
-    opacity: 1;
   }
 `;
 
@@ -100,11 +82,11 @@ const Container = styled.div`
 `;
 const Box = styled.div<{ observer: boolean }>`
   display: flex;
-  opacity: 0;
   animation: ${({ observer }) =>
       observer ? slideInAnimation : slideOutAnimation}
-    1s 0.3s forwards;
+    1s forwards;
   > img {
+    z-index: 300;
     height: 100%;
     object-fit: cover;
     -webkit-user-drag: none;
@@ -137,7 +119,7 @@ const Box2 = styled.div<{ observer: boolean }>`
   opacity: 0;
   flex-grow: 1;
   animation: ${({ observer }) =>
-      observer ? slideOutAnimation2 : slideOutAnimation}
+      observer ? fadeInAnimation2 : slideOutAnimation}
     1s 1s forwards;
   > p {
     margin: 0;
@@ -182,12 +164,18 @@ const Column = styled.div<{ observer: boolean }>`
     cursor: pointer;
     opacity: 0;
     padding: 0 5px;
-    margin: 0 5px;
+    margin: 0 10px;
     border-radius: 10px;
-    box-shadow: 3px 3px 1px 1px #a0a0a0;
+    box-shadow: 3px 2px 1px 1px #a0a0a0;
+    background-color: white;
+    color: red;
     animation: ${({ observer }) =>
-        observer ? fadeInAnimation : slideOutAnimation}
+        observer ? fadeInClickAnimation : slideOutAnimation}
       3s 2s forwards;
-    transition: box-shadow 2s;
+    &:active {
+      box-shadow: none;
+      transform: translateY(2px);
+      transform: translateX(3px);
+    }
   }
 `;
