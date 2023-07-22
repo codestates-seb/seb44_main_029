@@ -125,6 +125,7 @@ const BtnColumnDiv = styled.div`
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.2s ease-in-out;
     @media (min-width: 300px) {
       font-size: 0.5rem;

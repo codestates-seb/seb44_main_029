@@ -179,6 +179,7 @@ const Column = styled.div<{ observer: boolean }>`
     margin: 0;
   }
   > .like {
+    cursor: pointer;
     opacity: 0;
     padding: 0 5px;
     margin: 0 5px;

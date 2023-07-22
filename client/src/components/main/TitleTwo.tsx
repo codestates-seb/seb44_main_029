@@ -86,6 +86,7 @@ const Box = styled.div<{ observer: boolean }>`
 
 const Box2 = styled.div<{ observer: boolean }>`
   opacity: 0;
+  cursor: pointer;
   animation: ${({ observer }) => (observer ? slideInAnimation : null)} 1s 0.8s
     forwards;
   transition: height 0.3s, width 0.3s, margin 0.3s;
