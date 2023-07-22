@@ -34,7 +34,7 @@ public class MemberController {
 
     @GetMapping("/get")
     public String get(){
-        return new BCryptPasswordEncoder().encode("guest123!@#");
+        return new BCryptPasswordEncoder().encode("admin123!@#");
     }
 
     @PostMapping("/login")
