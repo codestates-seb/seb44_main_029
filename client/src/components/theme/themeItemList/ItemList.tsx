@@ -68,6 +68,7 @@ const OverlayControlDiv = styled.div`
   top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   padding: 0.5rem;
   pointer-events: none;
 `;
@@ -79,11 +80,7 @@ const Container = styled.div`
   max-height: 100%;
 
   &:hover > ${OverlayControlDiv} {
-    background: linear-gradient(
-      180deg,
-      rgba(25, 27, 38, 0.56),
-      rgba(25, 27, 38, 0)
-    );
+    background: rgba(0, 0, 0, 0.5);
     transition: all 0.25s;
     opacity: 1;
   }

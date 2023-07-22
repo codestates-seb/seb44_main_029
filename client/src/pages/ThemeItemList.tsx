@@ -29,7 +29,7 @@ const ThemeItemList = () => {
   const [currentThemeTitle, setCurrentThemeTitle] = useState<string>(''); // 현재 테마 타이틀을 표시하기 위해 사용되는 상태
   const [isModal, setIsModal] = useState(false);
 
-  // 테마 이미지 리스트를 가져와서 무하스크롤을 구현하는 함수
+  // 테마 이미지 리스트를 가져와서 무한스크롤을 구현하는 쿼리
   const {
     data: items,
     error,
@@ -59,6 +59,7 @@ const ThemeItemList = () => {
     }
   );
 
+  // 테마의 좋아요한 이미지 리스트를 가져와서 무한스크롤을 구현하는 쿼리
   const {
     data: likedItems,
     fetchNextPage: fetchLikedItemsNextPage,
@@ -66,7 +67,7 @@ const ThemeItemList = () => {
     isFetchingNextPage: likedItemsIsFetchingNextPage,
   } = useInfiniteQuery<IThemeItemProps, AxiosError>(
     ['likes', numThemeId],
-    ({ pageParam = 1 }) => GetThemeLikes(numThemeId, pageParam, 18), // 여기서 pageParam 추가
+    ({ pageParam = 1 }) => GetThemeLikes(numThemeId, pageParam, 48),
     {
       keepPreviousData: true,
       getNextPageParam: (lastPage) => {
