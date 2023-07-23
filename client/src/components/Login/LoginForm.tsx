@@ -100,7 +100,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
     try {
       const response = await loginMutation.mutateAsync(loginFormData);
       if (response.status === 200) {
-        alert('Log In success!');
+        alert('로그인 성공!');
         setLoginFormData({
           email: '',
           password: '',
@@ -120,11 +120,10 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('memberId');
-        // handleLogoutMutation.mutate();
         window.location.href = '/';
       }
     } catch (error) {
-      alert('Failed to Log In!');
+      alert('로그인 실패!');
       console.error('Log In failed:', error);
     }
   };
