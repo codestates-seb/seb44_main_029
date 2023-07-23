@@ -90,7 +90,7 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
     try {
       const response = await signUpMutation.mutateAsync(signUpFormData);
       if (response.status === 201) {
-        alert('Sign Up success!');
+        alert('회원가입 성공!');
         setSignUpFormData({
           username: '',
           email: '',
@@ -117,7 +117,7 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
         }));
       }
     } catch (error) {
-      alert('Failed to Sign Up!');
+      alert('회원가입 실패!');
       console.error('Sign Up failed:', error);
     }
   };
