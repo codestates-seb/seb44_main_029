@@ -17,7 +17,7 @@ const Profile = () => {
         ) : (
           <ChangeProfile setIsEdit={setIsEdit} />
         )}
-        {sessionStorage.getItem('admin') !== 'true' ? (
+        {sessionStorage.getItem('admin') === 'true' ? (
           <ColumnDiv>
             <ImageUpload />
             <MusicUpload />
