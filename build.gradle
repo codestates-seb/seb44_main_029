@@ -57,6 +57,9 @@ dependencies {
 
 
 	implementation 'mysql:mysql-connector-java:8.0.32'
+
+
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
 }
 
 tasks.named('test') {

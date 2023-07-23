@@ -56,24 +56,38 @@ public class CustomOAuth2SuccessHandler extends SavedRequestAwareAuthenticationS
         String refreshToken = tokenService.createRefreshToken(username);
         String accessToken = tokenProvider.createToken(authenticationToken);
 
+    
+
+        ResponseDto responseDto = ResponseDto.builder()
+                .memberId(member.getId())
+                .refreshToken(refreshToken)
+                .build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse = objectMapper.writeValueAsString(responseDto);
+
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
 
-        String uri = createURI(accessToken, refreshToken, member.getId().toString()).toString();
+        String uri = createURI(request, accessToken, refreshToken, member.getId().toString()).toString();
 
         getRedirectStrategy().sendRedirect(request, response, uri);
+//        response.setContentType("application/json");
+//        response.getWriter().write(jsonResponse);
     }
 
-    public URI createURI(String accessToken, String refreshToken, String memberId){
+    public URI createURI(HttpServletRequest request, String accessToken, String refreshToken, String memberId){
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("authorization", accessToken);
         params.add("refresh-token", refreshToken);
         params.add("memberId", memberId);
 
+        String serverName = request.getServerName();
+
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("cozystates.com")
-                .port(80)
+                .host("localhost")
+                .port(3000)
                 .path("/oauthloading")
                 .queryParams(params)
                 .build()
