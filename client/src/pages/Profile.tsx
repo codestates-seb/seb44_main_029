@@ -73,4 +73,6 @@ export const ContentContainer = styled.div`
 const ColumnDiv = styled.div`
   display: flex;
   justify-content: space-around;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
 `;

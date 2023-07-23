@@ -95,6 +95,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: white;
+  font-weight: bold;
 `;
 
 const Input = styled.input`
@@ -104,15 +106,15 @@ const Input = styled.input`
 const Label = styled.label`
   height: 250px;
   width: 300px;
-  border: 2px dashed black;
+  border: 2px dashed white;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
 
   &:hover {
-    color: green;
-    border-color: green;
+    color: red;
+    border-color: red;
   }
 
   > img {
@@ -139,7 +141,8 @@ const Button = styled.button`
   width: 130px;
   height: 40px;
   font-size: 17px;
-  border-radius: 10px;
+  border-radius: 5px;
+  border: none;
   color: white;
   background-color: ${(props) => props.color};
 `;
