@@ -11,7 +11,7 @@ cloud:
       auto: 'false'
 spring:
   datasource:
-    url: jdbc:mysql://database-cozystates.c1hypxzbotyv.ap-northeast-2.rds.amazonaws.com:13306/cozystates?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://database-cozystates2.c1hypxzbotyv.ap-northeast-2.rds.amazonaws.com:13306/cozystates?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
     username: admin
     password: 12341234
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -59,7 +59,7 @@ springdoc:
   default-consumes-media-type: application/json;charset=UTF-8
   default-produces-media-type: application/json;charset=UTF-8
   swagger-ui:
-    path: cozystates.html            # Swagger UI 경로 => localhost:8000/demo-ui.html
+    path: /api_doc.html            # Swagger UI 경로 => localhost:8000/demo-ui.html
     tags-sorter: alpha            # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
     operations-sorter: alpha      # alpha: 알파벳 순 태그 정렬, method: HTTP Method 순 정렬
   api-docs:
