@@ -105,7 +105,7 @@ const Box = styled.div<{ observer: boolean }>`
     height: 70%;
   }
   @media (min-width: 768px) {
-    height: 50%;
+    height: 60%;
   }
   @media (min-width: 1024px) {
     height: 100%;
@@ -149,15 +149,12 @@ const Column = styled.div<{ observer: boolean }>`
   display: flex;
   @media (min-width: 300px) {
     font-size: 1.3rem;
-    margin: 10px 0;
   }
   @media (min-width: 768px) {
     font-size: 2rem;
-    margin: 20px 0;
   }
   @media (min-width: 1024px) {
     font-size: 1.8rem;
-    margin: 20px 0;
   }
   > p {
     margin: 0;
@@ -166,8 +163,8 @@ const Column = styled.div<{ observer: boolean }>`
     cursor: pointer;
     opacity: 0;
     padding: 0 5px;
-    margin: 0 10px;
-    border-radius: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
     box-shadow: 3px 2px 1px 1px #a0a0a0;
     background-color: white;
     color: red;
