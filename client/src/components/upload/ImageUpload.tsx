@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { PostUploadFile } from '../../api/api';
+import { PostUploadImg } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
 
 const ImageUpload = () => {
@@ -20,7 +20,7 @@ const ImageUpload = () => {
 
   // post API 등록
   const uploadMutation = useMutation((formData: FormData) =>
-    PostUploadFile(formData)
+    PostUploadImg(formData)
   );
 
   //저장 버튼 API실행

@@ -138,7 +138,16 @@ export const GetThemeItems = async (
 };
 
 // 업로드 요청
-export const PostUploadFile = async (data: FormData) => {
+export const PostUploadImg = async (data: FormData) => {
+  const response = await axios.post(`${BASE_URL}PostUploadImg`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data', // multipart/form-data
+    },
+  });
+  return response;
+};
+
+export const PostUploadMusic = async (data: FormData) => {
   const response = await axios.post(`${BASE_URL}musicUpload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data', // multipart/form-data
