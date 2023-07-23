@@ -27,7 +27,7 @@ const ThemeList = () => {
     {
       src: gif4,
       title: '픽셀',
-      content: '화려한 픽셀아트의 세계',
+      content: '화려한 픽셀 아트의 세계',
     },
     {
       src: gif5,

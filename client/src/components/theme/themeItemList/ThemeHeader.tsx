@@ -9,15 +9,15 @@ const ThemeHeader = ({ currentThemeTitle }: ThemeHeaderProps) => {
 
   // 테마 타이틀에 따라서 설명을 설정
   if (currentThemeTitle === 'Nature') {
-    description = '자연 관련 콘텐츠를 감상할 수 있는 테마';
+    description = '아름다운 자연 풍경';
   } else if (currentThemeTitle === 'Space') {
-    description = '우주 관련 콘텐츠를 감상할 수 있는 테마';
+    description = '우주의 무한함';
   } else if (currentThemeTitle === 'Animal') {
-    description = '동물 관련 콘텐츠를 감상할 수 있는 테마';
+    description = '다양한 동물의 귀여운 매력';
   } else if (currentThemeTitle === 'Pixel') {
-    description = '픽셀 관련 콘텐츠를 감상할 수 있는 테마';
+    description = '화려한 픽셀 아트의 세계';
   } else if (currentThemeTitle === 'Retro') {
-    description = '레트로 관련 콘텐츠를 감상할 수 있는 테마';
+    description = '과거로 돌아가는 레트로 감성';
   }
 
   return (
