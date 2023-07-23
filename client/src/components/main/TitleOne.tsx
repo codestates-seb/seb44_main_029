@@ -11,27 +11,29 @@ const TitleOne = () => {
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <>
       {isModal && <LoginForm setIsModal={setIsModal} />}
-      <p>편안함을 제공하는</p>
-      <Column>
-        <p>미디어 서비스 </p>
-        <p className="fadeIn">CozyState</p>
-      </Column>
-      <BtnColumnDiv>
-        {!accessToken && (
-          <button onClick={() => setIsModal(true)}>
-            <TbLogin />
-            <p>로그인</p>
+      <Container>
+        <p>편안함을 제공하는</p>
+        <Column>
+          <p>미디어 서비스 </p>
+          <p className="fadeIn">CozyState</p>
+        </Column>
+        <BtnColumnDiv>
+          {!accessToken && (
+            <button onClick={() => setIsModal(true)}>
+              <TbLogin />
+              <p>로그인</p>
+            </button>
+          )}
+          <button onClick={() => navigate('/theme')}>
+            <TbCarouselHorizontal />
+            <p>테마 둘러보기</p>
           </button>
-        )}
-        <button onClick={() => navigate('/theme')}>
-          <TbCarouselHorizontal />
-          <p>테마 둘러보기</p>
-        </button>
-      </BtnColumnDiv>
-      <MoveNextPage currentPage={1} />
-    </Container>
+        </BtnColumnDiv>
+        <MoveNextPage currentPage={1} />
+      </Container>
+    </>
   );
 };
 
