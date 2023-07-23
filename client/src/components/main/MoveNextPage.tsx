@@ -15,7 +15,6 @@ const MoveNextcurrentPage = ({ currentPage }: props) => {
   };
   return (
     <Contaner
-      size="50px"
       color="white"
       currentPage={currentPage}
       onClick={handleScrollDown}
@@ -49,4 +48,13 @@ const Contaner = styled(BiChevronsDown)<{ currentPage: number }>`
   cursor: pointer;
   animation: ${fadeInAnimation} 1s ease-in-out 3s forwards,
     ${moveUpDown} 2s ease-in-out infinite;
+  @media (min-width: 300px) {
+    font-size: 30px;
+  }
+  @media (min-width: 500px) {
+    font-size: 40px;
+  }
+  @media (min-width: 768px) {
+    font-size: 50px;
+  }
 `;
