@@ -34,7 +34,7 @@ public class ContentUploadController {
     private final ContentServiceImpl contentService;
 
     @Operation(summary = "파일 업로드",
-            description = "파일을 Title과 Theme ID를 정하여 업로드합니다. \r\n \r \n" +
+            description = "파일을 Title과 Theme ID를 정하여 업로드합니다." +
                     "파일은 원본과 Thumbnail로 나뉘어서 업로드됩니다.")
 
     @ApiResponses(value = {
