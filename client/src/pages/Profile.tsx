@@ -3,6 +3,8 @@ import backgroundImg from '../assets/images/profile_background.png';
 import ChangeProfile from '../components/profile/user/ChangeProfile';
 import LikeList from '../components/profile/like/LikeList';
 import EditProfile from '../components/profile/edit/EditProfile';
+import ImageUpload from '../components/upload/ImageUpload';
+import MusicUpload from '../components/upload/MusicUpload';
 import { useState } from 'react';
 
 const Profile = () => {
@@ -15,7 +17,14 @@ const Profile = () => {
         ) : (
           <ChangeProfile setIsEdit={setIsEdit} />
         )}
-        <LikeList />
+        {sessionStorage.getItem('admin') !== 'true' ? (
+          <ColumnDiv>
+            <ImageUpload />
+            <MusicUpload />
+          </ColumnDiv>
+        ) : (
+          <LikeList />
+        )}
       </ContentContainer>
     </Layout>
   );
@@ -59,4 +68,9 @@ export const ContentContainer = styled.div`
   box-shadow: 0 0 0.2rem 0.1rem rgba(255, 255, 255, 0.7);
   border-radius: 0.5rem;
   background-color: rgba(0, 0, 0, 0.3);
+`;
+
+const ColumnDiv = styled.div`
+  display: flex;
+  justify-content: space-around;
 `;
