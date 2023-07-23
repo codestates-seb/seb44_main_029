@@ -3,6 +3,8 @@ import { TbCarouselHorizontal, TbLogin } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LoginForm from '../Login/LoginForm';
+import MoveNextPage from './MoveNextPage';
+
 const TitleOne = () => {
   const [isModal, setIsModal] = useState(false);
   const accessToken = localStorage.getItem('accessToken');
@@ -28,6 +30,7 @@ const TitleOne = () => {
           <p>테마 둘러보기</p>
         </button>
       </BtnColumnDiv>
+      <MoveNextPage currentPage={1} />
     </Container>
   );
 };
