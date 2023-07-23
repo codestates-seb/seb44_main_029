@@ -52,13 +52,10 @@ public class MemberService{
             return null;
         }
 
-        if(!member.getUsername().equals("guest")) {
-            RefreshToken check = refreshTokenJpaRepository.findByMemberId(member.getId()).orElse(null);
-            if (check != null && check.getActive()) {
-                log.info("이미 로그인 한 사용자입니다.");
-                return MemberIdAndTokenDto.builder()
-                        .memberId(-6L).build();
-            }
+        RefreshToken check = refreshTokenJpaRepository.findByMemberId(member.getId()).orElse(null);
+        if(check != null && check.getActive()){
+            log.info("이미 로그인 한 사용자입니다.");
+            return null;
         }
 
         String refreshToken = tokenService.createRefreshToken(username);
