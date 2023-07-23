@@ -85,6 +85,10 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
     try {
       const response = await loginMutation.mutateAsync(loginFormData);
       if (response.status === 200) {
+        // 관리자 판단
+        loginFormData.email === 'admin@adadad.com'
+          ? sessionStorage.setItem('admin', 'true')
+          : sessionStorage.removeItem('admin');
         alert('로그인 성공!');
         setLoginFormData({
           email: '',
