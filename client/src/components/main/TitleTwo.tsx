@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import SlideImg from './SlideImg';
 import { useNavigate } from 'react-router-dom';
+import MoveNextPage from './MoveNextPage';
 
 interface TitleTwoProps {
   observer: boolean;
@@ -8,6 +9,7 @@ interface TitleTwoProps {
 
 const TitleTwo = ({ observer }: TitleTwoProps) => {
   const navigete = useNavigate();
+
   return (
     <Container>
       <Box observer={observer}>
@@ -18,6 +20,7 @@ const TitleTwo = ({ observer }: TitleTwoProps) => {
       <Box2 observer={observer} onClick={() => navigete('/theme')}>
         <SlideImg />
       </Box2>
+      <MoveNextPage currentPage={2} />
     </Container>
   );
 };
