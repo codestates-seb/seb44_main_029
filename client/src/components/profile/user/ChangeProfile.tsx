@@ -3,6 +3,8 @@ import IconUser from '../../../assets/icon/icon_carbon_user-avatar.png';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { GetUserInfo, DeleteMemberInfo } from '../../../api/api';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
 const ChangeProfile = ({
   setIsEdit,
 }: {
@@ -41,6 +43,32 @@ const ChangeProfile = ({
     }
   };
 
+  // 화면 너비에 따라 버튼 이름 변경
+  const [changeButtonName, setChangeButtonName] = useState('회원 정보 변경');
+  const [withdrawalButtonName, setWithdrawalButtonName] =
+    useState('회원 정보 탈퇴');
+
+  useEffect(() => {
+    function updateButtonName() {
+      const screenWidth = window.innerWidth;
+
+      if (screenWidth <= 400) {
+        setChangeButtonName('변경');
+        setWithdrawalButtonName('탈퇴');
+      } else {
+        setChangeButtonName('회원 정보 변경');
+        setWithdrawalButtonName('회원 정보 탈퇴');
+      }
+    }
+
+    updateButtonName();
+    window.addEventListener('resize', updateButtonName);
+
+    return () => {
+      window.removeEventListener('resize', updateButtonName);
+    };
+  }, []);
+
   return (
     <Container>
       <UserInfoDiv>
@@ -48,30 +76,28 @@ const ChangeProfile = ({
           {imageUrl ? <Img src={imageUrl} /> : <Img src={IconUser} />}
         </ImageDiv>
 
-        <UserInfoSection>
+        <UserInfo>
           <InputWrapper>
             <UsernameDiv>{username}</UsernameDiv>
           </InputWrapper>
 
           <EmailDiv>{email}</EmailDiv>
-        </UserInfoSection>
-        {email && (
-          <ButtonDiv>
-            <ChangeButton
-              onClick={ChangeMemberInfo}
-              disabled={email === 'guest@gmail.com'}
-            >
-              회원 정보 변경
-            </ChangeButton>
+        </UserInfo>
+        <ButtonDiv>
+          <ChangeButton
+            onClick={ChangeMemberInfo}
+            disabled={email === 'guest@gmail.com'}
+          >
+            {changeButtonName}
+          </ChangeButton>
 
-            <WithdrawalButton
-              onClick={WithdrawalMemberInfo}
-              disabled={email === 'guest@gmail.com'}
-            >
-              회원 정보 탈퇴
-            </WithdrawalButton>
-          </ButtonDiv>
-        )}
+          <WithdrawalButton
+            onClick={WithdrawalMemberInfo}
+            disabled={email === 'guest@gmail.com'}
+          >
+            {withdrawalButtonName}
+          </WithdrawalButton>
+        </ButtonDiv>
       </UserInfoDiv>
     </Container>
   );
@@ -104,36 +130,43 @@ const ImageDiv = styled.div`
 `;
 
 const Img = styled.img`
-  width: 70%;
-  margin: 8px 40px;
+  margin: 8px 10px;
   box-sizing: border-box;
   border-radius: 10px;
+  width: 48px;
+
+  @media (min-width: 576px) {
+    width: 64px;
+  }
+  @media (min-width: 768px) {
+    width: 90px;
+  }
+  @media (min-width: 1024px) {
+    width: 120px;
+  }
 `;
 
-const UserInfoSection = styled.section`
+const UserInfo = styled.div`
   box-sizing: border-box;
   width: 100%;
-  margin-left: 1.5rem;
 `;
 
 const InputWrapper = styled.div`
   box-sizing: border-box;
-  width: 80%;
+  width: 100%;
   display: flex;
   align-items: center;
 `;
 
 const UsernameDiv = styled.div`
   box-sizing: border-box;
-  width: 50%;
+  width: 100%;
   color: white;
   margin-bottom: 10px;
+  font-size: 16px;
 
-  @media (min-width: 150px) {
-    font-size: 14px;
-  }
-  @media (min-width: 300px) {
-    font-size: 20px;
+  @media (min-width: 576px) {
+    font-size: 24px;
   }
   @media (min-width: 768px) {
     font-size: 28px;
@@ -145,20 +178,18 @@ const UsernameDiv = styled.div`
 
 const EmailDiv = styled.div`
   box-sizing: border-box;
-  width: 50%;
+  width: 100%;
   color: gray;
+  font-size: 8px;
 
-  @media (min-width: 150px) {
-    font-size: 8px;
-  }
-  @media (min-width: 300px) {
-    font-size: 12px;
+  @media (min-width: 576px) {
+    font-size: 16px;
   }
   @media (min-width: 768px) {
     font-size: 20px;
   }
   @media (min-width: 1024px) {
-    font-size: 24px;
+    font-size: 18px;
   }
 `;
 
@@ -183,6 +214,9 @@ const ChangeButton = styled.button`
   margin-bottom: 10px;
   margin-right: 20px;
 
+  font-size: 1px;
+  width: 50px;
+
   &:hover {
     background-color: #2aa58e;
   }
@@ -193,22 +227,22 @@ const ChangeButton = styled.button`
     opacity: 0.7;
   }
 
-  @media (min-width: 150px) {
-    font-size: 40%;
-    width: 40px;
-  }
-
-  @media (min-width: 300px) {
-    font-size: 40%;
+  @media (min-width: 400px) {
+    font-size: 4px;
     width: 80px;
   }
+
+  @media (min-width: 576px) {
+    font-size: 6px;
+    width: 100px;
+  }
   @media (min-width: 768px) {
-    font-size: 60%;
+    font-size: 8px;
     width: 120px;
   }
   @media (min-width: 1024px) {
-    font-size: 80%;
-    width: 180px;
+    font-size: 12px;
+    width: 140px;
   }
 `;
 
@@ -218,7 +252,6 @@ const WithdrawalButton = styled.button`
   border: none;
   border-radius: 5px;
   box-sizing: border-box;
-  width: 60%;
   padding: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -226,6 +259,9 @@ const WithdrawalButton = styled.button`
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 20px;
+
+  font-size: 1px;
+  width: 50px;
 
   &:hover {
     background-color: #f73737;
@@ -237,21 +273,21 @@ const WithdrawalButton = styled.button`
     opacity: 0.7;
   }
 
-  @media (min-width: 150px) {
-    font-size: 40%;
-    width: 40px;
-  }
-
-  @media (min-width: 300px) {
-    font-size: 40%;
+  @media (min-width: 400px) {
+    font-size: 4px;
     width: 80px;
   }
+
+  @media (min-width: 576px) {
+    font-size: 6px;
+    width: 100px;
+  }
   @media (min-width: 768px) {
-    font-size: 60%;
+    font-size: 8px;
     width: 120px;
   }
   @media (min-width: 1024px) {
-    font-size: 80%;
-    width: 180px;
+    font-size: 12px;
+    width: 140px;
   }
 `;
