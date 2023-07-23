@@ -3,32 +3,37 @@ import { TbCarouselHorizontal, TbLogin } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LoginForm from '../Login/LoginForm';
+import MoveNextPage from './MoveNextPage';
+
 const TitleOne = () => {
   const [isModal, setIsModal] = useState(false);
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <>
       {isModal && <LoginForm setIsModal={setIsModal} />}
-      <p>편안함을 제공하는</p>
-      <Column>
-        <p>미디어 서비스 </p>
-        <p className="fadeIn">CozyState</p>
-      </Column>
-      <BtnColumnDiv>
-        {!accessToken && (
-          <button onClick={() => setIsModal(true)}>
-            <TbLogin />
-            <p>로그인</p>
+      <Container>
+        <p>편안함을 제공하는</p>
+        <Column>
+          <p>미디어 서비스 </p>
+          <p className="fadeIn">CozyStates</p>
+        </Column>
+        <BtnColumnDiv>
+          {!accessToken && (
+            <button onClick={() => setIsModal(true)}>
+              <TbLogin />
+              <p>로그인</p>
+            </button>
+          )}
+          <button onClick={() => navigate('/theme')}>
+            <TbCarouselHorizontal />
+            <p>테마 둘러보기</p>
           </button>
-        )}
-        <button onClick={() => navigate('/theme')}>
-          <TbCarouselHorizontal />
-          <p>테마 둘러보기</p>
-        </button>
-      </BtnColumnDiv>
-    </Container>
+        </BtnColumnDiv>
+        <MoveNextPage currentPage={1} />
+      </Container>
+    </>
   );
 };
 

@@ -81,7 +81,6 @@ const Button = styled.button<{ bgColor: string }>`
   border: none;
   border-radius: 5px;
   box-sizing: border-box;
-  width: 60%;
   padding: 1rem;
   font-weight: bold;
   cursor: pointer;
@@ -89,4 +88,25 @@ const Button = styled.button<{ bgColor: string }>`
   margin-top: 10px;
   margin-bottom: 10px;
   margin-right: 20px;
+
+  font-size: 1px;
+  width: 50px;
+
+  @media (min-width: 400px) {
+    font-size: 4px;
+    width: 80px;
+  }
+
+  @media (min-width: 576px) {
+    font-size: 6px;
+    width: 100px;
+  }
+  @media (min-width: 768px) {
+    font-size: 8px;
+    width: 120px;
+  }
+  @media (min-width: 1024px) {
+    font-size: 12px;
+    width: 140px;
+  }
 `;

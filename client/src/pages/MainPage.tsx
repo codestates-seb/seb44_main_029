@@ -1,21 +1,13 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import TitleOne from '../components/main/TitleOne';
 import TitleTwo from '../components/main/TitleTwo';
 import TitleThree from '../components/main/TitleThree';
-import { BiChevronsDown } from 'react-icons/bi';
 
 import { useEffect, useState } from 'react';
 
 const MainPage = () => {
   // 현재 감지된 페이지의 넘버입니다, 1 ~ 3
   const [observer, serObserver] = useState(1);
-  //다음 타이틀로 이동
-  const handleScrollDown = () => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: 'smooth',
-    });
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,27 +34,11 @@ const MainPage = () => {
       <TitleOne />
       <TitleTwo observer={observer >= 2 ? true : false} />
       <TitleThree observer={observer === 3 ? true : false} />
-      <AnimationDiv size="50px" color="white" onClick={handleScrollDown} />
     </Layout>
   );
 };
 
 export default MainPage;
-//페이드 인 애니메이션
-const fadeInAnimation = keyframes`
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
-// 위아래 이동 애니메이션
-const moveUpDown = keyframes`
-  50% {
-    transform: translateY(-10px);
-  }
-`;
 
 const Layout = styled.div`
   width: 100%;
@@ -72,14 +48,4 @@ const Layout = styled.div`
   align-items: center;
   flex-direction: column;
   -webkit-user-drag: none;
-`;
-
-const AnimationDiv = styled(BiChevronsDown)`
-  position: absolute;
-  bottom: 0;
-  margin-bottom: 10px;
-  opacity: 0;
-  cursor: pointer;
-  animation: ${fadeInAnimation} 1s ease-in-out 3s forwards,
-    ${moveUpDown} 2s ease-in-out infinite;
 `;

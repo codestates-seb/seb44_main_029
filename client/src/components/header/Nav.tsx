@@ -70,15 +70,27 @@ const Nav = () => {
         {/* 클릭시 나타나는 메뉴바 */}
         {isClicked ? (
           <>
-            <S_FiX onClick={() => setIsClick(false)} />
-            <S_FiHome onClick={() => navigate('/')} />
-            <S_FiUser onClick={handleProfileClick} />
-            <S_TbCarouselHorizontal onClick={() => navigate('/theme')} />
+            <StyledIcon>
+              <FiX onClick={() => setIsClick(false)} />
+            </StyledIcon>
+            <StyledIcon>
+              <FiHome onClick={() => navigate('/')} />
+            </StyledIcon>
+            <StyledIcon>
+              <FiUser onClick={handleProfileClick} />
+            </StyledIcon>
+            <StyledIcon>
+              <TbCarouselHorizontal onClick={() => navigate('/theme')} />
+            </StyledIcon>
             {/* jwtToken 토큰 유무 분기 */}
             {!accessToken ? (
-              <S_TbLogin onClick={() => setIsModal(true)} />
+              <StyledIcon>
+                <TbLogin onClick={() => setIsModal(true)} />
+              </StyledIcon>
             ) : (
-              <S_TbLogout onClick={handleLogOut} />
+              <StyledIcon>
+                <TbLogout onClick={handleLogOut} />
+              </StyledIcon>
             )}
           </>
         ) : (
@@ -93,7 +105,7 @@ export default Nav;
 
 // 스타일드 컴포넌트 정의
 const Container = styled.div`
-  z-index: 99;
+  z-index: 300;
 `;
 
 const NavBtnDiv = styled.div<{ isClicked: boolean }>`
@@ -106,12 +118,17 @@ const NavBtnDiv = styled.div<{ isClicked: boolean }>`
   border-radius: 0 0 0 10px;
   transition: transform 0.5s, box-shadow 2s, height 0.5s;
   background-color: ${(props) =>
-    props.isClicked && 'rgba(255, 255, 255, 0.5);'};
-  //transform related
+    props.isClicked && 'rgba(255, 255, 255, 0.6);'};
+  @media (min-width: 300px) {
+    width: 50px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 70px;
+  }
 `;
 
 const S_FiAlignJustify = styled(FiAlignJustify)`
-  width: 50px;
   height: auto;
   border-radius: 0 0 0 10px;
   padding: 10px 0px;
@@ -129,118 +146,51 @@ const S_FiAlignJustify = styled(FiAlignJustify)`
     background-color: #bbddff;
     transition: background-color 0.05s, padding 0.05s;
   }
-`;
+  @media (min-width: 300px) {
+    width: 30px;
+  }
 
-const S_FiHome = styled(FiHome)`
-  width: 30px;
+  @media (min-width: 1024px) {
+    width: 50px;
+  }
+`;
+const StyledIcon = styled.div`
+  font-size: 30px;
   height: auto;
   border-radius: 10px 0 0 10px;
-  padding: 20px 0px;
   color: white;
-  //살짝 둥근 배경효과
+  // 살짝 둥근 배경효과
   transition: background-color 0.2s, padding 0.2s;
+  @media (min-width: 300px) {
+    padding: 15px 0px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 20px 0px;
+  }
+
   &:hover {
     padding: 20px;
     background-color: #dbdbdb;
-  }
-  //클릭 시 색상변화
-  &:active {
-    background-color: #bbddff;
-    transition: background-color 0.05s, padding 0.05s;
-  }
-`;
+    @media (min-width: 300px) {
+      padding: 15px;
+    }
 
-const S_FiUser = styled(FiUser)`
-  width: 30px;
-  height: auto;
-  border-radius: 10px 0 0 10px;
-  padding: 20px 0px;
-  color: white;
-  //살짝 둥근 배경효과
-  transition: background-color 0.2s, padding 0.2s;
-  &:hover {
-    padding: 20px;
-    background-color: #dbdbdb;
+    @media (min-width: 1024px) {
+      padding: 20px;
+    }
   }
-  //클릭 시 색상변화
-  &:active {
-    background-color: #bbddff;
-    transition: background-color 0.05s, padding 0.05s;
-  }
-`;
 
-const S_TbCarouselHorizontal = styled(TbCarouselHorizontal)`
-  width: 30px;
-  height: auto;
-  border-radius: 10px 0 0 10px;
-  padding: 20px 0px;
-  color: white;
-  //살짝 둥근 배경효과
-  transition: background-color 0.2s, padding 0.2s;
-  &:hover {
-    padding: 20px;
-    background-color: #dbdbdb;
-  }
-  //클릭 시 색상변화
+  // 클릭 시 색상변화
   &:active {
     background-color: #bbddff;
     transition: background-color 0.05s, padding 0.05s;
   }
-`;
+  @media (min-width: 300px) {
+    font-size: 20px;
+  }
 
-const S_TbLogin = styled(TbLogin)`
-  width: 30px;
-  height: auto;
-  border-radius: 10px 0 0 10px;
-  padding: 20px 0px;
-  color: white;
-  //살짝 둥근 배경효과
-  transition: background-color 0.2s, padding 0.2s;
-  &:hover {
-    padding: 20px;
-    background-color: #dbdbdb;
-  }
-  //클릭 시 색상변화
-  &:active {
-    background-color: #bbddff;
-    transition: background-color 0.05s, padding 0.05s;
-  }
-`;
-
-const S_TbLogout = styled(TbLogout)`
-  width: 30px;
-  height: auto;
-  border-radius: 10px 0 0 10px;
-  padding: 20px 0px;
-  color: white;
-  //살짝 둥근 배경효과
-  transition: background-color 0.2s, padding 0.2s;
-  &:hover {
-    padding: 20px;
-    background-color: #dbdbdb;
-  }
-  //클릭 시 색상변화
-  &:active {
-    background-color: #bbddff;
-    transition: background-color 0.05s, padding 0.05s;
-  }
-`;
-
-const S_FiX = styled(FiX)`
-  width: 40px;
-  height: auto;
-  padding: 15px 0px;
-  border-radius: 0 0 0 10px;
-  color: white;
-  //살짝 둥근 배경효과
-  transition: background-color 0.2s, padding 0.2s;
-  &:hover {
-    padding: 15px;
-    background-color: #dbdbdb;
-  }
-  //클릭 시 색상변화
-  &:active {
-    background-color: #bbddff;
-    transition: background-color 0.05s, padding 0.05s;
+  @media (min-width: 1024px) {
+    font-size: 30px;
   }
 `;

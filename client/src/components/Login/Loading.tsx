@@ -32,7 +32,7 @@ const Loading = () => {
   return (
     <Container>
       <Loader />
-      <LoadingText>구글 로그인중입니다...</LoadingText>
+      <LoadingText>Google 로그인중입니다...</LoadingText>
     </Container>
   );
 };

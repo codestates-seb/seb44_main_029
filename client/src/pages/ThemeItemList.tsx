@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import ThemeHeader from '../components/theme/themeItemList/ThemeHeader';
 import ItemListHeader from '../components/theme/themeItemList/ItemListHeader';
 import ItemList from '../components/theme/themeItemList/ItemList';
@@ -13,6 +13,7 @@ import getBackgroundImage from '../utils/getBackgroundImage';
 import { PacmanLoader } from 'react-spinners';
 import Masonry from 'react-masonry-css';
 import LoginForm from '../components/Login/LoginForm';
+import { BiChevronsUp } from 'react-icons/bi';
 
 const breakpointColumnsObj = {
   default: 6,
@@ -121,6 +122,13 @@ const ThemeItemList = () => {
     }
   };
 
+  const ScrollUp = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  };
+
   // 좋아요한 아이템만 표시하도록 필터링하거나 전체 아이템 목록을 가져온다.
   const filteredItems = showLikedOnly
     ? likedItems?.pages?.flatMap((page) => page.data) || []
@@ -161,6 +169,7 @@ const ThemeItemList = () => {
         </ItemListContainerDiv>
       </ContentContainer>
       {isModal && <LoginForm setIsModal={setIsModal} />}
+      <ScrollUP onClick={ScrollUp} />
     </Layout>
   );
 };
@@ -220,5 +229,39 @@ const MasonryStyled = styled(Masonry)`
 
   .masonry-grid_column > div {
     margin-bottom: 1rem;
+  }
+`;
+
+//페이드 인 애니메이션
+const fadeInAnimation = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+// 위아래 이동 애니메이션
+const moveUpDown = keyframes`
+  50% {
+    transform: translateY(5px);
+  }
+`;
+
+const ScrollUP = styled(BiChevronsUp)`
+  opacity: 1;
+  right: 0;
+  color: rgba(255, 255, 255, 1);
+  cursor: pointer;
+  animation: ${fadeInAnimation} 1s ease-in-out 3s forwards,
+    ${moveUpDown} 2s ease-in-out infinite;
+  @media (min-width: 300px) {
+    font-size: 30px;
+  }
+  @media (min-width: 500px) {
+    font-size: 40px;
+  }
+  @media (min-width: 768px) {
+    font-size: 50px;
   }
 `;

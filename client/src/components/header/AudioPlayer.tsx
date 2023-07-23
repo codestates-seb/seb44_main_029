@@ -186,6 +186,13 @@ const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
     filter: brightness(50%);
     height: 50%;
   }
+  @media (min-width: 300px) {
+    display: none;
+  }
+
+  @media (min-width: 450px) {
+    display: flex;
+  }
 `;
 
 const MusicTitleContainerdiv = styled.div`
@@ -196,6 +203,13 @@ const MusicTitleContainerdiv = styled.div`
 const MusicTitleDiv = styled.div`
   color: white;
   animation: ${marquee} 5s linear infinite;
+  @media (min-width: 300px) {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
 `;
 const S_IoPlay = styled(IoPlay)`
   height: 26px;

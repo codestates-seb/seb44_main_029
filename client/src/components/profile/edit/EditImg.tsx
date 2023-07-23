@@ -76,15 +76,24 @@ const Container = styled.div`
 `;
 
 const IconImg = styled.img`
-  width: 70%;
-  margin: 8px 40px;
+  margin: 8px 10px;
   box-sizing: border-box;
   border-radius: 10px;
   transition: scale 0.3s;
   cursor: pointer;
+  width: 48px;
 
   &:hover {
     scale: 1.1;
+  }
+  @media (min-width: 576px) {
+    width: 64px;
+  }
+  @media (min-width: 768px) {
+    width: 90px;
+  }
+  @media (min-width: 1024px) {
+    width: 120px;
   }
 `;
 
