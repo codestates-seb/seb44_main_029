@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import SignUpFormTwo from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { Login, Logout } from '../../api/api';
+import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import GuestLoginButton from './GuestLoginButton';
 import { useNavigate } from 'react-router';
@@ -16,7 +16,6 @@ interface LoginFormProps {
 }
 const LoginForm = ({ setIsModal }: LoginFormProps) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
     email: '',
@@ -75,20 +74,6 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
     },
   });
 
-  // 로그아웃 성공 시
-  const handleLogoutMutation = useMutation(Logout, {
-    onSuccess: () => {
-      // 토큰 및 멤버아이디 삭제
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('memberId');
-      navigate('/');
-    },
-    onError: (error) => {
-      console.error('Logout failed:', error);
-    },
-  });
-
   // 폼 제출하는 함수
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -100,7 +85,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
     try {
       const response = await loginMutation.mutateAsync(loginFormData);
       if (response.status === 200) {
-        alert('Log In success!');
+        alert('로그인 성공!');
         setLoginFormData({
           email: '',
           password: '',
@@ -120,11 +105,10 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('memberId');
-        // handleLogoutMutation.mutate();
         window.location.href = '/';
       }
     } catch (error) {
-      alert('Failed to Log In!');
+      alert('로그인 실패!');
       console.error('Log In failed:', error);
     }
   };
