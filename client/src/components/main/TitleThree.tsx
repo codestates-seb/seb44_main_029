@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 import LoginForm from '../Login/LoginForm';
 import { useState } from 'react';
+import ScrollUp from './ScrollUp';
 
 const TitleThree = ({ observer }: { observer: boolean }) => {
   const [isModal, setIsModal] = useState(false);
@@ -23,6 +24,7 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
         </Column>
         <p>당신만의 리스트를 만들어보세요.</p>
       </Box2>
+      <ScrollUp />
     </Container>
   );
 };

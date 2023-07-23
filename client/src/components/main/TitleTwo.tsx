@@ -75,7 +75,7 @@ const Box = styled.div<{ observer: boolean }>`
     font-weight: bold;
   }
   @media (min-width: 300px) {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     align-items: center;
   }
   @media (min-width: 768px) {
