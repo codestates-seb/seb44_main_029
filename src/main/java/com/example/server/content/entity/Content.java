@@ -2,6 +2,7 @@ package com.example.server.content.entity;
 
 import com.example.server.likes.entity.Likes;
 import com.example.server.theme.entity.Theme;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import javax.persistence.*;
