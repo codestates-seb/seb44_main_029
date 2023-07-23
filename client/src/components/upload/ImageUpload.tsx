@@ -29,6 +29,7 @@ const ImageUpload = () => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('themeId', themeId);
+      formData.append('title', 'test');
       //formdata 확인용
       for (const [key, value] of formData) {
         console.log(key); // 키 출력

@@ -139,18 +139,22 @@ export const GetThemeItems = async (
 
 // 업로드 요청
 export const PostUploadImg = async (data: FormData) => {
-  const response = await axios.post(`${BASE_URL}PostUploadImg`, data, {
+  const accessToken = localStorage.getItem('accessToken');
+  const response = await axios.post(`${BASE_URL}contentsUpload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data', // multipart/form-data
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return response;
 };
 
 export const PostUploadMusic = async (data: FormData) => {
-  const response = await axios.post(`${BASE_URL}musicUpload`, data, {
+  const accessToken = localStorage.getItem('accessToken');
+  const response = await axios.post(`${BASE_URL}admins/musicUpload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data', // multipart/form-data
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return response;
