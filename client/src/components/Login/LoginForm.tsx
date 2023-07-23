@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import SignUpFormTwo from '../signup/SignupForm';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { Login, Logout } from '../../api/api';
+import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import GuestLoginButton from './GuestLoginButton';
 import { useNavigate } from 'react-router';
@@ -16,7 +16,6 @@ interface LoginFormProps {
 }
 const LoginForm = ({ setIsModal }: LoginFormProps) => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
     email: '',
