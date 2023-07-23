@@ -17,7 +17,7 @@ const TitleOne = () => {
         <p>편안함을 제공하는</p>
         <Column>
           <p>미디어 서비스 </p>
-          <p className="fadeIn">CozyState</p>
+          <p className="fadeIn">CozyStates</p>
         </Column>
         <BtnColumnDiv>
           {!accessToken && (

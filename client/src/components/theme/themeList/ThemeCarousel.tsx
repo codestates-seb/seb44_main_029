@@ -3,13 +3,13 @@ import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { FiChevronsLeft, FiChevronsRight } from 'react-icons/fi';
 interface ThemeCarouselProps {
-  imgList: string[];
+  gifList: string[];
   currentThemeIndex: number;
   setCurrentThemeIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const ThemeCarousel = ({
-  imgList,
+  gifList,
   currentThemeIndex,
   setCurrentThemeIndex,
 }: ThemeCarouselProps) => {
@@ -17,12 +17,12 @@ const ThemeCarousel = ({
 
   //현재 테마 인덱스 + 1
   const handleNextTheme = () => {
-    setCurrentThemeIndex((prevIndex) => (prevIndex + 1) % imgList.length);
+    setCurrentThemeIndex((prevIndex) => (prevIndex + 1) % gifList.length);
   };
   //현재 테마 인덱스 - 1
   const handlePreviousTheme = () => {
     setCurrentThemeIndex(
-      (prevIndex) => (prevIndex - 1 + imgList.length) % imgList.length
+      (prevIndex) => (prevIndex - 1 + gifList.length) % gifList.length
     );
   };
 
@@ -32,19 +32,19 @@ const ThemeCarousel = ({
         <FiChevronsLeft />
         <PreviousThemeImg
           src={
-            imgList[(currentThemeIndex - 1 + imgList.length) % imgList.length]
+            gifList[(currentThemeIndex - 1 + gifList.length) % gifList.length]
           }
         />
       </PreviousDiv>
       <CurrentThemeImg
-        src={imgList[currentThemeIndex]}
+        src={gifList[currentThemeIndex]}
         onClick={() => {
           navigate(`/theme/${currentThemeIndex + 1}`);
         }}
       />
       <NextDiv onClick={handleNextTheme}>
         <FiChevronsRight />
-        <NextThemeImg src={imgList[(currentThemeIndex + 1) % imgList.length]} />
+        <NextThemeImg src={gifList[(currentThemeIndex + 1) % gifList.length]} />
       </NextDiv>
     </Container>
   );
@@ -95,7 +95,6 @@ const fadeInAnimation = keyframes`
 
 const Container = styled.section`
   width: 100vw;
-  height: 40vh;
   display: flex;
   justify-content: space-between;
 
@@ -107,7 +106,7 @@ const Container = styled.section`
     height: 40vh;
   }
   @media (min-width: 1024px) {
-    height: 40vh;
+    height: 60vh;
   }
 `;
 
@@ -123,7 +122,7 @@ const PreviousThemeImg = styled.img`
 `;
 
 const CurrentThemeImg = styled.img`
-  width: 70vw;
+  width: 60vw;
   height: auto;
   object-fit: cover;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.5);

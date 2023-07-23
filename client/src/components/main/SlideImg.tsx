@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import img1 from '../../assets/theme/1.png';
-import img2 from '../../assets/theme/2.png';
-import img3 from '../../assets/theme/3.png';
-import img4 from '../../assets/theme/4.png';
-import img5 from '../../assets/theme/5.png';
+import gif1 from '../../assets/theme/1.gif';
+import gif2 from '../../assets/theme/2.gif';
+import gif3 from '../../assets/theme/3.gif';
+import gif4 from '../../assets/theme/4.gif';
+import gif5 from '../../assets/theme/5.gif';
 
 const SlideImg = React.memo(() => {
-  const imgs = [img1, img2, img3, img4, img5];
+  const gifs = [gif1, gif2, gif3, gif4, gif5];
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImgIndex((prevIndex) => (prevIndex + 1) % imgs.length);
+      setCurrentImgIndex((prevIndex) => (prevIndex + 1) % gifs.length);
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [imgs]);
+  }, [gifs]);
 
   return (
     <Container>
-      {imgs.map((img, index) => (
+      {gifs.map((img, index) => (
         <Image
           key={index}
           src={img}
