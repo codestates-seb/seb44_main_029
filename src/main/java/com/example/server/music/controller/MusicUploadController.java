@@ -1,6 +1,7 @@
 package com.example.server.music.controller;
 
 import com.example.server.music.service.AwsS3Service;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/admins/musicUpload")
 @Slf4j
+@Tag(name = "MusicUploadController", description = "API about MusicUpload")
 public class MusicUploadController {
 
     @Value("${cloud.aws.s3.bucket}")

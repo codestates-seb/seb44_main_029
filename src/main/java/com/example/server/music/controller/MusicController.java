@@ -2,6 +2,7 @@ package com.example.server.music.controller;
 
 
 import com.example.server.music.service.AwsS3Service;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/theme/{theme-id}/music")
 @Slf4j
+@Tag(name = "Music", description = "API about Music")
 public class MusicController {
     private final AwsS3Service awsS3Service;
     private static final Logger logger = LoggerFactory.getLogger(MusicController.class);

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Ref;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -29,17 +28,14 @@ public class TokenService {
     private final JwtTokenProvider tokenProvider;
     private final MemberJpaRepository memberJpaRepository;
 
-    public String createRefreshToken(String username, boolean isGuest) {
+    public String createRefreshToken(String username) {
         Member member = memberJpaRepository.findByMemberUsername(username).get();
 
         String token = UUID.randomUUID().toString();
         RefreshToken refreshToken = null;
 
-        List<RefreshToken> checkList = refreshTokenJpaRepository.findByMemberId(member.getId());
-        boolean isPresent = (checkList.isEmpty()) ? false : true;
-
-        if(isPresent && !isGuest){
-            refreshToken = refreshTokenJpaRepository.findByMemberId(member.getId()).get(0);
+        if(refreshTokenJpaRepository.findByMemberId(member.getId()).isPresent()){
+            refreshToken = refreshTokenJpaRepository.findByMemberId(member.getId()).get();
             refreshToken.setActive(true);
             refreshToken.setToken(token);
         }else {
