@@ -108,8 +108,8 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
         queryClient.invalidateQueries(['login']);
         setIsModal(false);
         window.location.href = '/profile';
-      } else if (response.status === 202 && response.data === '') {
-        alert('탈퇴한 회원입니다. 회원가입부터 다시 진행해주세요.');
+      } else if (response.status === 202 && response.data === -7) {
+        alert('존재하지 않는 회원입니다.');
         setLoginFormData({
           email: '',
           password: '',
@@ -117,7 +117,11 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
         setIsModal(true);
       } else if (response.status === 202 && response.data === -6) {
         alert('중복 로그인이 되어 로그아웃 처리됩니다.');
-        handleLogoutMutation.mutate();
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('memberId');
+        // handleLogoutMutation.mutate();
+        window.location.href = '/';
       }
     } catch (error) {
       alert('Failed to Log In!');

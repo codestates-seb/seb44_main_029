@@ -77,10 +77,10 @@ const ImgLink = styled(Link)`
     color: white;
     box-sizing: border-box;
     @media (min-width: 150px) {
-      height: 250px;
+      height: 200px;
     }
     @media (min-width: 300px) {
-      height: 300px;
+      height: 250px;
     }
     @media (min-width: 768px) {
       height: 250px;

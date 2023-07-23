@@ -38,24 +38,43 @@ export default EditName;
 const Container = styled.div`
   box-sizing: border-box;
   width: 100%;
-  margin-left: 1.5rem;
 `;
 
 const InputWrapper = styled.div`
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
   align-items: center;
 `;
 
 const NameInput = styled.input`
-  width: 100%;
   box-sizing: border-box;
-  font-size: 150%;
-  color: black;
+  width: 100%;
   margin-bottom: 10px;
+  font-size: 16px;
+  color: black;
+  @media (min-width: 576px) {
+    font-size: 24px;
+  }
+  @media (min-width: 768px) {
+    font-size: 28px;
+  }
+  @media (min-width: 1024px) {
+    font-size: 32px;
+  }
 `;
 const EmailDiv = styled.div`
   box-sizing: border-box;
   width: 100%;
-  font-size: 150%;
   color: gray;
+  font-size: 8px;
+  @media (min-width: 576px) {
+    font-size: 16px;
+  }
+  @media (min-width: 768px) {
+    font-size: 20px;
+  }
+  @media (min-width: 1024px) {
+    font-size: 18px;
+  }
 `;
