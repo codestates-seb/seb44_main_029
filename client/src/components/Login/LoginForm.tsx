@@ -100,6 +100,9 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
     try {
       const response = await loginMutation.mutateAsync(loginFormData);
       if (response.status === 200) {
+        loginFormData.email === 'admin@adadad.com'
+          ? sessionStorage.setItem('admin', 'true')
+          : sessionStorage.removeItem('admin');
         alert('Log In success!');
         setLoginFormData({
           email: '',
