@@ -27,9 +27,6 @@ const Card = ({
     onSuccess: () => {
       queryClient.invalidateQueries(['likedContents']);
     },
-    onError: (error) => {
-      console.log(`onError: ${error}`);
-    },
   });
 
   const handleLikedButton = async () => {

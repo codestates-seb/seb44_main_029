@@ -27,8 +27,6 @@ const LikeList = () => {
   const itemInfo = data?.data;
   const pageInfo = data?.pageInfo;
 
-  console.log('itemInfo: ', itemInfo);
-
   // 이전 페이지
   const handlePrevPage = () => {
     if (page > 1) {

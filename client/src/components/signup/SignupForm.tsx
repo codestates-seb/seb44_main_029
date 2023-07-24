@@ -118,7 +118,6 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
       }
     } catch (error) {
       alert('회원가입 실패!');
-      console.error('Sign Up failed:', error);
     }
   };
 

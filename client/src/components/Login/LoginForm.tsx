@@ -113,7 +113,6 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
       }
     } catch (error) {
       alert('로그인 실패!');
-      console.error('Log In failed:', error);
     }
   };
 
