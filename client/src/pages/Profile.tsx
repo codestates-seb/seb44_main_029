@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import backgroundImg from '../assets/images/profile_background.png';
+import backgroundImg from '../assets/images/profile_background.jpeg';
 import ChangeProfile from '../components/profile/user/ChangeProfile';
 import LikeList from '../components/profile/like/LikeList';
 import EditProfile from '../components/profile/edit/EditProfile';

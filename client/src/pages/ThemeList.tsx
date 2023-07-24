@@ -11,27 +11,27 @@ const ThemeList = () => {
   const themeData = [
     {
       src: gif1,
-      title: '자연',
+      title: 'Nature',
       content: '아름다운 자연 풍경',
     },
     {
       src: gif2,
-      title: '우주',
+      title: 'Space',
       content: '우주의 무한함',
     },
     {
       src: gif3,
-      title: '동물',
+      title: 'Animal',
       content: '다양한 동물의 귀여운 매력',
     },
     {
       src: gif4,
-      title: '픽셀',
+      title: 'Pixel',
       content: '화려한 픽셀 아트의 세계',
     },
     {
       src: gif5,
-      title: '레트로',
+      title: 'Retro',
       content: '과거로 돌아가는 레트로 감성',
     },
   ];
