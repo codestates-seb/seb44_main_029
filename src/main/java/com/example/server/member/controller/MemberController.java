@@ -7,7 +7,6 @@ import com.example.server.member.entity.RefreshToken;
 import com.example.server.member.service.MemberService;
 import com.example.server.member.service.TokenService;
 import com.example.server.music.controller.MusicController;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,20 +29,20 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
-@Tag(name = "MemberController", description = "API about Member")
 public class MemberController {
     private final MemberService memberService;
 
     @GetMapping("/get")
     public String get(){
-        return new BCryptPasswordEncoder().encode("guest123!@#");
+        return new BCryptPasswordEncoder().encode("admin123!@#");
     }
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Validated MemberLoginDto dto, HttpServletResponse response){
         MemberIdAndTokenDto tokenAndId = memberService.login(dto);
 
-        if(tokenAndId == null) return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
+        if(tokenAndId == null) return new ResponseEntity<>(-7L, HttpStatus.ACCEPTED);
+        else if(tokenAndId.getMemberId() == -6L) return new ResponseEntity(tokenAndId.getMemberId(), HttpStatus.ACCEPTED);
 
         response.setHeader(HttpHeaders.AUTHORIZATION, tokenAndId.getAccessToken());
 
@@ -66,6 +65,8 @@ public class MemberController {
                 .build();
 
         Boolean response = memberService.logout(memberIdAndTokenDto);
+
+        if(response == null) return new ResponseEntity(-7L, HttpStatus.ACCEPTED);
 
         if(response == true)
             SecurityContextHolder.clearContext();
@@ -107,7 +108,8 @@ public class MemberController {
     ResponseEntity delete(@PathVariable("member-id") Long memberId){
         Long response = memberService.delete(memberId);
 
-        if(response == -5) return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+        if(response == null) return new ResponseEntity<>(-7L, HttpStatus.ACCEPTED);
+        else if(response == -5) return new ResponseEntity<>(-5L, HttpStatus.ACCEPTED);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
