@@ -1,4 +1,3 @@
-import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
@@ -10,7 +9,7 @@ import Spinner from '../../assets/gif/Spinner.svg';
 
 //오디오 플레이어
 const AudioPlayer = () => {
-  const [sound, setSound] = useState<Howl | null>(null);
+  const [sound, setSound] = useState<HTMLAudioElement | null>(null);
   const [musicTitle, setMusicTitle] = useState('');
   const [currentVolume, setCurrentVolume] = useState<number>(0.5);
   const [nowMusicId, setNowMusicId] = useState<number>(0);
@@ -44,21 +43,13 @@ const AudioPlayer = () => {
   //음원 변경 & 음원리스트 변경시 새로운 인스턴스 생성 & 중복생성을 방지 하기위한 useEffect 로직
   useEffect(() => {
     if (musicList && musicList.length > 0) {
-      const soundInstance = new Howl({
-        src: [musicList[nowMusicId]],
-        loop: true,
-        format: ['mp3'],
-        autoplay: isPlaying,
-      });
-      // 음원 등록
-      setSound(soundInstance);
+      const audio = new Audio(musicList[nowMusicId]);
+      audio.loop = true;
+      audio.autoplay = isPlaying;
+      setSound(audio);
       const url = musicList[nowMusicId];
       const title = getMusicTitleFromUrl(url);
       setMusicTitle(title);
-      // 음원 제목 등록
-      return () => {
-        soundInstance.unload();
-      };
     }
   }, [nowMusicId, musicList]);
 
@@ -108,7 +99,7 @@ const AudioPlayer = () => {
   const handleChangeVolume = (volume: number) => {
     //유효성 검증
     if (sound) {
-      sound.volume(volume);
+      sound.volume = volume;
       setCurrentVolume(volume);
     }
   };
