@@ -7,23 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    date = "2023-07-21T21:36:51+0900",
-    comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.1.1.jar, environment: Java 11.0.15 (Amazon.com Inc.)"
-=======
-    date = "2023-07-21T20:27:17+0900",
+    date = "2023-07-24T11:22:08+0900",
     comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.1.1.jar, environment: Java 11.0.18 (Amazon.com Inc.)"
->>>>>>> dev
-=======
-<<<<<<< HEAD
-    date = "2023-07-22T14:28:35+0900",
-    comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.1.1.jar, environment: Java 11.0.18 (Azul Systems, Inc.)"
-=======
-    date = "2023-07-22T21:23:39+0900",
-    comments = "version: 1.5.3.Final, compiler: IncrementalProcessingEnvironment from gradle-language-java-8.1.1.jar, environment: Java 11.0.18 (Amazon.com Inc.)"
->>>>>>> 5dfd2a83495541a318f66a319de59c926a44b7ec
->>>>>>> b74be7d40b85436e336232e693cf6780bb4d0a88
 )
 @Component
 public class MemberMapperImpl implements MemberMapper {
