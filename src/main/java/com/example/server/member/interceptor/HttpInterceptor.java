@@ -49,7 +49,7 @@ public class HttpInterceptor implements HandlerInterceptor{
                 HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE
         );
 
-        if(map.get("member-id") != null){
+        if(map != null && map.get("member-id") != null){
             Long requestId = Long.valueOf((String) map.get("member-id"));
 
             if(memberId != requestId ){
