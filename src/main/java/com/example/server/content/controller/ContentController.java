@@ -65,6 +65,13 @@ public class ContentController {
 
         return contentService.likeResponse(request, page, size, criteria, sort);
     }
+    @Operation(summary = "테마 별 Like 리스트 반환",
+            description = "사용자가 Like 표시한, Theme ID에 해당하는 Contents를 리스트의 형태로 Page 정보와 함께 반환합니다. \r \n \r\n" +
+                    "해당 리스트의 Content 정보에서 제공하는 URI는 thumbnail의 URI입니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "응답 성공"),
+            @ApiResponse(responseCode = "403", description = "토큰 불일치 혹은 만료")
+    })
     @GetMapping("/likes/{theme-id}")
     public ResponseEntity<?> getLikesTheme(
             @Positive @PathVariable("theme-id") Long themeId,
