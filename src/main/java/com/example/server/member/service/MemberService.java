@@ -21,6 +21,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Slf4j
 @Service
@@ -52,13 +55,21 @@ public class MemberService{
             return null;
         }
 
-        RefreshToken check = refreshTokenJpaRepository.findByMemberId(member.getId()).orElse(null);
-        if(check != null && check.getActive()){
-            log.info("이미 로그인 한 사용자입니다.");
-            return null;
+        boolean isGuest = true;
+        if(!member.getUsername().equals("guest")) {
+            isGuest = false;
+
+            List<RefreshToken> checkList = refreshTokenJpaRepository.findByMemberId(member.getId());
+            RefreshToken check = (checkList.isEmpty()) ? null : checkList.get(0);
+
+            if (check != null && check.getActive()) {
+                log.info("이미 로그인 한 사용자입니다.");
+                return MemberIdAndTokenDto.builder()
+                        .memberId(-6L).build();
+            }
         }
 
-        String refreshToken = tokenService.createRefreshToken(username);
+        String refreshToken = tokenService.createRefreshToken(username, isGuest);
         String accessToken = tokenProvider.createToken(authentication);
 
         MemberIdAndTokenDto response = MemberIdAndTokenDto.builder()
@@ -79,7 +90,12 @@ public class MemberService{
             return null;
         }
 
-        RefreshToken refreshToken = refreshTokenJpaRepository.findByToken(dto.getRefreshToken()).get();
+        List<RefreshToken> refreshTokens = refreshTokenJpaRepository.findByMemberId(dto.getMemberId());
+
+        RefreshToken refreshToken = refreshTokens.stream()
+                .filter(token -> token.getToken().equals(dto.getRefreshToken()))
+                .findFirst()
+                .orElse(null);
 
         if(refreshToken != null){
             refreshToken.setActive(false);
