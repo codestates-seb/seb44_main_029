@@ -5,7 +5,6 @@ import NotFound from '../error/NotFound';
 import ThemeItemList from '../pages/ThemeItemList';
 import ThemeList from '../pages/ThemeList';
 import Profile from '../pages/Profile';
-import ProfileEdit from '../pages/ProfileEdit';
 import ThemeDetailedItem from '../pages/ThemeDetailedItem';
 import Loading from '../components/Login/Loading';
 import { checkToken } from '../utils/auth';
@@ -32,11 +31,6 @@ const router = createBrowserRouter([
       {
         path: '/profile',
         element: <Profile />,
-        loader: checkToken,
-      },
-      {
-        path: '/profile/edit',
-        element: <ProfileEdit />,
         loader: checkToken,
       },
       {
