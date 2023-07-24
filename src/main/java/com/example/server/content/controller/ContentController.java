@@ -65,7 +65,17 @@ public class ContentController {
 
         return contentService.likeResponse(request, page, size, criteria, sort);
     }
+    @GetMapping("/likes/{theme-id}")
+    public ResponseEntity<?> getLikesTheme(
+            @Positive @PathVariable("theme-id") Long themeId,
+            HttpServletRequest request,
+            @Positive @RequestParam(required = false, defaultValue = "1", value = "page") int page,
+            @Positive @RequestParam(required = false, defaultValue = "8", value = "size") int size,
+            @RequestParam(required = false, defaultValue = "contentId", value = "criteria") String criteria,
+            @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
 
+        return contentService.likeThemeResponse(themeId, request, page, size, criteria, sort);
+    }
 }
 
 
