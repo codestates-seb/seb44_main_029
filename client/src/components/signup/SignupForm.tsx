@@ -217,12 +217,12 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 300px;
-  margin: 30px 0px 0px 0px;
+  margin: 20px 0px 0px 0px;
 `;
 
 const Input = styled.input`
   padding: 10px 10px 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background-color: transparent;
   border: none;
   border-bottom: 1px solid #999;
@@ -239,6 +239,7 @@ const Label = styled.label<{ isFocused: boolean }>`
   font-size: ${({ isFocused }) => (isFocused ? '14px' : 'inherit')};
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
+  margin-top: 5px;
   margin-bottom: 5px;
   transition: all 0.5s ease;
 `;
@@ -246,8 +247,8 @@ const Label = styled.label<{ isFocused: boolean }>`
 const ErrorText = styled.div`
   color: red;
   font-size: 11px;
-  margin-bottom: 10px;
-  height: 12px;
+  margin-bottom: 15px;
+  height: 15px;
 `;
 
 const SignUpButton = styled.button`
