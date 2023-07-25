@@ -12,6 +12,7 @@ const EditProfile = ({
 }) => {
   const [imgUrl, setImgUrl] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
+  const [changeUserName, setChangeUserName] = useState<string | null>(null);
   //취소버튼
   const handleCancleButton = () => {
     setIsEdit(false);
@@ -20,8 +21,14 @@ const EditProfile = ({
   const handleSaveButton = async () => {
     const confirmed = window.confirm('정말 저장하시겠습니까?');
     if (confirmed) {
-      await editMutation.mutateAsync(); //  editMutation을 비동기로 실행
-      setIsEdit(false);
+      //  editMutation을 비동기로 실행
+      const response = await editMutation.mutateAsync();
+      if (response.status === 200) {
+        setIsEdit(false);
+      } else if (response.status === 202 && response.data === -2) {
+        alert('이미 사용중인 유저네임입니다.');
+        setChangeUserName('');
+      }
     }
   };
 
@@ -33,7 +40,12 @@ const EditProfile = ({
     <Container>
       <EditInfoDiv>
         <EditImg setImgUrl={setImgUrl} />
-        <EditName setUserName={setUserName} />
+        <EditName
+          userName={userName}
+          setUserName={setUserName}
+          changeUserName={changeUserName}
+          setChangeUserName={setChangeUserName}
+        />
         <BtnGroupDiv>
           <Button bgColor="#3690f0" onClick={handleSaveButton}>
             저장

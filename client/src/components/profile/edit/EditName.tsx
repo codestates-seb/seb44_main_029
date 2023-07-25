@@ -4,12 +4,19 @@ import { useQuery } from '@tanstack/react-query';
 import { GetUserInfo } from '../../../api/api';
 
 const EditName = ({
+  userName,
   setUserName,
+  changeUserName,
+  setChangeUserName,
 }: {
+  userName: string | null;
+  changeUserName: string | null;
   setUserName: React.Dispatch<React.SetStateAction<string | null>>;
+  setChangeUserName: React.Dispatch<React.SetStateAction<string | null>>;
 }) => {
   const { data } = useQuery(['userInfo'], GetUserInfo);
   const email = data?.email;
+  const username = data?.username;
   //useRef로 현재 input값 받아오기
   const nameInputRef = useRef<HTMLInputElement | null>(null);
   // input값에 따라 인자에 들어갈 값을 변경하는 핸들러
@@ -23,7 +30,7 @@ const EditName = ({
       <InputWrapper>
         <NameInput
           ref={nameInputRef}
-          placeholder="New Name!"
+          placeholder={username || ''}
           onChange={handleNameInputChange}
         />
       </InputWrapper>
