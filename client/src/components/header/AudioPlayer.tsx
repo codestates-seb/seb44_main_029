@@ -15,7 +15,7 @@ const AudioPlayer = () => {
   const [currentVolume, setCurrentVolume] = useState<number>(0.2);
   const [currentMusicId, setCurrentMusicId] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isLoop, setIsLoop] = useState<boolean>(false);
+  const [isLoop, setIsLoop] = useState<boolean>(true);
   const { themeId } = useParams();
   const location = useLocation();
   const volumes = Array.from(
@@ -217,7 +217,7 @@ const MusicTitleContainerdiv = styled.div`
   overflow: hidden;
   border-radius: 100px;
   margin-left: 10px;
-  min-width: 200px;
+  min-width: 150px;
   background-color: rgba(255, 255, 255, 0.1);
 `;
 

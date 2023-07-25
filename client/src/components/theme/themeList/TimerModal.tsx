@@ -22,7 +22,7 @@ const TimerModal = ({ handleTogglePlay }: { handleTogglePlay: () => void }) => {
   };
   // 체크시 다시는 TimerModal을 안 보여줌.
   const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    localStorage.setItem('neverOpenTimerModal', `${e.target.checked}`);
+    sessionStorage.setItem('neverOpenTimerModal', `${e.target.checked}`);
   };
 
   return (
