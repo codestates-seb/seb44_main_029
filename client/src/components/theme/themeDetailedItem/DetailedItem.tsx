@@ -34,7 +34,8 @@ DetailedItemProps) => {
   });
 
   // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
-  const handleLikeButtonClick = async () => {
+  const handleLikeButtonClick = async (event: React.MouseEvent) => {
+    event.stopPropagation();
     const memberId = sessionStorage.getItem('memberId');
 
     try {
@@ -62,12 +63,16 @@ DetailedItemProps) => {
 
   return (
     <Container>
-      <ItemContainerDiv>
+      <ItemContainerDiv onClick={() => navigate(-1)}>
         {/* <MoveToPreviousDiv to={`/theme/${themeId}/${previousContentId}`}>
           <img src={previousArrowSvg} alt="Previous Arrow" />
         </MoveToPreviousDiv> */}
         <ItemImgDiv>
-          <img src={item.contentUri} alt="content" />
+          <img
+            src={item.contentUri}
+            alt="content"
+            onClick={(event: React.MouseEvent) => event.stopPropagation()}
+          />
         </ItemImgDiv>
         <OverlayControlDiv>
           <LikeButton type="button" onClick={handleLikeButtonClick}>
@@ -77,7 +82,13 @@ DetailedItemProps) => {
         {/* <MoveToNextDiv to={`/theme/${themeId}/${nextContentId}`}>
           <img src={nextArrowSvg} alt="Next Arrow" />
         </MoveToNextDiv> */}
-        <CloseButtonLink to="#" onClick={() => navigate(-1)}>
+        <CloseButtonLink
+          to="#"
+          onClick={(event: React.MouseEvent) => {
+            event.stopPropagation();
+            navigate(-1);
+          }}
+        >
           ✕
         </CloseButtonLink>
       </ItemContainerDiv>
@@ -97,7 +108,7 @@ const Container = styled.div`
 
 const CloseButtonLink = styled(Link)`
   position: absolute;
-  bottom: 2rem;
+  bottom: 1rem;
   font-size: 1.1rem;
   font-weight: 900;
   color: rgba(255, 255, 255, 1);
@@ -125,7 +136,8 @@ const OverlayControlDiv = styled.div`
   display: flex;
   position: absolute;
   opacity: 1;
-  bottom: 3.5rem;
+  bottom: 4rem;
+  left: 0;
   width: 100%;
   padding: 0.5rem;
   pointer-events: none;
