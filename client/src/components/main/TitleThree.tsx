@@ -2,10 +2,15 @@ import styled, { keyframes } from 'styled-components';
 import LoginForm from '../Login/LoginForm';
 import { useState } from 'react';
 import ScrollUp from './ScrollUp';
+import { useNavigate } from 'react-router-dom';
 
 const TitleThree = ({ observer }: { observer: boolean }) => {
   const [isModal, setIsModal] = useState(false);
-  const accessToken = localStorage.getItem('accessToken');
+  const navigate = useNavigate();
+  const accessToken = sessionStorage.getItem('accessToken');
+  const handleLikeBtn = () => {
+    accessToken ? navigate('/theme') : setIsModal(true);
+  };
   return (
     <Container>
       {isModal && <LoginForm setIsModal={setIsModal} />}
@@ -17,7 +22,7 @@ const TitleThree = ({ observer }: { observer: boolean }) => {
       <Box2 observer={observer}>
         <p>그림이 마음에 드셨나요?</p>
         <Column observer={observer}>
-          <p className="like" onClick={() => setIsModal(!Boolean(accessToken))}>
+          <p className="like" onClick={handleLikeBtn}>
             ❤️
           </p>
           <p>좋아요 버튼을 눌러서,</p>
