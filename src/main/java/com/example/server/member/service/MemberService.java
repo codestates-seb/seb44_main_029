@@ -64,6 +64,12 @@ public class MemberService{
 
             if (check != null && check.getActive()) {
                 log.info("이미 로그인 한 사용자입니다.");
+
+                RefreshToken refreshToken = refreshTokenJpaRepository.findByMemberId(member.getId()).get(0);
+                refreshToken.setActive(false);
+                refreshTokenJpaRepository.save(refreshToken);
+                log.info("중복 로그인으로 인하여 로그인한 사용자를 로그아웃 하였습니다.");
+                
                 return MemberIdAndTokenDto.builder()
                         .memberId(-6L).build();
             }
