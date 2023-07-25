@@ -28,10 +28,10 @@ const GuestLoginButton: React.FC = () => {
   const guestButtonClick = async () => {
     try {
       await loginMutation.mutateAsync(loginFormData);
-      alert('Log In success!');
+      alert('로그인 성공!');
       window.location.href = '/profile';
     } catch (error) {
-      alert('Failed to Log In!');
+      alert('로그인 실패!');
       console.error('Log In failed:', error);
     }
   };

@@ -25,7 +25,7 @@ const OAuthButton = styled.button`
   background-color: white;
   border: 1px solid rgb(224, 224, 224);
   cursor: pointer;
-  margin: 50px 0 5px 0;
+  margin: 30px 0 5px 0;
   display: flex;
   justify-content: center;
   align-items: center;

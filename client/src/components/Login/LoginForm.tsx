@@ -112,8 +112,12 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
         sessionStorage.removeItem('memberId');
         window.location.href = '/';
       }
-    } catch (error) {
-      alert('로그인 실패!');
+    } catch (error: any) {
+      if (error.response && error.response.status === 401) {
+        alert('등록되지 않은 유저입니다.');
+      } else {
+        alert('로그인 실패!');
+      }
     }
   };
 
@@ -161,24 +165,6 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
 };
 export default LoginForm;
 
-const reboundBox = keyframes`
-  0% {
-    height: 100px;
-  }
-  40%{
-    height: 650px;
-  }
-  60%{
-    height: 500px;
-  }
-  80%{
-    height: 600px;
-  }
-  100% {
-    height: 550px;
-  }
-`;
-
 const fadeIn = keyframes`
   0% {
     opacity: 0;
@@ -216,6 +202,7 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 300px;
+  margin-top: 10px;
 `;
 
 const Label = styled.label<{ isFocused: boolean }>`
@@ -229,7 +216,7 @@ const Label = styled.label<{ isFocused: boolean }>`
 
 const Input = styled.input`
   padding: 20px 10px 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background-color: transparent;
   border: none;
   border-bottom: 1px solid #999;
@@ -296,8 +283,8 @@ const SignUpButton = styled.button`
 const ErrorText = styled.p`
   color: red;
   font-size: 11px;
-  margin-bottom: 10px;
-  height: 12px;
+  margin-bottom: 15px;
+  height: 15px;
 `;
 
 const ModalOverlayDiv = styled.div`
