@@ -26,15 +26,15 @@ const Nav = () => {
   }, [modalRef]);
 
   // 로컬스토리지에 있는 액세스토큰 꺼내오기
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = sessionStorage.getItem('accessToken');
 
   // 로그아웃 성공 시
   const handleLogoutMutation = useMutation(Logout, {
     onSuccess: () => {
       // 토큰 및 멤버아이디 삭제
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('memberId');
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('memberId');
       navigate('/');
     },
     onError: (error) => {
@@ -52,7 +52,7 @@ const Nav = () => {
 
   // 프로필페이지로 이동하는 버튼 클릭 시
   const handleProfileClick = () => {
-    const memberId = localStorage.getItem('memberId');
+    const memberId = sessionStorage.getItem('memberId');
     if (!memberId) {
       alert('로그인이 필요한 기능입니다. 🙏');
     }
