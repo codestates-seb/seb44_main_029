@@ -9,8 +9,7 @@ import {
   UserInfo,
 } from '../types/types';
 
-const BASE_URL =
-  'http://ec2-3-39-72-136.ap-northeast-2.compute.amazonaws.com:8080/';
+const BASE_URL = 'https://fb8d-175-123-6-225.ngrok-free.app/';
 
 // 음악 리스트 요청
 export const GetMusic = (ThemeId: string | undefined): Promise<Musics> =>
@@ -50,8 +49,8 @@ export const Login = async (data: LoginInfo) => {
 
 // 로그아웃
 export const Logout = async (): Promise<any> => {
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
+  const accessToken = sessionStorage.getItem('accessToken');
+  const refreshToken = sessionStorage.getItem('refreshToken');
 
   try {
     const response = await axios.post(
@@ -80,8 +79,8 @@ export const Logout = async (): Promise<any> => {
 
 // 프로필 수정
 export const PetchEditProfile = async (data: EditType): Promise<any> => {
-  const accessToken = localStorage.getItem('accessToken');
-  const memberId = localStorage.getItem('memberId');
+  const accessToken = sessionStorage.getItem('accessToken');
+  const memberId = sessionStorage.getItem('memberId');
 
   try {
     const response = await axios.patch(
@@ -114,7 +113,7 @@ export const GetThemeItems = async (
   pageParam: number,
   sizeParam: number
 ): Promise<IThemeItemProps> => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = sessionStorage.getItem('accessToken');
 
   try {
     const response = await axios.get(
@@ -139,7 +138,7 @@ export const GetThemeItems = async (
 
 // 업로드 요청
 export const PostUploadImg = async (data: FormData) => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = sessionStorage.getItem('accessToken');
   const response = await axios.post(`${BASE_URL}contentsUpload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data', // multipart/form-data
@@ -150,7 +149,7 @@ export const PostUploadImg = async (data: FormData) => {
 };
 
 export const PostUploadMusic = async (data: FormData) => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = sessionStorage.getItem('accessToken');
   const response = await axios.post(`${BASE_URL}admins/musicUpload`, data, {
     headers: {
       'Content-Type': 'multipart/form-data', // multipart/form-data
@@ -162,7 +161,7 @@ export const PostUploadMusic = async (data: FormData) => {
 
 // 이미지 좋아요 상태 업데이트
 export const UpdateLike = async (contentId: number): Promise<ItemInfo> => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = sessionStorage.getItem('accessToken');
 
   try {
     const response = await axios.patch(`${BASE_URL}likes/${contentId}`, null, {
@@ -188,7 +187,7 @@ export const GetThemeLikes = async (
   pageParam: number,
   sizeParam: number
 ): Promise<IThemeItemProps> => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = sessionStorage.getItem('accessToken');
 
   try {
     const response = await axios.get(
@@ -213,8 +212,8 @@ export const GetThemeLikes = async (
 
 // 토큰 재발급 API
 export const RenewAccessToken = async () => {
-  const accessToken = localStorage.getItem('accessToken');
-  const refreshToken = localStorage.getItem('refreshToken');
+  const accessToken = sessionStorage.getItem('accessToken');
+  const refreshToken = sessionStorage.getItem('refreshToken');
 
   try {
     const response = await axios.post(
@@ -232,16 +231,16 @@ export const RenewAccessToken = async () => {
     );
 
     const newAccessToken = response.headers['authorization'];
-    localStorage.setItem('accessToken', newAccessToken);
+    sessionStorage.setItem('accessToken', newAccessToken);
 
     return response.data;
   } catch (error) {
     // 토큰 갱신 실패 시 처리
     console.error('액세스 토큰 갱신에 실패했습니다:', error);
 
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('memberId');
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('refreshToken');
+    sessionStorage.removeItem('memberId');
 
     alert('액세스 토큰 갱신에 실패했습니다. 다시 로그인 해주세요.');
     window.location.href = '/';
@@ -251,7 +250,7 @@ export const RenewAccessToken = async () => {
 
 // 상세 이미지 정보 가져오기
 export const GetDetailedItem = async (contentId: number): Promise<any> => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = sessionStorage.getItem('accessToken');
   try {
     const response = await axios.get(`${BASE_URL}contents/${contentId}`, {
       headers: {
@@ -272,8 +271,8 @@ export const GetDetailedItem = async (contentId: number): Promise<any> => {
 
 // 회원정보 불러오기
 export const GetUserInfo = async (): Promise<UserInfo> => {
-  const accessToken = localStorage.getItem('accessToken');
-  const memberId = localStorage.getItem('memberId');
+  const accessToken = sessionStorage.getItem('accessToken');
+  const memberId = sessionStorage.getItem('memberId');
   try {
     const response = await axios.get(`${BASE_URL}members/${memberId}`, {
       headers: {
@@ -297,7 +296,7 @@ export const GetLikedContents = async (
   pageParam: number,
   sizeParam: number
 ): Promise<IThemeItemProps> => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = sessionStorage.getItem('accessToken');
 
   try {
     const response = await axios.get(
@@ -322,8 +321,8 @@ export const GetLikedContents = async (
 
 // 회원 탈퇴
 export const DeleteMemberInfo = async (): Promise<any> => {
-  const memberId = localStorage.getItem('memberId');
-  const accessToken = localStorage.getItem('accessToken');
+  const memberId = sessionStorage.getItem('memberId');
+  const accessToken = sessionStorage.getItem('accessToken');
   try {
     const response = await axios.delete(`${BASE_URL}members/${memberId}`, {
       headers: {

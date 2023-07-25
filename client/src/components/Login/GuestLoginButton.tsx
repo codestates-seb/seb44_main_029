@@ -19,9 +19,9 @@ const GuestLoginButton: React.FC = () => {
       const accessToken = data.headers['authorization'];
       const refreshToken = data.data.refreshToken;
       const memberId = data.data.memberId;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('memberId', memberId);
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
+      sessionStorage.setItem('memberId', memberId);
     },
   });
 
