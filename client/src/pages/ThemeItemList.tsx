@@ -137,7 +137,10 @@ const ThemeItemList = () => {
   return (
     <Layout backgroundImageUrl={getBackgroundImage(themeId)}>
       <ContentContainer>
-        <ThemeHeader currentThemeTitle={currentThemeTitle} />
+        <ThemeHeader
+          currentThemeTitle={currentThemeTitle}
+          themeId={numThemeId}
+        />
         <ItemListHeader
           handleFilterlikeButton={handleFilterlikeButton}
           showLikedOnly={showLikedOnly}
