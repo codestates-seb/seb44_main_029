@@ -11,12 +11,15 @@ import Spinner from '../../assets/gif/Spinner.svg';
 const AudioPlayer = () => {
   const [sound, setSound] = useState<HTMLAudioElement | null>(null);
   const [musicTitle, setMusicTitle] = useState('');
-  const [currentVolume, setCurrentVolume] = useState<number>(0.5);
+  const [currentVolume, setCurrentVolume] = useState<number>(0.3);
   const [nowMusicId, setNowMusicId] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const { themeId } = useParams();
   const location = useLocation();
-  const volumes = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+  const volumes = Array.from(
+    { length: 20 },
+    (_, index) => (index + 1) / 20
+  ).map((num) => parseFloat(num.toFixed(2)));
   const refetchInterval = 1 * 55 * 1000;
   const checkLocalStorage =
     localStorage.getItem('neverOpenTimerModal') === 'true';
@@ -172,9 +175,11 @@ const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
   height: 30%;
   width: 7px;
   border: none;
-  margin-right: 5px;
-  background-color: ${(props) => (props.active ? 'gray' : 'white')};
+  margin-right: 2px;
+  background-color: ${(props) =>
+    props.active ? 'white' : 'rgba(255, 255, 255, 0.3)'};
   cursor: pointer;
+  color: 
   transition: filter 0.3s, height 0.3s;
   //어두워지고 길이가 길어짐
   &:hover {
