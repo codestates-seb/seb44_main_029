@@ -6,6 +6,7 @@ import { UpdateLike } from '../../../api/api';
 import { DetailedItemProps } from '../../../types/types';
 import previousArrowSvg from '../../../assets/icon/icon_previous_arrow.svg';
 import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
+import LoginForm from '../../Login/LoginForm';
 
 const DetailedItem = ({
   contentId,
@@ -18,6 +19,7 @@ const DetailedItem = ({
   lastElementContentId,
 }: DetailedItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 좋아요 상태 관리를 위한 상태
+  const [isModal, setIsModal] = useState(false);
   const queryClient = useQueryClient();
 
   // 좋아요 업데이트를 위한 useMutation 정의
@@ -33,8 +35,16 @@ const DetailedItem = ({
 
   // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
   const handleLikeButtonClick = async () => {
+    const memberId = localStorage.getItem('memberId');
+
     try {
-      await handleUpdateLikeMutation.mutateAsync(contentId);
+      if (!memberId) {
+        alert('로그인이 필요한 기능입니다. 🙏');
+        setIsModal(!isModal);
+      } else {
+        await handleUpdateLikeMutation.mutateAsync(contentId);
+        setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
+      }
     } catch (error) {
       console.log(error);
     }
@@ -69,6 +79,7 @@ const DetailedItem = ({
         </MoveToNextDiv>
         <CloseButtonLink to={`/theme/${themeId}`}>✕</CloseButtonLink>
       </ItemContainerDiv>
+      {isModal && <LoginForm setIsModal={setIsModal} />}
     </Container>
   );
 };
