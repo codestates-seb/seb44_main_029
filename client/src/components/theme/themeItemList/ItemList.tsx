@@ -28,7 +28,7 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
 
   // 좋아요 버튼이 클릭되었을 때 실제 처리를 담당하는 함수
   const handleLikeButtonClick = async () => {
-    const memberId = localStorage.getItem('memberId');
+    const memberId = sessionStorage.getItem('memberId');
 
     try {
       if (!memberId) {

@@ -112,7 +112,7 @@ const ThemeItemList = () => {
 
   // 좋아요 버튼을 클릭하여 좋아요한 아이템만 표시하거나 모든 아이템을 표시하는 함수
   const handleFilterlikeButton = () => {
-    const memberId = localStorage.getItem('memberId');
+    const memberId = sessionStorage.getItem('memberId');
 
     if (!memberId) {
       alert('로그인이 필요한 기능입니다. 🙏');
