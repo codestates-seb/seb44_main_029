@@ -50,6 +50,10 @@ const AudioPlayer = () => {
       const url = musicList[nowMusicId];
       const title = getMusicTitleFromUrl(url);
       setMusicTitle(title);
+      return () => {
+        // 이전에 생성된 오디오 인스턴스를 정지하고, 이벤트 리스너를 해제하고, 메모리에서 삭제
+        audio.pause();
+      };
     }
   }, [nowMusicId, musicList]);
 
