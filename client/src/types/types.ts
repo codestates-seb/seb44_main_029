@@ -46,12 +46,12 @@ export interface IDetailedItemProps {
 export interface DetailedItemProps {
   contentId: number;
   liked: boolean;
-  themeId: number;
   item: ItemInfo;
-  themeContentIds: number[];
-  currentItemIndex: number;
-  firstItemContentId: number;
-  lastElementContentId: number;
+  // themeId: number;
+  // themeContentIds: number[];
+  // currentItemIndex: number;
+  // firstItemContentId: number;
+  // lastElementContentId: number;
 }
 
 export type UserInfo = {

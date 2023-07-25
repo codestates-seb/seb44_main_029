@@ -15,7 +15,7 @@ const ThemeDetailedItem = () => {
     themeId: string;
     contentId: string;
   }>();
-  const numThemeId = parseInt(themeId || '');
+  // const numThemeId = parseInt(themeId || '');
   const numContentId = parseInt(contentId || '');
 
   // 전체 아이템 리스트를 가져온다.
@@ -31,14 +31,14 @@ const ThemeDetailedItem = () => {
   const { contentResponseDto: currentItem, contentIds: themeContentIds = [] } =
     item || {};
 
-  // 현재 선택된 아이템의 index 값
-  const currentItemIndex = themeContentIds.indexOf(numContentId);
+  // // 현재 선택된 아이템의 index 값
+  // const currentItemIndex = themeContentIds.indexOf(numContentId);
 
-  // 첫 번째 아이템의 contentId 값
-  const firstItemContentId = themeContentIds[0] || 0;
+  // // 첫 번째 아이템의 contentId 값
+  // const firstItemContentId = themeContentIds[0] || 0;
 
-  // 마지막 아이템의 contentId 값
-  const lastElementContentId = themeContentIds[themeContentIds.length - 1] || 0;
+  // // 마지막 아이템의 contentId 값
+  // const lastElementContentId = themeContentIds[themeContentIds.length - 1] || 0;
 
   return (
     <Layout backgroundImageUrl={getBackgroundImage(themeId)}>
@@ -52,14 +52,14 @@ const ThemeDetailedItem = () => {
         {status === 'success' && currentItem ? (
           <DetailedItem
             key={currentItem.contentId}
-            themeId={numThemeId}
             contentId={currentItem.contentId}
             liked={currentItem.liked}
             item={currentItem}
-            themeContentIds={themeContentIds}
-            currentItemIndex={currentItemIndex}
-            firstItemContentId={firstItemContentId}
-            lastElementContentId={lastElementContentId}
+            // themeId={numThemeId}
+            // themeContentIds={themeContentIds}
+            // currentItemIndex={currentItemIndex}
+            // firstItemContentId={firstItemContentId}
+            // lastElementContentId={lastElementContentId}
           />
         ) : undefined}
       </ContentContainer>

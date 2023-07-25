@@ -1,26 +1,27 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UpdateLike } from '../../../api/api';
 import { DetailedItemProps } from '../../../types/types';
-import previousArrowSvg from '../../../assets/icon/icon_previous_arrow.svg';
-import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
 import LoginForm from '../../Login/LoginForm';
+// import previousArrowSvg from '../../../assets/icon/icon_previous_arrow.svg';
+// import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
 
 const DetailedItem = ({
   contentId,
   liked,
-  themeId,
   item,
-  themeContentIds,
-  currentItemIndex,
-  firstItemContentId,
-  lastElementContentId,
-}: DetailedItemProps) => {
+}: // themeId,
+// themeContentIds,
+// currentItemIndex,
+// firstItemContentId,
+// lastElementContentId,
+DetailedItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 좋아요 상태 관리를 위한 상태
   const [isModal, setIsModal] = useState(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
@@ -50,22 +51,22 @@ const DetailedItem = ({
     }
   };
 
-  // 이전 및 다음 버튼의 이동 위치를 결정하는 함수
-  const getContentId = (shift: number) => {
-    const index = currentItemIndex + shift;
-    return themeContentIds[index] || null;
-  };
+  // // 이전 및 다음 버튼의 이동 위치를 결정하는 함수
+  // const getContentId = (shift: number) => {
+  //   const index = currentItemIndex + shift;
+  //   return themeContentIds[index] || null;
+  // };
 
-  // 이전 및 다음 contentId 값 할당
-  const previousContentId = getContentId(-1) || lastElementContentId;
-  const nextContentId = getContentId(+1) || firstItemContentId;
+  // // 이전 및 다음 contentId 값 할당
+  // const previousContentId = getContentId(-1) || lastElementContentId;
+  // const nextContentId = getContentId(+1) || firstItemContentId;
 
   return (
     <Container>
       <ItemContainerDiv>
-        <MoveToPreviousDiv to={`/theme/${themeId}/${previousContentId}`}>
+        {/* <MoveToPreviousDiv to={`/theme/${themeId}/${previousContentId}`}>
           <img src={previousArrowSvg} alt="Previous Arrow" />
-        </MoveToPreviousDiv>
+        </MoveToPreviousDiv> */}
         <ItemImgDiv>
           <img src={item.contentUri} alt="content" />
         </ItemImgDiv>
@@ -74,10 +75,12 @@ const DetailedItem = ({
             {likedItem ? '❤️' : '🤍'}
           </LikeButton>
         </OverlayControlDiv>
-        <MoveToNextDiv to={`/theme/${themeId}/${nextContentId}`}>
+        {/* <MoveToNextDiv to={`/theme/${themeId}/${nextContentId}`}>
           <img src={nextArrowSvg} alt="Next Arrow" />
-        </MoveToNextDiv>
-        <CloseButtonLink to={`/theme/${themeId}`}>✕</CloseButtonLink>
+        </MoveToNextDiv> */}
+        <CloseButtonLink to="#" onClick={() => navigate(-1)}>
+          ✕
+        </CloseButtonLink>
       </ItemContainerDiv>
       {isModal && <LoginForm setIsModal={setIsModal} />}
     </Container>
@@ -164,25 +167,25 @@ const LikeButton = styled.button`
   }
 `;
 
-const MoveToDiv = css`
-  box-sizing: border-box;
-  cursor: pointer;
-  display: flex;
-  position: absolute;
-  opacity: 0.6;
-  transition: 0.2s;
+// const MoveToDiv = css`
+//   box-sizing: border-box;
+//   cursor: pointer;
+//   display: flex;
+//   position: absolute;
+//   opacity: 0.6;
+//   transition: 0.2s;
 
-  &:hover {
-    opacity: 1;
-  }
-`;
+//   &:hover {
+//     opacity: 1;
+//   }
+// `;
 
-const MoveToPreviousDiv = styled(Link)`
-  ${MoveToDiv}
-  left: 0;
-`;
+// const MoveToPreviousDiv = styled(Link)`
+//   ${MoveToDiv}
+//   left: 0;
+// `;
 
-const MoveToNextDiv = styled(Link)`
-  ${MoveToDiv}
-  right: 0;
-`;
+// const MoveToNextDiv = styled(Link)`
+//   ${MoveToDiv}
+//   right: 0;
+// `;
