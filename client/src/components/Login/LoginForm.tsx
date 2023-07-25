@@ -96,6 +96,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
         queryClient.invalidateQueries(['login']);
         setIsModal(false);
         window.location.href = '/profile';
+        // 탈퇴한 회원
       } else if (response.status === 202 && response.data === -7) {
         alert('존재하지 않는 회원입니다.');
         setLoginFormData({
@@ -103,6 +104,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
           password: '',
         });
         setIsModal(true);
+        // 일반 유저 및 관리자 중복 로그인
       } else if (response.status === 202 && response.data === -6) {
         alert(
           '중복 로그인이 되어 로그아웃 처리됩니다. 로그인을 다시 진행해주세요.'
@@ -113,8 +115,13 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
         window.location.href = '/';
       }
     } catch (error: any) {
+      // 가입 기록이 없는 정보
       if (error.response && error.response.status === 401) {
-        alert('등록되지 않은 유저입니다.');
+        alert('이메일, 패스워드를 다시 입력해 주세요.');
+        setLoginFormData({
+          email: '',
+          password: '',
+        });
       } else {
         alert('로그인 실패!');
       }
