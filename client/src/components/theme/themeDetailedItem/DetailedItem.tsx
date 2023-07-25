@@ -26,7 +26,6 @@ DetailedItemProps) => {
   // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
     onSuccess: () => {
-      setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
       queryClient.invalidateQueries(['items']); // 'items' 쿼리를 무효화하여 캐싱된 데이터를 서버의 최신 데이터로 갱신
     },
     onError: (error) => {
