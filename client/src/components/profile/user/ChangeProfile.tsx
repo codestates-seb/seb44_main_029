@@ -25,9 +25,9 @@ const ChangeProfile = ({
   const withdrawalMutation = useMutation(DeleteMemberInfo, {
     // 요청 성공하면 로컬 스토리지에 토큰, 멤버아이디 삭제 후 메인페이지로 이동
     onSuccess: () => {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      localStorage.removeItem('memberId');
+      sessionStorage.removeItem('accessToken');
+      sessionStorage.removeItem('refreshToken');
+      sessionStorage.removeItem('memberId');
       navigate('/');
     },
     onError: (error) => {

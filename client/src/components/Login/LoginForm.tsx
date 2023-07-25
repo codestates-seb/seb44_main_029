@@ -5,7 +5,6 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import GuestLoginButton from './GuestLoginButton';
-import { useNavigate } from 'react-router';
 
 interface LoginFormData {
   email: string;
@@ -68,9 +67,9 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
       const accessToken = data.headers['authorization'];
       const refreshToken = data.data.refreshToken;
       const memberId = data.data.memberId;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('memberId', memberId);
+      sessionStorage.setItem('accessToken', accessToken);
+      sessionStorage.setItem('refreshToken', refreshToken);
+      sessionStorage.setItem('memberId', memberId);
     },
   });
 
@@ -105,10 +104,12 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
         });
         setIsModal(true);
       } else if (response.status === 202 && response.data === -6) {
-        alert('중복 로그인이 되어 로그아웃 처리됩니다.');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('memberId');
+        alert(
+          '중복 로그인이 되어 로그아웃 처리됩니다. 로그인을 다시 진행해주세요.'
+        );
+        sessionStorage.removeItem('accessToken');
+        sessionStorage.removeItem('refreshToken');
+        sessionStorage.removeItem('memberId');
         window.location.href = '/';
       }
     } catch (error) {

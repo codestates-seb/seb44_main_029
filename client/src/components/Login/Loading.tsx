@@ -1,9 +1,9 @@
 import styled, { keyframes } from 'styled-components';
 
 const Loading = () => {
-  const saveTokenToLocalStorage = (key: string, value: string): void => {
+  const saveTokenToSessionStorage = (key: string, value: string): void => {
     try {
-      localStorage.setItem(key, value);
+      sessionStorage.setItem(key, value);
     } catch (error) {
       console.error(
         `토큰 "${key}"을(를) 로컬 스토리지에 저장하는 중 오류가 발생했습니다:`,
@@ -21,9 +21,9 @@ const Loading = () => {
   const googleMemberId = new URL(location.href).searchParams.get('memberId');
 
   if (googleAccessToken && googleRefreshToken && googleMemberId) {
-    saveTokenToLocalStorage('accessToken', googleAccessToken);
-    saveTokenToLocalStorage('refreshToken', googleRefreshToken);
-    saveTokenToLocalStorage('memberId', googleMemberId);
+    saveTokenToSessionStorage('accessToken', googleAccessToken);
+    saveTokenToSessionStorage('refreshToken', googleRefreshToken);
+    saveTokenToSessionStorage('memberId', googleMemberId);
   } else {
     console.error('토큰이 누락되었습니다: accessToken, refreshToken, memberId');
   }
