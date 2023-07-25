@@ -1,3 +1,4 @@
+import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
@@ -9,20 +10,21 @@ import Spinner from '../../assets/gif/Spinner.svg';
 
 //오디오 플레이어
 const AudioPlayer = () => {
-  const [sound, setSound] = useState<HTMLAudioElement | null>(null);
+  const [sound, setSound] = useState<Howl | null>(null);
   const [musicTitle, setMusicTitle] = useState('');
-  const [currentVolume, setCurrentVolume] = useState<number>(0.3);
-  const [nowMusicId, setNowMusicId] = useState<number>(0);
+  const [currentVolume, setCurrentVolume] = useState<number>(0.2);
+  const [currentMusicId, setCurrentMusicId] = useState<number>(-1);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isLoop, setIsLoop] = useState<boolean>(false);
   const { themeId } = useParams();
   const location = useLocation();
   const volumes = Array.from(
     { length: 20 },
     (_, index) => (index + 1) / 20
   ).map((num) => parseFloat(num.toFixed(2)));
-  const refetchInterval = 1 * 55 * 1000;
+  const refetchInterval = 1 * 55 * 1000; // api요청 재요청 시간
   const checkLocalStorage =
-    localStorage.getItem('neverOpenTimerModal') === 'true';
+    sessionStorage.getItem('neverOpenTimerModal') === 'true';
 
   // themeId가 변경될시 실행되는 쿼리
   const {
@@ -33,32 +35,46 @@ const AudioPlayer = () => {
   } = useQuery([themeId], () => GetMusic(themeId), {
     enabled: Boolean(themeId), // themeId가 존재할 때만 useQuery를 활성화
     onSuccess: () => {
-      console.log('GetMusic Success');
+      setCurrentMusicId(0); //음원리스트가 변경되면 0번째 곡으로 설정
     },
     staleTime: refetchInterval, // 설정된 시간이 지나면 데이터를 다시 요청합니다.
     refetchInterval: refetchInterval, // 주기적인 간격으로 데이터를 자동으로 다시 요청합니다.
   });
+
   // 경로 변경시
   useEffect(() => {
-    if (!themeId && isPlaying) handleTogglePlay(); // 자동재생중이면 끄기
+    // 음원재생이 없는 경로일 경우
+    if (!themeId) {
+      setCurrentMusicId(-1); // 음원 고유아이디 -1로 설정 (못쓰게)
+      if (isPlaying) {
+        handleTogglePlay(); // 자동재생중이면 끄기
+      }
+    }
   }, [location]);
 
   //음원 변경 & 음원리스트 변경시 새로운 인스턴스 생성 & 중복생성을 방지 하기위한 useEffect 로직
   useEffect(() => {
     if (musicList && musicList.length > 0) {
-      const audio = new Audio(musicList[nowMusicId]);
-      audio.loop = true;
-      audio.autoplay = isPlaying;
-      setSound(audio);
-      const url = musicList[nowMusicId];
+      //상태정보 바탕으로 인스턴스 생성
+      const soundInstance = new Howl({
+        src: [musicList[currentMusicId]],
+        loop: isLoop,
+        format: ['mp3'],
+        autoplay: isPlaying,
+        volume: currentVolume,
+      });
+      // 음원 등록
+      setSound(soundInstance);
+      // url에서 title추출 후 등록
+      const url = musicList[currentMusicId];
       const title = getMusicTitleFromUrl(url);
       setMusicTitle(title);
+      // useEffect재실행 시 인스턴스 삭제
       return () => {
-        // 이전에 생성된 오디오 인스턴스를 정지하고, 이벤트 리스너를 해제하고, 메모리에서 삭제
-        audio.pause();
+        soundInstance.unload();
       };
     }
-  }, [nowMusicId, musicList]);
+  }, [currentMusicId]);
 
   // URL에서 MusicTitle을 추출해서 상태를 변경하는 함수
   const getMusicTitleFromUrl = (url: string) => {
@@ -78,19 +94,21 @@ const AudioPlayer = () => {
   const handleChangeMusic = (next: boolean) => {
     //API호출 성공시에만.
     if (isSuccess) {
-      if (!next) {
-        const backId = nowMusicId === 0 ? musicList.length - 1 : nowMusicId - 1;
-        setNowMusicId(backId);
+      if (next) {
+        const nextId = (currentMusicId + 1) % musicList.length;
+        setCurrentMusicId(nextId);
       } else {
-        const forwardId = (nowMusicId + 1) % musicList.length;
-        setNowMusicId(forwardId);
+        //이전 곡
+        const preId =
+          currentMusicId === 0 ? musicList.length - 1 : currentMusicId - 1;
+        setCurrentMusicId(preId);
       }
     }
   };
 
   //재생, 일시정지 토글 핸들러
   const handleTogglePlay = () => {
-    //유효성 검증
+    //음원 인스턴스가 있다면
     if (sound) {
       if (isPlaying) {
         sound.pause();
@@ -104,9 +122,9 @@ const AudioPlayer = () => {
 
   //볼륨 조절 핸들러
   const handleChangeVolume = (volume: number) => {
-    //유효성 검증
+    //음원 인스턴스가 있다면
     if (sound) {
-      sound.volume = volume;
+      sound.volume(volume);
       setCurrentVolume(volume);
     }
   };
@@ -179,7 +197,6 @@ const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
   background-color: ${(props) =>
     props.active ? 'white' : 'rgba(255, 255, 255, 0.3)'};
   cursor: pointer;
-  color: 
   transition: filter 0.3s, height 0.3s;
   //어두워지고 길이가 길어짐
   &:hover {
@@ -198,11 +215,20 @@ const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
 const MusicTitleContainerdiv = styled.div`
   color: white;
   overflow: hidden;
+  border-radius: 100px;
+  margin-left: 10px;
+  min-width: 200px;
+  background-color: rgba(255, 255, 255, 0.1);
 `;
 
 const MusicTitleDiv = styled.div`
   color: white;
   animation: ${marquee} 5s linear infinite;
+  font-size: 17px;
+  > p {
+    margin: 2px 0;
+    font-weight: bold;
+  }
   @media (min-width: 300px) {
     display: none;
   }
