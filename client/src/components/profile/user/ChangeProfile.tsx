@@ -93,7 +93,9 @@ const ChangeProfile = ({
 
           <WithdrawalButton
             onClick={WithdrawalMemberInfo}
-            disabled={email === 'guest@gmail.com'}
+            disabled={
+              email === 'guest@gmail.com' || email === 'admin@adadad.com'
+            }
           >
             {withdrawalButtonName}
           </WithdrawalButton>
