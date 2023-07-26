@@ -32,8 +32,8 @@ public class ThemeController {
     public final ContentMapper contentMapper;
 
     @Operation(summary = "Theme 이미지 리스트",
-            description = "Theme ID를 받아서 해당 Theme의 Contents를 리스트의 형태로 Page 정보와 함께 반환합니다. \r \n \r\n" +
-                    "로그인이 되어 있지 않은 경우 모든 좋아요 정보는 false로 반환됩니다. \r \n \r\n" +
+            description = "Theme ID를 받아서 해당 Theme의 Contents를 리스트의 형태로 Page 정보와 함께 반환합니다." +
+                    "로그인이 되어 있지 않은 경우 모든 좋아요 정보는 false로 반환됩니다." +
                     "해당 리스트의 Content 정보에서 제공하는 URI는 thumbnail의 URI입니다.")
 
     @ApiResponses(value = {
