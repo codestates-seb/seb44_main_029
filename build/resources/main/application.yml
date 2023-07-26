@@ -11,15 +11,14 @@ cloud:
       auto: 'false'
 spring:
   datasource:
-    #    url: jdbc:mysql://database-cozystates2.c1hypxzbotyv.ap-northeast-2.rds.amazonaws.com:13306/cozystates?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    url: jdbc:mysql://localhost:3306/tmpdb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    username: root
-    password: 1234
+    url: jdbc:mysql://database-cozystates2.c1hypxzbotyv.ap-northeast-2.rds.amazonaws.com:13306/cozystates?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: admin
+    password: 12341234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

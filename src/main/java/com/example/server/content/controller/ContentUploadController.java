@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
+
 @Tag(name = "Contents", description = "API about Contents")
 @RestController
 @RequiredArgsConstructor
@@ -41,6 +43,7 @@ public class ContentUploadController {
             @ApiResponse(responseCode = "200", description = "업로드 성공"),
             @ApiResponse(responseCode = "500", description = "업로드 실패")
     })
+    @Transactional
     @PostMapping
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
                                              @RequestParam("title") String title,
