@@ -148,15 +148,11 @@ const List = styled.div`
   border-radius: 1rem;
 
   // 모바일 디바이스
-  @media screen and (min-width: 576px) {
+  @media screen and (min-width: 500px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media screen and (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
   }
 `;

@@ -77,13 +77,10 @@ const ImgLink = styled(Link)`
     @media (min-width: 300px) {
       height: 250px;
     }
-    @media (min-width: 576px) {
-      height: 220px;
-    }
-    @media (min-width: 768px) {
+    @media (min-width: 500px) {
       height: 200px;
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 768px) {
       height: 150px;
     }
   }
