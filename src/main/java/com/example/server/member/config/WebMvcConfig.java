@@ -30,6 +30,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000")
                 .allowedOrigins("http://localhost:3030") // local content test
+                .allowedOrigins("http://cozystates.com")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .exposedHeaders("Access-Control-Allow-Origin");
