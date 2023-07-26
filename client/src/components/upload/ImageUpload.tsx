@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 const ImageUpload = () => {
   const [file, setFile] = useState<File | null>(null);
   const [themeId, setThemeId] = useState<string>('1');
+  const themeTieles = ['Nature', 'Space', 'Animal', 'Pixel', 'Retro'];
 
   //파일 등록 감지 핸들러
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +52,7 @@ const ImageUpload = () => {
         <ThemeSelect value={themeId} onChange={handleThemeIdChange}>
           {Array.from({ length: 5 }, (_, index) => (
             <option key={index + 1} value={index + 1}>
-              테마 {index + 1}
+              {themeTieles[index]}
             </option>
           ))}
         </ThemeSelect>
