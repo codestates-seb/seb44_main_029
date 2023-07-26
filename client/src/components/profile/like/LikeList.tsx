@@ -151,6 +151,9 @@ const List = styled.div`
   @media screen and (min-width: 576px) {
     grid-template-columns: repeat(2, 1fr);
   }
+  @media screen and (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
   // PC 및 큰 디바이스
   @media screen and (min-width: 1024px) {

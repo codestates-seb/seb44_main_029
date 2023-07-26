@@ -70,17 +70,18 @@ const ImgLink = styled(Link)`
   box-sizing: border-box;
   > img {
     width: 100%;
-    border-radius: 30px;
+    border-radius: 1rem;
     color: white;
     box-sizing: border-box;
-    @media (min-width: 150px) {
-      height: 200px;
-    }
+
     @media (min-width: 300px) {
       height: 250px;
     }
+    @media (min-width: 576px) {
+      height: 220px;
+    }
     @media (min-width: 768px) {
-      height: 250px;
+      height: 200px;
     }
     @media (min-width: 1024px) {
       height: 150px;
@@ -90,7 +91,6 @@ const ImgLink = styled(Link)`
 
 const ThemeTitle = styled.div`
   width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   box-sizing: border-box;
   font-weight: bold;
@@ -100,9 +100,9 @@ const ContentDiv = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  border-radius: 0 0 0.33rem 0.33rem;
   color: white;
   box-sizing: border-box;
+  margin-top: 5px;
 `;
 
 const LikeButton = styled.button`
