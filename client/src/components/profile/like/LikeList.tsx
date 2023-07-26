@@ -130,10 +130,10 @@ const Title = styled.div`
   @media (min-width: 300px) {
     font-size: 100%;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 500px) {
     font-size: 120%;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     font-size: 150%;
   }
 `;
