@@ -74,6 +74,18 @@ const Container = styled.div`
   padding: 1rem;
 `;
 
+const zoomAnimation = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
 const IconImg = styled.img`
   margin: 8px 10px;
   box-sizing: border-box;
@@ -85,6 +97,8 @@ const IconImg = styled.img`
   &:hover {
     scale: 1.1;
   }
+  animation: ${zoomAnimation} 3s infinite;
+
   @media (min-width: 300px) {
     width: 60px;
   }
