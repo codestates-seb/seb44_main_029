@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Card from './Card';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -175,18 +175,30 @@ const NoLikedImages = styled.div`
   }
 `;
 
+const upDownAnimation = keyframes`
+  from {
+    transform: translatey(0px);
+  }
+  to {
+    transform: translatey(-20px);
+  }
+`;
+
 const ImgDiv = styled.div`
   width: 100%;
   box-sizing: border-box;
+  margin-top: 10px;
 `;
 const Img = styled.img`
   width: 10%;
   box-sizing: border-box;
   cursor: pointer;
+  transform: translateY(0px);
 
   &:hover {
     scale: 1.2;
   }
+  animation: ${upDownAnimation} 1.4s infinite ease-in-out alternate;
 `;
 
 const Pagination = styled.div`
