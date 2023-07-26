@@ -124,14 +124,14 @@ public class MemberService{
         Member isEmailPresent = memberJpaRepository.findByMemberEmail(dto.getEmail()).orElse(null);
         Member isUsernamePresent = memberJpaRepository.findByMemberUsername(dto.getUsername()).orElse(null);
 
-        if((isEmailPresent != null && isEmailPresent.getActive()) && (isEmailPresent != null && isUsernamePresent.getActive())){
+        if((isEmailPresent != null && isEmailPresent.getActive()) && (isUsernamePresent != null && isUsernamePresent.getActive())){
             log.info("Email, Username 중복");
             return -3L;
         }
         else if(isEmailPresent != null && isEmailPresent.getActive()){
             log.info("Email 중복");
             return -2L;
-        }else if(isEmailPresent != null && isUsernamePresent.getActive()){
+        }else if(isUsernamePresent != null && isUsernamePresent.getActive()){
             log.info("Username 중복");
             return -1L;
         }
