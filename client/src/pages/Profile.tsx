@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import backgroundImg from '../assets/images/profile_background.jpeg';
+import backgroundImg from '../assets/images/profile_background.jpg';
 import ChangeProfile from '../components/profile/user/ChangeProfile';
 import LikeList from '../components/profile/like/LikeList';
 import EditProfile from '../components/profile/edit/EditProfile';
@@ -54,7 +54,6 @@ export const Layout = styled.div`
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    filter: blur(5px);
     z-index: -1;
     transform: scale(1.02);
   }
