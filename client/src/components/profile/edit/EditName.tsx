@@ -60,14 +60,19 @@ const NameInput = styled.input`
   margin-bottom: 10px;
   font-size: 16px;
   color: black;
-  @media (min-width: 576px) {
+  height: 21px;
+
+  @media (min-width: 300px) {
     font-size: 24px;
+    height: 32px;
+  }
+  @media (min-width: 500px) {
+    font-size: 28px;
+    height: 37px;
   }
   @media (min-width: 768px) {
-    font-size: 28px;
-  }
-  @media (min-width: 1024px) {
     font-size: 32px;
+    height: 43px;
   }
 `;
 const EmailDiv = styled.div`
@@ -75,13 +80,13 @@ const EmailDiv = styled.div`
   width: 100%;
   color: gray;
   font-size: 8px;
-  @media (min-width: 576px) {
-    font-size: 16px;
+  @media (min-width: 300px) {
+    font-size: 10px;
+  }
+  @media (min-width: 500px) {
+    font-size: 14px;
   }
   @media (min-width: 768px) {
-    font-size: 20px;
-  }
-  @media (min-width: 1024px) {
     font-size: 18px;
   }
 `;

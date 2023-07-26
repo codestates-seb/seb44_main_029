@@ -133,15 +133,15 @@ const Img = styled.img`
   margin: 8px 10px;
   box-sizing: border-box;
   border-radius: 10px;
-  width: 48px;
+  width: 40px;
 
-  @media (min-width: 576px) {
-    width: 64px;
+  @media (min-width: 300px) {
+    width: 60px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 500px) {
     width: 90px;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     width: 120px;
   }
 `;
@@ -165,13 +165,13 @@ const UsernameDiv = styled.div`
   margin-bottom: 10px;
   font-size: 16px;
 
-  @media (min-width: 576px) {
+  @media (min-width: 300px) {
     font-size: 24px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 500px) {
     font-size: 28px;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     font-size: 32px;
   }
 `;
@@ -180,15 +180,15 @@ const EmailDiv = styled.div`
   box-sizing: border-box;
   width: 100%;
   color: gray;
-  font-size: 8px;
+  font-size: 6px;
 
-  @media (min-width: 576px) {
-    font-size: 16px;
+  @media (min-width: 300px) {
+    font-size: 10px;
+  }
+  @media (min-width: 500px) {
+    font-size: 14px;
   }
   @media (min-width: 768px) {
-    font-size: 20px;
-  }
-  @media (min-width: 1024px) {
     font-size: 18px;
   }
 `;
@@ -215,7 +215,7 @@ const ChangeButton = styled.button`
   margin-right: 20px;
 
   font-size: 1px;
-  width: 50px;
+  width: 40px;
 
   &:hover {
     background-color: #2aa58e;
@@ -232,15 +232,11 @@ const ChangeButton = styled.button`
     width: 80px;
   }
 
-  @media (min-width: 576px) {
+  @media (min-width: 500px) {
     font-size: 6px;
     width: 100px;
   }
   @media (min-width: 768px) {
-    font-size: 8px;
-    width: 120px;
-  }
-  @media (min-width: 1024px) {
     font-size: 12px;
     width: 140px;
   }
@@ -261,7 +257,7 @@ const WithdrawalButton = styled.button`
   margin-right: 20px;
 
   font-size: 1px;
-  width: 50px;
+  width: 40px;
 
   &:hover {
     background-color: #f73737;
@@ -278,15 +274,11 @@ const WithdrawalButton = styled.button`
     width: 80px;
   }
 
-  @media (min-width: 576px) {
+  @media (min-width: 500px) {
     font-size: 6px;
     width: 100px;
   }
   @media (min-width: 768px) {
-    font-size: 8px;
-    width: 120px;
-  }
-  @media (min-width: 1024px) {
     font-size: 12px;
     width: 140px;
   }

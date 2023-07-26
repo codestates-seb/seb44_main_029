@@ -80,18 +80,18 @@ const IconImg = styled.img`
   border-radius: 10px;
   transition: scale 0.3s;
   cursor: pointer;
-  width: 48px;
+  width: 40px;
 
   &:hover {
     scale: 1.1;
   }
-  @media (min-width: 576px) {
-    width: 64px;
+  @media (min-width: 300px) {
+    width: 60px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 500px) {
     width: 90px;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     width: 120px;
   }
 `;
