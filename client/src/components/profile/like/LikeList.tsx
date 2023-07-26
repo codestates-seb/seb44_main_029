@@ -161,14 +161,15 @@ const NoLikedImages = styled.div`
   color: white;
   text-align: center;
   > p {
+    font-size: 50%;
     @media (min-width: 300px) {
-      font-size: 50%;
+      font-size: 70%;
       margin-bottom: 0;
     }
-    @media (min-width: 768px) {
+    @media (min-width: 500px) {
       font-size: 100%;
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 768px) {
       font-size: 150%;
     }
   }
