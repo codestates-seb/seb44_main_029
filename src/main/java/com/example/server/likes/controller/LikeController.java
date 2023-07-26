@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +35,9 @@ public class LikeController {
             @ApiResponse(responseCode = "200", description = "좋아요 등록/해제 성공"),
             @ApiResponse(responseCode = "403", description = "토큰 불일치 혹은 만료")
     })
+    @Transactional
     @PatchMapping("/{content-id}")
-    synchronized public ResponseEntity<?> patchlike(@Positive @PathVariable("content-id") Long contentId,
+    public ResponseEntity<?> patchlike(@Positive @PathVariable("content-id") Long contentId,
                                        HttpServletRequest request){
 
         return likesService.patchLike(contentId, request);
