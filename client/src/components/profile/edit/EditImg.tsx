@@ -74,24 +74,38 @@ const Container = styled.div`
   padding: 1rem;
 `;
 
+const zoomAnimation = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+`;
+
 const IconImg = styled.img`
   margin: 8px 10px;
   box-sizing: border-box;
   border-radius: 10px;
   transition: scale 0.3s;
   cursor: pointer;
-  width: 48px;
+  width: 40px;
 
   &:hover {
     scale: 1.1;
   }
-  @media (min-width: 576px) {
-    width: 64px;
+  animation: ${zoomAnimation} 3s infinite;
+
+  @media (min-width: 300px) {
+    width: 60px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 500px) {
     width: 90px;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     width: 120px;
   }
 `;

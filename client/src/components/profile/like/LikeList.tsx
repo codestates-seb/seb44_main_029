@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Card from './Card';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -130,10 +130,10 @@ const Title = styled.div`
   @media (min-width: 300px) {
     font-size: 100%;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 500px) {
     font-size: 120%;
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 768px) {
     font-size: 150%;
   }
 `;
@@ -148,12 +148,11 @@ const List = styled.div`
   border-radius: 1rem;
 
   // 모바일 디바이스
-  @media screen and (min-width: 576px) {
+  @media screen and (min-width: 500px) {
     grid-template-columns: repeat(2, 1fr);
   }
-
   // PC 및 큰 디바이스
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 768px) {
     grid-template-columns: repeat(4, 1fr);
   }
 `;
@@ -162,31 +161,44 @@ const NoLikedImages = styled.div`
   color: white;
   text-align: center;
   > p {
+    font-size: 50%;
     @media (min-width: 300px) {
-      font-size: 50%;
+      font-size: 70%;
       margin-bottom: 0;
     }
-    @media (min-width: 768px) {
+    @media (min-width: 500px) {
       font-size: 100%;
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 768px) {
       font-size: 150%;
     }
+  }
+`;
+
+const upDownAnimation = keyframes`
+  from {
+    transform: translatey(0px);
+  }
+  to {
+    transform: translatey(-20px);
   }
 `;
 
 const ImgDiv = styled.div`
   width: 100%;
   box-sizing: border-box;
+  margin-top: 10px;
 `;
 const Img = styled.img`
   width: 10%;
   box-sizing: border-box;
   cursor: pointer;
+  transform: translateY(0px);
 
   &:hover {
     scale: 1.2;
   }
+  animation: ${upDownAnimation} 1.4s infinite ease-in-out alternate;
 `;
 
 const Pagination = styled.div`
