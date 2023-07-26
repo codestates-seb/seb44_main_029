@@ -4,23 +4,28 @@ import previousArrowSvg from '../../../assets/icon/icon_previous_arrow.svg';
 import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
 
 interface ThemeHeaderProps {
-  currentThemeTitle: string;
   themeId: number;
 }
 
-const ThemeHeader = ({ currentThemeTitle, themeId }: ThemeHeaderProps) => {
+const ThemeHeader = ({ themeId }: ThemeHeaderProps) => {
+  let themeTtile = '';
   let description = '';
 
   // 테마 타이틀에 따라서 설명을 설정
-  if (currentThemeTitle === 'Nature') {
+  if (themeId === 1) {
+    themeTtile = 'Nature';
     description = '아름다운 자연 풍경';
-  } else if (currentThemeTitle === 'Space') {
+  } else if (themeId === 2) {
+    themeTtile = 'Space';
     description = '우주의 무한함';
-  } else if (currentThemeTitle === 'Animal') {
+  } else if (themeId === 3) {
+    themeTtile = 'Animal';
     description = '다양한 동물의 귀여운 매력';
-  } else if (currentThemeTitle === 'Pixel') {
+  } else if (themeId === 4) {
+    themeTtile = 'Pixel';
     description = '화려한 픽셀 아트의 세계';
-  } else if (currentThemeTitle === 'Retro') {
+  } else if (themeId === 5) {
+    themeTtile = 'Retro';
     description = '과거로 돌아가는 레트로 감성';
   }
 
@@ -33,7 +38,7 @@ const ThemeHeader = ({ currentThemeTitle, themeId }: ThemeHeaderProps) => {
         <img src={previousArrowSvg} alt="Previous Arrow" />
       </MoveToPreviousDiv>
       <TitleWrapper>
-        <h1 className="theme-title">{currentThemeTitle}</h1>
+        <h1 className="theme-title">{themeTtile}</h1>
         <p className="theme-description">{description}</p>
       </TitleWrapper>
       <MoveToNextDiv to={`/theme/${nextThemeId}`}>
