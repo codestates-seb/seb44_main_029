@@ -1,6 +1,6 @@
 import { Howl } from 'howler';
 import { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { GetMusic } from '../../api/api';
@@ -18,7 +18,6 @@ const AudioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoop, setIsLoop] = useState<boolean>(false);
   const { themeId } = useParams();
-  const location = useLocation();
   const volumes = Array.from(
     { length: 20 },
     (_, index) => (index + 1) / 20
@@ -36,22 +35,31 @@ const AudioPlayer = () => {
   } = useQuery([themeId], () => GetMusic(themeId), {
     enabled: Boolean(themeId), // themeId가 존재할 때만 useQuery를 활성화
     onSuccess: () => {
-      setCurrentMusicId(0); //음원리스트가 변경되면 0번째 곡으로 설정
+      console.log('GetMusic!!');
+      if (currentMusicId === -1) setCurrentMusicId(0);
     },
-    staleTime: refetchInterval, // 설정된 시간이 지나면 데이터를 다시 요청합니다.
+    staleTime: 1, // 설정된 시간이 지나면 데이터를 다시 요청합니다.
     refetchInterval: refetchInterval, // 주기적인 간격으로 데이터를 자동으로 다시 요청합니다.
   });
 
-  // 경로 변경시
   useEffect(() => {
-    // 음원재생이 없는 경로일 경우
-    if (!themeId) {
-      setCurrentMusicId(-1); // 음원 고유아이디 -1로 설정 (못쓰게)
-      if (isPlaying) {
-        handleTogglePlay(); // 자동재생중이면 끄기
-      }
+    // themeId가 변경되었을 때에만 실행될 코드를 작성합니다.
+    setCurrentMusicId(-1);
+    console.log('themeId changed!', themeId);
+    if (isPlaying) {
+      handleTogglePlay(); // 자동재생중이면 끄기
+      console.log('게다가 자동재생중!', themeId);
     }
-  }, [location]);
+  }, [themeId]);
+
+  // // 경로 변경시
+  // useEffect(() => {
+  //   // 음원재생이 없는 경로일 경우
+  //   if (!themeId) {
+  //     setCurrentMusicId(-1); // 음원 고유아이디 -1로 설정 (못쓰게)
+  //     console.log('themeId 가 없다!!', themeId);
+  //   }
+  // }, [location]);
 
   //음원 변경 & 음원리스트 변경시 새로운 인스턴스 생성 & 중복생성을 방지 하기위한 useEffect 로직
   useEffect(() => {
@@ -59,7 +67,7 @@ const AudioPlayer = () => {
       //상태정보 바탕으로 인스턴스 생성
       const soundInstance = new Howl({
         src: [musicList[currentMusicId]],
-        loop: isLoop,
+        loop: true,
         format: ['mp3'],
         autoplay: isPlaying,
         volume: currentVolume,
@@ -132,11 +140,17 @@ const AudioPlayer = () => {
     }
   };
 
-  const handleToggleLoop = () => {
-    if (sound) sound.loop(!isLoop);
-    setIsLoop(!isLoop);
-    console.log('isLoop is', isLoop);
-  };
+  // const handleToggleLoop = () => {
+  //   if (sound) {
+  //     if (isLoop) {
+  //       setIsLoop(false);
+  //       sound.loop(false);
+  //     } else {
+  //       setIsLoop(true);
+  //       sound.loop(true);
+  //     }
+  //   }
+  // };
 
   // "end" 이벤트 핸들러
   const handleMusicEnd = () => {
@@ -160,7 +174,7 @@ const AudioPlayer = () => {
           )}
           <S_IoPlayBack onClick={() => handleChangeMusic(false)} />
           <S_IoPlayForward onClick={() => handleChangeMusic(true)} />
-          <S_ImLoop isLoop={isLoop} onClick={() => handleToggleLoop()} />
+          {/* <S_ImLoop isLoop={isLoop} onClick={() => handleToggleLoop()} /> */}
           {volumes.map((volume) => (
             <VolumeChangeBtnDiv
               key={volume}
@@ -345,7 +359,7 @@ const S_ImLoop = styled(ImLoop)<{ isLoop: boolean }>`
   margin-right: 12px;
   border-radius: 5px;
   cursor: pointer;
-  color: ${(prop) => (prop.isLoop ? 'gray' : 'white')};
+  color: ${(prop) => (prop.isLoop ? 'white' : 'rgba(255, 255, 255, 0.3)')};
   transition: padding 0.3s, background-color 0.3s;
   //버튼 크기증가 & 배경색 변화
   &:hover {
