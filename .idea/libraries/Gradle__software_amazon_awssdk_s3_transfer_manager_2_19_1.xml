@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: software.amazon.awssdk:s3-transfer-manager:2.19.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/s3-transfer-manager/2.19.1/38ad47af02f3fbd6d0010916bc4458974e2e7a4c/s3-transfer-manager-2.19.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/software.amazon.awssdk/s3-transfer-manager/2.19.1/e4c6fed5c1f3baadf850f9a57ae3b97a36cfc3f8/s3-transfer-manager-2.19.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
