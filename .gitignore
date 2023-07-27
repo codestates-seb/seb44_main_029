@@ -193,6 +193,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+src/main/resources/application.yml
+src/main/resources/application-redis.yml
 src/main/resources/application-jwt.yml
 src/main/resources/application-oauth.yml
 
