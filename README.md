@@ -29,7 +29,7 @@
 | :-------: | :-------------------------------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------: |
 | Profile |<img width="150" src="https://avatars.githubusercontent.com/u/117034592?v=4"> |<img width="150" src="https://avatars.githubusercontent.com/u/70518135?v=4"> | <img width="150" src="https://avatars.githubusercontent.com/u/113077033?v=4"> 
 | GitHub ID | [@Seohabin6078](https://github.com/Seohabin6078) |  [@yhj0076](https://github.com/yhj0076) | [@mins-git](https://github.com/mins-git) |
-|   Role    |                - 캘린더 CRUD <br> - 이미지 AWS 저장 <br> - 테스트 코드 <br> - AWS EC2 배포                                                         |                       - 로그인/회원가입 <br> - Spring Security JWT <br> - 회원 정보 관리                                                                            |                                              - 게시판 CRUD <br> - 댓글 CRUD <br> - 게시글 좋아요 기능 <br> - 이미지 AWS 저장                                         |
+|   Role    |                - AWS EC2 배포 <br> - 음원 조회 기능  <br> - 음원 업로드 기능                                                           |                       - 로그인/회원가입 <br> - Spring Security JWT <br> - 회원 정보 관리                                                                            |                                              - 게시판 CRUD <br> - 댓글 CRUD <br> - 게시글 좋아요 기능 <br> - 이미지 AWS 저장                                         |
 
 
 <br>
