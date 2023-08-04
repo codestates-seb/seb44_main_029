@@ -12,8 +12,9 @@ import { GetThemeItems, GetThemeLikes } from '../api/api';
 import getBackgroundImage from '../utils/getBackgroundImage';
 import { PacmanLoader } from 'react-spinners';
 import Masonry from 'react-masonry-css';
-import LoginForm from '../components/Login/LoginForm';
 import { BiChevronsUp } from 'react-icons/bi';
+import { setIsModal } from '../feature/header/modalSlice';
+import { useDispatch } from 'react-redux';
 
 const breakpointColumnsObj = {
   default: 6,
@@ -27,7 +28,8 @@ const ThemeItemList = () => {
   const targetRef = useRef<HTMLDivElement | null>(null); // 무한 스크롤을 위한 참조
   const { themeId } = useParams<{ themeId: string }>(); // 현재 선택된 테마 아이디를 가져온다.
   const numThemeId = parseInt(themeId || ''); // string 타입으로 들어온 데이터를 number 타입으로 변환한다.
-  const [isModal, setIsModal] = useState(false);
+  // const [isModal, setIsModal] = useState(false);
+  const dispatch = useDispatch();
 
   // 테마 이미지 리스트를 가져와서 무한스크롤을 구현하는 쿼리
   const {
@@ -109,7 +111,7 @@ const ThemeItemList = () => {
 
     if (!memberId) {
       alert('로그인이 필요한 기능입니다. 🙏');
-      setIsModal(!isModal);
+      dispatch(setIsModal(true));
     } else {
       setShowLikedOnly(!showLikedOnly);
     }
@@ -161,7 +163,6 @@ const ThemeItemList = () => {
           <div ref={targetRef} />
         </ItemListContainerDiv>
       </ContentContainer>
-      {isModal && <LoginForm setIsModal={setIsModal} />}
       <ScrollUP onClick={ScrollUp} />
     </Layout>
   );

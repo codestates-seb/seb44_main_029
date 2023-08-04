@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { UpdateLike } from '../../../api/api';
 import { DetailedItemProps } from '../../../types/types';
 import LoginForm from '../../Login/LoginForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsModal, ModalState } from '../../../feature/header/modalSlice';
 // import previousArrowSvg from '../../../assets/icon/icon_previous_arrow.svg';
 // import nextArrowSvg from '../../../assets/icon/icon_next_arrow.svg';
 
@@ -19,9 +21,13 @@ const DetailedItem = ({
 // lastElementContentId,
 DetailedItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 좋아요 상태 관리를 위한 상태
-  const [isModal, setIsModal] = useState(false);
+  // const [isModal, setIsModal] = useState(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isModal = useSelector(
+    (state: { modal: ModalState }) => state.modal.isModal
+  );
 
   // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
@@ -41,7 +47,7 @@ DetailedItemProps) => {
     try {
       if (!memberId) {
         alert('로그인이 필요한 기능입니다. 🙏');
-        setIsModal(!isModal);
+        dispatch(setIsModal(!isModal));
       } else {
         await handleUpdateLikeMutation.mutateAsync(contentId);
         setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
@@ -92,7 +98,7 @@ DetailedItemProps) => {
           ✕
         </CloseButtonLink>
       </ItemContainerDiv>
-      {isModal && <LoginForm setIsModal={setIsModal} />}
+      {isModal && <LoginForm />}
     </Container>
   );
 };
