@@ -3,17 +3,24 @@ import LoginForm from '../Login/LoginForm';
 import { useState } from 'react';
 import ScrollUp from './ScrollUp';
 import { useNavigate } from 'react-router-dom';
+import { setIsModal, ModalState } from '../../feature/header/modalSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const TitleThree = ({ observer }: { observer: boolean }) => {
-  const [isModal, setIsModal] = useState(false);
+  // const [isModal, setIsModal] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isModal = useSelector(
+    (state: { modal: ModalState }) => state.modal.isModal
+  );
+
   const accessToken = sessionStorage.getItem('accessToken');
   const handleLikeBtn = () => {
-    accessToken ? navigate('/theme') : setIsModal(true);
+    accessToken ? navigate('/theme') : dispatch(setIsModal(true));
   };
   return (
     <Container>
-      {isModal && <LoginForm setIsModal={setIsModal} />}
+      {isModal && <LoginForm />}
       <Box observer={observer}>
         <img src="https://i.pinimg.com/originals/f2/95/8a/f2958a889d9a74c01d645dbc0d8bedbd.gif" />
         <img src="https://i.pinimg.com/originals/10/ed/f0/10edf0bc3280b426487a392526789865.gif" />

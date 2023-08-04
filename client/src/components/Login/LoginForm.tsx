@@ -5,16 +5,17 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import GuestLoginButton from './GuestLoginButton';
+import { useDispatch } from 'react-redux';
+import { setIsModal } from '../../feature/header/modalSlice';
 
 interface LoginFormData {
   email: string;
   password: string;
 }
-interface LoginFormProps {
-  setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-const LoginForm = ({ setIsModal }: LoginFormProps) => {
+
+const LoginForm = () => {
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
 
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
     email: '',
@@ -94,7 +95,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
           password: '',
         });
         queryClient.invalidateQueries(['login']);
-        setIsModal(false);
+        dispatch(setIsModal(false));
         window.location.href = '/profile';
         // 탈퇴한 회원
       } else if (response.status === 202 && response.data === -7) {
@@ -103,7 +104,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
           email: '',
           password: '',
         });
-        setIsModal(true);
+        dispatch(setIsModal(true));
         // 일반 유저 및 관리자 중복 로그인
       } else if (response.status === 202 && response.data === -6) {
         alert(
@@ -134,7 +135,7 @@ const LoginForm = ({ setIsModal }: LoginFormProps) => {
 
   return (
     <>
-      <ModalOverlayDiv onClick={() => setIsModal(false)} />
+      <ModalOverlayDiv onClick={() => dispatch(setIsModal(false))} />
       {!isSignUpClicked ? (
         <Container>
           <GoogleLoginButton />

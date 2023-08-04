@@ -5,6 +5,8 @@ import { ItemInfo } from '../../../types/types';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { UpdateLike } from '../../../api/api';
 import LoginForm from '../../Login/LoginForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsModal, ModalState } from '../../../feature/header/modalSlice';
 
 interface ItemProps
   extends Omit<ItemInfo, 'themeTitle' | 'howManyLiked' | 'contentTitle'> {
@@ -13,8 +15,12 @@ interface ItemProps
 
 const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
   const [likedItem, setLikedItem] = useState<boolean>(liked); // 현재 아이템의 좋아요 상태를 저장하는 상태
-  const [isModal, setIsModal] = useState(false);
+  // const [isModal, setIsModal] = useState(false);
   const queryClient = useQueryClient();
+  const dispatch = useDispatch();
+  const isModal = useSelector(
+    (state: { modal: ModalState }) => state.modal.isModal
+  );
 
   // 좋아요 업데이트를 위한 useMutation 정의
   const handleUpdateLikeMutation = useMutation(UpdateLike, {
@@ -33,7 +39,7 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
     try {
       if (!memberId) {
         alert('로그인이 필요한 기능입니다. 🙏');
-        setIsModal(!isModal);
+        dispatch(setIsModal(!isModal));
       } else {
         await handleUpdateLikeMutation.mutateAsync(contentId);
         setLikedItem((likedItem) => !likedItem); // 좋아요 상태를 업데이트
@@ -53,7 +59,7 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
           {likedItem ? '❤️' : '🤍'}
         </LikeButton>
       </OverlayControlDiv>
-      {isModal && <LoginForm setIsModal={setIsModal} />}
+      {isModal && <LoginForm />}
     </Container>
   );
 };

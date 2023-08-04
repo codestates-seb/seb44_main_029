@@ -6,11 +6,26 @@ import { useMutation } from '@tanstack/react-query';
 import { FiAlignJustify, FiHome, FiUser, FiX } from 'react-icons/fi';
 import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
 import LoginForm from '../Login/LoginForm';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsClicked, NavState } from '../../feature/header/navSlice';
+import { setIsModal, ModalState } from '../../feature/header/modalSlice';
 
 // Nav 컴포넌트
 const Nav = () => {
-  const [isClicked, setIsClick] = useState(false);
-  const [isModal, setIsModal] = useState(false);
+  // const [isClicked, setIsClick] = useState(false);
+  // const [isModal, setIsModal] = useState(false);
+
+  // Redux 스토어로부터 isClicked 상태를 가져옴
+  const isClicked = useSelector(
+    (state: { nav: NavState }) => state.nav.isClicked
+  );
+
+  const isModal = useSelector(
+    (state: { modal: ModalState }) => state.modal.isModal
+  );
+  // dispatch 함수를 가져옴
+  const dispatch = useDispatch();
+
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -18,14 +33,14 @@ const Nav = () => {
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-        setIsClick(false);
+        dispatch(setIsClicked(false));
       }
     };
     window.addEventListener('mousedown', handleClick);
     return () => window.removeEventListener('mousedown', handleClick);
   }, [modalRef]);
 
-  // 로컬스토리지에 있는 액세스토큰 꺼내오기
+  // 세션스토리지에 있는 액세스토큰 꺼내오기
   const accessToken = sessionStorage.getItem('accessToken');
 
   // 로그아웃 성공 시
@@ -57,7 +72,7 @@ const Nav = () => {
       alert('로그인이 필요한 기능입니다. 🙏');
     }
     if (!accessToken) {
-      setIsModal(true);
+      dispatch(setIsModal(true));
     } else {
       navigate('/profile');
     }
@@ -65,13 +80,13 @@ const Nav = () => {
 
   return (
     <Container ref={modalRef}>
-      {isModal && <LoginForm setIsModal={setIsModal} />}
+      {isModal && <LoginForm />}
       <NavBtnDiv isClicked={isClicked}>
         {/* 클릭시 나타나는 메뉴바 */}
         {isClicked ? (
           <>
             <StyledIcon>
-              <FiX onClick={() => setIsClick(false)} />
+              <FiX onClick={() => dispatch(setIsClicked(false))} />
             </StyledIcon>
             <StyledIcon>
               <FiHome onClick={() => navigate('/')} />
@@ -85,7 +100,7 @@ const Nav = () => {
             {/* jwtToken 토큰 유무 분기 */}
             {!accessToken ? (
               <StyledIcon>
-                <TbLogin onClick={() => setIsModal(true)} />
+                <TbLogin onClick={() => dispatch(setIsModal(true))} />
               </StyledIcon>
             ) : (
               <StyledIcon>
@@ -94,7 +109,7 @@ const Nav = () => {
             )}
           </>
         ) : (
-          <S_FiAlignJustify onClick={() => setIsClick(true)} />
+          <S_FiAlignJustify onClick={() => dispatch(setIsClicked(true))} />
         )}
       </NavBtnDiv>
     </Container>
