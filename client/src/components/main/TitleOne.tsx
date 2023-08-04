@@ -1,25 +1,16 @@
 import styled, { keyframes } from 'styled-components';
 import { TbCarouselHorizontal, TbLogin } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import LoginForm from '../Login/LoginForm';
 import MoveNextPage from './MoveNextPage';
-import { setIsModal, ModalState } from '../../feature/header/modalSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useShowLoginForm } from '../../hooks/useShowLoginForm';
 
 const TitleOne = () => {
-  // const [isModal, setIsModal] = useState(false);
   const accessToken = localStorage.getItem('accessToken');
   const navigate = useNavigate();
-
-  const dispatch = useDispatch();
-  const isModal = useSelector(
-    (state: { modal: ModalState }) => state.modal.isModal
-  );
+  const showLoginForm = useShowLoginForm();
 
   return (
     <>
-      {isModal && <LoginForm />}
       <Container>
         <p>편안함을 제공하는</p>
         <Column>
@@ -28,7 +19,7 @@ const TitleOne = () => {
         </Column>
         <BtnColumnDiv>
           {!accessToken && (
-            <button onClick={() => dispatch(setIsModal(true))}>
+            <button onClick={() => showLoginForm()}>
               <TbLogin />
               <p>로그인</p>
             </button>

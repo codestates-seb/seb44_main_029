@@ -7,7 +7,10 @@ import { useDispatch } from 'react-redux';
 //   dispatch(setIsModal(true)); // 로그인 폼을 표시하는 액션 디스패치
 // }
 
-// 커스텀 훅 버전
+// 커스텀 훅 버전 사용법
+// 1. 가져오기: import { useShowLoginForm } from '나의 경로/hooks/useShowLoginForm';
+// 2. 선언하기: const showLoginForm = useShowLoginForm();
+// 3. 호출하기: showLoginForm()
 export function useShowLoginForm() {
   const dispatch = useDispatch();
   const showLoginForm = () => {

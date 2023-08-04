@@ -5,26 +5,21 @@ import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
 import { FiAlignJustify, FiHome, FiUser, FiX } from 'react-icons/fi';
 import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
-import LoginForm from '../Login/LoginForm';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsClicked, NavState } from '../../feature/header/navSlice';
-import { setIsModal, ModalState } from '../../feature/header/modalSlice';
+import { useShowLoginForm } from '../../hooks/useShowLoginForm';
 
 // Nav 컴포넌트
 const Nav = () => {
-  // const [isClicked, setIsClick] = useState(false);
-  // const [isModal, setIsModal] = useState(false);
-
   // Redux 스토어로부터 isClicked 상태를 가져옴
   const isClicked = useSelector(
     (state: { nav: NavState }) => state.nav.isClicked
   );
-
-  // dispatch 함수를 가져옴
+  // // dispatch 함수를 가져옴
   const dispatch = useDispatch();
-
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const showLoginForm = useShowLoginForm();
 
   // 외부 영역 클릭 시
   useEffect(() => {
@@ -69,7 +64,7 @@ const Nav = () => {
       alert('로그인이 필요한 기능입니다. 🙏');
     }
     if (!accessToken) {
-      dispatch(setIsModal(true));
+      showLoginForm();
     } else {
       navigate('/profile');
     }
@@ -96,7 +91,7 @@ const Nav = () => {
             {/* jwtToken 토큰 유무 분기 */}
             {!accessToken ? (
               <StyledIcon>
-                <TbLogin onClick={() => dispatch(setIsModal(true))} />
+                <TbLogin onClick={() => showLoginForm()} />
               </StyledIcon>
             ) : (
               <StyledIcon>
