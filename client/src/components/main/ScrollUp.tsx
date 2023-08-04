@@ -26,7 +26,7 @@ const fadeInAnimation = keyframes`
 // 위아래 이동 애니메이션
 const moveUpDown = keyframes`
   50% {
-    transform: translateY(5px);
+    transform: translateY(-5px);
   }
 `;
 
