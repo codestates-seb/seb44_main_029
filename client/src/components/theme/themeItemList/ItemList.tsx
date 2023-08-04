@@ -59,7 +59,6 @@ const ItemList = ({ contentId, liked, contentUri, themeId }: ItemProps) => {
           {likedItem ? '❤️' : '🤍'}
         </LikeButton>
       </OverlayControlDiv>
-      {isModal && <LoginForm />}
     </Container>
   );
 };

@@ -20,9 +20,6 @@ const Nav = () => {
     (state: { nav: NavState }) => state.nav.isClicked
   );
 
-  const isModal = useSelector(
-    (state: { modal: ModalState }) => state.modal.isModal
-  );
   // dispatch 함수를 가져옴
   const dispatch = useDispatch();
 
@@ -80,7 +77,6 @@ const Nav = () => {
 
   return (
     <Container ref={modalRef}>
-      {isModal && <LoginForm />}
       <NavBtnDiv isClicked={isClicked}>
         {/* 클릭시 나타나는 메뉴바 */}
         {isClicked ? (
