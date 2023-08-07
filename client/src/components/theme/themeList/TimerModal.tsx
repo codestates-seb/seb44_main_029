@@ -31,8 +31,8 @@ const TimerModal = ({ handleTogglePlay }: { handleTogglePlay: () => void }) => {
         <ColumnDiv>
           <RowDiv>
             <div>BGM을 재생 하시겠습니까?</div>
-            <Button onClick={handleYesButtonClick}>✅</Button>
-            <Button onClick={handleNoButtonClick}>❎</Button>
+            <Button onClick={handleYesButtonClick}>예</Button>
+            <Button onClick={handleNoButtonClick}>아니요</Button>
           </RowDiv>
           <CheckboxContainer>
             <label>다음부터 띄우지 않기</label>
@@ -47,33 +47,38 @@ const TimerModal = ({ handleTogglePlay }: { handleTogglePlay: () => void }) => {
 // 스타일드 컴포넌트를 사용하여 모달 스타일을 정의합니다.
 const slideRigthIn = keyframes`
   0% , 100%{
-    right: -20%;
+    bottom: -50px;
+    opacity: 0;
   }
   15%, 85% {
     opacity: 1;
-    right: 0%;
+    bottom: 0px;
   }
 `;
 
 // 모달 창을 감싸는 컨테이너 스타일
 const ModalContainer = styled.div<{ show: boolean }>`
-  font-size: 15px;
-  position: absolute;
-  top: 40px; // header높이 == 40px
-  opacity: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.9),
-    rgb(255, 255, 255, 0.9)
-  );
+  height: 50px;
+  width: 300px;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  background-color: rgb(255, 255, 255, 0.9);
   padding: 10px;
-  border-radius: 0 0 0 10px;
+  border-radius: 10px 10px 0 0;
   z-index: 300;
   display: ${(props) =>
     props.show
       ? 'block'
       : 'none'}; /* showModal 상태에 따라 보이기/숨기기 설정 */
   animation: ${slideRigthIn} 5s ease-in-out;
+
+  @media (min-width: 300px) {
+    font-size: 10px;
+  }
+  @media (min-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 // 모달 창의 내용 스타일
@@ -83,11 +88,12 @@ const ModalContent = styled.div`
 
 // 예/아니오 버튼 스타일
 const Button = styled.button`
-  margin-left: 10px;
+  margin-left: 5px;
+  background-color: #3085fc;
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 0;
+  padding: 3px 10px;
   font-size: 15px;
   cursor: pointer;
 `;
@@ -111,6 +117,8 @@ const ColumnDiv = styled.div`
 const RowDiv = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default TimerModal;

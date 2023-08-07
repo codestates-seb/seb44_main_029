@@ -167,7 +167,6 @@ const AudioPlayer = () => {
           {!isPlaying && !checkLocalStorage && (
             <TimerModal handleTogglePlay={handleTogglePlay} />
           )}
-
           <S_IoPlayBack onClick={() => handleChangeMusic(false)} />
           {isPlaying ? (
             <S_IoPause onClick={handleTogglePlay} />
@@ -224,7 +223,6 @@ const Container = styled.div`
   align-items: center;
   border-radius: 0 0 10px 0;
   z-index: 99;
-  margin-left: 50px;
   @media (min-width: 300px) {
     margin-left: 0;
     height: 30px;
