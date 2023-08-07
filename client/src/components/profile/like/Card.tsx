@@ -8,7 +8,6 @@ interface CardProps {
   themeId: number;
   themeTitle: string;
   contentId: number;
-  liked: boolean;
   handleItemDelete: () => void;
 }
 
@@ -17,7 +16,6 @@ const Card = ({
   themeId,
   themeTitle,
   contentId,
-  liked,
   handleItemDelete,
 }: CardProps) => {
   const queryClient = useQueryClient();
