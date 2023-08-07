@@ -60,6 +60,7 @@ const slideRigthIn = keyframes`
 const ModalContainer = styled.div<{ show: boolean }>`
   height: 50px;
   width: 300px;
+  font-size: 15px;
   position: fixed;
   left: 50%;
   transform: translate(-50%, 0%);
@@ -72,13 +73,6 @@ const ModalContainer = styled.div<{ show: boolean }>`
       ? 'block'
       : 'none'}; /* showModal 상태에 따라 보이기/숨기기 설정 */
   animation: ${slideRigthIn} 5s ease-in-out;
-
-  @media (min-width: 300px) {
-    font-size: 10px;
-  }
-  @media (min-width: 768px) {
-    font-size: 15px;
-  }
 `;
 
 // 모달 창의 내용 스타일
