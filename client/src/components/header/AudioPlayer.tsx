@@ -192,7 +192,9 @@ const AudioPlayer = () => {
         <SpinnerImg src={Spinner} />
       ) : isError ? (
         <>API 실패</>
-      ) : null}
+      ) : (
+        <TitleP>CozyStates</TitleP>
+      )}
     </Container>
   );
 };
@@ -207,6 +209,11 @@ const marquee = keyframes`
   100% {
     transform: translateX(-100%); /* 목표 위치 (-100%만큼 왼쪽으로 이동) */
   }
+`;
+
+const TitleP = styled.p`
+  color: white;
+  font-weight: bold;
 `;
 
 //오디오 컨테이너
