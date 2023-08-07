@@ -1,22 +1,16 @@
 import styled from 'styled-components';
-import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
 import { FiAlignJustify } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsClicked, NavState } from '../../feature/header/navSlice';
+import { useDispatch } from 'react-redux';
+import { setIsClicked } from '../../feature/header/navSlice';
 import { useShowLoginForm } from '../../hooks/useShowLoginForm';
 
 // Nav 컴포넌트
 const Nav2 = () => {
-  // Redux 스토어로부터 isClicked 상태를 가져옴
-  const isClicked = useSelector(
-    (state: { nav: NavState }) => state.nav.isClicked
-  );
   // // dispatch 함수를 가져옴
   const dispatch = useDispatch();
-  const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const showLoginForm = useShowLoginForm();
 
@@ -59,7 +53,7 @@ const Nav2 = () => {
   };
 
   return (
-    <Container ref={modalRef}>
+    <Container>
       <NavigateDiv onClick={() => navigate('/')}>홈</NavigateDiv>
       <NavigateDiv onClick={() => navigate('/theme')}>
         테마 둘러보기
@@ -70,7 +64,6 @@ const Nav2 = () => {
       ) : (
         <NavigateDiv onClick={() => showLoginForm()}>로그인</NavigateDiv>
       )}
-      <S_FiAlignJustify />
     </Container>
   );
 };
@@ -82,61 +75,29 @@ const Container = styled.div`
   z-index: 300;
   display: flex;
   justify-content: center;
-  margin-right: 30px;
+  align-items: center;
+
+  flex-grow: 1;
+  @media (min-width: 300px) {
+    margin-right: 0;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    margin-right: 50px;
+    justify-content: flex-end;
+  }
 `;
 
 const NavigateDiv = styled.div`
   height: 100;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.8);
-  transition: color 0.3s ease-in-out;
+  transition: all 0.2s ease-in-out;
   margin: 0 20px;
   cursor: pointer;
   &:hover {
     color: rgba(255, 255, 255, 1);
-  }
-  @media (min-width: 300px) {
-    display: none;
-  }
-
-  @media (min-width: 1024px) {
-    display: block;
-  }
-`;
-
-const NavBtnDiv = styled.div<{ isClicked: boolean }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  cursor: pointer;
-  border-radius: 0 0 0 10px;
-  transition: transform 0.5s, box-shadow 2s, height 0.5s;
-  background-color: ${(props) =>
-    props.isClicked && 'rgba(255, 255, 255, 0.6);'};
-  @media (min-width: 300px) {
-    display: block;
-  }
-
-  @media (min-width: 1024px) {
-    display: none;
-  }
-`;
-
-const S_FiAlignJustify = styled(FiAlignJustify)`
-  height: 100%;
-  font-size: 30px;
-  color: rgba(255, 255, 255, 0.8);
-  &:hover {
-    color: rgba(255, 255, 255, 1);
-  }
-  &:active {
-  }
-  @media (min-width: 300px) {
-    display: block;
-  }
-
-  @media (min-width: 1024px) {
-    display: none;
+    font-weight: bold;
   }
 `;

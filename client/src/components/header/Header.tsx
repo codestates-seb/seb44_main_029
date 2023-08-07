@@ -27,12 +27,19 @@ export const slideBox = keyframes`
 
 const Container = styled.div`
   z-index: 999;
-  position: fixed;
+  position: absolute;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 40px;
   width: 100%;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0));
-  backdrop-filter: blur(7px);
+  backdrop-filter: blur(10px);
+  @media (min-width: 300px) {
+    flex-direction: column;
+    height: 70px;
+  }
+  @media (min-width: 768px) {
+    flex-direction: row;
+    height: 40px;
+  }
 `;
