@@ -8,18 +8,17 @@ import img2 from '../../../assets/profile/2.jpeg';
 import img3 from '../../../assets/profile/3.jpeg';
 import img4 from '../../../assets/profile/4.jpeg';
 import img5 from '../../../assets/profile/5.jpeg';
+import { useDispatch } from 'react-redux';
+import { setImgUrl } from '../../../feature/profile/editSlice';
 
-const EditImg = ({
-  setImgUrl,
-}: {
-  setImgUrl: React.Dispatch<React.SetStateAction<string | null>>;
-}) => {
+const EditImg = () => {
+  const dispatch = useDispatch();
   const [isIconImgClicked, setIconImgClicked] = useState(false);
   const [currentUrl, setCurrentUrl] = useState<string | null>(null);
   const urlList = [img1, img2, img3, img4, img5];
   //클릭 시 api 인자 전달, 현재 프로필 변경 예시 보여주기
   const handleClick = (url: string) => {
-    setImgUrl(url);
+    dispatch(setImgUrl(url));
     setCurrentUrl(url);
     setIconImgClicked(false);
   };

@@ -66,7 +66,6 @@ const LikeList = () => {
               themeId={card.themeId}
               themeTitle={card.themeTitle}
               contentId={card.contentId}
-              liked={card.liked}
               handleItemDelete={handleItemDelete}
             />
           ))}

@@ -5,18 +5,16 @@ import LikeList from '../components/profile/like/LikeList';
 import EditProfile from '../components/profile/edit/EditProfile';
 import ImageUpload from '../components/upload/ImageUpload';
 import MusicUpload from '../components/upload/MusicUpload';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { EditState } from '../feature/profile/editSlice';
 
 const Profile = () => {
-  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const isEdit = useSelector((state: { edit: EditState }) => state.edit.isEdit);
+
   return (
     <Layout>
       <ContentContainer>
-        {isEdit ? (
-          <EditProfile setIsEdit={setIsEdit} />
-        ) : (
-          <ChangeProfile setIsEdit={setIsEdit} />
-        )}
+        {isEdit ? <EditProfile /> : <ChangeProfile />}
         {sessionStorage.getItem('admin') === 'true' ? (
           <ColumnDiv>
             <ImageUpload />

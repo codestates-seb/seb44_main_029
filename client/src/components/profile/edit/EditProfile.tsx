@@ -1,21 +1,24 @@
 import styled from 'styled-components';
 import EditImg from './EditImg';
 import EditName from './EditName';
-import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { PetchEditProfile } from '../../../api/api';
+import { setIsEdit, EditState } from '../../../feature/profile/editSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-const EditProfile = ({
-  setIsEdit,
-}: {
-  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const [imgUrl, setImgUrl] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
-  const [changeUserName, setChangeUserName] = useState<string | null>(null);
+const EditProfile = ({}) => {
+  const dispatch = useDispatch();
+  const imgUrl = useSelector((state: { edit: EditState }) => state.edit.imgUrl);
+  const userName = useSelector(
+    (state: { edit: EditState }) => state.edit.userName
+  );
+  const noChangeUserName = useSelector(
+    (state: { edit: EditState }) => state.edit.noChangeUserName
+  );
+
   //취소버튼
   const handleCancleButton = () => {
-    setIsEdit(false);
+    dispatch(setIsEdit(false));
   };
   //저장버튼
   const handleSaveButton = async () => {
@@ -24,28 +27,25 @@ const EditProfile = ({
       //  editMutation을 비동기로 실행
       const response = await editMutation.mutateAsync();
       if (response.status === 200) {
-        setIsEdit(false);
+        dispatch(setIsEdit(false));
       } else if (response.status === 202 && response.data === -2) {
         alert('이미 사용중인 유저네임입니다.');
-        setChangeUserName('');
       }
     }
   };
 
   const editMutation = useMutation(() =>
-    PetchEditProfile({ imageUrl: imgUrl, username: userName })
+    PetchEditProfile({
+      imageUrl: imgUrl,
+      username: userName || noChangeUserName,
+    })
   );
 
   return (
     <Container>
       <EditInfoDiv>
-        <EditImg setImgUrl={setImgUrl} />
-        <EditName
-          userName={userName}
-          setUserName={setUserName}
-          changeUserName={changeUserName}
-          setChangeUserName={setChangeUserName}
-        />
+        <EditImg />
+        <EditName />
         <BtnGroupDiv>
           <Button bgColor="#3690f0" onClick={handleSaveButton}>
             저장

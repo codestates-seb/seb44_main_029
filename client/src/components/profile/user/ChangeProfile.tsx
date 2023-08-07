@@ -4,12 +4,12 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import { GetUserInfo, DeleteMemberInfo } from '../../../api/api';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setIsEdit } from '../../../feature/profile/editSlice';
 
-const ChangeProfile = ({
-  setIsEdit,
-}: {
-  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+const ChangeProfile = ({}) => {
+  const dispatch = useDispatch();
+
   const { data } = useQuery(['userInfo'], GetUserInfo);
   const navigate = useNavigate();
 
@@ -18,7 +18,7 @@ const ChangeProfile = ({
   const imageUrl = data?.imageUrl;
 
   const ChangeMemberInfo = () => {
-    setIsEdit(true);
+    dispatch(setIsEdit(true));
   };
 
   // 회원 탈퇴
