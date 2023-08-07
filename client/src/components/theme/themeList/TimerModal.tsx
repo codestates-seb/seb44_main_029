@@ -55,13 +55,12 @@ const slideRigthIn = keyframes`
 
 // 모달 창을 감싸는 컨테이너 스타일
 const ModalContainer = styled.div<{ show: boolean }>`
-  position: fixed;
-  bottom: 0;
-  right: 0;
+  position: absolute;
+  top: 40px; // header높이 == 40px
   opacity: 0;
   background-color: white;
   padding: 20px;
-  border-radius: 20px 0 0 20px;
+  border-radius: 0 0 0 20px;
   z-index: 300;
   display: ${(props) =>
     props.show
