@@ -3,11 +3,7 @@ import EditImg from './EditImg';
 import EditName from './EditName';
 import { useMutation } from '@tanstack/react-query';
 import { PetchEditProfile } from '../../../api/api';
-import {
-  setIsEdit,
-  setChangeUserName,
-  EditState,
-} from '../../../feature/profile/editSlice';
+import { setIsEdit, EditState } from '../../../feature/profile/editSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const EditProfile = ({}) => {
@@ -15,6 +11,9 @@ const EditProfile = ({}) => {
   const imgUrl = useSelector((state: { edit: EditState }) => state.edit.imgUrl);
   const userName = useSelector(
     (state: { edit: EditState }) => state.edit.userName
+  );
+  const noChangeUserName = useSelector(
+    (state: { edit: EditState }) => state.edit.noChangeUserName
   );
 
   //취소버튼
@@ -31,13 +30,15 @@ const EditProfile = ({}) => {
         dispatch(setIsEdit(false));
       } else if (response.status === 202 && response.data === -2) {
         alert('이미 사용중인 유저네임입니다.');
-        dispatch(setChangeUserName(''));
       }
     }
   };
 
   const editMutation = useMutation(() =>
-    PetchEditProfile({ imageUrl: imgUrl, username: userName })
+    PetchEditProfile({
+      imageUrl: imgUrl,
+      username: userName || noChangeUserName,
+    })
   );
 
   return (

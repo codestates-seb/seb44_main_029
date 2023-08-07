@@ -3,7 +3,10 @@ import { useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetUserInfo } from '../../../api/api';
 import { useDispatch } from 'react-redux';
-import { setUserName } from '../../../feature/profile/editSlice';
+import {
+  setUserName,
+  setNoChangeUserName,
+} from '../../../feature/profile/editSlice';
 
 const EditName = () => {
   const dispatch = useDispatch();
@@ -17,7 +20,7 @@ const EditName = () => {
   const handleNameInputChange = () => {
     const newName = nameInputRef.current?.value;
     if (newName) dispatch(setUserName(newName));
-    else if (newName === '') dispatch(setUserName(null));
+    else if (newName === '') dispatch(setNoChangeUserName(null));
   };
   return (
     <Container>

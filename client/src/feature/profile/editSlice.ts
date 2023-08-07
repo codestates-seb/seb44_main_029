@@ -4,14 +4,14 @@ export interface EditState {
   isEdit: boolean;
   imgUrl: string | null;
   userName: string | null;
-  changeUserName: string | null;
+  noChangeUserName: string | null;
 }
 
 const initialState: EditState = {
   isEdit: false,
   imgUrl: null,
   userName: null,
-  changeUserName: null,
+  noChangeUserName: null,
 };
 
 const editSlice = createSlice({
@@ -27,13 +27,13 @@ const editSlice = createSlice({
     setUserName: (state, action) => {
       state.userName = action.payload;
     },
-    setChangeUserName: (state, action) => {
-      state.changeUserName = action.payload;
+    setNoChangeUserName: (state, action) => {
+      state.noChangeUserName = action.payload;
     },
   },
 });
 
-export const { setIsEdit, setImgUrl, setUserName, setChangeUserName } =
+export const { setIsEdit, setImgUrl, setUserName, setNoChangeUserName } =
   editSlice.actions;
 
 export default editSlice.reducer;
