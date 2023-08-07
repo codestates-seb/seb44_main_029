@@ -193,7 +193,7 @@ const AudioPlayer = () => {
       ) : isError ? (
         <>API 실패</>
       ) : (
-        <TitleP>CozyStates</TitleP>
+        <TitleP>CoztStates</TitleP>
       )}
     </Container>
   );
@@ -214,6 +214,7 @@ const marquee = keyframes`
 const TitleP = styled.p`
   color: white;
   font-weight: bold;
+  margin-right: 50px;
 `;
 
 //오디오 컨테이너
@@ -221,10 +222,10 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 30px;
   height: 50px;
   border-radius: 0 0 10px 0;
   z-index: 99;
+  margin-left: 50px;
 `;
 
 //오디오 음량조절버튼
@@ -258,6 +259,13 @@ const MusicTitleContainerdiv = styled.div`
   margin-left: 10px;
   min-width: 150px;
   background-color: rgba(255, 255, 255, 0.1);
+  @media (min-width: 300px) {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    display: flex;
+  }
 `;
 
 const MusicTitleDiv = styled.div`
@@ -267,13 +275,6 @@ const MusicTitleDiv = styled.div`
   > p {
     margin: 2px 0;
     font-weight: bold;
-  }
-  @media (min-width: 300px) {
-    display: none;
-  }
-
-  @media (min-width: 768px) {
-    display: flex;
   }
 `;
 const S_IoPlay = styled(IoPlay)`

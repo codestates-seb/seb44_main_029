@@ -1,12 +1,13 @@
 import styled, { keyframes } from 'styled-components';
 import AudioPlayer from './AudioPlayer';
 import Nav from './Nav';
+import Nav2 from './Nav2';
 
 const Header = () => {
   return (
     <Container>
       <AudioPlayer />
-      <Nav />
+      <Nav2 />
     </Container>
   );
 };
@@ -33,5 +34,5 @@ const Container = styled.div`
   height: 40px;
   width: 100%;
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), rgb(0, 0, 0, 0));
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(7px);
 `;

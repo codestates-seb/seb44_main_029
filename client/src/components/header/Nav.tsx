@@ -5,34 +5,27 @@ import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
 import { FiAlignJustify, FiHome, FiUser, FiX } from 'react-icons/fi';
 import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsClicked, NavState } from '../../feature/header/navSlice';
-import { useShowLoginForm } from '../../hooks/useShowLoginForm';
+import LoginForm from '../Login/LoginForm';
 
 // Nav 컴포넌트
 const Nav = () => {
-  // Redux 스토어로부터 isClicked 상태를 가져옴
-  const isClicked = useSelector(
-    (state: { nav: NavState }) => state.nav.isClicked
-  );
-  // // dispatch 함수를 가져옴
-  const dispatch = useDispatch();
+  const [isClicked, setIsClick] = useState(false);
+  const [isModal, setIsModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const showLoginForm = useShowLoginForm();
 
   // 외부 영역 클릭 시
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-        dispatch(setIsClicked(false));
+        setIsClick(false);
       }
     };
     window.addEventListener('mousedown', handleClick);
     return () => window.removeEventListener('mousedown', handleClick);
   }, [modalRef]);
 
-  // 세션스토리지에 있는 액세스토큰 꺼내오기
+  // 로컬스토리지에 있는 액세스토큰 꺼내오기
   const accessToken = sessionStorage.getItem('accessToken');
 
   // 로그아웃 성공 시
@@ -64,7 +57,7 @@ const Nav = () => {
       alert('로그인이 필요한 기능입니다. 🙏');
     }
     if (!accessToken) {
-      showLoginForm();
+      setIsModal(true);
     } else {
       navigate('/profile');
     }
@@ -77,7 +70,7 @@ const Nav = () => {
         {isClicked ? (
           <>
             <StyledIcon>
-              <FiX onClick={() => dispatch(setIsClicked(false))} />
+              <FiX onClick={() => setIsClick(false)} />
             </StyledIcon>
             <StyledIcon>
               <FiHome onClick={() => navigate('/')} />
@@ -91,7 +84,7 @@ const Nav = () => {
             {/* jwtToken 토큰 유무 분기 */}
             {!accessToken ? (
               <StyledIcon>
-                <TbLogin onClick={() => showLoginForm()} />
+                <TbLogin onClick={() => setIsModal(true)} />
               </StyledIcon>
             ) : (
               <StyledIcon>
@@ -100,7 +93,7 @@ const Nav = () => {
             )}
           </>
         ) : (
-          <S_FiAlignJustify onClick={() => dispatch(setIsClicked(true))} />
+          <S_FiAlignJustify onClick={() => setIsClick(true)} />
         )}
       </NavBtnDiv>
     </Container>
