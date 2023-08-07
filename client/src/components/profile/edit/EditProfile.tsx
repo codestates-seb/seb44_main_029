@@ -1,18 +1,22 @@
 import styled from 'styled-components';
 import EditImg from './EditImg';
 import EditName from './EditName';
-import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { PetchEditProfile } from '../../../api/api';
-import { setIsEdit } from '../../../feature/profile/editSlice';
-import { useDispatch } from 'react-redux';
+import {
+  setIsEdit,
+  setChangeUserName,
+  EditState,
+} from '../../../feature/profile/editSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const EditProfile = ({}) => {
   const dispatch = useDispatch();
+  const imgUrl = useSelector((state: { edit: EditState }) => state.edit.imgUrl);
+  const userName = useSelector(
+    (state: { edit: EditState }) => state.edit.userName
+  );
 
-  const [imgUrl, setImgUrl] = useState<string | null>(null);
-  const [userName, setUserName] = useState<string | null>(null);
-  const [changeUserName, setChangeUserName] = useState<string | null>(null);
   //취소버튼
   const handleCancleButton = () => {
     dispatch(setIsEdit(false));
@@ -27,7 +31,7 @@ const EditProfile = ({}) => {
         dispatch(setIsEdit(false));
       } else if (response.status === 202 && response.data === -2) {
         alert('이미 사용중인 유저네임입니다.');
-        setChangeUserName('');
+        dispatch(setChangeUserName(''));
       }
     }
   };
@@ -39,13 +43,8 @@ const EditProfile = ({}) => {
   return (
     <Container>
       <EditInfoDiv>
-        <EditImg setImgUrl={setImgUrl} />
-        <EditName
-          userName={userName}
-          setUserName={setUserName}
-          changeUserName={changeUserName}
-          setChangeUserName={setChangeUserName}
-        />
+        <EditImg />
+        <EditName />
         <BtnGroupDiv>
           <Button bgColor="#3690f0" onClick={handleSaveButton}>
             저장
