@@ -2,18 +2,12 @@ import styled from 'styled-components';
 import { useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { GetUserInfo } from '../../../api/api';
+import { useDispatch } from 'react-redux';
+import { setUserName } from '../../../feature/profile/editSlice';
 
-const EditName = ({
-  userName,
-  setUserName,
-  changeUserName,
-  setChangeUserName,
-}: {
-  userName: string | null;
-  changeUserName: string | null;
-  setUserName: React.Dispatch<React.SetStateAction<string | null>>;
-  setChangeUserName: React.Dispatch<React.SetStateAction<string | null>>;
-}) => {
+const EditName = () => {
+  const dispatch = useDispatch();
+
   const { data } = useQuery(['userInfo'], GetUserInfo);
   const email = data?.email;
   const username = data?.username;
@@ -22,8 +16,8 @@ const EditName = ({
   // input값에 따라 인자에 들어갈 값을 변경하는 핸들러
   const handleNameInputChange = () => {
     const newName = nameInputRef.current?.value;
-    if (newName) setUserName(newName);
-    else if (newName === '') setUserName(null);
+    if (newName) dispatch(setUserName(newName));
+    else if (newName === '') dispatch(setUserName(null));
   };
   return (
     <Container>
