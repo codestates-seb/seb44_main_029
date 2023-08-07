@@ -28,15 +28,17 @@ const TimerModal = ({ handleTogglePlay }: { handleTogglePlay: () => void }) => {
   return (
     <ModalContainer show={showModal}>
       <ModalContent>
-        <div>BGM을 재생 하시겠습니까?</div>
-        <ButtonContainer>
-          <Button onClick={handleYesButtonClick}>예</Button>
-          <Button onClick={handleNoButtonClick}>아니오</Button>
-        </ButtonContainer>
-        <CheckboxContainer>
-          <input type="checkbox" onChange={(e) => handleCheckbox(e)} />
-          <label>다음부터 띄우지 않기</label>
-        </CheckboxContainer>
+        <ColumnDiv>
+          <RowDiv>
+            <div>BGM을 재생 하시겠습니까?</div>
+            <Button onClick={handleYesButtonClick}>✅</Button>
+            <Button onClick={handleNoButtonClick}>❎</Button>
+          </RowDiv>
+          <CheckboxContainer>
+            <label>다음부터 띄우지 않기</label>
+            <input type="checkbox" onChange={(e) => handleCheckbox(e)} />
+          </CheckboxContainer>
+        </ColumnDiv>
       </ModalContent>
     </ModalContainer>
   );
@@ -55,12 +57,17 @@ const slideRigthIn = keyframes`
 
 // 모달 창을 감싸는 컨테이너 스타일
 const ModalContainer = styled.div<{ show: boolean }>`
+  font-size: 15px;
   position: absolute;
   top: 40px; // header높이 == 40px
   opacity: 0;
-  background-color: white;
-  padding: 20px;
-  border-radius: 0 0 0 20px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.9),
+    rgb(255, 255, 255, 0.9)
+  );
+  padding: 10px;
+  border-radius: 0 0 0 10px;
   z-index: 300;
   display: ${(props) =>
     props.show
@@ -74,19 +81,14 @@ const ModalContent = styled.div`
   text-align: center;
 `;
 
-// 버튼들을 감싸는 컨테이너 스타일
-const ButtonContainer = styled.div`
-  margin-top: 20px;
-`;
-
 // 예/아니오 버튼 스타일
 const Button = styled.button`
-  margin: 0 10px;
-  padding: 10px 20px;
-  background-color: #007bff; /* 버튼 배경 색상 */
+  margin-left: 10px;
   color: white;
   border: none;
   border-radius: 5px;
+  padding: 0;
+  font-size: 15px;
   cursor: pointer;
 `;
 
@@ -98,6 +100,17 @@ const CheckboxContainer = styled.div`
   input[type='checkbox'] {
     margin-right: 5px;
   }
+`;
+
+const ColumnDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const RowDiv = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 export default TimerModal;
