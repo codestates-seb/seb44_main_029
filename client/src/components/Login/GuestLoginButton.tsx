@@ -1,38 +1,20 @@
 import styled from 'styled-components';
 import { TbUserCircle } from 'react-icons/tb';
-import { useMutation } from '@tanstack/react-query';
-import { Login } from '../../api/api';
-
-interface LoginFormData {
-  email: string;
-  password: string;
-}
+import useLogin from '../../hooks/login/useLogin';
 
 const GuestLoginButton: React.FC = () => {
-  const loginFormData: LoginFormData = {
-    email: 'guest@gmail.com',
-    password: 'guest123!@#',
-  };
-
-  const loginMutation = useMutation(Login, {
-    onSuccess: (data) => {
-      const accessToken = data.headers['authorization'];
-      const refreshToken = data.data.refreshToken;
-      const memberId = data.data.memberId;
-      sessionStorage.setItem('accessToken', accessToken);
-      sessionStorage.setItem('refreshToken', refreshToken);
-      sessionStorage.setItem('memberId', memberId);
-    },
-  });
+  const { login } = useLogin();
 
   const guestButtonClick = async () => {
     try {
-      await loginMutation.mutateAsync(loginFormData);
+      await login({
+        email: 'guest@gmail.com',
+        password: 'guest123!@#',
+      });
       alert('로그인 성공!');
       window.location.href = '/profile';
     } catch (error) {
       alert('로그인 실패!');
-      console.error('Log In failed:', error);
     }
   };
 
