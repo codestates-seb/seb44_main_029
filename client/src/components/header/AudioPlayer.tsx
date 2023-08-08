@@ -167,12 +167,12 @@ const AudioPlayer = () => {
           {!isPlaying && !checkLocalStorage && (
             <TimerModal handleTogglePlay={handleTogglePlay} />
           )}
+          <S_IoPlayBack onClick={() => handleChangeMusic(false)} />
           {isPlaying ? (
             <S_IoPause onClick={handleTogglePlay} />
           ) : (
             <S_IoPlay onClick={handleTogglePlay} />
           )}
-          <S_IoPlayBack onClick={() => handleChangeMusic(false)} />
           <S_IoPlayForward onClick={() => handleChangeMusic(true)} />
           {/* <S_ImLoop isLoop={isLoop} onClick={() => handleToggleLoop()} /> */}
           {volumes.map((volume) => (
@@ -192,7 +192,9 @@ const AudioPlayer = () => {
         <SpinnerImg src={Spinner} />
       ) : isError ? (
         <>API 실패</>
-      ) : null}
+      ) : (
+        <TitleP>CoztStates</TitleP>
+      )}
     </Container>
   );
 };
@@ -209,20 +211,31 @@ const marquee = keyframes`
   }
 `;
 
+const TitleP = styled.p`
+  color: white;
+  font-weight: bold;
+`;
+
 //오디오 컨테이너
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0 30px;
-  height: 50px;
   border-radius: 0 0 10px 0;
   z-index: 99;
+  @media (min-width: 300px) {
+    margin-left: 0;
+    height: 30px;
+  }
+
+  @media (min-width: 768px) {
+    margin-left: 50px;
+    height: 40px;
+  }
 `;
 
 //오디오 음량조절버튼
 const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
-  height: 30%;
   width: 7px;
   border: none;
   margin-right: 2px;
@@ -239,8 +252,9 @@ const VolumeChangeBtnDiv = styled.div<{ active: boolean }>`
     display: none;
   }
 
-  @media (min-width: 450px) {
+  @media (min-width: 1024px) {
     display: flex;
+    height: 40%;
   }
 `;
 
@@ -249,24 +263,19 @@ const MusicTitleContainerdiv = styled.div`
   overflow: hidden;
   border-radius: 100px;
   margin-left: 10px;
-  min-width: 150px;
+  width: 200px;
+  padding: 3px 0;
   background-color: rgba(255, 255, 255, 0.1);
 `;
 
 const MusicTitleDiv = styled.div`
   color: white;
-  animation: ${marquee} 5s linear infinite;
-  font-size: 17px;
+  width: 250px;
+  animation: ${marquee} 6s linear infinite;
   > p {
-    margin: 2px 0;
+    margin: 0;
     font-weight: bold;
-  }
-  @media (min-width: 300px) {
-    display: none;
-  }
-
-  @media (min-width: 768px) {
-    display: flex;
+    font-size: 12px;
   }
 `;
 const S_IoPlay = styled(IoPlay)`
