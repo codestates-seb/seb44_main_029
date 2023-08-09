@@ -100,11 +100,9 @@ const Container = styled.section`
 
   cursor: pointer;
   @media (min-width: 300px) {
-    height: 60vh;
-  }
-  @media (min-width: 768px) {
     height: 40vh;
   }
+
   @media (min-width: 1024px) {
     height: 60vh;
   }
