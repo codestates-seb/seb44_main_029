@@ -8,7 +8,7 @@ import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIsClicked, NavState } from '../../feature/header/navSlice';
 import { useShowLoginForm } from '../../hooks/useShowLoginForm';
-
+import Swal from 'sweetalert2';
 // Nav 컴포넌트
 const Nav = () => {
   // Redux 스토어로부터 isClicked 상태를 가져옴
@@ -50,9 +50,18 @@ const Nav = () => {
   });
 
   // 로그아웃 버튼 클릭 시
-  const handleLogOut = () => {
-    const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
-    if (confirmLogout) {
+  const handleLogOut = async () => {
+    // const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
+    const confirmLogout = await Swal.fire({
+      title: '로그아웃 하시겠습니까?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: '예, 로그아웃합니다!',
+      cancelButtonText: '취소',
+    });
+    if (confirmLogout.isConfirmed) {
       handleLogoutMutation.mutate();
     }
   };
