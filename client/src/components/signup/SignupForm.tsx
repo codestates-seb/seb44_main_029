@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { SignUp } from '../../api/api';
 import { SignUpInfo } from '../../types/types';
+import Swal from 'sweetalert2';
 
 interface SignUpFormData {
   username: string;
@@ -90,15 +91,23 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
     try {
       const response = await signUpMutation.mutateAsync(signUpFormData);
       if (response.status === 201) {
-        alert('회원가입 성공!');
-        setSignUpFormData({
-          username: '',
-          email: '',
-          password: '',
-          passwordCheck: '',
+        Swal.fire({
+          icon: 'success',
+          title: '회원가입 성공!',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then((result) => {
+          if (result.dismiss === Swal.DismissReason.timer) {
+            setSignUpFormData({
+              username: '',
+              email: '',
+              password: '',
+              passwordCheck: '',
+            });
+            queryClient.invalidateQueries(['signup']);
+            setIsSignUpClicked(false);
+          }
         });
-        queryClient.invalidateQueries(['signup']);
-        setIsSignUpClicked(false);
       } else if (response.status === 202 && response.data === -1) {
         setErrors((prevErros) => ({
           ...prevErros,
@@ -117,7 +126,11 @@ const SignUpForm = ({ setIsSignUpClicked }: SignUpFormProps) => {
         }));
       }
     } catch (error) {
-      alert('회원가입 실패!');
+      Swal.fire({
+        icon: 'error',
+        title: '회원가입 실패!',
+        confirmButtonColor: '#4b4b4b',
+      });
     }
   };
 

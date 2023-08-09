@@ -1,21 +1,20 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import SignUpFormTwo from '../signup/SignupForm';
-import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import GuestLoginButton from './GuestLoginButton';
 import { useDispatch } from 'react-redux';
 import { setIsModal } from '../../feature/header/modalSlice';
-
+import useLogin from '../../hooks/login/useLogin';
+import Swal from 'sweetalert2';
 interface LoginFormData {
   email: string;
   password: string;
 }
 
 const LoginForm = () => {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
+  const { login } = useLogin();
 
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
     email: '',
@@ -62,18 +61,6 @@ const LoginForm = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const loginMutation = useMutation(Login, {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['login']);
-      const accessToken = data.headers['authorization'];
-      const refreshToken = data.data.refreshToken;
-      const memberId = data.data.memberId;
-      sessionStorage.setItem('accessToken', accessToken);
-      sessionStorage.setItem('refreshToken', refreshToken);
-      sessionStorage.setItem('memberId', memberId);
-    },
-  });
-
   // 폼 제출하는 함수
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,48 +70,77 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await loginMutation.mutateAsync(loginFormData);
+      const response = await login(loginFormData);
       if (response.status === 200) {
         // 관리자 판단
-        loginFormData.email === 'admin@adadad.com'
-          ? sessionStorage.setItem('admin', 'true')
-          : sessionStorage.removeItem('admin');
-        alert('로그인 성공!');
-        setLoginFormData({
-          email: '',
-          password: '',
+        if (loginFormData.email === 'admin@adadad.com') {
+          sessionStorage.setItem('admin', 'true');
+        } else {
+          sessionStorage.removeItem('admin');
+        }
+        Swal.fire({
+          icon: 'success',
+          title: '로그인 성공!',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then((result) => {
+          if (result.dismiss === Swal.DismissReason.timer) {
+            setLoginFormData({
+              email: '',
+              password: '',
+            });
+            dispatch(setIsModal(false));
+            window.location.href = '/profile';
+          }
         });
-        queryClient.invalidateQueries(['login']);
-        dispatch(setIsModal(false));
-        window.location.href = '/profile';
         // 탈퇴한 회원
       } else if (response.status === 202 && response.data === -7) {
-        alert('존재하지 않는 회원입니다.');
-        setLoginFormData({
-          email: '',
-          password: '',
+        Swal.fire({
+          icon: 'error',
+          title: '존재하지 않는 회원입니다.',
+        }).then(() => {
+          sessionStorage.removeItem('accessToken');
+          sessionStorage.removeItem('refreshToken');
+          sessionStorage.removeItem('memberId');
+          setLoginFormData({
+            email: '',
+            password: '',
+          });
+          dispatch(setIsModal(true));
         });
-        dispatch(setIsModal(true));
         // 일반 유저 및 관리자 중복 로그인
       } else if (response.status === 202 && response.data === -6) {
-        alert(
-          '중복 로그인이 되어 로그아웃 처리됩니다. 로그인을 다시 진행해주세요.'
-        );
-        sessionStorage.removeItem('accessToken');
-        sessionStorage.removeItem('refreshToken');
-        sessionStorage.removeItem('memberId');
-        window.location.href = '/';
+        Swal.fire({
+          icon: 'warning',
+          title:
+            '중복 로그인이 되어 로그아웃 처리됩니다. 로그인을 다시 진행해주세요.',
+        }).then(() => {
+          sessionStorage.removeItem('accessToken');
+          sessionStorage.removeItem('refreshToken');
+          sessionStorage.removeItem('memberId');
+          window.location.href = '/';
+        });
       }
     } catch (error: any) {
       // 가입 기록이 없는 정보
       if (error.response && error.response.status === 401) {
-        alert('이메일, 패스워드를 다시 입력해 주세요.');
+        Swal.fire({
+          icon: 'error',
+          title: '로그인 실패!',
+          text: '이메일, 패스워드를 다시 입력해 주세요.',
+          confirmButtonColor: '#4b4b4b',
+        });
+
         setLoginFormData({
           email: '',
           password: '',
         });
       } else {
-        alert('로그인 실패!');
+        Swal.fire({
+          icon: 'error',
+          title: '로그인 실패!',
+          confirmButtonColor: '#4b4b4b',
+        });
       }
     }
   };
