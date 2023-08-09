@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setIsEdit } from '../../../feature/profile/editSlice';
+import Swal from 'sweetalert2';
 
 const ChangeProfile = ({}) => {
   const dispatch = useDispatch();
@@ -36,9 +37,18 @@ const ChangeProfile = ({}) => {
   });
 
   // 회원 정보 탈퇴 버튼을 클릭했을 때
-  const WithdrawalMemberInfo = () => {
-    const isConfirmed = window.confirm('회원 탈퇴를 진행하시겠습니까?');
-    if (isConfirmed) {
+  const WithdrawalMemberInfo = async () => {
+    const isConfirmed = await Swal.fire({
+      title: '회원 탈퇴를 진행하시겠습니까?',
+      text: '탈퇴 후에는 복구할 수 없습니다.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: '네, 탈퇴합니다',
+      cancelButtonText: '취소',
+    });
+    if (isConfirmed.isConfirmed) {
       withdrawalMutation.mutate();
     }
   };

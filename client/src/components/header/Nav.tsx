@@ -51,7 +51,6 @@ const Nav = () => {
 
   // 로그아웃 버튼 클릭 시
   const handleLogOut = async () => {
-    // const confirmLogout = window.confirm('로그아웃 하시겠습니까?');
     const confirmLogout = await Swal.fire({
       title: '로그아웃 하시겠습니까?',
       icon: 'warning',
