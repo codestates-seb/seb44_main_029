@@ -5,9 +5,6 @@ import { Logout } from '../../api/api';
 import { useMutation } from '@tanstack/react-query';
 import { FiAlignJustify, FiHome, FiUser, FiX } from 'react-icons/fi';
 import { TbCarouselHorizontal, TbLogout, TbLogin } from 'react-icons/tb';
-import { useDispatch, useSelector } from 'react-redux';
-import { setIsClicked, NavState } from '../../feature/header/navSlice';
-import { useShowLoginForm } from '../../hooks/useShowLoginForm';
 import Swal from 'sweetalert2';
 
 // Nav 컴포넌트
