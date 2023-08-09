@@ -1,21 +1,19 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import styled, { keyframes } from 'styled-components';
 import SignUpFormTwo from '../signup/SignupForm';
-import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { Login } from '../../api/api';
 import GoogleLoginButton from './GoogleLoginButton';
 import GuestLoginButton from './GuestLoginButton';
 import { useDispatch } from 'react-redux';
 import { setIsModal } from '../../feature/header/modalSlice';
-
+import useLogin from '../../hooks/login/useLogin';
 interface LoginFormData {
   email: string;
   password: string;
 }
 
 const LoginForm = () => {
-  const queryClient = useQueryClient();
   const dispatch = useDispatch();
+  const { login } = useLogin();
 
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
     email: '',
@@ -62,18 +60,6 @@ const LoginForm = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const loginMutation = useMutation(Login, {
-    onSuccess: (data) => {
-      queryClient.invalidateQueries(['login']);
-      const accessToken = data.headers['authorization'];
-      const refreshToken = data.data.refreshToken;
-      const memberId = data.data.memberId;
-      sessionStorage.setItem('accessToken', accessToken);
-      sessionStorage.setItem('refreshToken', refreshToken);
-      sessionStorage.setItem('memberId', memberId);
-    },
-  });
-
   // 폼 제출하는 함수
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -83,7 +69,7 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await loginMutation.mutateAsync(loginFormData);
+      const response = await login(loginFormData);
       if (response.status === 200) {
         // 관리자 판단
         loginFormData.email === 'admin@adadad.com'
@@ -94,7 +80,6 @@ const LoginForm = () => {
           email: '',
           password: '',
         });
-        queryClient.invalidateQueries(['login']);
         dispatch(setIsModal(false));
         window.location.href = '/profile';
         // 탈퇴한 회원
