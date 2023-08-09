@@ -99,6 +99,9 @@ const LoginForm = () => {
           icon: 'error',
           title: '존재하지 않는 회원입니다.',
         }).then(() => {
+          sessionStorage.removeItem('accessToken');
+          sessionStorage.removeItem('refreshToken');
+          sessionStorage.removeItem('memberId');
           setLoginFormData({
             email: '',
             password: '',
