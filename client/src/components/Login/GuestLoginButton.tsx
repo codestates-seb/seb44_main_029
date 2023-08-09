@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { TbUserCircle } from 'react-icons/tb';
 import useLogin from '../../hooks/login/useLogin';
+import Swal from 'sweetalert2';
 
 const GuestLoginButton: React.FC = () => {
   const { login } = useLogin();
@@ -11,8 +12,16 @@ const GuestLoginButton: React.FC = () => {
         email: 'guest@gmail.com',
         password: 'guest123!@#',
       });
-      alert('로그인 성공!');
-      window.location.href = '/profile';
+      Swal.fire({
+        icon: 'success',
+        title: '로그인 성공!',
+        showConfirmButton: false,
+        timer: 1500,
+      }).then((result) => {
+        if (result.dismiss === Swal.DismissReason.timer) {
+          window.location.href = '/profile';
+        }
+      });
     } catch (error) {
       alert('로그인 실패!');
     }
