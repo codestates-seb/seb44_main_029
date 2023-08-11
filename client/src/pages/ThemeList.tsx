@@ -6,6 +6,8 @@ import gif3 from '../assets/theme/3.gif';
 import gif4 from '../assets/theme/4.gif';
 import gif5 from '../assets/theme/5.gif';
 import { useState } from 'react';
+import EmblaCarousel from '../components/theme/themeList/Carousel';
+import { EmblaOptionsType } from 'embla-carousel-react';
 
 const ThemeList = () => {
   const themeData = [
@@ -39,102 +41,31 @@ const ThemeList = () => {
   const gifList = themeData.map((el) => el.src);
   const currentThemeImageUrl = gifList[currentThemeIndex];
 
+  const OPTIONS: EmblaOptionsType = { loop: true };
+  const SLIDE_COUNT = 4;
+  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
   return (
-    <Layout>
-      <BlurredBackground imageUrl={currentThemeImageUrl} />
-      <ThemeCarousel
-        gifList={gifList}
-        currentThemeIndex={currentThemeIndex}
-        setCurrentThemeIndex={setCurrentThemeIndex}
-      />
-      <TextContainer>
-        <h1>{themeData[currentThemeIndex].title}</h1>
-        <p>{themeData[currentThemeIndex].content}</p>
-      </TextContainer>
-    </Layout>
+    <Sandbox>
+      <SandboxCarousel>
+        <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+      </SandboxCarousel>
+    </Sandbox>
   );
 };
 
 export default ThemeList;
-//페이드 아웃 애니메이션
-const fadeInAnimation = keyframes`
-  0% {
-    opacity: 0;
-  }
-  50%{
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-`;
 
-const Layout = styled.div`
-  position: relative;
+const Layout = styled.div``;
+
+export const Sandbox = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
-`;
-
-const BlurredBackground = styled.div<{ imageUrl: string }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(${(props) => props.imageUrl});
-  background-size: cover;
-  background-repeat: no-repeat;
-  filter: blur(5px);
-  z-index: -1;
-  transform: scale(1.02);
-`;
-
-const TextContainer = styled.section`
-  width: 50vw;
-  height: 20vh;
-  color: white;
-  display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  //페이드 아웃 1.5초
-  animation: ${fadeInAnimation} 1.5s ease-in-out;
-  > h1 {
-    margin: 0;
-    @media (min-width: 300px) {
-      font-size: 200%;
-      margin-bottom: 0;
-    }
-    @media (min-width: 768px) {
-      font-size: 250%;
-    }
-    @media (min-width: 1024px) {
-      font-size: 300%;
-    }
-  }
-  > p {
-    font-weight: bold;
-    @media (min-width: 300px) {
-      font-size: 110%;
-    }
-    @media (min-width: 768px) {
-    }
-    @media (min-width: 1024px) {
-      font-size: 130%;
-    }
-  }
-  @media (min-width: 300px) {
-    margin-top: 50px;
-    flex-direction: column;
-  }
-  @media (min-width: 768px) {
-  }
-  @media (min-width: 1024px) {
-    margin-top: 0px;
-    flex-direction: row;
-  }
+`;
+
+export const SandboxCarousel = styled.div`
+  position: relative;
+  width: 50%;
 `;
