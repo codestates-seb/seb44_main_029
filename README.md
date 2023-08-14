@@ -9,7 +9,7 @@
  `팀 명` : 육-얼간이: Across the 얼간이-Verse <br>
  `프로젝트명` : Cozy States  <br>
  `프로젝트 기간` : 2023.06.28 - 2023.07.27  <br>
- `배포 링크` : [Cozy States](http://cozystates.com/)
+ `배포 링크` : [Cozy States](http://www.cozystates.com/)
  
  <br><br>
 간단한 설명
