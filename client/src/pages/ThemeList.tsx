@@ -42,20 +42,26 @@ const ThemeList = () => {
   const currentThemeImageUrl = gifList[currentThemeIndex];
 
   const OPTIONS: EmblaOptionsType = { loop: true };
-  const SLIDE_COUNT = 4;
+  const SLIDE_COUNT = 5;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
   return (
-    <Sandbox>
+    <Layout>
       <SandboxCarousel>
         <EmblaCarousel slides={SLIDES} options={OPTIONS} />
       </SandboxCarousel>
-    </Sandbox>
+    </Layout>
   );
 };
 
 export default ThemeList;
 
-const Layout = styled.div``;
+const Layout = styled.div`
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
 
 export const Sandbox = styled.div`
   display: flex;
@@ -67,5 +73,5 @@ export const Sandbox = styled.div`
 
 export const SandboxCarousel = styled.div`
   position: relative;
-  width: 50%;
+  width: 50vw;
 `;
