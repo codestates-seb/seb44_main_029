@@ -57,21 +57,10 @@ export default ThemeList;
 
 const Layout = styled.div`
   display: flex;
-  width: 100vw;
-  height: 100vh;
   justify-content: center;
   align-items: center;
-`;
 
-export const Sandbox = styled.div`
-  display: flex;
-  width: 100vw;
   height: 100vh;
-  justify-content: center;
-  align-items: center;
 `;
 
-export const SandboxCarousel = styled.div`
-  position: relative;
-  width: 50vw;
-`;
+export const SandboxCarousel = styled.div``;
