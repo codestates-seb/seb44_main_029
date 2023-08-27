@@ -58,10 +58,10 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
           ))}
         </EmblaSlideContainer>
       </EmblaViewport>
-      <div className="embla__buttons">
-        <PrevButton onClick={scrollPrev} disabled={prevBtnDisabled} />
-        <NextButton onClick={scrollNext} disabled={nextBtnDisabled} />
-      </div>
+      <EmblaButtonsContainer>
+        <EmblaButton onClick={scrollPrev} disabled={prevBtnDisabled} />
+        <EmblaButton2 onClick={scrollNext} disabled={nextBtnDisabled} />
+      </EmblaButtonsContainer>
     </EmblaContainer>
   );
 };
@@ -101,6 +101,75 @@ export const EmblaSlideImage = styled.img`
   width: 100%;
   object-fit: cover;
   border-radius: 20px;
+`;
+const EmblaButton2 = styled(NextButton)`
+  -webkit-appearance: none;
+  background-color: transparent;
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  z-index: 1;
+  color: var(--background-site);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 4rem;
+  height: 4rem;
+
+  &:disabled {
+    opacity: 0.3;
+  }
+
+  .embla__button__svg {
+    width: 65%;
+    height: 65%;
+  }
+`;
+
+const EmblaButton = styled(PrevButton)`
+  -webkit-appearance: none;
+  background-color: transparent;
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  z-index: 1;
+  color: var(--background-site);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 4rem;
+  height: 4rem;
+
+  &:disabled {
+    opacity: 0.3;
+  }
+
+  .embla__button__svg {
+    width: 65%;
+    height: 65%;
+  }
+`;
+
+// EmblaButtonsContainer 스타일드 컴포넌트 정의
+const EmblaButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1.6rem;
 `;
 
 // export const SlideNumber = styled.div`
