@@ -40,27 +40,121 @@ const ThemeList = () => {
   const [currentThemeIndex, setCurrentThemeIndex] = useState(0);
   const gifList = themeData.map((el) => el.src);
   const currentThemeImageUrl = gifList[currentThemeIndex];
-
   const OPTIONS: EmblaOptionsType = { loop: true };
   const SLIDE_COUNT = 5;
   const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
+
+  // 캐러셀 슬라이드 사용 시 주석 ********************************
   return (
     <Layout>
-      <SandboxCarousel>
-        <EmblaCarousel slides={SLIDES} options={OPTIONS} />
-      </SandboxCarousel>
+      <BlurredBackground imageUrl={currentThemeImageUrl} />
+      <ThemeCarousel
+        gifList={gifList}
+        currentThemeIndex={currentThemeIndex}
+        setCurrentThemeIndex={setCurrentThemeIndex}
+      />
+      <TextContainer>
+        <h1>{themeData[currentThemeIndex].title}</h1>
+        <p>{themeData[currentThemeIndex].content}</p>
+      </TextContainer>
     </Layout>
   );
+  // 캐러셀 슬라이드 사용 시 주석해제 ********************************
+  //   return (
+  //     <Layout>
+  //         <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+  //     </Layout>
+  //   );
 };
 
 export default ThemeList;
-
-const Layout = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: black;
-  height: 100vh;
+//페이드 아웃 애니메이션
+const fadeInAnimation = keyframes`
+  0% {
+    opacity: 0;
+  }
+  50%{
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 `;
 
-export const SandboxCarousel = styled.div``;
+// 캐러셀 슬라이드 사용 시 주석 ********************************
+const Layout = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+`;
+// 캐러셀 슬라이드 사용 시 주석해제 ********************************
+// const Layout = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: black;
+//   height: 100vh;
+// `;
+const BlurredBackground = styled.div<{ imageUrl: string }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url(${(props) => props.imageUrl});
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: blur(5px);
+  z-index: -1;
+  transform: scale(1.02);
+`;
+
+const TextContainer = styled.section`
+  width: 50vw;
+  height: 20vh;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  //페이드 아웃 1.5초
+  animation: ${fadeInAnimation} 1.5s ease-in-out;
+  > h1 {
+    margin: 0;
+    @media (min-width: 300px) {
+      font-size: 200%;
+      margin-bottom: 0;
+    }
+    @media (min-width: 768px) {
+      font-size: 250%;
+    }
+    @media (min-width: 1024px) {
+      font-size: 300%;
+    }
+  }
+  > p {
+    font-weight: bold;
+    @media (min-width: 300px) {
+      font-size: 110%;
+    }
+    @media (min-width: 768px) {
+    }
+    @media (min-width: 1024px) {
+      font-size: 130%;
+    }
+  }
+  @media (min-width: 300px) {
+    margin-top: 50px;
+    flex-direction: column;
+  }
+  @media (min-width: 768px) {
+  }
+  @media (min-width: 1024px) {
+    margin-top: 0px;
+    flex-direction: row;
+  }
+`;
