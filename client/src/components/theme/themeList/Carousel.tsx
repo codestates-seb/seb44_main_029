@@ -1,12 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
-import useEmblaCarousel, {
-  EmblaOptionsType,
-  EmblaCarouselType,
-} from 'embla-carousel-react';
+import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
 import imageByIndex from './imageByIndex';
 import { useNavigate } from 'react-router-dom';
-import { DotButton, PrevButton, NextButton } from './CarouselArrowsButton';
+import { PrevButton, NextButton } from './CarouselArrowsButton';
 
 type PropType = {
   slides: number[];
@@ -16,9 +13,6 @@ type PropType = {
 const EmblaCarousel: React.FC<PropType> = (props) => {
   const { slides, options } = props;
   const [emblaRef, emblaApi] = useEmblaCarousel(options);
-  const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
-  const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const navigate = useNavigate();
 
   const scrollPrev = useCallback(
@@ -29,18 +23,6 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
     () => emblaApi && emblaApi.scrollNext(),
     [emblaApi]
   );
-  const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-    setPrevBtnDisabled(!emblaApi.canScrollPrev());
-    setNextBtnDisabled(!emblaApi.canScrollNext());
-  }, []);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect(emblaApi);
-    emblaApi.on('reInit', onSelect);
-    emblaApi.on('select', onSelect);
-  }, [emblaApi, onSelect]);
 
   return (
     <EmblaContainer>
@@ -59,8 +41,8 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
         </EmblaSlideContainer>
       </EmblaViewport>
       <EmblaButtonsContainer>
-        <EmblaButton onClick={scrollPrev} disabled={prevBtnDisabled} />
-        <EmblaButton2 onClick={scrollNext} disabled={nextBtnDisabled} />
+        <EmblaButton onClick={scrollPrev} />
+        <EmblaButton2 onClick={scrollNext} />
       </EmblaButtonsContainer>
     </EmblaContainer>
   );
@@ -103,69 +85,30 @@ export const EmblaSlideImage = styled.img`
   border-radius: 20px;
 `;
 const EmblaButton2 = styled(NextButton)`
-  -webkit-appearance: none;
-  background-color: transparent;
-  touch-action: manipulation;
-  display: inline-flex;
-  text-decoration: none;
+  position: absolute;
+  left: 93vw;
+  width: 50px;
+  height: auto;
+  color: white;
+  background-color: black;
+  border: none;
   cursor: pointer;
-  border: 0;
-  padding: 0;
-  margin: 0;
-
-  z-index: 1;
-  color: var(--background-site);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 4rem;
-  height: 4rem;
-
-  &:disabled {
-    opacity: 0.3;
-  }
-
-  .embla__button__svg {
-    width: 65%;
-    height: 65%;
-  }
 `;
 
 const EmblaButton = styled(PrevButton)`
-  -webkit-appearance: none;
-  background-color: transparent;
-  touch-action: manipulation;
-  display: inline-flex;
-  text-decoration: none;
+  width: 50px;
+  height: auto;
+  color: white;
+  background-color: black;
+  border: none;
   cursor: pointer;
-  border: 0;
-  padding: 0;
-  margin: 0;
-
-  z-index: 1;
-  color: var(--background-site);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  width: 4rem;
-  height: 4rem;
-
-  &:disabled {
-    opacity: 0.3;
-  }
-
-  .embla__button__svg {
-    width: 65%;
-    height: 65%;
-  }
 `;
 
 // EmblaButtonsContainer 스타일드 컴포넌트 정의
 const EmblaButtonsContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

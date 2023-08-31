@@ -59,7 +59,7 @@ const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
+  background-color: black;
   height: 100vh;
 `;
 
