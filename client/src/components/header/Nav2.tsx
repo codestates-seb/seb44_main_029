@@ -76,7 +76,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
   flex-grow: 1;
   @media (min-width: 300px) {
     margin-right: 0;
@@ -91,7 +90,7 @@ const Container = styled.div`
 
 const NavigateDiv = styled.div`
   height: 100;
-  font-size: 12px;
+  font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.8);
   transition: all 0.2s ease-in-out;
   margin: 0 20px;
