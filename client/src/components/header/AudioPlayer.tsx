@@ -214,6 +214,7 @@ const marquee = keyframes`
 const TitleP = styled.p`
   color: white;
   font-weight: bold;
+  font-size: 1rem;
 `;
 
 //오디오 컨테이너

@@ -6,6 +6,8 @@ import gif3 from '../assets/theme/3.gif';
 import gif4 from '../assets/theme/4.gif';
 import gif5 from '../assets/theme/5.gif';
 import { useState } from 'react';
+import EmblaCarousel from '../components/theme/themeList/Carousel';
+import { EmblaOptionsType } from 'embla-carousel-react';
 
 const ThemeList = () => {
   const themeData = [
@@ -38,7 +40,11 @@ const ThemeList = () => {
   const [currentThemeIndex, setCurrentThemeIndex] = useState(0);
   const gifList = themeData.map((el) => el.src);
   const currentThemeImageUrl = gifList[currentThemeIndex];
+  const OPTIONS: EmblaOptionsType = { loop: true };
+  const SLIDE_COUNT = 5;
+  const SLIDES = Array.from(Array(SLIDE_COUNT).keys());
 
+  // 캐러셀 슬라이드 사용 시 주석 ********************************
   return (
     <Layout>
       <BlurredBackground imageUrl={currentThemeImageUrl} />
@@ -53,6 +59,12 @@ const ThemeList = () => {
       </TextContainer>
     </Layout>
   );
+  // 캐러셀 슬라이드 사용 시 주석해제 ********************************
+  //   return (
+  //     <Layout>
+  //         <EmblaCarousel slides={SLIDES} options={OPTIONS} />
+  //     </Layout>
+  //   );
 };
 
 export default ThemeList;
@@ -69,6 +81,7 @@ const fadeInAnimation = keyframes`
   }
 `;
 
+// 캐러셀 슬라이드 사용 시 주석 ********************************
 const Layout = styled.div`
   position: relative;
   display: flex;
@@ -79,7 +92,14 @@ const Layout = styled.div`
   height: 100vh;
   overflow: hidden;
 `;
-
+// 캐러셀 슬라이드 사용 시 주석해제 ********************************
+// const Layout = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   background-color: black;
+//   height: 100vh;
+// `;
 const BlurredBackground = styled.div<{ imageUrl: string }>`
   position: absolute;
   top: 0;
