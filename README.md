@@ -34,6 +34,11 @@
 <br>
 
 ## 💻 Stacks Used
+</br>
+<div align="center" >
+<img width="1416" alt="image" src="https://github.com/codestates-seb/seb44_main_029/assets/96255906/711046b7-74c6-4555-936f-964e9b4f79e2">
+</div>
+
 ### Back-end
 |   Java   |   Spring   |   Spring Boot   |   Spring Security   |   MySQL   |   AWS   | 
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
@@ -55,10 +60,6 @@
 | :--------: | :--------: | :------: |
 | <img alt="github logo" src="https://techstack-generator.vercel.app/github-icon.svg" width="65" height="65"> | <img alt="Discord logo" src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/62595384e89d1d54d704ece7_3437c10597c1526c3dbd98c737c2bcae.svg" height="65" width="65"> | <img alt="Notion logo" src="https://www.notion.so/cdn-cgi/image/format=auto,width=640,quality=100/front-static/shared/icons/notion-app-icon-3d.png" height="65" width="65"> |
 
-</br>
-<div align="center" >
-<img width="1416" alt="image" src="https://github.com/codestates-seb/seb44_main_029/assets/96255906/711046b7-74c6-4555-936f-964e9b4f79e2">
-</div>
 
 
 
