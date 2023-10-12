@@ -9,7 +9,7 @@
  `팀 명` : 육-얼간이: Across the 얼간이-Verse <br>
  `프로젝트명` : Cozy States  <br>
  `프로젝트 기간` : 2023.06.28 - 2023.07.27  <br>
- `배포 링크` : [Cozy States](http://www.cozystates.com/)
+ `배포 링크` : [Cozy States](http://www.cozystates.com/) - 비용 문제로 인한 서버 연결 해제 
  
  <br>시각적 테마 선택에 따라 청각적 서비스를 제공받아 심리적 안정감을 도모하는 미디어 서비스<br>
 
